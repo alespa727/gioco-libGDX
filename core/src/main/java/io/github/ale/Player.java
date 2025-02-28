@@ -80,8 +80,8 @@ public class Player {
 
         getAnimation();
         
-        worldX = MathUtils.clamp(worldX, 0, Map.getWidth() - 32);
-        worldY = MathUtils.clamp(worldY, 0, Map.getHeight() - 32);
+        worldX = MathUtils.clamp(worldX, 0-0.7f, Map.getWidth()-1.3f);
+        worldY = MathUtils.clamp(worldY, 0-0.5f, Map.getHeight()-1.5f);
        
         // Disegnamo l'animazione
         batch.draw(animation.getKeyFrame(elapsedTime, true), worldX, worldY, 2, 2);
