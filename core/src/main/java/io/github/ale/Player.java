@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Player {
 
@@ -78,7 +79,10 @@ public class Player {
         elapsedTime += Gdx.graphics.getDeltaTime();
 
         getAnimation();
-
+        
+        worldX = MathUtils.clamp(worldX, 0, Map.getWidth() - 32);
+        worldY = MathUtils.clamp(worldY, 0, Map.getHeight() - 32);
+       
         // Disegnamo l'animazione
         batch.draw(animation.getKeyFrame(elapsedTime, true), worldX, worldY, 2, 2);
     }
@@ -89,6 +93,7 @@ public class Player {
         worldX=5f;
         worldY=5f;
         player = new Texture("Finn.png");
+
 
         direzione = new Direzione();
 
@@ -163,20 +168,34 @@ public class Player {
         if (everythingPressed()) {
             direzione.setDirezione("fermoS");
         }else if(updownPressed()){
+        
+            if (direzione.getDirezione().equals("W")) {
+                direzione.setDirezione("fermoW");
+            }else if (direzione.getDirezione().equals("S")) {
+                direzione.setDirezione("fermoS");
+            }
+
+            
+            
             if (rightPressed()) {
                 worldX += speed * delta;
                 direzione.setDirezione("D");
-            }
-            if (leftPressed()) {
+            }else if (leftPressed()) {
                 worldX -= speed * delta;
                 direzione.setDirezione("A");
             }
         }else if(leftrightPressed()){
+
+            if (direzione.getDirezione().equals("D")) {
+                direzione.setDirezione("fermoD");
+            }else if (direzione.getDirezione().equals("A")) {
+                direzione.setDirezione("fermoA");
+            }
+
             if (upPressed()) {
                 worldY += speed * delta;
                 direzione.setDirezione("W");
-            }
-            if (downPressed()) {
+            }else if (downPressed()) {
                 worldY -= speed * delta;
                 direzione.setDirezione("S");
             }
