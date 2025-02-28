@@ -27,6 +27,8 @@ public class Player {
 
     private float elapsedTime;
 
+    float speed = 4f;
+    float delta;
     boolean isAlive;
 
     // Costruttore
@@ -43,39 +45,11 @@ public class Player {
     }
 
     public void input() {
-        float speed = 4f;
-        float delta = Gdx.graphics.getDeltaTime();
+        delta = Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            worldX += speed * delta;
-            direzione.setDirezione("D");
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            worldX -= speed * delta;
-            direzione.setDirezione("A");
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            worldY += speed * delta;
-            direzione.setDirezione("W");
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            worldY -= speed * delta;
-            direzione.setDirezione("S");
-        }
-        if (!Gdx.input.isKeyPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if (direzione.getDirezione().equals("W")) {
-                direzione.setDirezione("fermoW");
-            } else if (direzione.getDirezione().equals("S")) {
-                direzione.setDirezione("fermoS");
-            //} else if (direzione.getDirezione().equals("A")) {
-            //    animation = new Animation<>(1f / 2f, playerFramesLeft);
-            } else if (direzione.getDirezione().equals("D")) {
-                direzione.setDirezione("fermoD");
-            }else{
-                direzione.setDirezione("fermoS");
-            }
-        }
+        gestioneTasti();
     }
+
 
     public void draw(SpriteBatch batch) {
         elapsedTime += Gdx.graphics.getDeltaTime();
@@ -113,7 +87,7 @@ public class Player {
         direzione.setDirezione("S");
         TextureRegion[][] tmpFrames = TextureRegion.split(player, 32, 32);
 
-        // Assegna i frame per le diverse direzioni
+        // Assegna i frame per le diverse direzioni, creare una classe che puo contenere le texture
         movingUp = new TextureRegion[4];
         movingDown = new TextureRegion[4];
         movingLeft = new TextureRegion[4];
@@ -123,6 +97,7 @@ public class Player {
         down = new TextureRegion[2];
         left = new TextureRegion[2];
         right = new TextureRegion[2];
+
         for (int i = 0; i < 4; i++) {
             // Carica i frame per la direzione su
             movingUp[i] = tmpFrames[5][i];
@@ -141,7 +116,39 @@ public class Player {
             
         }
 
-        animation = new Animation<>(1f / 4f, movingDown);
+        animation = new Animation<>(1f / 4f, movingDown); 
+    }
+
+    public void gestioneTasti(){ //creare una classe a parte
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            worldX += speed * delta;
+            direzione.setDirezione("D");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            worldX -= speed * delta;
+            direzione.setDirezione("A");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            worldY += speed * delta;
+            direzione.setDirezione("W");
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            worldY -= speed * delta;
+            direzione.setDirezione("S");
+        }
+        if (!Gdx.input.isKeyPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (direzione.getDirezione().equals("W")) {
+                direzione.setDirezione("fermoW");
+            } else if (direzione.getDirezione().equals("S")) {
+                direzione.setDirezione("fermoS");
+            //} else if (direzione.getDirezione().equals("A")) {
+            //    animation = new Animation<>(1f / 2f, playerFramesLeft);
+            } else if (direzione.getDirezione().equals("D")) {
+                direzione.setDirezione("fermoD");
+            }else{
+                direzione.setDirezione("fermoS");
+            }
+        }
     }
 
     public void checkIfKilled() {
