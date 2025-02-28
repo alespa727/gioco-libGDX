@@ -111,7 +111,6 @@ public class Player {
         direzione = new Direzione();
 
         direzione.setDirezione("S");
-        // Carica tutte le animazioni (assumendo che la sprite sheet sia 4 colonne x 1 riga)
         TextureRegion[][] tmpFrames = TextureRegion.split(player, 32, 32);
 
         // Assegna i frame per le diverse direzioni
@@ -142,11 +141,9 @@ public class Player {
             
         }
 
-        // Imposta l'animazione iniziale (ad esempio in direzione "giù")
         animation = new Animation<>(1f / 4f, movingDown);
     }
 
-    // Metodi ausiliari (per il movimento, la morte, etc.)
     public void checkIfKilled() {
         // Logica per controllare se il giocatore è stato ucciso
     }
