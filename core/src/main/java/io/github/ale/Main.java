@@ -28,7 +28,7 @@ public class Main implements ApplicationListener {
         player = new Player();
         // Configura la camera e la viewport
         camera = new OrthographicCamera();
-        viewport = new FitViewport(16, 12, camera);
+        viewport = new FitViewport(11f, 6.2f, camera);
 
         map = new Map(camera);
         
@@ -48,12 +48,13 @@ public class Main implements ApplicationListener {
     }
         
     private void logic() {
-        map.update(camera);
+        
 
         player.update();
-        camera.position.set(player.getWorldX(), player.getWorldY(), 0);
-
+        camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
         camera.update();
+
+        map.update(camera);
     }        
         
     
