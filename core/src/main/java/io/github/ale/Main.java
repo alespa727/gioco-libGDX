@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -13,7 +15,7 @@ public class Main implements ApplicationListener {
 
     private FitViewport viewport;
     private OrthographicCamera camera;
-
+    private ShapeRenderer renderer;
     Map map;
 
     private Texture background;
@@ -23,6 +25,7 @@ public class Main implements ApplicationListener {
     public void create() {
         batch = new SpriteBatch(); //praticamente la cosa per disegnare
         player = new Player();
+        renderer = new ShapeRenderer();
         // Configura la camera e la viewport
         camera = new OrthographicCamera();
         viewport = new FitViewport(11f, 6.2f, camera);
@@ -62,14 +65,19 @@ public class Main implements ApplicationListener {
 
         viewport.apply();
         batch.setProjectionMatrix(camera.combined);
-        
+        renderer.setProjectionMatrix(camera.combined);
         map.draw(camera);
-
+        
         batch.begin();
         
         player.draw(batch);
 
         batch.end();
+
+        renderer.begin(ShapeType.Line);
+        renderer.setColor(Color.BLACK);
+        renderer.rect(player.hitbox.x, player.hitbox.y, player.hitbox.width, player.hitbox.height);
+        renderer.end();
     }
 
     @Override
@@ -80,6 +88,7 @@ public class Main implements ApplicationListener {
     @Override
     public void dispose() {
         batch.dispose();
+        renderer.dispose();
     }
 
     @Override

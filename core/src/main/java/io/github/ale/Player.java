@@ -2,13 +2,16 @@ package io.github.ale;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Player {
+
+    Rectangle hitbox;
 
     private float worldX;
     private float worldY;
@@ -17,15 +20,8 @@ public class Player {
 
     TexturesPlayer player;
 
-    private Texture player1;
-    private TextureRegion[] movingUp; // Frame per la direzione su
-    private TextureRegion[] movingDown; // Frame per la direzione giù
-    private TextureRegion[] movingLeft; // Frame per la direzione sinistra
-    private TextureRegion[] movingRight; // Frame per la direzione destra
-    private TextureRegion[] up; // Frame per la direzione su fermo
-    private TextureRegion[] down; // Frame per la direzione giù fermo
-    private TextureRegion[] left; // Frame per la direzione sinistra fermo
-    private TextureRegion[] right; // Frame per la direzione destra fermo
+    ShapeRenderer shape;
+
     private Animation<TextureRegion> animation;
 
     private float elapsedTime;
@@ -41,6 +37,8 @@ public class Player {
 
     public void update() {
         input();
+        hitbox.x = worldX+0.65f;
+        hitbox.y = worldY+0.5f;
         checkIfKilled();
         checkIfRevived();
         checkIfDead();
@@ -64,11 +62,13 @@ public class Player {
         elapsedTime += Gdx.graphics.getDeltaTime();
 
         setAnimation();
+
         
         worldX = MathUtils.clamp(worldX, 0-0.7f, Map.getWidth()-1.3f);
         worldY = MathUtils.clamp(worldY, 0-0.5f, Map.getHeight()-1.5f);
        
         // Disegnamo l'animazione
+        
         batch.draw(animation.getKeyFrame(elapsedTime, true), worldX, worldY, 2, 2);
     }
 
@@ -79,6 +79,8 @@ public class Player {
         worldY=5f;
 
         player = new TexturesPlayer("Finn.png");
+
+        hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.5f);
 
         direzione = new Direzione();
         

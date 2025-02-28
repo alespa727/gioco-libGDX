@@ -13,11 +13,20 @@ public class Map {
     private static int height;
 
     public Map(OrthographicCamera camera){
-        map = new TmxMapLoader().load("maps/map.tmx");
+        map = new TmxMapLoader().load("maps/map2.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         width=50;
         height=50;
+        map.getLayers();
         update(camera);
+    }
+
+    public void changeMap(){
+        map = new TmxMapLoader().load("maps/map.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+        width=50;
+        width=50;
+        
     }
 
     public void update(OrthographicCamera camera){
