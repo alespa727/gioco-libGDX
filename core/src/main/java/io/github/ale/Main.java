@@ -14,9 +14,6 @@ public class Main implements ApplicationListener {
     private FitViewport viewport;
     private OrthographicCamera camera;
 
-    private int worldWidth = 16;
-    private int worldHeight = 16;
-
     Map map;
 
     private Texture background;
