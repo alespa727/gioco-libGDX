@@ -15,7 +15,9 @@ public class Player {
 
     private Direzione direzione;
 
-    private Texture player;
+    TexturesPlayer player;
+
+    private Texture player1;
     private TextureRegion[] movingUp; // Frame per la direzione su
     private TextureRegion[] movingDown; // Frame per la direzione giù
     private TextureRegion[] movingLeft; // Frame per la direzione sinistra
@@ -52,33 +54,16 @@ public class Player {
     }
 
 
-    public void getAnimation(){
+    public void setAnimation(){
         // Se la direzione è W (su), usiamo i frame relativi
-        
-        if (direzione.getDirezione().equals("W")) {
-            animation = new Animation<>(1f / 8f, movingUp);
-        } else if (direzione.getDirezione().equals("S")) {
-            animation = new Animation<>(1f / 8f, movingDown);
-        } else if (direzione.getDirezione().equals("A")) {
-            animation = new Animation<>(1f / 8f, movingLeft);
-        } else if (direzione.getDirezione().equals("D")) {
-            animation = new Animation<>(1f / 8f, movingRight);
-        }else if (direzione.getDirezione().equals("fermoW")) {
-            animation = new Animation<>(1f / 2f, up);
-        }else if (direzione.getDirezione().equals("fermoS")) {
-            animation = new Animation<>(1f / 2f, down);
-        }else if (direzione.getDirezione().equals("fermoA")) {
-            animation = new Animation<>(1f / 2f, left);
-        }else if (direzione.getDirezione().equals("fermoD")) {
-            animation = new Animation<>(1f / 2f, right);
-        }
+        animation = player.setAnimazione(direzione);
     }
 
 
     public void draw(SpriteBatch batch) {
         elapsedTime += Gdx.graphics.getDeltaTime();
 
-        getAnimation();
+        setAnimation();
         
         worldX = MathUtils.clamp(worldX, 0-0.7f, Map.getWidth()-1.3f);
         worldY = MathUtils.clamp(worldY, 0-0.5f, Map.getHeight()-1.5f);
@@ -92,142 +77,71 @@ public class Player {
         isAlive = true;
         worldX=5f;
         worldY=5f;
-        player = new Texture("Finn.png");
 
+        player = new TexturesPlayer("Finn.png");
 
         direzione = new Direzione();
-
+        
         direzione.setDirezione("S");
-        TextureRegion[][] tmpFrames = TextureRegion.split(player, 32, 32);
-
-        // Assegna i frame per le diverse direzioni, creare una classe che puo contenere le texture
-        movingUp = new TextureRegion[4];
-        movingDown = new TextureRegion[4];
-        movingLeft = new TextureRegion[4];
-        movingRight = new TextureRegion[4];
-
-        up = new TextureRegion[2];
-        down = new TextureRegion[2];
-        left = new TextureRegion[2];
-        right = new TextureRegion[2];
-
-        for (int i = 0; i < 4; i++) {
-            // Carica i frame per la direzione su
-            movingUp[i] = tmpFrames[5][i];
-            // Carica i frame per la direzione giù
-            movingDown[i] = tmpFrames[3][i];
-            // Carica i frame per la direzione sinistra
-            movingRight[i] = tmpFrames[4][i];
-            movingLeft[i] = new TextureRegion(tmpFrames[4][i]);
-            movingLeft[i].flip(true, false);
-            // Carica i frame per la direzione destra
-            
-            
-            
-        }
-        for (int i = 0; i < 2; i++) {
-            
-            up[i]  = tmpFrames[2][i];
-            down[i]  = tmpFrames[0][i];
-            right[i]  = tmpFrames[1][i];
-            left[i]  = new TextureRegion(tmpFrames[1][i]);
-            left[i].flip(true, false);
-            
-            
-        }
-        animation = new Animation<>(1f / 4f, movingDown); 
+        animation = player.setAnimazione(direzione);
     }
 
     public void gestioneTasti(){ //creare una classe a parte
 
-        
+        nothingPressed();
 
-        
+        everythingPressed();
 
-        if (nothingPressed()) {
+
+    }
+
+
+
+    public void nothingPressed(){
+        if(!Gdx.input.isKeyPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)){
             switch (direzione.getDirezione()) {
-                case "W":
-                    direzione.setDirezione("fermoW");
-                    break;
-                case "S":
-                    direzione.setDirezione("fermoS");
-                    //} else if (direzione.getDirezione().equals("A")) {
-                    //    animation = new Animation<>(1f / 2f, playerFramesLeft);
-                    break;
-                case "A":
-                    direzione.setDirezione("fermoA");
-                    break;
-                case "D":
-                    direzione.setDirezione("fermoD");
-                    break;
-                default:
-                    break;
+                case "W" -> direzione.setDirezione("fermoW");
+                case "S" -> direzione.setDirezione("fermoS");
+                //} else if (direzione.getDirezione().equals("A")) {
+                //    animation = new Animation<>(1f / 2f, playerFramesLeft);
+                case "A" -> direzione.setDirezione("fermoA");
+                case "D" -> direzione.setDirezione("fermoD");
+                default -> {
+                }
             }
         }
+    }
 
-        if (everythingPressed()) {
+    public void everythingPressed(){
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Input.Keys.A)) {
             direzione.setDirezione("fermoS");
-        }else if(updownPressed()){
-        
-            if (direzione.getDirezione().equals("W")) {
-                direzione.setDirezione("fermoW");
-            }else if (direzione.getDirezione().equals("S")) {
-                direzione.setDirezione("fermoS");
-            }
-
-            
-            
-            if (rightPressed()) {
-                worldX += speed * delta;
-                direzione.setDirezione("D");
-            }else if (leftPressed()) {
-                worldX -= speed * delta;
-                direzione.setDirezione("A");
-            }
-        }else if(leftrightPressed()){
-
-            if (direzione.getDirezione().equals("D")) {
-                direzione.setDirezione("fermoD");
-            }else if (direzione.getDirezione().equals("A")) {
-                direzione.setDirezione("fermoA");
-            }
-
-            if (upPressed()) {
-                worldY += speed * delta;
-                direzione.setDirezione("W");
-            }else if (downPressed()) {
-                worldY -= speed * delta;
-                direzione.setDirezione("S");
-            }
         }else{
+            if (upPressed() && downPressed()) {
+                updownPressed();
+            }else if(leftPressed() && rightPressed()){
+                leftrightPressed();
+            }else{
             
-            if (upPressed()) {
-                worldY += speed * delta;
-                direzione.setDirezione("W");
-            }
-            if (downPressed()) {
-                worldY -= speed * delta;
-                direzione.setDirezione("S");
-            }
-
-            if (rightPressed()) {
-                worldX += speed * delta;
-                direzione.setDirezione("D");
-            }
-            if (leftPressed()) {
-                worldX -= speed * delta;
-                direzione.setDirezione("A");
+                if (upPressed()) {
+                    worldY += speed * delta;
+                    direzione.setDirezione("W");
+                }
+                if (downPressed()) {
+                    worldY -= speed * delta;
+                    direzione.setDirezione("S");
+                }
+    
+                if (rightPressed()) {
+                    worldX += speed * delta;
+                    direzione.setDirezione("D");
+                }
+                if (leftPressed()) {
+                    worldX -= speed * delta;
+                    direzione.setDirezione("A");
+                }
             }
         }
-
-    }
-
-    public boolean nothingPressed(){
-        return !Gdx.input.isKeyPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A);
-    }
-
-    public boolean everythingPressed(){
-        return Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Input.Keys.A);
+        
     }
 
     public boolean rightPressed(){
@@ -243,12 +157,25 @@ public class Player {
         return Gdx.input.isKeyPressed(Input.Keys.S);
     }
 
-    public boolean leftrightPressed(){
-        return rightPressed() && leftPressed();
+    public void leftrightPressed(){
+        
+        if (direzione.getDirezione().equals("D")) {
+            direzione.setDirezione("fermoD");
+        }else if (direzione.getDirezione().equals("A")) {
+            direzione.setDirezione("fermoA");
+        }
+
     }
 
-    public boolean updownPressed(){
-        return upPressed() && downPressed();
+    public void updownPressed(){
+        
+        if (direzione.getDirezione().equals("W")) {
+            direzione.setDirezione("fermoW");
+        }else if (direzione.getDirezione().equals("S")) {
+            direzione.setDirezione("fermoS");
+        }
+        
+        
     }
 
 
