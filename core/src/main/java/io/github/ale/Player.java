@@ -100,7 +100,8 @@ public class Player {
 
 
     public void nothingPressed(){
-        if(!Gdx.input.isKeyPressed(Input.Keys.S) && !Gdx.input.isKeyPressed(Input.Keys.W) && !Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.A)){
+        boolean w = Gdx.input.isKeyPressed(Input.Keys.W), s = Gdx.input.isKeyPressed(Input.Keys.S), a = Gdx.input.isKeyPressed(Input.Keys.A), d = Gdx.input.isKeyPressed(Input.Keys.D);
+        if(!w && !s && !a && !d){
             switch (direzione.getDirezione()) {
                 case "W" -> direzione.setDirezione("fermoW");
                 case "S" -> direzione.setDirezione("fermoS");
