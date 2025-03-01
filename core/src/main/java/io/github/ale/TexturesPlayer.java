@@ -15,7 +15,7 @@ public class TexturesPlayer {
     private final TextureRegion[] left; // Frame per la direzione sinistra fermo
     private final TextureRegion[] right; // Frame per la direzione destra fermo
     private Animation<TextureRegion> animation;
-    
+
     public TexturesPlayer(String path){
         player = new Texture(path);
         TextureRegion[][] tmpFrames = TextureRegion.split(player, 32, 32);
@@ -57,6 +57,12 @@ public class TexturesPlayer {
     public TextureRegion[] getMovingUp() {
         return movingUp;
     }
+    
+    /**
+     * restituisce la animazione corretta a seconda della direzione dell'entità
+     * @param direzione
+     * @return
+     */
 
     public Animation<TextureRegion> setAnimazione(Direzione direzione) {
         switch (direzione.getDirezione()) {

@@ -13,16 +13,14 @@ public class Map {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private TiledMapTileLayer collisionLayer;
-    private  static Boolean collisionMap [][];
-    private  static Rectangle collisionBoxes [][];
+    private static Boolean collisionMap [][];
+    private static Rectangle collisionBoxes [][];
     private static int width;
     private static int height;
 
     public Map(OrthographicCamera camera){
         map = new TmxMapLoader().load("maps/map2.tmx");
         collisionLayer = (TiledMapTileLayer)map.getLayers().get("map2");
-
-        
 
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         width=50;
@@ -41,6 +39,10 @@ public class Map {
         update(camera);
     }
 
+    /**
+     * disegna la hitbox dei tile con collisioni
+     * @param renderer
+     */
     public void drawBoxes(ShapeRenderer renderer){
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -50,15 +52,19 @@ public class Map {
             }
         }
     }
-
+    /**
+     * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
+     * @param direzione
+     * @return
+     */
     public static boolean checkCollisionY(String direzione){
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(Player.hitbox);
         if (direzione.equals("W")) {
-            hitbox.y+=1/32f;
+            hitbox.y+=1/64f;
         }
         if (direzione.equals("S")) {
-            hitbox.y-=1/32f;
+            hitbox.y-=1/64f;
         }
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -72,15 +78,19 @@ public class Map {
         //System.out.println(inCollision);
         return inCollision;
     }
-
+    /**
+     * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
+     * @param direzione
+     * @return
+     */
     public static boolean checkCollisionX(String direzione){
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(Player.hitbox);
         if (direzione.equals("A")) {
-            hitbox.x-=1/32f;
+            hitbox.x-=1/64f;
         }
         if (direzione.equals("D")) {
-            hitbox.x+=1/32f;
+            hitbox.x+=1/64f;
         }
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {

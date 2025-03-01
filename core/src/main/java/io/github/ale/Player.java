@@ -51,9 +51,18 @@ public class Player {
         batch.draw(animation.getKeyFrame(elapsedTime, true), worldX, worldY, 2, 2);
     }
 
+    /**
+     * disegna l'hitbox del player
+     * @param renderer
+     */
+
     public void drawHitbox(ShapeRenderer renderer) {
         renderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
+
+    /**
+     * aggiorna le informazioni del player
+     */
 
     public void update() {
         input();
@@ -65,22 +74,27 @@ public class Player {
         checkIfAlive();
     }
 
+    /**
+     * aggiorna gli input
+     */
+
     private void input() {
         delta = Gdx.graphics.getDeltaTime();
-
         gestioneTasti();
     }
 
+    /**
+     * setta le animazioni del player a seconda della direzione
+     */
 
     private void setAnimation(){
-        // Se la direzione è W (su), usiamo i frame relativi
         animation = player.setAnimazione(direzione);
     }
 
+    /**
+     * inizializzazione player
+     */
 
-    
-
-    // Inizializza le variabili, carica i frame
     private void setDefaultValues() {
         isAlive = true;
         worldX=5f;
@@ -96,11 +110,19 @@ public class Player {
         animation = player.setAnimazione(direzione);
     }
 
+    /**
+     * gestione tasti
+     */
+
     private void gestioneTasti(){ //creare una classe a parte
         sprint();
         nothingPressed();
-        everythingPressed();
+        anythingPressed();
     }
+
+    /**
+     * input sprint
+     */
 
     private void sprint(){
         boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
@@ -135,7 +157,7 @@ public class Player {
         }
     }
 
-    private void everythingPressed(){
+    private void anythingPressed(){
         boolean w = Gdx.input.isKeyPressed(Input.Keys.W), s = Gdx.input.isKeyPressed(Input.Keys.S), a = Gdx.input.isKeyPressed(Input.Keys.A), d = Gdx.input.isKeyPressed(Input.Keys.D);
         if (w && s && d && a) {
             direzione.setDirezione("fermoS");
