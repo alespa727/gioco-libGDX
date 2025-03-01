@@ -9,6 +9,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
+import io.github.ale.player.Player;
+
 public class Map {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;

@@ -1,4 +1,4 @@
-package io.github.ale;
+package io.github.ale.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+
+import io.github.ale.Map;
 
 public class Player {
 
@@ -24,6 +26,8 @@ public class Player {
 
     private float elapsedTime;
 
+    private Health hp;
+
     private final float baseSpeed=2.5f;
     private float delta = 1f;
     private float speed;
@@ -32,7 +36,26 @@ public class Player {
     // Costruttore
     public Player() {
         this.speed = baseSpeed*delta;
-        setDefaultValues();
+        create();
+    }
+
+    /**
+     * inizializzazione player
+     */
+
+     private void create() {
+        isAlive = true;
+
+        worldX=5f;
+        worldY=5f;
+
+        hp = new Health(100);
+        player = new TexturesPlayer("Finn.png");
+        hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.4f);
+        direzione = new Direzione();
+        
+        direzione.setDirezione("S");
+        animation = player.setAnimazione(direzione);
     }
 
     /**
@@ -75,56 +98,29 @@ public class Player {
     }
 
     /**
-     * aggiorna gli input
-     */
-
-    private void input() {
-        delta = Gdx.graphics.getDeltaTime();
-        gestioneTasti();
-    }
-
-    /**
-     * setta le animazioni del player a seconda della direzione
-     */
-
-    private void setAnimation(){
-        animation = player.setAnimazione(direzione);
-    }
-
-    /**
-     * inizializzazione player
-     */
-
-    private void setDefaultValues() {
-        isAlive = true;
-        worldX=5f;
-        worldY=5f;
-
-        player = new TexturesPlayer("Finn.png");
-
-        hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.4f);
-
-        direzione = new Direzione();
-        
-        direzione.setDirezione("S");
-        animation = player.setAnimazione(direzione);
-    }
-
-    /**
      * gestione tasti
      */
 
-    private void gestioneTasti(){ //creare una classe a parte
+     private void gestioneTasti(){ //creare una classe a parte
         sprint();
         nothingPressed();
         anythingPressed();
+        attack();
+    }
+
+    /**
+     * attacco
+     */
+    
+    public void attack(){
+ 
     }
 
     /**
      * input sprint
      */
 
-    private void sprint(){
+     private void sprint(){
         boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
         float delta;
 
@@ -139,6 +135,23 @@ public class Player {
             delta = 1f;
             speed = baseSpeed*delta;
         }
+    }
+
+    /**
+     * aggiorna gli input
+     */
+
+    private void input() {
+        delta = Gdx.graphics.getDeltaTime();
+        gestioneTasti();
+    }
+
+    /**
+     * setta le animazioni del player a seconda della direzione
+     */
+
+    private void setAnimation(){
+        animation = player.setAnimazione(direzione);
     }
 
     public void nothingPressed(){

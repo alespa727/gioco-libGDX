@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.ale.player.Player;
+
 public class Main implements ApplicationListener {
     private SpriteBatch batch;
 
@@ -76,15 +78,6 @@ public class Main implements ApplicationListener {
 
         map.draw(camera);
         
-        
-        //disegna immagini
-
-        batch.begin();
-        
-        player.draw(batch);
-
-        batch.end();
-
         //Disegna figure geometriche / hitbox
 
         renderer.begin(ShapeType.Line);
@@ -94,6 +87,15 @@ public class Main implements ApplicationListener {
         player.drawHitbox(renderer);
        
         renderer.end();
+        
+        //disegna immagini
+
+        batch.begin();
+        
+        player.draw(batch);
+
+        batch.end();
+
     }
 
     @Override

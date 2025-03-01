@@ -1,4 +1,4 @@
-package io.github.ale;
+package io.github.ale.player;
 
 public class Direzione {
     String direzione;
