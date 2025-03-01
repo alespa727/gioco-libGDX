@@ -32,7 +32,7 @@ public class Main implements ApplicationListener {
         renderer = new ShapeRenderer();
         // Configura la camera e la viewport
         camera = new OrthographicCamera();
-        viewport = new FitViewport(11f, 6.2f, camera);
+        viewport = new FitViewport(16f, 9f, camera);
         maps = new MapManager(camera);
 
         viewport.apply();

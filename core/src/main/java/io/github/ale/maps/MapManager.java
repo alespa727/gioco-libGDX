@@ -17,7 +17,7 @@ public class MapManager {
 
     public MapManager(OrthographicCamera camera){
         flag=false;
-        numMap=1;
+        numMap=2;
         nome = "map2";
         map = new Map(camera, nome);
     }
