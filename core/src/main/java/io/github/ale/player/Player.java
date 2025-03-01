@@ -1,7 +1,6 @@
 package io.github.ale.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,10 +14,10 @@ public class Player {
 
     public static Rectangle hitbox;
 
-    private float worldX;
-    private float worldY;
+    protected float worldX;
+    protected float worldY;
 
-    private Direzione direzione;
+    protected Direzione direzione;
 
     private TexturesPlayer player;
 
@@ -28,10 +27,12 @@ public class Player {
 
     private Health hp;
 
-    private final float baseSpeed=2.5f;
-    private float delta = 1f;
-    private float speed;
+    protected final float baseSpeed=2.5f;
+    protected float delta = 1f;
+    protected float speed;
     public boolean isAlive;
+
+    private KeyHandlerPlayer keyH;
 
     // Costruttore
     public Player() {
@@ -49,6 +50,7 @@ public class Player {
         worldX=5f;
         worldY=5f;
 
+        keyH = new KeyHandlerPlayer();
         hp = new Health(100);
         player = new TexturesPlayer("Finn.png");
         hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.4f);
@@ -88,62 +90,15 @@ public class Player {
      */
 
     public void update() {
-        input();
+        keyH.input(this);
+        
         hitbox.x = worldX+0.65f;
         hitbox.y = worldY+0.55f;
+
         checkIfKilled();
         checkIfRevived();
         checkIfDead();
         checkIfAlive();
-    }
-
-    /**
-     * gestione tasti
-     */
-
-     private void gestioneTasti(){ //creare una classe a parte
-        sprint();
-        nothingPressed();
-        anythingPressed();
-        attack();
-    }
-
-    /**
-     * attacco
-     */
-    
-    public void attack(){
- 
-    }
-
-    /**
-     * input sprint
-     */
-
-     private void sprint(){
-        boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-        float delta;
-
-        if (shift) {
-            //System.out.println("SPRINT!");
-            delta = 1.5f;
-            speed = baseSpeed*delta;
-        }
-
-        if (!shift) {
-            //System.out.println("NIENTE SPRINT");
-            delta = 1f;
-            speed = baseSpeed*delta;
-        }
-    }
-
-    /**
-     * aggiorna gli input
-     */
-
-    private void input() {
-        delta = Gdx.graphics.getDeltaTime();
-        gestioneTasti();
     }
 
     /**
@@ -152,79 +107,6 @@ public class Player {
 
     private void setAnimation(){
         animation = player.setAnimazione(direzione);
-    }
-
-    public void nothingPressed(){
-        boolean w = Gdx.input.isKeyPressed(Input.Keys.W), s = Gdx.input.isKeyPressed(Input.Keys.S), a = Gdx.input.isKeyPressed(Input.Keys.A), d = Gdx.input.isKeyPressed(Input.Keys.D);
-        if(!w && !s && !a && !d){
-            switch (direzione.getDirezione()) {
-                case "W" -> direzione.setDirezione("fermoW");
-                case "S" -> direzione.setDirezione("fermoS");
-                //} else if (direzione.getDirezione().equals("A")) {
-                //    animation = new Animation<>(1f / 2f, playerFramesLeft);
-                case "A" -> direzione.setDirezione("fermoA");
-                case "D" -> direzione.setDirezione("fermoD");
-                default -> {
-                }
-            }
-        }
-    }
-
-    private void anythingPressed(){
-        boolean w = Gdx.input.isKeyPressed(Input.Keys.W), s = Gdx.input.isKeyPressed(Input.Keys.S), a = Gdx.input.isKeyPressed(Input.Keys.A), d = Gdx.input.isKeyPressed(Input.Keys.D);
-        if (w && s && d && a) {
-            direzione.setDirezione("fermoS");
-        }else{
-            if (w && s) {
-                if (direzione.getDirezione().equals("A")) direzione.setDirezione("fermoA");
-                else if (direzione.getDirezione().equals("D")) direzione.setDirezione("fermoD");
-
-                if (a) direzione.setDirezione("A");
-                if (d) direzione.setDirezione("D");
-
-                if (!Map.checkCollisionX(direzione.getDirezione())) {
-                    if (a) worldX -= speed * delta;
-                    if (d) worldX += speed * delta;
-                }
-
-                if (direzione.getDirezione().equals("W")) direzione.setDirezione("fermoW");
-                else if (direzione.getDirezione().equals("S")) direzione.setDirezione("fermoS");
-
-            }else if(a && d){
-                if (direzione.getDirezione().equals("W")) direzione.setDirezione("fermoW");
-                else if (direzione.getDirezione().equals("S")) direzione.setDirezione("fermoS");
-
-                if (w) direzione.setDirezione("W");
-                if (s) direzione.setDirezione("S");
-
-                if (!Map.checkCollisionY(direzione.getDirezione())) {
-                    if (s) worldY -= speed * delta;
-                    if (w) worldY += speed * delta;
-                }
-
-                if (direzione.getDirezione().equals("D")) direzione.setDirezione("fermoD");
-                else if (direzione.getDirezione().equals("A")) direzione.setDirezione("fermoA");
-
-            }else{
-
-                if (w) direzione.setDirezione("W");
-                if (s) direzione.setDirezione("S");
-
-                if (!Map.checkCollisionY(direzione.getDirezione())) {
-                    if (s) worldY -= speed * delta;
-                    if (w) worldY += speed * delta;
-                }
-                
-                if (d) direzione.setDirezione("D");
-                if (a) direzione.setDirezione("A");
-    
-                if (!Map.checkCollisionX(direzione.getDirezione())) {
-                    if (a) worldX -= speed * delta;
-                    if (d) worldX += speed * delta;
-                }
-            }
-        }
-        
     }
 
     public void checkIfKilled() {

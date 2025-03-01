@@ -13,7 +13,7 @@ import io.github.ale.player.Player;
 
 public class Map {
     private TiledMap map;
-    private OrthogonalTiledMapRenderer mapRenderer;
+    private final OrthogonalTiledMapRenderer mapRenderer;
     private TiledMapTileLayer collisionLayer;
     private static Boolean collisionMap [][];
     private static Rectangle collisionBoxes [][];
@@ -105,14 +105,6 @@ public class Map {
         }
         //System.out.println(inCollision);
         return inCollision;
-    }
-
-    private void changeMap(){
-        map = new TmxMapLoader().load("maps/map.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
-        width=50;
-        height = 50;
-        
     }
 
     public void update(OrthographicCamera camera){

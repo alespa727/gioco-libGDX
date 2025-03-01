@@ -13,7 +13,6 @@ public class MapManager {
 
     private final int totalMaps=2;
 
-    private float elapsedTime;
     boolean flag;
 
     public MapManager(OrthographicCamera camera){
@@ -49,8 +48,6 @@ public class MapManager {
     }
     
     public void update(OrthographicCamera camera, Player p){
-        elapsedTime += Gdx.graphics.getDeltaTime();
-
         boolean e = Gdx.input.isKeyPressed(Input.Keys.E);
 
         if (e) {
