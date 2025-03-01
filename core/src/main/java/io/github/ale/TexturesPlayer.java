@@ -5,16 +5,17 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TexturesPlayer {
-    private Texture player;
-    private TextureRegion[] movingUp; // Frame per la direzione su
-    private TextureRegion[] movingDown; // Frame per la direzione giù
-    private TextureRegion[] movingLeft; // Frame per la direzione sinistra
-    private TextureRegion[] movingRight; // Frame per la direzione destra
-    private TextureRegion[] up; // Frame per la direzione su fermo
-    private TextureRegion[] down; // Frame per la direzione giù fermo
-    private TextureRegion[] left; // Frame per la direzione sinistra fermo
-    private TextureRegion[] right; // Frame per la direzione destra fermo
+    private final Texture player;
+    private final TextureRegion[] movingUp; // Frame per la direzione su
+    private final TextureRegion[] movingDown; // Frame per la direzione giù
+    private final TextureRegion[] movingLeft; // Frame per la direzione sinistra
+    private final TextureRegion[] movingRight; // Frame per la direzione destra
+    private final TextureRegion[] up; // Frame per la direzione su fermo
+    private final TextureRegion[] down; // Frame per la direzione giù fermo
+    private final TextureRegion[] left; // Frame per la direzione sinistra fermo
+    private final TextureRegion[] right; // Frame per la direzione destra fermo
     private Animation<TextureRegion> animation;
+    
     public TexturesPlayer(String path){
         player = new Texture(path);
         TextureRegion[][] tmpFrames = TextureRegion.split(player, 32, 32);

@@ -13,8 +13,8 @@ public class Map {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private TiledMapTileLayer collisionLayer;
-    public static Boolean collisionMap [][];
-    public static Rectangle collisionBoxes [][];
+    private  static Boolean collisionMap [][];
+    private  static Rectangle collisionBoxes [][];
     private static int width;
     private static int height;
 
@@ -33,16 +33,11 @@ public class Map {
             for (int j = 0; j < height; j++) {
                 Cell tile = collisionLayer.getCell(i, j);
                 collisionMap[i][j]=(Boolean) tile.getTile().getProperties().get("solido");
-                System.err.println(collisionMap[i][j]);
                 if (collisionMap[i][j]!=null) {
                     collisionBoxes[i][j] = new Rectangle(1f*i, 1f*j, 1f,1f);
                 }
             }
         }
-        
-
-        
-
         update(camera);
     }
 
@@ -56,7 +51,51 @@ public class Map {
         }
     }
 
-    public void changeMap(){
+    public static boolean checkCollisionY(String direzione){
+        boolean inCollision=false;
+        Rectangle hitbox = new Rectangle(Player.hitbox);
+        if (direzione.equals("W")) {
+            hitbox.y+=1/32f;
+        }
+        if (direzione.equals("S")) {
+            hitbox.y-=1/32f;
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (collisionMap[i][j]!=null) {
+                    if (hitbox.overlaps(collisionBoxes[i][j])) {
+                        inCollision=true;
+                    }
+                }
+            }
+        }
+        //System.out.println(inCollision);
+        return inCollision;
+    }
+
+    public static boolean checkCollisionX(String direzione){
+        boolean inCollision=false;
+        Rectangle hitbox = new Rectangle(Player.hitbox);
+        if (direzione.equals("A")) {
+            hitbox.x-=1/32f;
+        }
+        if (direzione.equals("D")) {
+            hitbox.x+=1/32f;
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (collisionMap[i][j]!=null) {
+                    if (hitbox.overlaps(collisionBoxes[i][j])) {
+                        inCollision=true;
+                    }
+                }
+            }
+        }
+        //System.out.println(inCollision);
+        return inCollision;
+    }
+
+    private void changeMap(){
         map = new TmxMapLoader().load("maps/map.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         width=50;
@@ -83,11 +122,6 @@ public class Map {
     }
     public static int getHeight(){
         return height;
-    }
-    
-    
-    private boolean tileSolido(int x, int y, TiledMapTileLayer layer) {
-       return true;
     }
     
 
