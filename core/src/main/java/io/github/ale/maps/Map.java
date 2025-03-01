@@ -1,4 +1,4 @@
-package io.github.ale;
+package io.github.ale.maps;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -17,16 +17,16 @@ public class Map {
     private TiledMapTileLayer collisionLayer;
     private static Boolean collisionMap [][];
     private static Rectangle collisionBoxes [][];
-    private static int width;
+    private static Integer width;
     private static int height;
 
-    public Map(OrthographicCamera camera){
-        map = new TmxMapLoader().load("maps/map2.tmx");
-        collisionLayer = (TiledMapTileLayer)map.getLayers().get("map2");
+    public Map(OrthographicCamera camera, String name){
+        map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx"));
+        collisionLayer = (TiledMapTileLayer)map.getLayers().get(name);
 
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
-        width=50;
-        height=50;
+        width=(Integer) map.getProperties().get("width");
+        height=(Integer) map.getProperties().get("height");
         collisionMap = new Boolean[width][height];
         collisionBoxes = new Rectangle[width][height];
         for (int i = 0; i < width; i++) {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.ale.maps.MapManager;
 import io.github.ale.player.Player;
 
 public class Main implements ApplicationListener {
@@ -17,21 +18,23 @@ public class Main implements ApplicationListener {
     private FitViewport viewport;
     private OrthographicCamera camera;
     private ShapeRenderer renderer;
-    private Map map;
+    
+
+    private MapManager maps;
 
     private Player player;
 
     @Override
     public void create() { 
+        
         batch = new SpriteBatch(); //praticamente la cosa per disegnare
         player = new Player();
         renderer = new ShapeRenderer();
         // Configura la camera e la viewport
         camera = new OrthographicCamera();
         viewport = new FitViewport(11f, 6.2f, camera);
+        maps = new MapManager(camera);
 
-        map = new Map(camera);
-        
         viewport.apply();
 
         camera.position.set(player.getWorldX(), player.getWorldX(), 0);
@@ -52,12 +55,12 @@ public class Main implements ApplicationListener {
     private void logic() {
         
         //aggiorna ogni cosa nel gioco
-
+        maps.update(camera, player);
         player.update();
         camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
         camera.update();
 
-        map.update(camera);
+        maps.getMap().update(camera);
     }        
         
     
@@ -76,15 +79,15 @@ public class Main implements ApplicationListener {
 
         //disegna mappa
 
-        map.draw(camera);
+        maps.getMap().draw(camera);
         
         //Disegna figure geometriche / hitbox
 
         renderer.begin(ShapeType.Line);
 
-        map.drawBoxes(renderer);
-        renderer.setColor(Color.BLACK);
-        player.drawHitbox(renderer);
+        //map.drawBoxes(renderer);
+        //renderer.setColor(Color.BLACK);
+        //player.drawHitbox(renderer);
        
         renderer.end();
         

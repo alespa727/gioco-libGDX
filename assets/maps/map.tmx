@@ -4,7 +4,7 @@
   <export target="../Documents/map.tmx" format="tmx"/>
  </editorsettings>
  <tileset firstgid="1" source="../grass.tsx"/>
- <layer id="1" name="Tile Layer 1" width="50" height="50">
+ <layer id="1" name="map" width="50" height="50">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,

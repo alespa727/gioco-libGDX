@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.Map;
+import io.github.ale.maps.Map;
 
 public class Player {
 
@@ -250,5 +250,14 @@ public class Player {
 
     public float getWorldY() {
         return worldY;
+    }
+
+    // Getters
+    public void setWorldX(float worldX) {
+        this.worldX = worldX;
+    }
+
+    public void setWorldY(float worldY) {
+        this.worldY = worldY;
     }
 }
