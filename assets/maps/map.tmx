@@ -12,6 +12,9 @@
    </properties>
   </tile>
  </tileset>
+ <tileset firstgid="13" name="TilesetFloor" tilewidth="32" tileheight="32" tilecount="165" columns="11">
+  <image source="../TilesetFloor.png" width="352" height="480"/>
+ </tileset>
  <layer id="1" name="map" width="15" height="15">
   <data encoding="csv">
 12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,

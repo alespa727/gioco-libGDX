@@ -19,7 +19,6 @@ public class Main implements ApplicationListener {
     private FitViewport viewport;
     private OrthographicCamera camera;
     private ShapeRenderer renderer;
-    
 
     private MapManager maps;
 
@@ -29,17 +28,17 @@ public class Main implements ApplicationListener {
     public void create() { 
         
         batch = new SpriteBatch(); //praticamente la cosa per disegnare
-        player = new Player();
-        renderer = new ShapeRenderer();
+        player = new Player(); 
+        renderer = new ShapeRenderer(); //disegna forme
         // Configura la camera e la viewport
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(16f, 9f, camera);
-        maps = new MapManager(camera, player);
+        camera = new OrthographicCamera(); //telecamera
+        viewport = new FitViewport(16f, 9f, camera); //grandezza telecamera
+        maps = new MapManager(camera, player); //map manager
 
-        viewport.apply();
+        viewport.apply(); //applica cosa si vede
 
-        camera.position.set(player.getWorldX(), player.getWorldX(), 0);
-        camera.update();
+        camera.position.set(player.getWorldX(), player.getWorldX(), 0); //setta il centro della telecamera al player
+        camera.update(); //aggiornamento camera
     }
 
     @Override
@@ -56,9 +55,9 @@ public class Main implements ApplicationListener {
     private void logic() {
         
         //aggiorna ogni cosa nel gioco
-        maps.update(camera, player);
-        player.update();
-        if (!maps.getAmbiente()) {
+        maps.update(camera, player); //update mappa, in caso di input
+        player.update(); //update player
+        if (!maps.getAmbiente()) { //tipo di telecamera
             maps.getMap();
             maps.getMap();
             camera.position.set(Map.getWidth() / 2f, player.getWorldY() + 2f / 2, 0);
@@ -69,7 +68,7 @@ public class Main implements ApplicationListener {
         }
         
 
-        maps.getMap().update(camera);
+        maps.getMap().update(camera); //update visualizzazione mappa
     }        
         
     
@@ -94,9 +93,9 @@ public class Main implements ApplicationListener {
 
         renderer.begin(ShapeType.Line);
 
-        //map.drawBoxes(renderer);
-        //renderer.setColor(Color.BLACK);
-        //player.drawHitbox(renderer);
+        maps.getMap().drawBoxes(renderer);
+        renderer.setColor(Color.BLACK);
+        player.drawHitbox(renderer);
        
         renderer.end();
         
