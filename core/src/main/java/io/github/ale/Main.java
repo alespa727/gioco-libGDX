@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
 import io.github.ale.player.Player;
 
@@ -33,7 +34,7 @@ public class Main implements ApplicationListener {
         // Configura la camera e la viewport
         camera = new OrthographicCamera();
         viewport = new FitViewport(16f, 9f, camera);
-        maps = new MapManager(camera);
+        maps = new MapManager(camera, player);
 
         viewport.apply();
 
@@ -57,8 +58,16 @@ public class Main implements ApplicationListener {
         //aggiorna ogni cosa nel gioco
         maps.update(camera, player);
         player.update();
-        camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
-        camera.update();
+        if (!maps.getAmbiente()) {
+            maps.getMap();
+            maps.getMap();
+            camera.position.set(Map.getWidth() / 2f, player.getWorldY() + 2f / 2, 0);
+            camera.update();
+        }else{
+            camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
+            camera.update();
+        }
+        
 
         maps.getMap().update(camera);
     }        

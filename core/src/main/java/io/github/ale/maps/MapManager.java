@@ -10,15 +10,19 @@ public class MapManager {
     private Map map;
     private int numMap;
     private String nome;
+    private boolean ambienteAperto;
 
     private final int totalMaps=2;
 
     boolean flag;
 
-    public MapManager(OrthographicCamera camera){
+    public MapManager(OrthographicCamera camera, Player p){
         flag=false;
-        numMap=2;
-        nome = "map2";
+        numMap=1;
+        ambienteAperto=true;
+        changeMap(camera);
+        p.setWorldX(6.5f);
+        p.setWorldY(5f);
         map = new Map(camera, nome);
     }
 
@@ -33,9 +37,11 @@ public class MapManager {
     public void changeMap(OrthographicCamera camera){
         System.out.println(numMap);
         switch (numMap) {
-            case 1 -> { nome = "map2";
+            case 1 -> { nome = "map2"; 
+            ambienteAperto=true;
             }
             case 2 -> { nome = "map";
+            ambienteAperto=false;
             }
             default -> {
             }
@@ -45,6 +51,7 @@ public class MapManager {
         }
         numMap++;
         map = new Map(camera, nome);
+        
     }
     
     public void update(OrthographicCamera camera, Player p){
@@ -53,8 +60,8 @@ public class MapManager {
         if (e) {
             if (!flag) {
                 changeMap(camera);
-                p.setWorldX(3f);
-                p.setWorldY(3f);
+                p.setWorldX(7.5f);
+                p.setWorldY(5f);
                 flag=true;
             }
         }
@@ -63,4 +70,9 @@ public class MapManager {
             flag=false;
         }
     }
+
+    public boolean getAmbiente(){
+        return ambienteAperto;
+    }
+
 }
