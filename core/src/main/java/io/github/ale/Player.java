@@ -64,8 +64,8 @@ public class Player {
         setAnimation();
 
         
-        worldX = MathUtils.clamp(worldX, 0-0.7f, Map.getWidth()-1.3f);
-        worldY = MathUtils.clamp(worldY, 0-0.5f, Map.getHeight()-1.5f);
+        worldX = MathUtils.clamp(worldX, 0-hitbox.width, Map.getWidth()-hitbox.width-hitbox.width);
+        worldY = MathUtils.clamp(worldY, 0-hitbox.height, Map.getHeight()-hitbox.height-hitbox.height);
        
         // Disegnamo l'animazione
         

@@ -44,6 +44,8 @@ public class Main implements ApplicationListener {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         logic();
         draw();
+        //System.err.println(player.getWorldX());
+        //System.err.println(player.getWorldY());
         
     }
         
