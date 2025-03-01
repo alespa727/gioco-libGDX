@@ -77,6 +77,7 @@ public class Main implements ApplicationListener {
         batch.end();
 
         renderer.begin(ShapeType.Line);
+        map.drawBoxes(renderer);
         renderer.setColor(Color.BLACK);
         renderer.rect(player.hitbox.x, player.hitbox.y, player.hitbox.width, player.hitbox.height);
         renderer.end();

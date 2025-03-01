@@ -38,7 +38,7 @@ public class Player {
     public void update() {
         input();
         hitbox.x = worldX+0.65f;
-        hitbox.y = worldY+0.5f;
+        hitbox.y = worldY+0.55f;
         checkIfKilled();
         checkIfRevived();
         checkIfDead();
@@ -80,7 +80,7 @@ public class Player {
 
         player = new TexturesPlayer("Finn.png");
 
-        hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.5f);
+        hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.4f);
 
         direzione = new Direzione();
         
@@ -115,29 +115,28 @@ public class Player {
     }
 
     public void everythingPressed(){
-        if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Input.Keys.A)) {
+        boolean w = Gdx.input.isKeyPressed(Input.Keys.W), s = Gdx.input.isKeyPressed(Input.Keys.S), a = Gdx.input.isKeyPressed(Input.Keys.A), d = Gdx.input.isKeyPressed(Input.Keys.D);
+        if (w && s && d && a) {
             direzione.setDirezione("fermoS");
         }else{
-            if (upPressed() && downPressed()) {
+            if (w && s) {
                 updownPressed();
-            }else if(leftPressed() && rightPressed()){
+            }else if(a && d){
                 leftrightPressed();
             }else{
-            
-                if (upPressed()) {
+                if (w) {
                     worldY += speed * delta;
                     direzione.setDirezione("W");
                 }
-                if (downPressed()) {
+                if (s) {
                     worldY -= speed * delta;
                     direzione.setDirezione("S");
                 }
-    
-                if (rightPressed()) {
+                if (d) {
                     worldX += speed * delta;
                     direzione.setDirezione("D");
                 }
-                if (leftPressed()) {
+                if (a) {
                     worldX -= speed * delta;
                     direzione.setDirezione("A");
                 }
