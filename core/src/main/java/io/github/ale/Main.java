@@ -129,8 +129,14 @@ public class Main implements ApplicationListener {
 
     public void drawOggetti(){
         batch.begin();
-        player.draw(batch);
-        enemy.draw(batch);
+        if (player.getWorldY() > enemy.getWorldY()) {
+            player.draw(batch);
+            enemy.draw(batch);
+        }else{
+            enemy.draw(batch);
+            player.draw(batch);
+        }
+        
         batch.end();
     }
 
@@ -160,7 +166,7 @@ public class Main implements ApplicationListener {
             viewport.setWorldSize(16f, 9f);
             viewport.apply();
             camera.update();
-            
+
         }
         
     }
@@ -175,7 +181,6 @@ public class Main implements ApplicationListener {
 
     public void inizializzaCamera(){
         camera = new OrthographicCamera(); //telecamera
-        
         
         camera.update(); //aggiornamento camera
         
