@@ -61,7 +61,9 @@ public class Main implements ApplicationListener {
             maps.getMap();
             maps.getMap();
             camera.position.set(Map.getWidth() / 2f, player.getWorldY() + 2f / 2, 0);
+            viewport.setWorldSize(Map.getWidth(), Map.getHeight()/16f*9f);
             camera.update();
+            viewport.apply();
         }else{
             camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
             camera.update();
