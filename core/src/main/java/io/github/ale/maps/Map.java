@@ -92,10 +92,6 @@ public class Map {
         if (direzione.equals("S")) {
             hitbox.y-=1f/32f;
         }
-        System.out.println(hitbox.x);
-        System.out.println(hitbox.y);
-        System.out.println(Player.hitbox.x);
-        System.out.println(Player.hitbox.y);
         
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
