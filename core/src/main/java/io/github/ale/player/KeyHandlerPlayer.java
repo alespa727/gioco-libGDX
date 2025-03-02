@@ -6,13 +6,13 @@ import com.badlogic.gdx.Input;
 import io.github.ale.maps.Map;
 
 public class KeyHandlerPlayer {
-    double delta;
+    float elapsedTime;
     public KeyHandlerPlayer(){
 
     }
 
     public void input(Player p){
-        delta = Gdx.graphics.getDeltaTime();
+        elapsedTime = Gdx.graphics.getDeltaTime();
         sprint(p);
         boolean w = Gdx.input.isKeyPressed(Input.Keys.W), s = Gdx.input.isKeyPressed(Input.Keys.S), a = Gdx.input.isKeyPressed(Input.Keys.A), d = Gdx.input.isKeyPressed(Input.Keys.D);
         if(!w && !s && !a && !d){
@@ -39,8 +39,8 @@ public class KeyHandlerPlayer {
                 if (d) p.direzione.setDirezione("D");
 
                 if (!Map.checkCollisionX(p.direzione.getDirezione())) {
-                    if (a) p.worldX -= p.speed * delta;
-                    if (d) p.worldX += p.speed * delta;
+                    if (a) p.worldX -= p.speed * elapsedTime;
+                    if (d) p.worldX += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
 
@@ -55,8 +55,8 @@ public class KeyHandlerPlayer {
                 if (s) p.direzione.setDirezione("S");
 
                 if (!Map.checkCollisionY(p.direzione.getDirezione())) {
-                    if (s) p.worldY -= p.speed * delta;
-                    if (w) p.worldY += p.speed * delta;
+                    if (s) p.worldY -= p.speed * elapsedTime;
+                    if (w) p.worldY += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
 
@@ -69,8 +69,8 @@ public class KeyHandlerPlayer {
                 if (s) p.direzione.setDirezione("S");
 
                 if (!Map.checkCollisionY(p.direzione.getDirezione())) {
-                    if (s) p.worldY -= p.speed * delta;
-                    if (w) p.worldY += p.speed * delta;
+                    if (s) p.worldY -= p.speed * elapsedTime;
+                    if (w) p.worldY += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
                 
@@ -78,8 +78,8 @@ public class KeyHandlerPlayer {
                 if (a) p.direzione.setDirezione("A");
     
                 if (!Map.checkCollisionX(p.direzione.getDirezione())) {
-                    if (a) p.worldX -= p.speed * delta;
-                    if (d) p.worldX += p.speed * delta;
+                    if (a) p.worldX -= p.speed * elapsedTime;
+                    if (d) p.worldX += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
 
@@ -102,18 +102,17 @@ public class KeyHandlerPlayer {
 
      private void sprint(Player p){
         boolean shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-        float delta;
 
         if (shift) {
             //System.out.println("SPRINT!");
-            delta = 1.5f;
-            p.speed = p.baseSpeed*delta;
+            p.delta = 1.5f;
+            p.speed = p.baseSpeed*p.delta;
         }
 
         if (!shift) {
             //System.out.println("NIENTE SPRINT");
-            delta = 1f;
-            p.speed = p.baseSpeed*delta;
+            p.delta = 1f;
+            p.speed = p.baseSpeed*p.delta;
         }
     }
 }

@@ -28,7 +28,7 @@ public class Player {
 
     private Health hp;
 
-    protected static boolean inCollisione;
+    protected boolean inCollisione;
 
     protected final float baseSpeed=2.5f;
     protected float delta = 1f;
@@ -150,8 +150,7 @@ public class Player {
         this.worldY = worldY;
     }
 
-    public static boolean getInCollisione(){
-        System.out.println(inCollisione);
+    public boolean getInCollisione(){
         return inCollisione;
     }
 }

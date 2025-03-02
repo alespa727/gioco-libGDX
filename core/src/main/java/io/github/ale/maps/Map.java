@@ -1,5 +1,6 @@
 package io.github.ale.maps;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,21 +15,44 @@ import io.github.ale.player.Player;
 public class Map {
     private TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
+
     private TiledMapTileLayer collisionLayer;
+
     private static Boolean collisionMap [][];
     private static Rectangle collisionBoxes [][];
+
     private static Integer width;
     private static int height;
 
     public Map(OrthographicCamera camera, String name){
+       
+        loadMap(name);
+
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+        
+        loadCollisionMap();
+
+        update(camera);
+    }
+
+    /**
+     * carica la mappa
+     * @param name
+     */
+    private void loadMap(String name){
         map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx"));
         collisionLayer = (TiledMapTileLayer)map.getLayers().get(name);
 
-        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         width=(Integer) map.getProperties().get("width");
         height=(Integer) map.getProperties().get("height");
         collisionMap = new Boolean[width][height];
         collisionBoxes = new Rectangle[width][height];
+    }
+
+    /**
+     * carica le collisioni
+     */
+    private void loadCollisionMap(){
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Cell tile = collisionLayer.getCell(i, j);
@@ -38,7 +62,6 @@ public class Map {
                 }
             }
         }
-        update(camera);
     }
 
     /**
@@ -53,6 +76,7 @@ public class Map {
                 }
             }
         }
+        renderer.setColor(Color.BLACK);
     }
     /**
      * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
@@ -107,15 +131,19 @@ public class Map {
         return inCollision;
     }
 
+    /**
+     * aggiorna la vista per disegnare la mappa
+     */
+
     public void update(OrthographicCamera camera){
-        setCamera(camera);
-    }
-        
-    public void setCamera(OrthographicCamera camera) {
         mapRenderer.setView(camera);
         mapRenderer.render();
     }
 
+    /**
+     * disegna la mappa in generale
+     * @param camera
+     */
     public void draw(OrthographicCamera camera){
         mapRenderer.setView(camera);
         mapRenderer.render();

@@ -34,8 +34,8 @@ public class MapManager {
         return currentMap;
     }
 
-    public void changeMap(OrthographicCamera camera){
-        System.out.println(currentMapNum);
+    private void changeMap(OrthographicCamera camera){
+        System.out.println("Mappa: "+currentMapNum);
         switch (currentMapNum) {
             case 1 -> { nome = "map2"; 
             ambienteAperto=true;
