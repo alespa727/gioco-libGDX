@@ -87,17 +87,20 @@ public class Map {
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(Player.hitbox);
         if (direzione.equals("W")) {
-            hitbox.y+=1/64f;
+            hitbox.y+=1f/32f;
         }
         if (direzione.equals("S")) {
-            hitbox.y-=1/64f;
+            hitbox.y-=1f/32f;
         }
+        System.out.println(hitbox.x);
+        System.out.println(hitbox.y);
+        System.out.println(Player.hitbox.x);
+        System.out.println(Player.hitbox.y);
+        
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null) {
-                    if (hitbox.overlaps(collisionBoxes[i][j])) {
-                        inCollision=true;
-                    }
+                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision=true;
                 }
             }
         }
@@ -113,17 +116,15 @@ public class Map {
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(Player.hitbox);
         if (direzione.equals("A")) {
-            hitbox.x-=1/64f;
+            hitbox.x-=1f/32f;
         }
         if (direzione.equals("D")) {
-            hitbox.x+=1/64f;
+            hitbox.x+=1f/32f;
         }
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null) {
-                    if (hitbox.overlaps(collisionBoxes[i][j])) {
-                        inCollision=true;
-                    }
+                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision=true;
                 }
             }
         }

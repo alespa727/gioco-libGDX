@@ -35,21 +35,27 @@ public class KeyHandlerPlayer {
                 if (p.direzione.getDirezione().equals("A")) p.direzione.setDirezione("fermoA");
                 else if (p.direzione.getDirezione().equals("D")) p.direzione.setDirezione("fermoD");
 
+                if (p.direzione.getDirezione().equals("W")) p.direzione.setDirezione("fermoW");
+                else if (p.direzione.getDirezione().equals("S")) p.direzione.setDirezione("fermoS");
+
                 if (a) p.direzione.setDirezione("A");
                 if (d) p.direzione.setDirezione("D");
 
+                
                 if (!Map.checkCollisionX(p.direzione.getDirezione())) {
                     if (a) p.x -= p.speed * elapsedTime;
                     if (d) p.x += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
 
+            }else if(a && d){
+                
+                
                 if (p.direzione.getDirezione().equals("W")) p.direzione.setDirezione("fermoW");
                 else if (p.direzione.getDirezione().equals("S")) p.direzione.setDirezione("fermoS");
 
-            }else if(a && d){
-                if (p.direzione.getDirezione().equals("W")) p.direzione.setDirezione("fermoW");
-                else if (p.direzione.getDirezione().equals("S")) p.direzione.setDirezione("fermoS");
+                if (p.direzione.getDirezione().equals("D")) p.direzione.setDirezione("fermoD");
+                else if (p.direzione.getDirezione().equals("A")) p.direzione.setDirezione("fermoA");
 
                 if (w) p.direzione.setDirezione("W");
                 if (s) p.direzione.setDirezione("S");
@@ -59,10 +65,8 @@ public class KeyHandlerPlayer {
                     if (w) p.y += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
-
-                if (p.direzione.getDirezione().equals("D")) p.direzione.setDirezione("fermoD");
-                else if (p.direzione.getDirezione().equals("A")) p.direzione.setDirezione("fermoA");
-
+                
+               
             }else{
 
                 if (w) p.direzione.setDirezione("W");
@@ -72,7 +76,9 @@ public class KeyHandlerPlayer {
                     if (s) p.y -= p.speed * elapsedTime;
                     if (w) p.y += p.speed * elapsedTime;
                     p.inCollisione=false;
-                }else p.inCollisione=true;
+                }else if(!p.inCollisione) p.inCollisione=true;
+
+                if(Map.checkCollisionX(p.direzione.getDirezione()) && !p.inCollisione) p.inCollisione=true;
                 
                 if (d) p.direzione.setDirezione("D");
                 if (a) p.direzione.setDirezione("A");
@@ -81,17 +87,16 @@ public class KeyHandlerPlayer {
                     if (a) p.x -= p.speed * elapsedTime;
                     if (d) p.x += p.speed * elapsedTime;
                     p.inCollisione=false;
-                }else p.inCollisione=true;
+                }else if(!p.inCollisione) p.inCollisione=true;
 
-                
+                if(Map.checkCollisionY(p.direzione.getDirezione()) && !p.inCollisione) p.inCollisione=true;
+
             }
         }
-        if (Map.checkCollisionY("W") || Map.checkCollisionY("S") || Map.checkCollisionX("A") || Map.checkCollisionX("S")) {
-            p.inCollisione=true;
-        }
+    
         attack();
     }
-
+    
     public void attack(){
  
     }
