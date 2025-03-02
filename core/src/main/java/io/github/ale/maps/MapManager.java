@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import io.github.ale.player.Player;
 
 public class MapManager {
-    private Map map;
-    private int numMap;
+    private Map currentMap;
+    private int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
 
@@ -16,27 +16,27 @@ public class MapManager {
 
     boolean flag;
 
-    public MapManager(OrthographicCamera camera, Player p){
-        flag=false;
-        numMap=1;
-        ambienteAperto=true;
-        changeMap(camera);
+    public MapManager(OrthographicCamera camera, Player p, int startingMap){
+        this.flag=false;
+        this.currentMapNum=startingMap;
+        this.ambienteAperto=true;
+        this.changeMap(camera);
         p.setWorldX(6.5f);
         p.setWorldY(5f);
-        map = new Map(camera, nome);
+        this.currentMap = new Map(camera, this.nome);
     }
 
+    /**
+     * restituisce la mappa attuale
+     * @return
+     */
     public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
+        return currentMap;
     }
 
     public void changeMap(OrthographicCamera camera){
-        System.out.println(numMap);
-        switch (numMap) {
+        System.out.println(currentMapNum);
+        switch (currentMapNum) {
             case 1 -> { nome = "map2"; 
             ambienteAperto=true;
             }
@@ -46,14 +46,17 @@ public class MapManager {
             default -> {
             }
         }
-        if (numMap>=totalMaps) {
-            numMap=0;
+        if (currentMapNum>=totalMaps) {
+            currentMapNum=0;
         }
-        numMap++;
-        map = new Map(camera, nome);
+        currentMapNum++;
+        currentMap = new Map(camera, nome);
         
     }
     
+    /** 
+     * controlla per eventuale cambio mappa
+    */
     public void update(OrthographicCamera camera, Player p){
         boolean e = Gdx.input.isKeyPressed(Input.Keys.E);
 

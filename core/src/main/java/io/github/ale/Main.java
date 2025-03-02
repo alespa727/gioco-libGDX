@@ -14,9 +14,10 @@ import io.github.ale.maps.MapManager;
 import io.github.ale.player.Player;
 
 public class Main implements ApplicationListener {
-    private SpriteBatch batch;
 
+    private SpriteBatch batch;
     private FitViewport viewport;
+
     private OrthographicCamera camera;
     private ShapeRenderer renderer;
 
@@ -28,52 +29,42 @@ public class Main implements ApplicationListener {
     public void create() { 
         
         batch = new SpriteBatch(); //praticamente la cosa per disegnare
-        player = new Player(); 
         renderer = new ShapeRenderer(); //disegna forme
         // Configura la camera e la viewport
-        camera = new OrthographicCamera(); //telecamera
-        viewport = new FitViewport(16f, 9f, camera); //grandezza telecamera
-        maps = new MapManager(camera, player); //map manager
 
-        viewport.apply(); //applica cosa si vede
+        inizializzaOggetti();
+        inizializzaCamera();
 
-        camera.position.set(player.getWorldX(), player.getWorldX(), 0); //setta il centro della telecamera al player
-        camera.update(); //aggiornamento camera
+        maps = new MapManager(camera, player, 2); //map manager
     }
 
     @Override
     public void render() {
 
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        logic();
+        update();
         draw();
         //System.err.println(player.getWorldX());
         //System.err.println(player.getWorldY());
         
     }
         
-    private void logic() {
+    /**
+     * aggiorna tutto il necessario
+     */
+    private void update() {
         
         //aggiorna ogni cosa nel gioco
         maps.update(camera, player); //update mappa, in caso di input
         player.update(); //update player
-        if (!maps.getAmbiente()) { //tipo di telecamera
-            maps.getMap();
-            maps.getMap();
-            camera.position.set(Map.getWidth() / 2f, player.getWorldY() + 2f / 2, 0);
-            viewport.setWorldSize(Map.getWidth(), Map.getHeight()/16f*9f);
-            camera.update();
-            viewport.apply();
-        }else{
-            camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
-            camera.update();
-        }
-        
-
+        updateCameraView(); //update telecamera
         maps.getMap().update(camera); //update visualizzazione mappa
+
     }        
         
-    
+    /**
+     * disegna tutto il necessario
+     */
 
     private void draw() {
         
@@ -87,27 +78,9 @@ public class Main implements ApplicationListener {
         batch.setProjectionMatrix(camera.combined);
         renderer.setProjectionMatrix(camera.combined);
 
-        //disegna mappa
-
         maps.getMap().draw(camera);
-        
-        //Disegna figure geometriche / hitbox
-
-        renderer.begin(ShapeType.Line);
-
-        maps.getMap().drawBoxes(renderer);
-        renderer.setColor(Color.BLACK);
-        player.drawHitbox(renderer);
-       
-        renderer.end();
-        
-        //disegna immagini
-
-        batch.begin();
-        
-        player.draw(batch);
-
-        batch.end();
+        drawHitboxes();
+        drawOggetti();
 
     }
 
@@ -127,4 +100,67 @@ public class Main implements ApplicationListener {
 
     @Override
     public void resume() {}
+
+
+
+    //METODI AGGIUNTIVI
+
+    /**
+     * disegna hitbox
+     */
+    public void drawHitboxes(){
+        renderer.begin(ShapeType.Line);
+        renderer.setColor(Color.BLACK);
+        maps.getMap().drawBoxes(renderer);
+        player.drawHitbox(renderer);
+        renderer.end();
+    }
+
+    /**
+     * disegna immagini in generale
+     */
+
+    public void drawOggetti(){
+        batch.begin();
+        player.draw(batch);
+        batch.end();
+    }
+
+    /***
+     * aggiorna cosa la telecamera deve seguire/modalità della telecamera
+     */
+
+    public void updateCameraView(){
+        if (!maps.getAmbiente()) { //tipo di telecamera
+            maps.getMap();
+            maps.getMap();
+            camera.position.set(Map.getWidth() / 2f, player.getWorldY() + 2f / 2, 0);
+            viewport.setWorldSize(Map.getWidth(), Map.getHeight()/16f*9f);
+            camera.update();
+            viewport.apply();
+        }else{
+            camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
+            viewport.setWorldSize(16f, 9f);
+            viewport.apply();
+            camera.update();
+        }
+        
+    }
+
+    public void inizializzaOggetti(){
+
+        player = new Player();
+        
+    }
+
+
+    public void inizializzaCamera(){
+        camera = new OrthographicCamera(); //telecamera
+        viewport = new FitViewport(16f, 9f, camera); //grandezza telecamera
+        
+        viewport.apply(); //applica cosa si vede
+
+        camera.position.set(player.getWorldX(), player.getWorldX(), 0); //setta il centro della telecamera al player
+        camera.update(); //aggiornamento camera
+    }
 }
