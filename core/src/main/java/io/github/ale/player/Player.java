@@ -1,6 +1,7 @@
 package io.github.ale.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -26,6 +27,8 @@ public class Player {
     private float elapsedTime;
 
     private Health hp;
+
+    protected static boolean inCollisione;
 
     protected final float baseSpeed=2.5f;
     protected float delta = 1f;
@@ -82,7 +85,11 @@ public class Player {
      */
 
     public void drawHitbox(ShapeRenderer renderer) {
+        if (inCollisione) {
+            renderer.setColor(Color.RED);
+        }
         renderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        renderer.setColor(Color.BLACK);
     }
 
     /**
@@ -141,5 +148,10 @@ public class Player {
 
     public void setWorldY(float worldY) {
         this.worldY = worldY;
+    }
+
+    public static boolean getInCollisione(){
+        System.out.println(inCollisione);
+        return inCollisione;
     }
 }

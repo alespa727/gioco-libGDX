@@ -110,8 +110,13 @@ public class Main implements ApplicationListener {
      */
     public void drawHitboxes(){
         renderer.begin(ShapeType.Line);
-        renderer.setColor(Color.BLACK);
+        if (Player.getInCollisione()) {
+            renderer.setColor(Color.RED);
+        }else renderer.setColor(Color.BLACK);
         maps.getMap().drawBoxes(renderer);
+        if (Player.getInCollisione()) {
+            renderer.setColor(Color.RED);
+        }else renderer.setColor(Color.BLACK);
         player.drawHitbox(renderer);
         renderer.end();
     }

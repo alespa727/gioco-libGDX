@@ -41,7 +41,8 @@ public class KeyHandlerPlayer {
                 if (!Map.checkCollisionX(p.direzione.getDirezione())) {
                     if (a) p.worldX -= p.speed * delta;
                     if (d) p.worldX += p.speed * delta;
-                }
+                    p.inCollisione=false;
+                }else p.inCollisione=true;
 
                 if (p.direzione.getDirezione().equals("W")) p.direzione.setDirezione("fermoW");
                 else if (p.direzione.getDirezione().equals("S")) p.direzione.setDirezione("fermoS");
@@ -56,7 +57,8 @@ public class KeyHandlerPlayer {
                 if (!Map.checkCollisionY(p.direzione.getDirezione())) {
                     if (s) p.worldY -= p.speed * delta;
                     if (w) p.worldY += p.speed * delta;
-                }
+                    p.inCollisione=false;
+                }else p.inCollisione=true;
 
                 if (p.direzione.getDirezione().equals("D")) p.direzione.setDirezione("fermoD");
                 else if (p.direzione.getDirezione().equals("A")) p.direzione.setDirezione("fermoA");
@@ -69,7 +71,8 @@ public class KeyHandlerPlayer {
                 if (!Map.checkCollisionY(p.direzione.getDirezione())) {
                     if (s) p.worldY -= p.speed * delta;
                     if (w) p.worldY += p.speed * delta;
-                }
+                    p.inCollisione=false;
+                }else p.inCollisione=true;
                 
                 if (d) p.direzione.setDirezione("D");
                 if (a) p.direzione.setDirezione("A");
@@ -77,8 +80,14 @@ public class KeyHandlerPlayer {
                 if (!Map.checkCollisionX(p.direzione.getDirezione())) {
                     if (a) p.worldX -= p.speed * delta;
                     if (d) p.worldX += p.speed * delta;
-                }
+                    p.inCollisione=false;
+                }else p.inCollisione=true;
+
+                
             }
+        }
+        if (Map.checkCollisionY("W") || Map.checkCollisionY("S") || Map.checkCollisionX("A") || Map.checkCollisionX("S")) {
+            p.inCollisione=true;
         }
         attack();
     }
