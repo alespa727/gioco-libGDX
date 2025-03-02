@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
+import io.github.ale.Main;
 import io.github.ale.entity.player.Player;
 
 public class MapManager {
@@ -35,6 +36,9 @@ public class MapManager {
     }
 
     private void changeMap(OrthographicCamera camera){
+        Main.music.play();
+        Main.music.setVolume(0.05f);
+        Main.music.setLooping(true);   
         System.out.println("Mappa: "+currentMapNum);
         switch (currentMapNum) {
             case 1 -> { nome = "map2"; 
