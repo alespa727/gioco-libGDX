@@ -1,4 +1,4 @@
-package io.github.ale.player;
+package io.github.ale.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;

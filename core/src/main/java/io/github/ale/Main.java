@@ -10,9 +10,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.entity.nemici.Nemico;
+import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
-import io.github.ale.player.Player;
 
 public class Main implements ApplicationListener {
 

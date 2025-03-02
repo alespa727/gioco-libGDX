@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import io.github.ale.entity.Direzione;
+import io.github.ale.entity.Health;
+import io.github.ale.entity.TexturesEntity;
 import io.github.ale.maps.Map;
-import io.github.ale.player.Direzione;
-import io.github.ale.player.Health;
-import io.github.ale.player.TexturesEntity;
 
 public class Nemico {
     private Health hp;

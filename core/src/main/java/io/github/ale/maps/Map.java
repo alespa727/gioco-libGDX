@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.player.Player;
+import io.github.ale.entity.player.Player;
 
 public class Map {
     private TiledMap map;
@@ -92,7 +92,7 @@ public class Map {
         if (direzione.equals("S")) {
             hitbox.y-=1f/32f;
         }
-        
+
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {

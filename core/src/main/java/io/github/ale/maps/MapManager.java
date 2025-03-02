@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-import io.github.ale.player.Player;
+import io.github.ale.entity.player.Player;
 
 public class MapManager {
     private Map currentMap;

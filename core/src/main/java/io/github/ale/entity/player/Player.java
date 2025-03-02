@@ -1,4 +1,4 @@
-package io.github.ale.player;
+package io.github.ale.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import io.github.ale.entity.Direzione;
+import io.github.ale.entity.Health;
+import io.github.ale.entity.TexturesEntity;
 import io.github.ale.maps.Map;
 
 public class Player {
