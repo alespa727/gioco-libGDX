@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.ale.entity.nemici.Nemico;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
 import io.github.ale.player.Player;
@@ -23,6 +24,7 @@ public class Main implements ApplicationListener {
 
     private MapManager maps;
 
+    private Nemico enemy;
     private Player player;
 
     @Override
@@ -128,6 +130,7 @@ public class Main implements ApplicationListener {
     public void drawOggetti(){
         batch.begin();
         player.draw(batch);
+        enemy.draw(batch);
         batch.end();
     }
 
@@ -137,17 +140,27 @@ public class Main implements ApplicationListener {
 
     public void updateCameraView(){
         if (!maps.getAmbiente()) { //tipo di telecamera
-            maps.getMap();
-            maps.getMap();
-            camera.position.set(Map.getWidth() / 2f, player.getWorldY() + 2f / 2, 0);
+
+            float x = camera.position.x + (Map.getWidth() / 2f - camera.position.x) * .05f;
+            float y = camera.position.y + (player.getWorldY() + 2f / 2 - camera.position.y) * .05f;
+            camera.position.set(x, y, 0);
+
             viewport.setWorldSize(Map.getWidth(), Map.getHeight()/16f*9f);
             camera.update();
             viewport.apply();
+
         }else{
-            camera.position.set(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2, 0);
+
+            float x = camera.position.x + (player.getWorldX() + 2f / 2 - camera.position.x) * .05f;
+            float y = camera.position.y + (player.getWorldY() + 2f / 2 - camera.position.y) * .05f;
+            camera.position.set(x, y, 0);
+    
+            camera.update();
+            
             viewport.setWorldSize(16f, 9f);
             viewport.apply();
             camera.update();
+            
         }
         
     }
@@ -155,17 +168,19 @@ public class Main implements ApplicationListener {
     public void inizializzaOggetti(){
 
         player = new Player();
-        
+        enemy = new Nemico();
+
     }
 
 
     public void inizializzaCamera(){
         camera = new OrthographicCamera(); //telecamera
+        
+        
+        camera.update(); //aggiornamento camera
+        
         viewport = new FitViewport(16f, 9f, camera); //grandezza telecamera
         
         viewport.apply(); //applica cosa si vede
-
-        camera.position.set(player.getWorldX(), player.getWorldX(), 0); //setta il centro della telecamera al player
-        camera.update(); //aggiornamento camera
     }
 }

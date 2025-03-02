@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class TexturesPlayer {
-    private final Texture player;
+public class TexturesEntity {
+    private final Texture entity;
     private final TextureRegion[] movingUp; // Frame per la direzione su
     private final TextureRegion[] movingDown; // Frame per la direzione giù
     private final TextureRegion[] movingLeft; // Frame per la direzione sinistra
@@ -16,9 +16,9 @@ public class TexturesPlayer {
     private final TextureRegion[] right; // Frame per la direzione destra fermo
     private Animation<TextureRegion> animation;
 
-    public TexturesPlayer(String path){
-        player = new Texture(path);
-        TextureRegion[][] tmpFrames = TextureRegion.split(player, 32, 32);
+    public TexturesEntity(String path){
+        entity = new Texture(path);
+        TextureRegion[][] tmpFrames = TextureRegion.split(entity, 32, 32);
 
         // Assegna i frame per le diverse direzioni, creare una classe che puo contenere le texture
         movingUp = new TextureRegion[4];

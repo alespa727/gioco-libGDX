@@ -39,8 +39,8 @@ public class KeyHandlerPlayer {
                 if (d) p.direzione.setDirezione("D");
 
                 if (!Map.checkCollisionX(p.direzione.getDirezione())) {
-                    if (a) p.worldX -= p.speed * elapsedTime;
-                    if (d) p.worldX += p.speed * elapsedTime;
+                    if (a) p.x -= p.speed * elapsedTime;
+                    if (d) p.x += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
 
@@ -55,8 +55,8 @@ public class KeyHandlerPlayer {
                 if (s) p.direzione.setDirezione("S");
 
                 if (!Map.checkCollisionY(p.direzione.getDirezione())) {
-                    if (s) p.worldY -= p.speed * elapsedTime;
-                    if (w) p.worldY += p.speed * elapsedTime;
+                    if (s) p.y -= p.speed * elapsedTime;
+                    if (w) p.y += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
 
@@ -69,8 +69,8 @@ public class KeyHandlerPlayer {
                 if (s) p.direzione.setDirezione("S");
 
                 if (!Map.checkCollisionY(p.direzione.getDirezione())) {
-                    if (s) p.worldY -= p.speed * elapsedTime;
-                    if (w) p.worldY += p.speed * elapsedTime;
+                    if (s) p.y -= p.speed * elapsedTime;
+                    if (w) p.y += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
                 
@@ -78,8 +78,8 @@ public class KeyHandlerPlayer {
                 if (a) p.direzione.setDirezione("A");
     
                 if (!Map.checkCollisionX(p.direzione.getDirezione())) {
-                    if (a) p.worldX -= p.speed * elapsedTime;
-                    if (d) p.worldX += p.speed * elapsedTime;
+                    if (a) p.x -= p.speed * elapsedTime;
+                    if (d) p.x += p.speed * elapsedTime;
                     p.inCollisione=false;
                 }else p.inCollisione=true;
 

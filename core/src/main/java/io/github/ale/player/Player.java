@@ -15,12 +15,12 @@ public class Player {
 
     public static Rectangle hitbox;
 
-    protected float worldX;
-    protected float worldY;
+    protected float x;
+    protected float y;
 
     protected Direzione direzione;
 
-    private TexturesPlayer player;
+    private TexturesEntity player;
 
     private Animation<TextureRegion> animation;
 
@@ -50,12 +50,12 @@ public class Player {
      private void create() {
         isAlive = true;
 
-        worldX=5f;
-        worldY=5f;
+        this.x=5f;
+        this.y=5f;
 
         keyH = new KeyHandlerPlayer();
         hp = new Health(100);
-        player = new TexturesPlayer("Finn.png");
+        player = new TexturesEntity("Finn.png");
         hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.4f);
         direzione = new Direzione();
         
@@ -73,10 +73,10 @@ public class Player {
 
         setAnimation();
 
-        worldX = MathUtils.clamp(worldX, 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width);
-        worldY = MathUtils.clamp(worldY, 0-0.55f, Map.getHeight()-hitbox.height-hitbox.height);
+        this.x = MathUtils.clamp(x, 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width);
+        this.y = MathUtils.clamp(y, 0-0.55f, Map.getHeight()-hitbox.height-hitbox.height);
         
-        batch.draw(animation.getKeyFrame(elapsedTime, true), worldX, worldY, 2, 2);
+        batch.draw(animation.getKeyFrame(elapsedTime, true), x, y, 2, 2);
     }
 
     /**
@@ -99,8 +99,8 @@ public class Player {
     public void update() {
         keyH.input(this);
         
-        hitbox.x = worldX+0.65f;
-        hitbox.y = worldY+0.55f;
+        hitbox.x = this.x+0.65f;
+        hitbox.y = this.y+0.55f;
 
         checkIfKilled();
         checkIfRevived();
@@ -134,20 +134,20 @@ public class Player {
 
     // Getters
     public float getWorldX() {
-        return worldX;
+        return x;
     }
 
     public float getWorldY() {
-        return worldY;
+        return y;
     }
 
     // Getters
-    public void setWorldX(float worldX) {
-        this.worldX = worldX;
+    public void setWorldX(float x) {
+        this.x = x;
     }
 
-    public void setWorldY(float worldY) {
-        this.worldY = worldY;
+    public void setWorldY(float y) {
+        this.y = y;
     }
 
     public boolean getInCollisione(){

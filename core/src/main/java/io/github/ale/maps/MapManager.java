@@ -55,7 +55,7 @@ public class MapManager {
     }
     
     /** 
-     * controlla per eventuale cambio mappa
+     * controlla per eventuale cambio mappa 
     */
     public void update(OrthographicCamera camera, Player p){
         boolean e = Gdx.input.isKeyPressed(Input.Keys.E);
