@@ -77,7 +77,7 @@ public class Player {
         setAnimation();
 
         this.x = MathUtils.clamp(x, 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width);
-        this.y = MathUtils.clamp(y, 0-0.55f, Map.getHeight()-hitbox.height-hitbox.height);
+        this.y = MathUtils.clamp(y, 0-0.55f, Map.getHeight()-hitbox.height*4f);
         
         batch.draw(animation.getKeyFrame(elapsedTime, true), x, y, 2, 2);
     }

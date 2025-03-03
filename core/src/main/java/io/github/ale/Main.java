@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -166,31 +168,32 @@ public class Main implements ApplicationListener {
      */
 
     public void updateCameraView(){
+        float x = camera.viewportWidth/2;
+        float y = camera.viewportHeight/2;
         if (!maps.getAmbiente()) { //tipo di telecamera
 
-            float x = camera.position.x + (Map.getWidth() / 2f - camera.position.x) * .05f;
-            float y = camera.position.y + (player.getWorldY() + 2f / 2 - camera.position.y) * .05f;
-            camera.position.set(x, y, 0);
+            CameraStyles.lerpTo(camera, new Vector2(Map.getWidth() / 2f, player.getWorldY() + 2f / 2));
+            CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
 
             viewport.setWorldSize(Map.getWidth(), Map.getHeight()/16f*9f);
             camera.update();
             viewport.apply();
 
         }else{
-
-            float x = camera.position.x + (player.getWorldX() + 2f / 2 - camera.position.x) * .05f;
-            float y = camera.position.y + (player.getWorldY() + 2f / 2 - camera.position.y) * .05f;
-            camera.position.set(x, y, 0);
-    
-            camera.update();
             
-            viewport.setWorldSize(22f, 22f*9f/16f);
+            
+            CameraStyles.lerpTo(camera, new Vector2(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2));
+            CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
+            
+            viewport.setWorldSize(10f, 10f*9f/16f);
             viewport.apply();
             camera.update();
 
         }
         
     }
+
+    
 
     public void inizializzaOggetti(){
 
