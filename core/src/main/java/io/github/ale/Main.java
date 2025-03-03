@@ -42,7 +42,8 @@ public class Main implements ApplicationListener {
 
         inizializzaOggetti();
         inizializzaCamera();
-        music = Gdx.audio.newMusic(Gdx.files.internal("Mal Di Stomaco.mp3"));
+        
+        music = Gdx.audio.newMusic(Gdx.files.internal("mymusic.mp3"));
         maps = new MapManager(camera, player, 2); //map manager
     }
 
