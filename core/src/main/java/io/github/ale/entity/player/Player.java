@@ -38,7 +38,7 @@ public class Player {
     protected float speed;
     public boolean isAlive;
 
-    private KeyHandlerPlayer keyH;
+    private PlayerMovementManager movement;
 
     // Costruttore
     public Player() {
@@ -56,11 +56,12 @@ public class Player {
         this.x=5f;
         this.y=5f;
 
-        keyH = new KeyHandlerPlayer();
+        movement = new PlayerMovementManager();
         hp = new Health(100);
         player = new TexturesEntity("Finn.png");
         hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.4f);
         direzione = new Direzione();
+
         
         direzione.setDirezione("S");
         animation = player.setAnimazione(direzione);
@@ -100,7 +101,7 @@ public class Player {
      */
 
     public void update() {
-        keyH.input(this);
+        movement.update(this);
         
         hitbox.x = this.x+0.65f;
         hitbox.y = this.y+0.55f;

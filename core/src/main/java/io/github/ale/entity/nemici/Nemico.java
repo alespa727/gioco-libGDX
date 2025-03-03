@@ -40,7 +40,7 @@ public class Nemico {
     private float cooldownTimer = 0; // Tempo rimanente prima del prossimo attacco
     private final float ATTACK_COOLDOWN = 2.0f; // Cooldown in secondi
 
-    MovementManager movement;
+    EnemyMovementManager movement;
 
     public Nemico(){
         this.speed = baseSpeed*delta;
