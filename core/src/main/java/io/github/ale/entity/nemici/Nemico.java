@@ -17,6 +17,7 @@ public class Nemico {
     private Health hp;
 
     private Rectangle hitbox;
+    private Rectangle range;
 
     protected float x;
     protected float y;
@@ -29,11 +30,15 @@ public class Nemico {
     private float elapsedTime;
 
     protected boolean inCollisione;
+    private boolean inRange;
 
     protected final float baseSpeed=2.5f;
     protected float delta = 1f;
     protected float speed;
     public boolean isAlive;
+
+    private float cooldownTimer = 0; // Tempo rimanente prima del prossimo attacco
+    private final float ATTACK_COOLDOWN = 2.0f; // Cooldown in secondi
 
     MovementManager movement;
 
@@ -52,8 +57,10 @@ public class Nemico {
         hp = new Health(100);
         enemy = new TexturesEntity("Finn.png");
         hitbox = new Rectangle(this.x, this.y, 0.65f, 0.4f);
+        range = new Rectangle(0, 0, 2f, 2f);
         direzione = new Direzione();
-        
+        inRange = false;
+
         direzione.setDirezione("fermoS");
         animation = enemy.setAnimazione(direzione);
     }
@@ -69,10 +76,23 @@ public class Nemico {
         batch.draw(animation.getKeyFrame(elapsedTime, true), x, y, 2, 2);
     }
 
-    public void update(Player p){
+    public void update(float delta, Player p){
+        if (cooldownTimer > 0) {
+            cooldownTimer -= delta;
+        }
         hitbox.x = this.x+0.65f;
         hitbox.y = this.y+0.55f;
-        collisioneConPlayer(p);
+        inAttackRange(p);
+    }
+
+    private void attack(){
+        if (cooldownTimer <= 0) {
+            // Il nemico può attaccare
+            System.out.println("Nemico attacca il giocatore!");
+            
+            // Reset del cooldown
+            cooldownTimer = ATTACK_COOLDOWN;
+        }
     }
 
     // Getters
@@ -98,27 +118,10 @@ public class Nemico {
         animation = enemy.setAnimazione(direzione);
     }
 
-    private void collisioneConPlayer(Player p){
-
-        boolean inCollisionTemp=false;
-        Rectangle hitboxTemp = new Rectangle(Player.hitbox);
-        if (p.direzione.getDirezione().equals("A")) {
-            hitboxTemp.x-=1f/32f;
-        }
-        if (p.direzione.getDirezione().equals("D")) {
-            hitboxTemp.x+=1f/32f;
-        }
-        if (p.direzione.getDirezione().equals("W")) {
-            hitboxTemp.y+=1f/32f;
-        }
-        if (p.direzione.getDirezione().equals("S")) {
-            hitboxTemp.y-=1f/32f;
-        }
-        
-        if (hitbox.overlaps(hitboxTemp)) {
-            p.setInCollisione(true);
-            System.out.println(p.getInCollisione());
-        }else p.setInCollisione(false);
-        
+    private void inAttackRange(Player p){
+        if (hitbox.overlaps(p.hitbox)) {
+            inRange=true;
+            attack();
+        }else inRange=false;
     }
 }

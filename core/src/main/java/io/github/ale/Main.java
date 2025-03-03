@@ -64,11 +64,11 @@ public class Main implements ApplicationListener {
      * aggiorna tutto il necessario
      */
     private void update() {
-        
+        float delta = Gdx.graphics.getDeltaTime(); // Ottiene il delta time
         //aggiorna ogni cosa nel gioco
         maps.update(camera, player); //update mappa, in caso di input
         player.update(); //update player
-        enemy.update(player);
+        enemy.update(delta, player);
         updateCameraView(); //update telecamera
         maps.getMap().update(camera); //update visualizzazione mappa
 
