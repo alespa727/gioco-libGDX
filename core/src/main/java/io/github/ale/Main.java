@@ -19,6 +19,7 @@ import io.github.ale.maps.MapManager;
 public class Main implements ApplicationListener {
 
     private SpriteBatch batch;
+    private SpriteBatch hud;
     private FitViewport viewport;
 
     private OrthographicCamera camera;
@@ -28,13 +29,14 @@ public class Main implements ApplicationListener {
 
     private Nemico enemy;
     private Player player;
-
+    
     public static Music music;
     
     @Override
     public void create() { 
         
         batch = new SpriteBatch(); //praticamente la cosa per disegnare
+        hud = new SpriteBatch(); //praticamente la cosa per disegnare la ui
         renderer = new ShapeRenderer(); //disegna forme
         // Configura la camera e la viewport
 
@@ -87,7 +89,7 @@ public class Main implements ApplicationListener {
         maps.getMap().draw(camera);
         drawHitboxes();
         drawOggetti();
-
+        drawHUD();
     }
 
     @Override
@@ -100,6 +102,7 @@ public class Main implements ApplicationListener {
         batch.dispose();
         renderer.dispose();
         music.dispose();
+        hud.dispose();
     }
 
     @Override
@@ -111,6 +114,18 @@ public class Main implements ApplicationListener {
 
 
     //METODI AGGIUNTIVI
+
+
+    /**
+     * disegna hud
+     */
+    public void drawHUD(){
+        hud.begin();
+
+        player.getHp().draw(hud);
+
+        hud.end();
+    }
 
     /**
      * disegna hitbox

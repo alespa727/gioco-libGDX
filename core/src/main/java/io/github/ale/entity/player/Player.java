@@ -156,4 +156,8 @@ public class Player {
     public boolean getInCollisione(){
         return inCollisione;
     }
+
+    public Health getHp() {
+        return hp;
+    }
 }
