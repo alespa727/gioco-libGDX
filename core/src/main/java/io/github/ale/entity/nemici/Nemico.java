@@ -41,6 +41,7 @@ public class Nemico {
         create();
     }
 
+    
     private void create() {
         isAlive = true;
 
