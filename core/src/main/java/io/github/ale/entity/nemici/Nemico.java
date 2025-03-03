@@ -59,6 +59,7 @@ public class Nemico {
         hitbox = new Rectangle(this.x, this.y, 0.65f, 0.4f);
         range = new Rectangle(0, 0, 2f, 2f);
         direzione = new Direzione();
+        movement = new EnemyMovementManager();
         inRange = false;
 
         direzione.setDirezione("fermoS");
@@ -80,6 +81,7 @@ public class Nemico {
         if (cooldownTimer > 0) {
             cooldownTimer -= delta;
         }
+        movement.update(this);
         hitbox.x = this.x+0.65f;
         hitbox.y = this.y+0.55f;
         inAttackRange(p);
