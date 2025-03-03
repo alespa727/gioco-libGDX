@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import io.github.ale.entity.Direzione;
 import io.github.ale.entity.Health;
 import io.github.ale.entity.TexturesEntity;
+import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 
 public class Nemico {
@@ -68,9 +69,10 @@ public class Nemico {
         batch.draw(animation.getKeyFrame(elapsedTime, true), x, y, 2, 2);
     }
 
-    public void update(){
+    public void update(Player p){
         hitbox.x = this.x+0.65f;
         hitbox.y = this.y+0.55f;
+        collisioneConPlayer(p);
     }
 
     // Getters
@@ -94,5 +96,29 @@ public class Nemico {
 
     private void setAnimation(){
         animation = enemy.setAnimazione(direzione);
+    }
+
+    private void collisioneConPlayer(Player p){
+
+        boolean inCollisionTemp=false;
+        Rectangle hitboxTemp = new Rectangle(Player.hitbox);
+        if (p.direzione.getDirezione().equals("A")) {
+            hitboxTemp.x-=1f/32f;
+        }
+        if (p.direzione.getDirezione().equals("D")) {
+            hitboxTemp.x+=1f/32f;
+        }
+        if (p.direzione.getDirezione().equals("W")) {
+            hitboxTemp.y+=1f/32f;
+        }
+        if (p.direzione.getDirezione().equals("S")) {
+            hitboxTemp.y-=1f/32f;
+        }
+        
+        if (hitbox.overlaps(hitboxTemp)) {
+            p.setInCollisione(true);
+            System.out.println(p.getInCollisione());
+        }else p.setInCollisione(false);
+        
     }
 }

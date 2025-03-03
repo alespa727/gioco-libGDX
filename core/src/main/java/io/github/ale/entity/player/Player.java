@@ -21,7 +21,7 @@ public class Player {
     protected float x;
     protected float y;
 
-    protected Direzione direzione;
+    public Direzione direzione;
 
     private TexturesEntity player;
 
@@ -155,6 +155,10 @@ public class Player {
 
     public boolean getInCollisione(){
         return inCollisione;
+    }
+
+    public void setInCollisione(boolean state){
+        inCollisione = state;
     }
 
     public Health getHp() {
