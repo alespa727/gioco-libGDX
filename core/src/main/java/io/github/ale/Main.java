@@ -184,7 +184,7 @@ public class Main implements ApplicationListener {
     
             camera.update();
             
-            viewport.setWorldSize(16f, 9f);
+            viewport.setWorldSize(22f, 22f*9f/16f);
             viewport.apply();
             camera.update();
 
@@ -205,7 +205,7 @@ public class Main implements ApplicationListener {
         
         camera.update(); //aggiornamento camera
         
-        viewport = new FitViewport(16f, 9f, camera); //grandezza telecamera
+        viewport = new FitViewport(32f, 18f, camera); //grandezza telecamera
         
         viewport.apply(); //applica cosa si vede
     }
