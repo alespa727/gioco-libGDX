@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import io.github.ale.Azioni;
+import io.github.ale.ComandiAzioni;
 import io.github.ale.entity.Direzione;
 import io.github.ale.entity.Health;
 import io.github.ale.entity.TexturesEntity;
@@ -101,25 +103,9 @@ public class Nemico {
         if (cooldownTimer > 0) {
             cooldownTimer -= delta;
         }
-        if (inRange || !hasFinishedMoving) {
-            int[] comandi = new int[4];
-            comandi[0] = 0;
-            comandi[1] = 1;
-            comandi[2] = 2;
-            comandi[3] = 3;
-            if (counter >= comandi.length) {
-                counter=0;
-            }
-            switch(comandi[counter]){
-                case 0 -> spostaX(3);
-                case 1 -> spostaY(3);
-                case 2 -> spostaX(8);
-                case 3 -> spostaY(8);
-            }
-            
-        } //COMANDI PER FAR MUOVERE IL NEMICO
 
         movement.update(this);
+        
         hitbox.x = this.x + 0.65f;
         hitbox.y = this.y + 0.55f;
         range.x = this.x + 0.65f;
@@ -127,13 +113,25 @@ public class Nemico {
         inAttackRange(p);
     }
 
+    public boolean getHasFinishedMoving(){
+        return hasFinishedMoving;
+    }
+
     /**
      * il nemico attacca
      * @param p
      */
     private void attack(Player p) {
+        
         if (cooldownTimer <= 0) {
-            
+            if (inRange || !hasFinishedMoving) {
+                ComandiAzioni[] comandi = new ComandiAzioni[4];
+                comandi[0] = new ComandiAzioni(Azioni.spostaX, 3f);
+                comandi[1] = new ComandiAzioni(Azioni.spostaY, 3f);
+                comandi[2] = new ComandiAzioni(Azioni.spostaX, 8f);
+                comandi[3] = new ComandiAzioni(Azioni.spostaY, 8f);
+                movement.updateAddAzione(comandi);
+            } //COMANDI PER FAR MUOVERE IL NEMICO
             System.out.println("Nemico attacca il giocatore!");
             p.getHealth().setHp(p.getHealth().getHp()-attackDamage);
             System.out.println(p.getHealth().getHp());
@@ -158,6 +156,35 @@ public class Nemico {
 
     public void setWorldY(float y) {
         this.y = y;
+    }
+
+    
+    /**
+     * setta l'animazione attuale da utilizzare
+     */
+    private void setAnimation() {
+        animation = enemy.setAnimazione(direzione);
+    }
+
+    /**
+     * controlla se il player è nel range attacco
+     */
+    private void inAttackRange(Player p) {
+        Rectangle hitboxPlayer = p.getHitbox();
+        if (range.overlaps(hitboxPlayer)) {
+            inRange = true;
+            attack(p);
+        } else
+            inRange = false;
+    }
+    
+    /**
+     * cambia il moltiplicatore d'attacco
+     * @param attackMultiplier
+     */
+    public void setAttackMultiplier(float attackMultiplier) {
+        this.attackMultiplier = attackMultiplier;
+        this.attackDamage = this.baseAttackDamage * this.attackMultiplier;
     }
 
     /**
@@ -303,31 +330,4 @@ public class Nemico {
 
     }
 
-    /**
-     * setta l'animazione attuale da utilizzare
-     */
-    private void setAnimation() {
-        animation = enemy.setAnimazione(direzione);
-    }
-
-    /**
-     * controlla se il player è nel range attacco
-     */
-    private void inAttackRange(Player p) {
-        Rectangle hitboxPlayer = p.getHitbox();
-        if (range.overlaps(hitboxPlayer)) {
-            inRange = true;
-            attack(p);
-        } else
-            inRange = false;
-    }
-    
-    /**
-     * cambia il moltiplicatore d'attacco
-     * @param attackMultiplier
-     */
-    public void setAttackMultiplier(float attackMultiplier) {
-        this.attackMultiplier = attackMultiplier;
-        this.attackDamage = this.baseAttackDamage * this.attackMultiplier;
-    }
 }
