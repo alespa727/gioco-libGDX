@@ -45,7 +45,7 @@ public class Main implements ApplicationListener {
         inizializzaOggetti();
         inizializzaCamera();
         
-        music = Gdx.audio.newMusic(Gdx.files.internal("Mal Di Stomaco.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("mymusic.mp3"));
         maps = new MapManager(camera, player, 2); //map manager
     }
 
@@ -126,7 +126,7 @@ public class Main implements ApplicationListener {
     public void drawHUD(){
         hud.begin();
 
-        player.getHp().draw(hud);
+        player.getHealth().draw(hud);
 
         hud.end();
     }
@@ -194,7 +194,9 @@ public class Main implements ApplicationListener {
         
     }
 
-    
+    /**
+     * inizializza tutti gli oggetti
+     */
 
     public void inizializzaOggetti(){
 
@@ -203,7 +205,10 @@ public class Main implements ApplicationListener {
 
     }
 
-
+    /**
+     * inizializza la telecamera
+     */
+    
     public void inizializzaCamera(){
         camera = new OrthographicCamera(); //telecamera
         

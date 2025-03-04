@@ -44,8 +44,12 @@ public class PlayerMovementManager {
         }
     }
 
+    /**
+     * gestisce il movimento in base agli input
+     * @param p
+     */
     public void movimento(Player p){
-        elapsedTime = Gdx.graphics.getDeltaTime();
+        elapsedTime = Gdx.graphics.getDeltaTime(); //moltiplicatore del movimento in base al framerate
         keyH.input();
         w = keyH.w;
         s = keyH.s;
@@ -83,7 +87,7 @@ public class PlayerMovementManager {
                 if (d)
                     p.direzione.setDirezione("D");
 
-                if (!Map.checkCollisionX(p.direzione.getDirezione())) {
+                if (!Map.checkCollisionX(p.direzione.getDirezione(), p)) {
                     if (a)
                         p.x -= p.speed * elapsedTime;
                     if (d)
@@ -92,7 +96,7 @@ public class PlayerMovementManager {
                 } else
                     p.inCollisione = true;
 
-                if (Map.checkCollisionY(p.direzione.getDirezione()) && !p.inCollisione)
+                if (Map.checkCollisionY(p.direzione.getDirezione(), p) && !p.inCollisione)
                     p.inCollisione = true;
 
             } else if (a && d) {
@@ -112,7 +116,7 @@ public class PlayerMovementManager {
                 if (s)
                     p.direzione.setDirezione("S");
 
-                if (!Map.checkCollisionY(p.direzione.getDirezione())) {
+                if (!Map.checkCollisionY(p.direzione.getDirezione(), p)) {
                     if (s)
                         p.y -= p.speed * elapsedTime;
                     if (w)
@@ -121,7 +125,7 @@ public class PlayerMovementManager {
                 } else
                     p.inCollisione = true;
 
-                if (Map.checkCollisionX(p.direzione.getDirezione()) && !p.inCollisione)
+                if (Map.checkCollisionX(p.direzione.getDirezione(), p) && !p.inCollisione)
                     p.inCollisione = true;
 
             } else {
@@ -131,7 +135,7 @@ public class PlayerMovementManager {
                 if (s)
                     p.direzione.setDirezione("S");
 
-                if (!Map.checkCollisionY(p.direzione.getDirezione())) {
+                if (!Map.checkCollisionY(p.direzione.getDirezione(), p)) {
                     if (s)
                         p.y -= p.speed * elapsedTime;
                     if (w)
@@ -140,9 +144,9 @@ public class PlayerMovementManager {
                 } else if (!p.inCollisione)
                     p.inCollisione = true;
 
-                if (Map.checkCollisionX(p.direzione.getDirezione()) && !p.inCollisione)
+                if (Map.checkCollisionX(p.direzione.getDirezione(), p) && !p.inCollisione)
                     p.inCollisione = true;
-                if (Map.checkCollisionY(p.direzione.getDirezione()) && !p.inCollisione)
+                if (Map.checkCollisionY(p.direzione.getDirezione(), p) && !p.inCollisione)
                     p.inCollisione = true;
 
                 if (d)
@@ -150,7 +154,7 @@ public class PlayerMovementManager {
                 if (a)
                     p.direzione.setDirezione("A");
 
-                if (!Map.checkCollisionX(p.direzione.getDirezione())) {
+                if (!Map.checkCollisionX(p.direzione.getDirezione(), p)) {
                     if (a)
                         p.x -= p.speed * elapsedTime;
                     if (d)
@@ -159,7 +163,7 @@ public class PlayerMovementManager {
                 } else if (!p.inCollisione)
                     p.inCollisione = true;
 
-                if (Map.checkCollisionY(p.direzione.getDirezione()) && !p.inCollisione)
+                if (Map.checkCollisionY(p.direzione.getDirezione(), p) && !p.inCollisione)
                     p.inCollisione = true;
 
             }

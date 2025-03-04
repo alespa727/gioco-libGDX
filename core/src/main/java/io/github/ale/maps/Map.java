@@ -27,12 +27,9 @@ public class Map {
     public Map(OrthographicCamera camera, String name){
        
         loadMap(name);
-
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
-        
         loadCollisionMap();
 
-        update(camera);
     }
 
     /**
@@ -83,9 +80,9 @@ public class Map {
      * @param direzione
      * @return
      */
-    public static boolean checkCollisionY(String direzione){
+    public static boolean checkCollisionY(String direzione, Player p){
         boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(Player.hitbox);
+        Rectangle hitbox = new Rectangle(p.getHitbox());
         if (direzione.equals("W")) {
             hitbox.y+=1f/32f;
         }
@@ -108,9 +105,9 @@ public class Map {
      * @param direzione
      * @return
      */
-    public static boolean checkCollisionX(String direzione){
+    public static boolean checkCollisionX(String direzione, Player p){
         boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(Player.hitbox);
+        Rectangle hitbox = new Rectangle(p.getHitbox());
         if (direzione.equals("A")) {
             hitbox.x-=1f/32f;
         }

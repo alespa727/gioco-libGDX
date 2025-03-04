@@ -28,14 +28,17 @@ public class Nemico {
     private Animation<TextureRegion> animation;
 
     private float elapsedTime;
-    private double elapsedTimeMovement;
 
     protected boolean inCollisione;
     private boolean inRange;
     private boolean hasFinishedMoving;
     private boolean isMovingX, isMovingY, isDashingX, isDashingY;
 
-    protected final float baseSpeed=2.5f;
+    private final float baseAttackDamage = 10;
+    private float attackMultiplier = 1f;
+    private float attackDamage;
+
+    protected final float baseSpeed = 2.5f;
     protected float delta = 1f;
     protected float speed;
     public boolean isAlive;
@@ -43,19 +46,24 @@ public class Nemico {
     private float cooldownTimer = 0; // Tempo rimanente prima del prossimo attacco
     private final float ATTACK_COOLDOWN = 2.0f; // Cooldown in secondi
 
+    private int counter=0;
+
     EnemyMovementManager movement;
 
-    public Nemico(){
-        this.speed = baseSpeed*delta;
+    public Nemico() {
+        this.speed = baseSpeed * delta;
+        this.attackDamage = baseAttackDamage * attackMultiplier;
         create();
     }
 
-    
+    /**
+     * inizializza il nemico
+     */
     private void create() {
         isAlive = true;
-        hasFinishedMoving=true;
-        this.x=8f;
-        this.y=8f;
+        hasFinishedMoving = true;
+        this.x = 8f;
+        this.y = 8f;
 
         hp = new Health(100);
         enemy = new TexturesEntity("Finn.png");
@@ -69,42 +77,67 @@ public class Nemico {
         animation = enemy.setAnimazione(direzione);
     }
 
-    public void draw(SpriteBatch batch) { 
+    /**
+     * disegna il nemico
+     * @param batch
+     */
+    public void draw(SpriteBatch batch) {
         elapsedTime += Gdx.graphics.getDeltaTime();
 
         setAnimation();
 
-        this.x = MathUtils.clamp(x, 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width);
-        this.y = MathUtils.clamp(y, 0-0.55f, Map.getHeight()-hitbox.height-hitbox.height);
-        
+        this.x = MathUtils.clamp(x, 0 - 0.65f, Map.getWidth() - hitbox.width - hitbox.width);
+        this.y = MathUtils.clamp(y, 0 - 0.55f, Map.getHeight() - hitbox.height - hitbox.height);
+
         batch.draw(animation.getKeyFrame(elapsedTime, true), x, y, 2, 2);
     }
 
-    public void update(float delta, Player p){
-        elapsedTimeMovement += Gdx.graphics.getDeltaTime();
+    /**
+     * aggiorna lo stato del nemico
+     * @param delta variabile del tempo
+     * @param p
+     */
+    public void update(float delta, Player p) {
         if (cooldownTimer > 0) {
             cooldownTimer -= delta;
         }
         if (inRange || !hasFinishedMoving) {
-            setAnimation();
-            spostaY(3f);
+            int[] comandi = new int[4];
+            comandi[0] = 0;
+            comandi[1] = 1;
+            comandi[2] = 2;
+            comandi[3] = 3;
+            if (counter >= comandi.length) {
+                counter=0;
+            }
+            switch(comandi[counter]){
+                case 0 -> spostaX(3);
+                case 1 -> spostaY(3);
+                case 2 -> spostaX(8);
+                case 3 -> spostaY(8);
+            }
             
-            
-        }
-        
+        } //COMANDI PER FAR MUOVERE IL NEMICO
+
         movement.update(this);
-        hitbox.x = this.x+0.65f;
-        hitbox.y = this.y+0.55f;
-        range.x = this.x+0.65f;
-        range.y = this.y+0.55f;
+        hitbox.x = this.x + 0.65f;
+        hitbox.y = this.y + 0.55f;
+        range.x = this.x + 0.65f;
+        range.y = this.y + 0.55f;
         inAttackRange(p);
     }
 
-    private void attack(){
+    /**
+     * il nemico attacca
+     * @param p
+     */
+    private void attack(Player p) {
         if (cooldownTimer <= 0) {
-            // Il nemico può attaccare
+            
             System.out.println("Nemico attacca il giocatore!");
-            // Reset del cooldown
+            p.getHealth().setHp(p.getHealth().getHp()-attackDamage);
+            System.out.println(p.getHealth().getHp());
+        
             cooldownTimer = ATTACK_COOLDOWN;
         }
     }
@@ -127,97 +160,174 @@ public class Nemico {
         this.y = y;
     }
 
+    /**
+     * sposta il nemico nella casella specificata dell'asse x
+     * @param x
+     */
     public void spostaX(float x) {
-        float deltaTime = Gdx.graphics.getDeltaTime();  
-    
-        if (Math.abs(this.x - x) > 0.01f) { 
+        if (isMovingY || isDashingY || isDashingX)
+            return;
+
+        float deltaTime = Gdx.graphics.getDeltaTime();
+
+        if (Math.abs(this.x - x) > 0.01f) {
             if (this.x < x) {
                 this.x += speed * deltaTime;
-                direzione.setDirezione("D"); 
+                direzione.setDirezione("D");
                 hasFinishedMoving = false;
-                isMovingX=true;
+                isMovingX = true;
             } else {
                 this.x -= speed * deltaTime;
-                direzione.setDirezione("A"); 
+                direzione.setDirezione("A");
                 hasFinishedMoving = false;
-                isMovingX=true;
+                isMovingX = true;
             }
         } else {
             this.x = x;
-            direzione.setDirezione("fermoS"); 
+            direzione.setDirezione("fermoS");
             hasFinishedMoving = true;
-            isMovingX=false;
-            System.out.println(isMovingX);
+            isMovingX = false;
+            counter++;
         }
+
     }
 
-    
+    /**
+     * sposta il nemico nella casella specificata dell'asse y
+     * @param x
+     */
     public void spostaY(float y) {
-        float deltaTime = Gdx.graphics.getDeltaTime();  
-        if (!isMovingX) {
-            if (Math.abs(this.y - y) > 0.01f) { 
-                if (this.y < y) {
-                    this.y += speed * deltaTime;
-                    direzione.setDirezione("W"); 
-                    hasFinishedMoving = false;
-                } else {
-                    this.y -= speed * deltaTime;
-                    direzione.setDirezione("S"); 
-                    hasFinishedMoving = false;
-                }
+        if (isMovingX || isDashingY || isDashingX)
+            return;
+
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        if (Math.abs(this.y - y) > 0.01f) {
+            isMovingY = true;
+
+            if (this.y < y) {
+                this.y += speed * deltaTime;
+                direzione.setDirezione("W");
             } else {
-                this.y = y;
-                direzione.setDirezione("fermoS"); 
-                hasFinishedMoving = true;
+                this.y -= speed * deltaTime;
+                direzione.setDirezione("S");
             }
-        }  
+
+            hasFinishedMoving = false;
+        } else {
+            this.y = y;
+            direzione.setDirezione("fermoS");
+            hasFinishedMoving = true;
+            isMovingY = false;
+            counter++;
+        }
+
     }
 
-    public void dashX(float x){  
-        
-            float dashSpeed = 0.045f; 
-            this.x += (x - this.x) * dashSpeed;
-        
-            // Controlla se il movimento è terminato
-            if (Math.abs(this.x - x) < 0.01f) { 
-                this.x = x; 
-                hasFinishedMoving = true;
-            } else {
+    /**
+     * sposta il nemico con una "dash" nella casella specificata dell'asse x
+     * @param x
+     */
+    public void dashX(float x) {
+        if (isMovingX || isMovingY || isDashingY)
+            return;
+
+        float dashSpeed = 0.045f;
+        this.x += (x - this.x) * dashSpeed;
+
+        // Controlla se il movimento è terminato
+        if (Math.abs(this.x - x) < 0.01f) {
+            this.x = x;
+            hasFinishedMoving = true;
+        } else {
+            hasFinishedMoving = false;
+        }
+
+        // Imposta la direzione in base alla posizione attuale e alla destinazione
+        if (Math.abs(this.x - x) > 0.01f) {
+            if (this.x < x) {
+                direzione.setDirezione("D");
                 hasFinishedMoving = false;
-            }
-        
-            // Imposta la direzione in base alla posizione attuale e alla destinazione
-            if (Math.abs(this.x - x) > 0.01f) { 
-                if (this.x < x) {
-                    direzione.setDirezione("D"); 
-                    hasFinishedMoving = false;
-                    isDashingX=true;
-                } else {
-                    direzione.setDirezione("A"); 
-                    hasFinishedMoving = false;
-                    isDashingX=true;
-                }
+                isDashingX = true;
             } else {
-                this.x = x;
-                direzione.setDirezione("fermoS"); 
-                hasFinishedMoving = true;
-                isDashingX=false;
+                direzione.setDirezione("A");
+                hasFinishedMoving = false;
+                isDashingX = true;
             }
-        
-        
+        } else {
+            this.x = x;
+            direzione.setDirezione("fermoS");
+            hasFinishedMoving = true;
+            isDashingX = false;
+            counter++;
+        }
+
     }
-    
-    
 
+     /**
+     * sposta il nemico con una "dash" nella casella specificata dell'asse y
+     * @param x
+     */
+    public void dashY(float y) {
+        if (isMovingX || isMovingY || isDashingY)
+            return;
 
-    private void setAnimation(){
+        float dashSpeed = 0.045f;
+        this.y += (y - this.y) * dashSpeed;
+
+        
+        if (Math.abs(this.y - y) < 0.01f) {
+            this.y = y;
+            hasFinishedMoving = true;
+        } else {
+            hasFinishedMoving = false;
+        }
+
+        
+        if (Math.abs(this.y - y) > 0.01f) {
+            if (this.y < y) {
+                direzione.setDirezione("D");
+                hasFinishedMoving = false;
+                isDashingY = true;
+            } else {
+                direzione.setDirezione("A");
+                hasFinishedMoving = false;
+                isDashingY = true;
+            }
+        } else {
+            this.y = y;
+            direzione.setDirezione("fermoS");
+            hasFinishedMoving = true;
+            isDashingY = false;
+            counter++;
+        }
+
+    }
+
+    /**
+     * setta l'animazione attuale da utilizzare
+     */
+    private void setAnimation() {
         animation = enemy.setAnimazione(direzione);
     }
 
-    private void inAttackRange(Player p){
-        if (range.overlaps(p.hitbox)) {
-            inRange=true;
-            attack();
-        }else inRange=false;
+    /**
+     * controlla se il player è nel range attacco
+     */
+    private void inAttackRange(Player p) {
+        Rectangle hitboxPlayer = p.getHitbox();
+        if (range.overlaps(hitboxPlayer)) {
+            inRange = true;
+            attack(p);
+        } else
+            inRange = false;
+    }
+    
+    /**
+     * cambia il moltiplicatore d'attacco
+     * @param attackMultiplier
+     */
+    public void setAttackMultiplier(float attackMultiplier) {
+        this.attackMultiplier = attackMultiplier;
+        this.attackDamage = this.baseAttackDamage * this.attackMultiplier;
     }
 }

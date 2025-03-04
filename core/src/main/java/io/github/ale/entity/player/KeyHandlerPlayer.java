@@ -11,8 +11,11 @@ public class KeyHandlerPlayer {
 
     }
 
+    /**
+     * tasti di input premuti
+     */
+
     public void input() {
-        
         
         w = Gdx.input.isKeyPressed(Input.Keys.W);
         s = Gdx.input.isKeyPressed(Input.Keys.S);

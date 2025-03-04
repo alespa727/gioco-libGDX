@@ -18,7 +18,6 @@ public class TexturesEntity {
 
     public TexturesEntity(String path){
         entity = new Texture(path);
-        TextureRegion[][] tmpFrames = TextureRegion.split(entity, 32, 32);
 
         // Assegna i frame per le diverse direzioni, creare una classe che puo contenere le texture
         movingUp = new TextureRegion[4];
@@ -31,6 +30,16 @@ public class TexturesEntity {
         left = new TextureRegion[2];
         right = new TextureRegion[2];
 
+        salvaAnimazioni(entity);
+    }
+
+    /**
+     * salva le varie animazioni per ogni direzione
+     * @param entity
+     */
+    private void salvaAnimazioni(Texture entity){
+        
+        TextureRegion[][] tmpFrames = TextureRegion.split(entity, 32, 32);
         for (int i = 0; i < 4; i++) {
             // Carica i frame per la direzione su
             movingUp[i] = tmpFrames[5][i];
@@ -54,10 +63,6 @@ public class TexturesEntity {
         }
     }
 
-    public TextureRegion[] getMovingUp() {
-        return movingUp;
-    }
-    
     /**
      * restituisce la animazione corretta a seconda della direzione dell'entità
      * @param direzione

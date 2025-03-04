@@ -16,7 +16,7 @@ import io.github.ale.maps.Map;
 
 public class Player {
 
-    public static Rectangle hitbox;
+    public Rectangle hitbox;
 
     protected float x;
     protected float y;
@@ -122,6 +122,11 @@ public class Player {
 
     public void checkIfKilled() {
         // Logica per controllare se il giocatore è stato ucciso
+        if (hp.getHp() <= 0) {
+            isAlive=false;
+            System.out.println("Il giocatore è morto");
+            hp.setHp(100);
+        }
     }
 
     public void checkIfRevived() {
@@ -162,7 +167,11 @@ public class Player {
         inCollisione = state;
     }
 
-    public Health getHp() {
-        return hp;
+    public Health getHealth() {
+        return this.hp;
+    }
+
+    public Rectangle getHitbox(){
+        return this.hitbox;
     }
 }
