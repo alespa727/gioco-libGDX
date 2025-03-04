@@ -16,7 +16,7 @@ import io.github.ale.maps.Map;
 
 public class Player {
 
-    public Rectangle hitbox;
+    private Rectangle hitbox;
 
     protected float x;
     protected float y;

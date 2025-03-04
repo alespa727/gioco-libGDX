@@ -40,15 +40,15 @@ public class Nemico {
     private float attackMultiplier = 1f;
     private float attackDamage;
 
-    protected final float baseSpeed = 2.5f;
+    protected final float baseSpeed = 1.5f;
     protected float delta = 1f;
     protected float speed;
     public boolean isAlive;
 
-    private float cooldownTimer = 0; // Tempo rimanente prima del prossimo attacco
-    private final float ATTACK_COOLDOWN = 2.0f; // Cooldown in secondi
-
-    private int counter=0;
+    private float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
+    private float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
+    private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
+    private final float FOLLOWING_COOLDOWN = 1f;
 
     EnemyMovementManager movement;
 
@@ -100,10 +100,23 @@ public class Nemico {
      * @param p
      */
     public void update(float delta, Player p) {
-        if (cooldownTimer > 0) {
-            cooldownTimer -= delta;
+        if (cooldownAttack > 0) {
+            cooldownAttack -= delta;
         }
-
+        if (cooldownFollowing > 0) {
+            cooldownFollowing -= delta;
+            //System.out.println(cooldownFollowing);
+        }
+        
+        if(cooldownFollowing <= 0){
+            
+            ComandiAzioni[] comandi = new ComandiAzioni[2];
+            comandi[0] = new ComandiAzioni(Azioni.spostaX, p.getWorldX()+1f);
+            comandi[1] = new ComandiAzioni(Azioni.spostaY, p.getWorldY());
+            movement.updateAddAzione(comandi);
+            cooldownFollowing = FOLLOWING_COOLDOWN;
+           
+        }
         movement.update(this);
         
         hitbox.x = this.x + 0.65f;
@@ -123,20 +136,13 @@ public class Nemico {
      */
     private void attack(Player p) {
         
-        if (cooldownTimer <= 0) {
-            if (inRange || !hasFinishedMoving) {
-                ComandiAzioni[] comandi = new ComandiAzioni[4];
-                comandi[0] = new ComandiAzioni(Azioni.spostaX, 3f);
-                comandi[1] = new ComandiAzioni(Azioni.spostaY, 3f);
-                comandi[2] = new ComandiAzioni(Azioni.spostaX, 8f);
-                comandi[3] = new ComandiAzioni(Azioni.spostaY, 8f);
-                movement.updateAddAzione(comandi);
-            } //COMANDI PER FAR MUOVERE IL NEMICO
+        if (cooldownAttack <= 0) {
+            
             System.out.println("Nemico attacca il giocatore!");
             p.getHealth().setHp(p.getHealth().getHp()-attackDamage);
             System.out.println(p.getHealth().getHp());
         
-            cooldownTimer = ATTACK_COOLDOWN;
+            cooldownAttack = ATTACK_COOLDOWN;
         }
     }
 
@@ -214,7 +220,6 @@ public class Nemico {
             direzione.setDirezione("fermoS");
             hasFinishedMoving = true;
             isMovingX = false;
-            counter++;
         }
 
     }
@@ -245,7 +250,6 @@ public class Nemico {
             direzione.setDirezione("fermoS");
             hasFinishedMoving = true;
             isMovingY = false;
-            counter++;
         }
 
     }
@@ -285,7 +289,6 @@ public class Nemico {
             direzione.setDirezione("fermoS");
             hasFinishedMoving = true;
             isDashingX = false;
-            counter++;
         }
 
     }
@@ -325,7 +328,6 @@ public class Nemico {
             direzione.setDirezione("fermoS");
             hasFinishedMoving = true;
             isDashingY = false;
-            counter++;
         }
 
     }
