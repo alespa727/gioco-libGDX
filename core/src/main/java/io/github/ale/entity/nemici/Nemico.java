@@ -234,7 +234,7 @@ public class Nemico {
             }
         } else {
             this.x = x;
-            direzione.setDirezione("fermoS");
+            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
             hasFinishedMoving = true;
             isMovingX = false;
         }
@@ -264,7 +264,7 @@ public class Nemico {
             hasFinishedMoving = false;
         } else {
             this.y = y;
-            direzione.setDirezione("fermoS");
+            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
             hasFinishedMoving = true;
             isMovingY = false;
         }
@@ -303,7 +303,7 @@ public class Nemico {
             }
         } else {
             this.x = x;
-            direzione.setDirezione("fermoS");
+            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
             hasFinishedMoving = true;
             isDashingX = false;
         }
@@ -342,7 +342,7 @@ public class Nemico {
             }
         } else {
             this.y = y;
-            direzione.setDirezione("fermoS");
+            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
             hasFinishedMoving = true;
             isDashingY = false;
         }
