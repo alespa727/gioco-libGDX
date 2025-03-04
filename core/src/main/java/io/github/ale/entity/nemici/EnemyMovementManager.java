@@ -48,13 +48,13 @@ public class EnemyMovementManager {
         }
         
         if (count==0 && !flag) {
-            //stampaAzioni();
+            stampaAzioni();
             flag=true;
         }
 
         if (enemy.getHasFinishedMoving() && count != azioni.size() - 1) {
             count++;
-            //stampaAzioni();
+            stampaAzioni();
         } 
  
     }
