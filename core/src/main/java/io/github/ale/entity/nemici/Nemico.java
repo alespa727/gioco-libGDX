@@ -218,7 +218,7 @@ public class Nemico {
 
         float deltaTime = Gdx.graphics.getDeltaTime();
 
-        if (Math.abs(this.x - x) > 0.01f) {
+        if (Math.abs(this.x - x) > 0.1f) {
             if (this.x < x) {
                 this.x += speed * deltaTime;
                 direzione.setDirezione("D");
@@ -248,7 +248,7 @@ public class Nemico {
             return;
 
         float deltaTime = Gdx.graphics.getDeltaTime();
-        if (Math.abs(this.y - y) > 0.01f) {
+        if (Math.abs(this.y - y) > 0.1f) {
             isMovingY = true;
 
             if (this.y < y) {

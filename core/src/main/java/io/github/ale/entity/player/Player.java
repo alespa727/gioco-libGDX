@@ -125,6 +125,7 @@ public class Player {
         if (hp.getHp() <= 0) {
             isAlive=false;
             System.out.println("Il giocatore è morto");
+            System.out.println("Rianimazione..");
             hp.setHp(100);
         }
     }
