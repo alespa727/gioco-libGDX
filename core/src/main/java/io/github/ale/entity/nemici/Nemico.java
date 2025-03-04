@@ -136,13 +136,15 @@ public class Nemico {
         
         
         if(cooldownFollowing <= 0){
-            
-            ComandiAzioni[] comandi = new ComandiAzioni[2];
-            comandi[0] = new ComandiAzioni(Azioni.spostaY, p.getWorldY());
-            comandi[1] = new ComandiAzioni(Azioni.spostaX, p.getWorldX()+1);
-            movement.updateAddAzione(comandi);
-            cooldownFollowing = FOLLOWING_COOLDOWN;
+            if (!inRange) {
+                ComandiAzioni[] comandi = new ComandiAzioni[2];
+                comandi[0] = new ComandiAzioni(Azioni.spostaY, p.getWorldY());
+                comandi[1] = new ComandiAzioni(Azioni.spostaX, p.getWorldX()+1);
+                movement.updateAddAzione(comandi);
+                cooldownFollowing = FOLLOWING_COOLDOWN;
            
+            }
+            
         }
     }
     /**
