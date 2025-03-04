@@ -8,6 +8,8 @@ public class PlayerMovementManager {
     KeyHandlerPlayer keyH;
     boolean w, s, a, d, shift;
     double elapsedTime;
+
+    
     public PlayerMovementManager(){
         keyH = new KeyHandlerPlayer();
     }

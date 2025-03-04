@@ -33,6 +33,7 @@ public class Nemico {
     private float elapsedTime;
 
     protected boolean inCollisione;
+    
     private boolean inRange;
     private boolean hasFinishedMoving;
     private boolean isMovingX, isMovingY, isDashingX, isDashingY;
