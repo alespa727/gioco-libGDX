@@ -91,7 +91,7 @@ public class Main implements ApplicationListener {
         renderer.setProjectionMatrix(camera.combined);
 
         maps.getMap().draw(camera);
-        //drawHitboxes();
+        drawHitboxes();
         drawOggetti();
         drawHUD();
     }
@@ -144,6 +144,7 @@ public class Main implements ApplicationListener {
             renderer.setColor(Color.RED);
         }else renderer.setColor(Color.BLACK);
         player.drawHitbox(renderer);
+        enemy.drawEnemyRange(renderer);
         renderer.end();
     }
 

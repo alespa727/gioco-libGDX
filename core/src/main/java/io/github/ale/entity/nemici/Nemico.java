@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -103,9 +104,7 @@ public class Nemico {
      * @param p
      */
     public void update(float delta, Player p) {
-        
-        
-        
+
         if (followsPlayer) followsPlayer(p, delta);
 
         movement.update(this);
@@ -115,6 +114,10 @@ public class Nemico {
         range.x = this.x;
         range.y = this.y;
         if (attacksPlayer) attacksPlayer(p, delta);
+    }
+
+    public void drawEnemyRange(ShapeRenderer renderer){
+        renderer.rect(range.x, range.y, range.width, range.height);
     }
 
     public boolean getHasFinishedMoving(){
@@ -132,6 +135,9 @@ public class Nemico {
         if (cooldownFollowing > 0) {
             cooldownFollowing -= delta;
             //System.out.println(cooldownFollowing);
+            if (inRange) {
+                cooldownFollowing = 2f;
+            }
         }
         
         
