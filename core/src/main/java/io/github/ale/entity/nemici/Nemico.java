@@ -51,7 +51,7 @@ public class Nemico {
     private float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     private float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    private final float FOLLOWING_COOLDOWN = 1f;
+    private final float FOLLOWING_COOLDOWN = 4f;
 
     EnemyMovementManager movement;
 
@@ -138,8 +138,8 @@ public class Nemico {
         if(cooldownFollowing <= 0){
             
             ComandiAzioni[] comandi = new ComandiAzioni[2];
-            comandi[0] = new ComandiAzioni(Azioni.spostaX, p.getWorldX()+1f);
-            comandi[1] = new ComandiAzioni(Azioni.spostaY, p.getWorldY());
+            comandi[0] = new ComandiAzioni(Azioni.spostaY, p.getWorldY());
+            comandi[1] = new ComandiAzioni(Azioni.spostaX, p.getWorldX()+1);
             movement.updateAddAzione(comandi);
             cooldownFollowing = FOLLOWING_COOLDOWN;
            
@@ -313,7 +313,7 @@ public class Nemico {
      * @param x
      */
     public void dashY(float y) {
-        if (isMovingX || isMovingY || isDashingY)
+        if (isMovingX || isMovingY || isDashingX)
             return;
 
         float dashSpeed = 0.045f;
@@ -330,11 +330,11 @@ public class Nemico {
         
         if (Math.abs(this.y - y) > 0.01f) {
             if (this.y < y) {
-                direzione.setDirezione("D");
+                direzione.setDirezione("W");
                 hasFinishedMoving = false;
                 isDashingY = true;
             } else {
-                direzione.setDirezione("A");
+                direzione.setDirezione("S");
                 hasFinishedMoving = false;
                 isDashingY = true;
             }
