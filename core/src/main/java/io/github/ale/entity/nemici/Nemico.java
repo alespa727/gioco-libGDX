@@ -45,6 +45,9 @@ public class Nemico {
     protected float speed;
     public boolean isAlive;
 
+    public final boolean followsPlayer=true;
+    public final boolean attacksPlayer=true;
+
     private float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     private float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
@@ -100,13 +103,37 @@ public class Nemico {
      * @param p
      */
     public void update(float delta, Player p) {
+        
+        
+        
+        if (followsPlayer) followsPlayer(p, delta);
+
+        movement.update(this);
+        
+        hitbox.x = this.x + 0.65f;
+        hitbox.y = this.y + 0.55f;
+        range.x = this.x;
+        range.y = this.y;
+        if (attacksPlayer) attacksPlayer(p, delta);
+    }
+
+    public boolean getHasFinishedMoving(){
+        return hasFinishedMoving;
+    }
+
+    private void attacksPlayer(Player p, float delta){
         if (cooldownAttack > 0) {
             cooldownAttack -= delta;
         }
+        inAttackRange(p);
+    }
+
+    private void followsPlayer(Player p, float delta){
         if (cooldownFollowing > 0) {
             cooldownFollowing -= delta;
             //System.out.println(cooldownFollowing);
         }
+        
         
         if(cooldownFollowing <= 0){
             
@@ -117,19 +144,7 @@ public class Nemico {
             cooldownFollowing = FOLLOWING_COOLDOWN;
            
         }
-        movement.update(this);
-        
-        hitbox.x = this.x + 0.65f;
-        hitbox.y = this.y + 0.55f;
-        range.x = this.x + 0.65f;
-        range.y = this.y + 0.55f;
-        inAttackRange(p);
     }
-
-    public boolean getHasFinishedMoving(){
-        return hasFinishedMoving;
-    }
-
     /**
      * il nemico attacca
      * @param p

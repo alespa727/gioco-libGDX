@@ -48,18 +48,20 @@ public class EnemyMovementManager {
         }
         
         if (count==0 && !flag) {
-            System.out.println(azioni.get(count).getAzione());
-            System.out.println(count);
-            System.out.println(azioni.size() -1);
+            //stampaAzioni();
             flag=true;
         }
 
         if (enemy.getHasFinishedMoving() && count != azioni.size() - 1) {
             count++;
-            System.out.println(azioni.get(count).getAzione());
-            System.out.println(count);
-            System.out.println(azioni.size() -1);
+            //stampaAzioni();
         } 
  
+    }
+    
+    private void stampaAzioni(){
+        System.out.println(azioni.get(count).getAzione());
+        System.out.println(count);
+        System.out.println(azioni.size() -1);
     }
 }
