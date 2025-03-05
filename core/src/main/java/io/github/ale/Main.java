@@ -45,7 +45,7 @@ public class Main implements ApplicationListener {
         inizializzaOggetti();
         inizializzaCamera();
         
-        music = Gdx.audio.newMusic(Gdx.files.internal("Mal Di Stomaco.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("mymusic.mp3"));
         maps = new MapManager(camera, player, 2); //map manager
     }
 
@@ -64,6 +64,7 @@ public class Main implements ApplicationListener {
      * aggiorna tutto il necessario
      */
     private void update() {
+
         float delta = Gdx.graphics.getDeltaTime(); // Ottiene il delta time
         //aggiorna ogni cosa nel gioco
         maps.update(camera, player); //update mappa, in caso di input
@@ -91,9 +92,11 @@ public class Main implements ApplicationListener {
         renderer.setProjectionMatrix(camera.combined);
 
         maps.getMap().draw(camera);
+
         drawHitboxes();
         drawOggetti();
         drawHUD();
+
     }
 
     @Override
@@ -124,17 +127,18 @@ public class Main implements ApplicationListener {
      * disegna hud
      */
     public void drawHUD(){
+
         hud.begin();
-
         player.getHealth().draw(hud);
-
         hud.end();
+
     }
 
     /**
      * disegna hitbox
      */
     public void drawHitboxes(){
+
         renderer.begin(ShapeType.Line);
         if (player.getInCollisione()) {
             renderer.setColor(Color.RED);
@@ -146,6 +150,7 @@ public class Main implements ApplicationListener {
         player.drawHitbox(renderer);
         enemy.drawEnemyRange(renderer);
         renderer.end();
+
     }
 
     /**
@@ -153,6 +158,7 @@ public class Main implements ApplicationListener {
      */
 
     public void drawOggetti(){
+
         batch.begin();
         if (player.getWorldY() > enemy.getWorldY()) {
             player.draw(batch);
@@ -161,8 +167,8 @@ public class Main implements ApplicationListener {
             enemy.draw(batch);
             player.draw(batch);
         }
-        
         batch.end();
+        
     }
 
     /***
@@ -170,6 +176,7 @@ public class Main implements ApplicationListener {
      */
 
     public void updateCameraView(){
+
         float x = camera.viewportWidth/2;
         float y = camera.viewportHeight/2;
         if (!maps.getAmbiente()) { //tipo di telecamera
@@ -183,11 +190,10 @@ public class Main implements ApplicationListener {
 
         }else{
             
-            
             CameraStyles.lerpTo(camera, new Vector2(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
             
-            viewport.setWorldSize(10f, 10f*9f/16f);
+            viewport.setWorldSize(16f, 16f*9f/16f);
             viewport.apply();
             camera.update();
 
@@ -211,12 +217,11 @@ public class Main implements ApplicationListener {
      */
     
     public void inizializzaCamera(){
+
         camera = new OrthographicCamera(); //telecamera
-        
         camera.update(); //aggiornamento camera
-        
         viewport = new FitViewport(32f, 18f, camera); //grandezza telecamera
-        
         viewport.apply(); //applica cosa si vede
+        
     }
 }
