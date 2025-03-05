@@ -160,7 +160,7 @@ public class Main implements ApplicationListener {
     public void drawOggetti(){
 
         batch.begin();
-        if (player.getWorldY() > enemy.getWorldY()) {
+        if (player.getY() > enemy.getY()) {
             player.draw(batch);
             enemy.draw(batch);
         }else{
@@ -181,7 +181,7 @@ public class Main implements ApplicationListener {
         float y = camera.viewportHeight/2;
         if (!maps.getAmbiente()) { //tipo di telecamera
 
-            CameraStyles.lerpTo(camera, new Vector2(Map.getWidth() / 2f, player.getWorldY() + 2f / 2));
+            CameraStyles.lerpTo(camera, new Vector2(Map.getWidth() / 2f, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
 
             viewport.setWorldSize(Map.getWidth(), Map.getHeight()/16f*9f);
@@ -190,7 +190,7 @@ public class Main implements ApplicationListener {
 
         }else{
             
-            CameraStyles.lerpTo(camera, new Vector2(player.getWorldX() + 2f / 2, player.getWorldY() + 2f / 2));
+            CameraStyles.lerpTo(camera, new Vector2(player.getX() + 2f / 2, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
             
             viewport.setWorldSize(16f, 16f*9f/16f);

@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 import io.github.ale.entity.Direzione;
 import io.github.ale.entity.Entity;
 import io.github.ale.entity.Health;
-import io.github.ale.entity.TexturesEntity;
 import io.github.ale.maps.Map;
 
 public class Player extends Entity{
@@ -31,8 +30,8 @@ public class Player extends Entity{
     public final void create() {
         isAlive = true;
 
-        this.x=5f;
-        this.y=5f;
+        setX(5f);
+        setY(5f);
 
         baseAttackDamage = 10;
         attackMultiplier = 1f;
@@ -41,13 +40,13 @@ public class Player extends Entity{
 
         movement = new PlayerMovementManager();
         hp = new Health(100);
-        texture = new TexturesEntity("Finn.png");
-        hitbox = new Rectangle(getWorldX(), getWorldY(), 0.65f, 0.4f);
+        setTexture("Finn.png");
+        hitbox = new Rectangle(getX(), getY(), 0.65f, 0.4f);
         direzione = new Direzione();
 
         
         direzione.setDirezione("S");
-        animation = texture.setAnimazione(direzione);
+        animation = getTexture().setAnimazione(direzione);
     }
 
     /**
@@ -60,10 +59,12 @@ public class Player extends Entity{
 
         setAnimation();
 
-        this.x = MathUtils.clamp(x, 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width);
-        this.y = MathUtils.clamp(y, 0-0.55f, Map.getHeight()-hitbox.height*4f);
+
+        setX(MathUtils.clamp(getX(), 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width));
+        setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-hitbox.height*4f));
         
-        batch.draw(animation.getKeyFrame(elapsedTime, true), x, y, 2, 2);
+        
+        batch.draw(animation.getKeyFrame(elapsedTime, true), getX(), getY(), 2, 2);
     }
 
     /**
@@ -86,8 +87,8 @@ public class Player extends Entity{
     public void update() {
         movement.update(this);
         
-        hitbox.x = this.x+0.65f;
-        hitbox.y = this.y+0.55f;
+        hitbox.x = getX()+0.65f;
+        hitbox.y = getY()+0.55f;
 
       
         checkIfDead();

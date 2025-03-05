@@ -9,17 +9,24 @@ public class PlayerMovementManager {
     boolean w, s, a, d, shift;
     double elapsedTime;
 
-    
-    public PlayerMovementManager(){
+    boolean collisioneY;
+    boolean collisioneX;
+
+    StatiDiMovimento stato;
+    String lastDirezione;
+
+    public PlayerMovementManager() {
         keyH = new KeyHandlerPlayer();
     }
 
     /**
      * aggiorna i vari parametri in base agli input
+     * 
      * @param p
      */
 
-    public void update(Player p){
+    public void update(Player p) {
+        keyH.input();
         sprint(p);
         movimento(p);
     }
@@ -29,7 +36,6 @@ public class PlayerMovementManager {
      */
 
     private void sprint(Player p) {
-        keyH.input();
         
         shift = keyH.shift;
 
@@ -48,128 +54,134 @@ public class PlayerMovementManager {
 
     /**
      * gestisce il movimento in base agli input
+     * 
      * @param p
      */
-    public void movimento(Player p){
-        elapsedTime = Gdx.graphics.getDeltaTime(); //moltiplicatore del movimento in base al framerate
-        keyH.input();
+    private void movimento(Player p) {
+        elapsedTime = Gdx.graphics.getDeltaTime(); // moltiplicatore del movimento in base al framerate
+        
         w = keyH.w;
         s = keyH.s;
         a = keyH.a;
         d = keyH.d;
-        if (!w && !s && !a && !d) {
-            switch (p.direzione.getDirezione()) {
-                case "W" -> p.direzione.setDirezione("fermoW");
-                case "S" -> p.direzione.setDirezione("fermoS");
-                // } else if (direzione.getDirezione().equals("A")) {
-                // animation = new Animation<>(1f / 2f, playerFramesLeft);
-                case "A" -> p.direzione.setDirezione("fermoA");
-                case "D" -> p.direzione.setDirezione("fermoD");
-                default -> {
-                }
+
+        boolean oppostoY = w && s;
+        boolean oppostoX = a && d;
+        boolean anyKey = w || s || a || d;
+        boolean notMoving = !anyKey || (oppostoX && oppostoY);
+
+        if (notMoving)
+            stato = StatiDiMovimento.NOTMOVING;
+
+        else if (oppostoY)
+            stato = StatiDiMovimento.OPPOSTOY;
+
+        else if (oppostoX)
+            stato = StatiDiMovimento.OPPOSTOX;
+
+        else if (anyKey)
+            stato = StatiDiMovimento.ANYKEY;
+
+        switch (stato) {
+            case OPPOSTOY -> {
+                addNotMoving(p);
+
+                aggiornaDirezioneX(p);
+                aggiornaCollisioni(p);
+
+                muoviAsseX(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
+                aggiornaStatoCollisione(p);
+            }
+            case OPPOSTOX -> {
+
+                addNotMoving(p);
+
+                aggiornaDirezioneY(p);
+                aggiornaCollisioni(p);
+
+                muoviAsseY(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
+
+                aggiornaStatoCollisione(p);
+
+            }
+            case ANYKEY -> {
+
+                aggiornaDirezioneY(p);
+
+                aggiornaCollisioni(p);
+                muoviAsseY(p);
+
+                aggiornaStatoCollisione(p);
+                aggiornaDirezioneX(p);
+
+                aggiornaCollisioni(p);
+                muoviAsseX(p);
+                
+                aggiornaStatoCollisione(p);
+
+            }
+            case NOTMOVING -> {
+                addNotMoving(p);
+            }
+            default -> {
             }
         }
+        lastDirezione = p.direzione.getDirezione();
+        if (!lastDirezione.equals(p.direzione.getDirezione())) {
+            System.out.println(p.direzione.getDirezione());
+        }
+        
 
-        if (w && s && d && a) {
-            p.direzione.setDirezione("fermoS");
-        } else {
-            if (w && s) {
-                if (p.direzione.getDirezione().equals("W"))
-                    p.direzione.setDirezione("fermoW");
-                else if (p.direzione.getDirezione().equals("S"))
-                    p.direzione.setDirezione("fermoS");
+    }
 
-                if (p.direzione.getDirezione().equals("A"))
-                    p.direzione.setDirezione("fermoA");
-                else if (p.direzione.getDirezione().equals("D"))
-                    p.direzione.setDirezione("fermoD");
+    private void addNotMoving(Player p){
+        if (!p.direzione.getDirezione().contains("fermo")) {
+            p.direzione.setDirezione("fermo".concat(p.direzione.getDirezione()));
+        }
+    }
 
-                if (a)
-                    p.direzione.setDirezione("A");
-                if (d)
-                    p.direzione.setDirezione("D");
+    private void aggiornaCollisioni(Player p) {
+        collisioneY = Map.checkCollisionY(p.direzione.getDirezione(), p);
+        collisioneX = Map.checkCollisionX(p.direzione.getDirezione(), p);
+    }
 
-                if (!Map.checkCollisionX(p.direzione.getDirezione(), p)) {
-                    if (a)
-                        p.x -= p.speed * elapsedTime;
-                    if (d)
-                        p.x += p.speed * elapsedTime;
-                    p.inCollisione = false;
-                } else
-                    p.inCollisione = true;
+    private void aggiornaDirezioneY(Player p) {
+        if (w)
+            p.direzione.setDirezione("W");
+        if (s)
+            p.direzione.setDirezione("S");
+    }
 
-                if (Map.checkCollisionY(p.direzione.getDirezione(), p) && !p.inCollisione)
-                    p.inCollisione = true;
+    private void aggiornaDirezioneX(Player p) {
+        if (a)
+            p.direzione.setDirezione("A");
+        if (d)
+            p.direzione.setDirezione("D");
+    }
 
-            } else if (a && d) {
+    private void aggiornaStatoCollisione(Player p) {
+        if (collisioneX)
+            p.inCollisione = true;
+        if (collisioneY)
+            p.inCollisione = true;
+    }
 
-                if (p.direzione.getDirezione().equals("W"))
-                    p.direzione.setDirezione("fermoW");
-                else if (p.direzione.getDirezione().equals("S"))
-                    p.direzione.setDirezione("fermoS");
-
-                if (p.direzione.getDirezione().equals("D"))
-                    p.direzione.setDirezione("fermoD");
-                else if (p.direzione.getDirezione().equals("A"))
-                    p.direzione.setDirezione("fermoA");
-
-                if (w)
-                    p.direzione.setDirezione("W");
-                if (s)
-                    p.direzione.setDirezione("S");
-
-                if (!Map.checkCollisionY(p.direzione.getDirezione(), p)) {
-                    if (s)
-                        p.y -= p.speed * elapsedTime;
-                    if (w)
-                        p.y += p.speed * elapsedTime;
-                    p.inCollisione = false;
-                } else
-                    p.inCollisione = true;
-
-                if (Map.checkCollisionX(p.direzione.getDirezione(), p) && !p.inCollisione)
-                    p.inCollisione = true;
-
-            } else {
-
-                if (w)
-                    p.direzione.setDirezione("W");
-                if (s)
-                    p.direzione.setDirezione("S");
-
-                if (!Map.checkCollisionY(p.direzione.getDirezione(), p)) {
-                    if (s)
-                        p.y -= p.speed * elapsedTime;
-                    if (w)
-                        p.y += p.speed * elapsedTime;
-                    p.inCollisione = false;
-                } else if (!p.inCollisione)
-                    p.inCollisione = true;
-
-                if (Map.checkCollisionX(p.direzione.getDirezione(), p))
-                    p.inCollisione = true;
-                if (Map.checkCollisionY(p.direzione.getDirezione(), p))
-                    p.inCollisione = true;
-
-                if (d)
-                    p.direzione.setDirezione("D");
-                if (a)
-                    p.direzione.setDirezione("A");
-
-                if (!Map.checkCollisionX(p.direzione.getDirezione(), p)) {
-                    if (a)
-                        p.x -= p.speed * elapsedTime;
-                    if (d)
-                        p.x += p.speed * elapsedTime;
-                    p.inCollisione = false;
-                } else if (!p.inCollisione)
-                    p.inCollisione = true;
-
-                if (Map.checkCollisionY(p.direzione.getDirezione(), p) && !p.inCollisione)
-                    p.inCollisione = true;
-
-            }
-
+    private void muoviAsseX(Player p){
+        if (!collisioneX) {
+            if (a)
+                p.setX(p.getX() - p.speed * (float) elapsedTime);
+            if (d)
+                p.setX(p.getX() + p.speed * (float) elapsedTime);
+            p.inCollisione = false;
+        }
+    }
+    private void muoviAsseY(Player p){
+        if (!collisioneY) {
+            if (s)
+                p.setY(p.getY() - p.speed * (float) elapsedTime);
+            if (w)
+                p.setY(p.getY() + p.speed * (float) elapsedTime);
+            p.inCollisione = false;
         }
     }
 }

@@ -7,13 +7,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Entity {
-    public  Rectangle hitbox;
+    protected Rectangle hitbox;
 
-    public float x;
-    public float y;
+    private float x;
+    private float y;
     public Direzione direzione;
 
-    public TexturesEntity texture;
+    private TexturesEntity texture;
 
     public Animation<TextureRegion> animation;
 
@@ -36,27 +36,36 @@ public abstract class Entity {
 
     public boolean isAlive;
 
-    public abstract void create();
+    protected abstract void create();
     public abstract void draw(SpriteBatch batch);
     public abstract void drawHitbox(ShapeRenderer renderer);
 
-    public abstract boolean checkIfDead();
+    public float getY() { return y; }
+    public void setY(float y) {this.y = y;}
+
+    public float getX() { return x; }
+    public void setX(float x) { this.x = x; }
+
+    public boolean checkIfDead(){
+        return true;
+    }
 
     /**
      * setta l'animazione attuale da utilizzare
      */
 
-    public void setAnimation(){
-        animation = texture.setAnimazione(direzione);
+    public void setAnimation() {
+        if (animation == null || animation != texture.setAnimazione(direzione)) {
+            animation = texture.setAnimazione(direzione);
+        }
     }
 
-    // Getters
-    public float getWorldX() {
-        return x;
+    public TexturesEntity getTexture(){
+        return texture;
     }
 
-    public float getWorldY() {
-        return y;
+    public void setTexture(String path){
+        texture = new TexturesEntity(path);
     }
 
     public Health getHealth() {
@@ -71,7 +80,6 @@ public abstract class Entity {
         return inCollisione;
     }
 
-    
     // Getters
     public void setWorldX(float x) {
         this.x = x;
@@ -84,6 +92,8 @@ public abstract class Entity {
     public void setInCollisione(boolean state){
         inCollisione = state;
     }
+
+    
 
     
 }
