@@ -17,41 +17,45 @@ import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 
 public class Nemico {
-    private Health hp;
 
-    private Rectangle hitbox;
-    private Rectangle range;
+    public Rectangle hitbox;
 
-    protected float x;
-    protected float y;
-    protected Direzione direzione;
+    public float x;
+    public float y;
+    public Direzione direzione;
 
-    TexturesEntity enemy;
+    public TexturesEntity texture;
 
-    private Animation<TextureRegion> animation;
+    public Animation<TextureRegion> animation;
 
-    private float elapsedTime;
+    public float elapsedTime;
 
-    protected boolean inCollisione;
-    
+    public Health hp;
+
+    public boolean inCollisione;
+
+    public float baseAttackDamage = 10;
+    public float attackMultiplier = 1f;
+    public float attackDamage;
+
+    public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
+    public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
+
+    public float baseSpeed = 1.5f;
+    public float delta = 1f;
+    public float speed;
+    public boolean isAlive;
+
+
     private boolean inRange;
     private boolean hasFinishedMoving;
     private boolean isMovingX, isMovingY, isDashingX, isDashingY;
 
-    private final float baseAttackDamage = 10;
-    private float attackMultiplier = 1f;
-    private float attackDamage;
-
-    protected final float baseSpeed = 1.5f;
-    protected float delta = 1f;
-    protected float speed;
-    public boolean isAlive;
+    private Rectangle range;
 
     public final boolean followsPlayer=true;
     public final boolean attacksPlayer=true;
 
-    private float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
-    private float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
     private final float FOLLOWING_COOLDOWN = 4f;
 
@@ -72,8 +76,13 @@ public class Nemico {
         this.x = 8f;
         this.y = 8f;
 
+        baseSpeed = 1.5f;
+        delta = 1f;
+        baseAttackDamage = 10;
+        attackMultiplier = 1f;
+
         hp = new Health(100);
-        enemy = new TexturesEntity("Finn.png");
+        texture = new TexturesEntity("Finn.png");
         hitbox = new Rectangle(this.x, this.y, 0.65f, 0.4f);
         range = new Rectangle(this.x, this.y, 2f, 2f);
         direzione = new Direzione();
@@ -81,7 +90,7 @@ public class Nemico {
         inRange = false;
 
         direzione.setDirezione("fermoS");
-        animation = enemy.setAnimazione(direzione);
+        animation = texture.setAnimazione(direzione);
     }
 
     /**
@@ -193,7 +202,7 @@ public class Nemico {
      * setta l'animazione attuale da utilizzare
      */
     private void setAnimation() {
-        animation = enemy.setAnimazione(direzione);
+        animation = texture.setAnimazione(direzione);
     }
 
     /**

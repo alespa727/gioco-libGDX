@@ -83,7 +83,6 @@ public class Player extends Entity{
      * aggiorna le informazioni del player
      */
     
-    @Override
     public void update() {
         movement.update(this);
         

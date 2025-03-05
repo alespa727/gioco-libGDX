@@ -11,16 +11,15 @@ public abstract class Entity {
 
     public float x;
     public float y;
-
     public Direzione direzione;
 
-    public  TexturesEntity texture;
+    public TexturesEntity texture;
 
-    public  Animation<TextureRegion> animation;
+    public Animation<TextureRegion> animation;
 
     public float elapsedTime;
 
-    public  Health hp;
+    public Health hp;
 
     public boolean inCollisione;
 
@@ -31,8 +30,8 @@ public abstract class Entity {
     public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
 
-    public float baseSpeed;
-    public float delta;
+    public float baseSpeed=1.5f;
+    public float delta = 1f;
     public float speed;
 
     public boolean isAlive;
@@ -40,10 +39,12 @@ public abstract class Entity {
     public abstract void create();
     public abstract void draw(SpriteBatch batch);
     public abstract void drawHitbox(ShapeRenderer renderer);
-    public abstract void update();
 
     public abstract boolean checkIfDead();
 
+    /**
+     * setta l'animazione attuale da utilizzare
+     */
 
     public void setAnimation(){
         animation = texture.setAnimazione(direzione);
