@@ -34,6 +34,11 @@ public class Player extends Entity{
         this.x=5f;
         this.y=5f;
 
+        baseAttackDamage = 10;
+        attackMultiplier = 1f;
+        baseSpeed = 2.5f;
+        delta = 1f;
+
         movement = new PlayerMovementManager();
         hp = new Health(100);
         texture = new TexturesEntity("Finn.png");

@@ -84,10 +84,10 @@ public class Map {
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(p.getHitbox());
         if (direzione.equals("W")) {
-            hitbox.y+=1f/32f;
+            hitbox.y+=1/16f;
         }
         if (direzione.equals("S")) {
-            hitbox.y-=1f/32f;
+            hitbox.y-=1/16f;
         }
 
         for (int i = 0; i < width; i++) {
@@ -109,10 +109,10 @@ public class Map {
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(p.getHitbox());
         if (direzione.equals("A")) {
-            hitbox.x-=1f/32f;
+            hitbox.x-=1/16f;
         }
         if (direzione.equals("D")) {
-            hitbox.x+=1f/32f;
+            hitbox.x+=1/16f;
         }
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {

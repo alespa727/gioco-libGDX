@@ -146,9 +146,9 @@ public class PlayerMovementManager {
                 } else if (!p.inCollisione)
                     p.inCollisione = true;
 
-                if (Map.checkCollisionX(p.direzione.getDirezione(), p) && !p.inCollisione)
+                if (Map.checkCollisionX(p.direzione.getDirezione(), p))
                     p.inCollisione = true;
-                if (Map.checkCollisionY(p.direzione.getDirezione(), p) && !p.inCollisione)
+                if (Map.checkCollisionY(p.direzione.getDirezione(), p))
                     p.inCollisione = true;
 
                 if (d)

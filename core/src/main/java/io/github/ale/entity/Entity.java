@@ -24,16 +24,17 @@ public abstract class Entity {
 
     public boolean inCollisione;
 
-    public final float baseAttackDamage = 10;
+    public float baseAttackDamage = 10;
     public float attackMultiplier = 1f;
     public float attackDamage;
 
     public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
 
-    public final float baseSpeed=2.5f;
-    public float delta = 1f;
+    public float baseSpeed;
+    public float delta;
     public float speed;
+
     public boolean isAlive;
 
     public abstract void create();
