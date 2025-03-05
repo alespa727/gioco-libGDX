@@ -26,7 +26,7 @@ public final class Nemico extends Entity{
     public final boolean attacksPlayer=true;
 
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    private final float FOLLOWING_COOLDOWN = 4f;
+    private final float FOLLOWING_COOLDOWN = 0.2f;
 
     EnemyMovementManager movement;
 

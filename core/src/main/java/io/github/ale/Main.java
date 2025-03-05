@@ -93,9 +93,9 @@ public class Main implements ApplicationListener {
 
         maps.getMap().draw(camera);
 
-        drawHitboxes();
+        //drawHitboxes();
         drawOggetti();
-        drawHUD();
+        //drawHUD();
 
     }
 
