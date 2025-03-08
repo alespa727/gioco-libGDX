@@ -3,8 +3,7 @@ package io.github.ale.entity.abstractEnity.texture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import io.github.ale.entity.abstractEnity.Direzione;
+import com.badlogic.gdx.utils.ObjectMap;
 
 public class TexturesEntity {
     private final Texture entity;
@@ -16,10 +15,12 @@ public class TexturesEntity {
     private final TextureRegion[] down; // Frame per la direzione giù fermo
     private final TextureRegion[] left; // Frame per la direzione sinistra fermo
     private final TextureRegion[] right; // Frame per la direzione destra fermo
-    private Animation<TextureRegion> animation;
+    
+    private final ObjectMap<String, Animation <TextureRegion>> animations;
 
     public TexturesEntity(String path){
         entity = new Texture(path);
+        animations = new ObjectMap<>();
 
         // Assegna i frame per le diverse direzioni, creare una classe che puo contenere le texture
         movingUp = new TextureRegion[4];
@@ -33,6 +34,16 @@ public class TexturesEntity {
         right = new TextureRegion[2];
 
         salvaAnimazioni(entity);
+
+        animations.put("W", new Animation<>(1 / 5f, movingUp));
+        animations.put("S", new Animation<>(1 / 5f, movingDown));
+        animations.put("A", new Animation<>(1 / 5f, movingLeft));
+        animations.put("D", new Animation<>(1 / 5f, movingRight));
+        animations.put("fermoW", new Animation<>(1 / 2f, up));
+        animations.put("fermoS", new Animation<>(1 / 2f, down));
+        animations.put("fermoA", new Animation<>(1 / 2f, left));
+        animations.put("fermoD", new Animation<>(1 / 2f, right));
+        
     }
 
     /**
@@ -71,20 +82,7 @@ public class TexturesEntity {
      * @return
      */
 
-    public Animation<TextureRegion> setAnimazione(Direzione direzione) {
-        switch (direzione.getDirezione()) {
-            case "W" -> animation = new Animation<>(1f / 8f, movingUp);
-            case "S" -> animation = new Animation<>(1f / 8f, movingDown);
-            case "A" -> animation = new Animation<>(1f / 8f, movingLeft);
-            case "D" -> animation = new Animation<>(1f / 8f, movingRight);
-            case "fermoW" -> animation = new Animation<>(1f / 2f, up);
-            case "fermoS" -> animation = new Animation<>(1f / 2f, down);
-            case "fermoA" -> animation = new Animation<>(1f / 2f, left);
-            case "fermoD" -> animation = new Animation<>(1f / 2f, right);
-            default -> {
-            }
-            
-        }
-        return animation;
+    public Animation<TextureRegion> setAnimazione(String direzione) {
+        return animations.get(direzione);
     }
 }

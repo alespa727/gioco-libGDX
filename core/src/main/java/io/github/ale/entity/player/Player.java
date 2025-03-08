@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.entity.abstractEnity.Direzione;
 import io.github.ale.entity.abstractEnity.Entity;
 import io.github.ale.maps.Map;
 
@@ -29,13 +27,12 @@ public class Player extends Entity{
         inizializzaCoordinate(5f, 5f);
 
         setTexture("Finn.png");
-        hitbox = new Rectangle(getX(), getY(), 0.65f, 0.4f);
-        direzione = new Direzione();
+        inizializzaHitbox(getX(), getY(), 0.65f, 0.4f);
+        inizializzaDirezione("fermoS");
 
         setStati(true, false, false);
         setStatistiche(100, 2.5f, 10);
-        direzione.setDirezione("S");
-        animation = getTexture().setAnimazione(direzione);
+        inizializzaAnimazione();
         movement = new PlayerMovementManager();
     }
 
@@ -54,7 +51,7 @@ public class Player extends Entity{
         setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-hitbox.height*4f));
         
         
-        batch.draw(animation.getKeyFrame(elapsedTime, true), getX(), getY(), 2, 2);
+        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), 2, 2);
     }
 
     /**

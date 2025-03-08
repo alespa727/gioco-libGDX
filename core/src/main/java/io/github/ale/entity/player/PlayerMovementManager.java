@@ -2,6 +2,7 @@ package io.github.ale.entity.player;
 
 import com.badlogic.gdx.Gdx;
 
+import io.github.ale.entity.abstractEnity.StatiDiMovimento;
 import io.github.ale.maps.Map;
 
 public class PlayerMovementManager {
@@ -125,17 +126,16 @@ public class PlayerMovementManager {
             default -> {
             }
         }
-        lastDirezione = p.direzione.getDirezione();
-        if (!lastDirezione.equals(p.direzione.getDirezione())) {
-            System.out.println(p.direzione.getDirezione());
+        lastDirezione = p.getDirezione();
+        if (!lastDirezione.equals(p.getDirezione())) {
+            System.out.println(p.getDirezione());
         }
-        
-
+    
     }
 
     private void addNotMoving(Player p){
-        if (!p.direzione.getDirezione().contains("fermo")) {
-            p.direzione.setDirezione("fermo".concat(p.direzione.getDirezione()));
+        if (!p.getDirezione().contains("fermo")) {
+            p.setDirezione("fermo".concat(p.getDirezione()));
         }
     }
 
@@ -146,16 +146,16 @@ public class PlayerMovementManager {
 
     private void aggiornaDirezioneY(Player p) {
         if (w)
-            p.direzione.setDirezione("W");
+            p.setDirezione("W");
         if (s)
-            p.direzione.setDirezione("S");
+            p.setDirezione("S");
     }
 
     private void aggiornaDirezioneX(Player p) {
         if (a)
-            p.direzione.setDirezione("A");
+            p.setDirezione("A");
         if (d)
-            p.direzione.setDirezione("D");
+            p.setDirezione("D");
     }
 
     private void aggiornaStatoCollisione(Player p) {

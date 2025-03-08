@@ -16,18 +16,15 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
     public float elapsedTime;
 
     private Vector3 coordinate;
-
-    public Direzione direzione;
+    private Direzione direzione;
 
     private TexturesEntity texture;
-
-    public Animation<TextureRegion> animation;
+    private  Animation<TextureRegion> animation;
 
     public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
 
     private EntityState stati;
-
     public Stats statistiche;
 
     protected Rectangle hitbox;
@@ -47,8 +44,14 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
 
     public void setStatistiche(float hp, float speed, float attackdmg){ this.statistiche = new Stats(hp, speed, attackdmg); }
 
+    public void inizializzaDirezione(String direzione){ 
+        this.direzione = new Direzione();
+        this.direzione.setDirezione(direzione);
+    }
+
     public void setDirezione(String direzione){ this.direzione.setDirezione(direzione);}
     public String getDirezione(){ return this.direzione.getDirezione();}
+    public Direzione getDirezioneObject(){ return this.direzione;}
 
     public void setIsMoving( boolean isMoving){ this.stati.setIsMoving(isMoving); }
 
@@ -61,7 +64,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
     public void setIsmoving(boolean isMoving){ stati.setIsMoving(isMoving);}
 
     public Rectangle getHitbox(){ return this.hitbox; }
-
+    public void inizializzaHitbox(float x, float y, float width, float height){ hitbox = new Rectangle(x, y, width, height);}
     public Health getHealth() { return this.statistiche.getHealthObject(); } 
 
     public void setStati(boolean isAlive, boolean inCollisione, boolean isMoving){
@@ -82,9 +85,17 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
      */
 
     public void setAnimation() {
-        if (animation == null || animation != texture.setAnimazione(direzione)) {
-            animation = texture.setAnimazione(direzione);
+        if (animation == null || animation != texture.setAnimazione(getDirezione())) {
+            animation = texture.setAnimazione(getDirezione());
         }
+    }
+
+    public void inizializzaAnimazione() {
+        animation = getTexture().setAnimazione(getDirezione());
+    }
+
+    public Animation<TextureRegion> getAnimazione() {
+        return animation;
     }
 
     public TexturesEntity getTexture(){

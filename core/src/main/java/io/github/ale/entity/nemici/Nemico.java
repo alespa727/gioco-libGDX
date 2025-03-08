@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.Azioni;
 import io.github.ale.ComandiAzioni;
-import io.github.ale.entity.abstractEnity.Direzione;
 import io.github.ale.entity.abstractEnity.Entity;
 import io.github.ale.entity.abstractEnity.movement.EntityMovementManager;
 import io.github.ale.entity.player.Player;
@@ -41,17 +40,17 @@ public final class Nemico extends Entity{
         inizializzaCoordinate(8f, 8f);
 
         setTexture("Finn.png");
-        
-        hitbox = new Rectangle(getX(), getY(), 0.65f, 0.4f);
+
+        inizializzaHitbox(getX(), getY(), 0.65f, 0.4f);
         range = new Rectangle(getX(), getY(), 2f, 2f);
-        direzione = new Direzione();
+        inizializzaDirezione("fermoS");
         movement = new EntityMovementManager();
         inRange = false;
 
         setStati(true, false, false);
         setStatistiche(100, 1.5f, 10);
         setDirezione("fermoS");
-        animation = getTexture().setAnimazione(direzione);
+        inizializzaAnimazione();
     }
 
     /**
@@ -67,7 +66,7 @@ public final class Nemico extends Entity{
         setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox.width - hitbox.width));
         setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox.height - hitbox.height));
 
-        batch.draw(animation.getKeyFrame(elapsedTime, true), getX(), getY(), 2, 2);
+        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), 2, 2);
     }
 
     /**
