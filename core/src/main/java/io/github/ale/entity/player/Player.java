@@ -1,8 +1,6 @@
 package io.github.ale.entity.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -38,18 +36,7 @@ public class Player extends Entity{
         movement = new PlayerMovementManager();
     }
 
-    /**
-     * disegna l'animazione del player
-     * @param batch
-     */
-    @Override
-    public void draw(SpriteBatch batch) { 
-        elapsedTime += Gdx.graphics.getDeltaTime();
-
-        setAnimation();
-
-        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(), getSize().getHeight());
-    }
+    
 
     /**
      * disegna l'hitbox del player
@@ -60,7 +47,7 @@ public class Player extends Entity{
         if (inCollisione()) {
             renderer.setColor(Color.RED);
         }
-        renderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
         renderer.setColor(Color.BLACK);
     }
 
@@ -95,7 +82,4 @@ public class Player extends Entity{
         }
         return this.isAlive();
     }
-
-
-    
 }

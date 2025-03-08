@@ -1,8 +1,6 @@
 package io.github.ale.entity.nemici;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -36,7 +34,7 @@ public final class Nemico extends Entity{
      * inizializza il nemico
      */
     @Override
-    protected void create() {
+    public final void create() {
 
         inizializzaCoordinate(8f, 8f);
 
@@ -56,19 +54,6 @@ public final class Nemico extends Entity{
     }
 
     /**
-     * disegna il nemico
-     * @param batch
-     */
-    @Override
-    public void draw(SpriteBatch batch) {
-        elapsedTime += Gdx.graphics.getDeltaTime();
-
-        setAnimation();
-
-        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(), getSize().getHeight());
-    }
-
-    /**
      * aggiorna lo stato del nemico
      * @param delta variabile del tempo
      * @param p
@@ -78,10 +63,11 @@ public final class Nemico extends Entity{
         if (followsPlayer) followsPlayer(p, delta);
         
         movement.update(this);
-
+        
         setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox.width - hitbox.width));
         setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox.height - hitbox.height));
 
+        
         hitbox.x = getX() + 0.65f;
         hitbox.y = getY() + 0.55f;
         range.x = getX();
@@ -91,7 +77,7 @@ public final class Nemico extends Entity{
 
     @Override
     public void drawHitbox(ShapeRenderer renderer){
-        renderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
     }
 
     public void drawEnemyRange(ShapeRenderer renderer){

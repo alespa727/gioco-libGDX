@@ -20,6 +20,7 @@ import io.github.ale.maps.MapManager;
 
 public class Main implements ApplicationListener {
 
+    private float elapsedTime;
     private SpriteBatch batch;
     private SpriteBatch hud;
     private FitViewport viewport;
@@ -80,7 +81,7 @@ public class Main implements ApplicationListener {
      */
 
     private void draw() {
-        
+        elapsedTime+=Gdx.graphics.getDeltaTime();
         //pulisce lo schermo
 
         ScreenUtils.clear(Color.BLACK);
@@ -161,11 +162,11 @@ public class Main implements ApplicationListener {
     public void drawOggetti(){
         batch.begin();
         if (player.getY() > enemy.getY()) {
-            player.draw(batch);
-            enemy.draw(batch);
+            player.draw(batch, elapsedTime);
+            enemy.draw(batch, elapsedTime);
         }else{
-            enemy.draw(batch);
-            player.draw(batch);
+            enemy.draw(batch, elapsedTime);
+            player.draw(batch, elapsedTime);
         }
         batch.end();
         
@@ -193,7 +194,7 @@ public class Main implements ApplicationListener {
             CameraStyles.lerpTo(camera, new Vector2(player.getX() + 2f / 2, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
             
-            viewport.setWorldSize(9f, 9f*9f/16f);
+            viewport.setWorldSize(11f, 11f*9f/16f);
             viewport.apply();
             camera.update();
 

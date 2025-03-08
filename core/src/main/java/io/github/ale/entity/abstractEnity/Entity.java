@@ -2,7 +2,6 @@ package io.github.ale.entity.abstractEnity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -10,8 +9,9 @@ import io.github.ale.entity.abstractEnity.state.EntityState;
 import io.github.ale.entity.abstractEnity.stats.Health;
 import io.github.ale.entity.abstractEnity.stats.Stats;
 import io.github.ale.entity.abstractEnity.texture.TexturesEntity;
+import io.github.ale.interfaces.Creatable;
 
-public abstract class Entity implements io.github.ale.interfaces.Drawable{
+public abstract class Entity implements io.github.ale.interfaces.Drawable, Creatable{
 
     public float elapsedTime;
 
@@ -30,16 +30,14 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
     protected Rectangle hitbox;
     private Dimensioni size;
 
-    protected abstract void create();
-    public abstract void drawHitbox(ShapeRenderer renderer);
-
     public void inizializzaCoordinate(float x, float y){
         coordinate = new Vector3(x, y, 0);
     }
-
+    @Override
     public float getY() { return coordinate.y; }
     public void setY(float y) {this.coordinate.y = y;}
 
+    @Override
     public float getX() { return coordinate.x; }
     public void setX(float x) { this.coordinate.x = x; }
 
@@ -89,6 +87,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
      * setta l'animazione attuale da utilizzare
      */
 
+    @Override
     public void setAnimation() {
         if (animation == null || animation != texture.setAnimazione(getDirezione())) {
             animation = texture.setAnimazione(getDirezione());
@@ -99,6 +98,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
         animation = getTexture().setAnimazione(getDirezione());
     }
 
+    @Override
     public Animation<TextureRegion> getAnimazione() {
         return animation;
     }
@@ -111,12 +111,13 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
         texture = new TexturesEntity(path);
     }
 
-    public Dimensioni getSize() {
-        return size;
-    }
-
     public void setSize(Dimensioni size) {
         this.size = size;
+    }
+
+    @Override
+    public Dimensioni getSize() {
+        return size;
     }
  
 
