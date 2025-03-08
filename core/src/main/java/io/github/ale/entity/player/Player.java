@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.entity.Direzione;
+import io.github.ale.entity.abstractEnity.Direzione;
 import io.github.ale.entity.abstractEnity.Entity;
-import io.github.ale.entity.abstractEnity.stats.Health;
 import io.github.ale.maps.Map;
 
 public class Player extends Entity{
@@ -27,22 +26,17 @@ public class Player extends Entity{
 
     @Override
     public final void create() {
-        isAlive = true;
+        inizializzaCoordinate(5f, 5f);
 
-        setX(5f);
-        setY(5f);
-
-        setStatistiche(100, 2.5f, 10);
-
-        movement = new PlayerMovementManager();
-        hp = new Health(100);
         setTexture("Finn.png");
         hitbox = new Rectangle(getX(), getY(), 0.65f, 0.4f);
         direzione = new Direzione();
 
-        
+        setStati(true, false, false);
+        setStatistiche(100, 2.5f, 10);
         direzione.setDirezione("S");
         animation = getTexture().setAnimazione(direzione);
+        movement = new PlayerMovementManager();
     }
 
     /**
@@ -69,7 +63,7 @@ public class Player extends Entity{
      */
     @Override
     public void drawHitbox(ShapeRenderer renderer) {
-        if (inCollisione) {
+        if (inCollisione()) {
             renderer.setColor(Color.RED);
         }
         renderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -98,12 +92,12 @@ public class Player extends Entity{
     public boolean checkIfDead() {
         // Logica per controllare se il giocatore è morto
         if (statistiche.getHealth() <= 0) {
-            this.isAlive=false;
+            this.setIsAlive(false);
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
             statistiche.regenHealthTo(100);
         }
-        return this.isAlive;
+        return this.isAlive();
     }
 
 

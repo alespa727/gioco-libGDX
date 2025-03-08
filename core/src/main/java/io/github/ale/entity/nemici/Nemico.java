@@ -1,6 +1,7 @@
 package io.github.ale.entity.nemici;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -8,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.Azioni;
 import io.github.ale.ComandiAzioni;
-import io.github.ale.entity.Direzione;
+import io.github.ale.entity.abstractEnity.Direzione;
 import io.github.ale.entity.abstractEnity.Entity;
 import io.github.ale.entity.abstractEnity.movement.EntityMovementManager;
 import io.github.ale.entity.player.Player;
@@ -36,20 +37,19 @@ public final class Nemico extends Entity{
      */
     @Override
     protected void create() {
-        isAlive = true;
 
-        setX(8f);
-        setY(8f);
-
-        setStatistiche(100, 1.5f, 10);
+        inizializzaCoordinate(8f, 8f);
 
         setTexture("Finn.png");
+        
         hitbox = new Rectangle(getX(), getY(), 0.65f, 0.4f);
         range = new Rectangle(getX(), getY(), 2f, 2f);
         direzione = new Direzione();
         movement = new EntityMovementManager();
         inRange = false;
 
+        setStati(true, false, false);
+        setStatistiche(100, 1.5f, 10);
         setDirezione("fermoS");
         animation = getTexture().setAnimazione(direzione);
     }
@@ -78,7 +78,7 @@ public final class Nemico extends Entity{
     public void update(float delta, Player p) {
 
         if (followsPlayer) followsPlayer(p, delta);
-
+        
         movement.update(this);
         
         hitbox.x = getX() + 0.65f;
@@ -92,11 +92,13 @@ public final class Nemico extends Entity{
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
-    
-
 
     public void drawEnemyRange(ShapeRenderer renderer){
+        if (inRange) {
+            renderer.setColor(Color.BLUE);
+        }
         renderer.rect(range.x, range.y, range.width, range.height);
+        renderer.setColor(Color.BLACK);
     }
 
 

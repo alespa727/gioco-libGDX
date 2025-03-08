@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import io.github.ale.entity.Direzione;
+import io.github.ale.entity.abstractEnity.Direzione;
 
 public class TexturesEntity {
     private final Texture entity;

@@ -1,65 +1,79 @@
 package io.github.ale.entity.abstractEnity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
-import io.github.ale.entity.Direzione;
+import io.github.ale.entity.abstractEnity.state.EntityState;
 import io.github.ale.entity.abstractEnity.stats.Health;
 import io.github.ale.entity.abstractEnity.stats.Stats;
 import io.github.ale.entity.abstractEnity.texture.TexturesEntity;
 
-public abstract class Entity {
-    protected Rectangle hitbox;
+public abstract class Entity implements io.github.ale.interfaces.Drawable{
 
-    private float x;
-    private float y;
+    public float elapsedTime;
+
+    private Vector3 coordinate;
+
     public Direzione direzione;
-
-    private boolean isMoving;
 
     private TexturesEntity texture;
 
     public Animation<TextureRegion> animation;
 
-    public float elapsedTime;
-
     public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
 
-    public boolean isAlive;
-
-    public boolean inCollisione;
+    private EntityState stati;
 
     public Stats statistiche;
 
-    public Health hp;
-
-    
+    protected Rectangle hitbox;
 
     protected abstract void create();
-    public abstract void draw(SpriteBatch batch);
     public abstract void drawHitbox(ShapeRenderer renderer);
 
-    public float getY() { return y; }
-    public void setY(float y) {this.y = y;}
+    public void inizializzaCoordinate(float x, float y){
+        coordinate = new Vector3(x, y, 0);
+    }
 
-    public float getX() { return x; }
-    public void setX(float x) { this.x = x; }
+    public float getY() { return coordinate.y; }
+    public void setY(float y) {this.coordinate.y = y;}
+
+    public float getX() { return coordinate.x; }
+    public void setX(float x) { this.coordinate.x = x; }
 
     public void setStatistiche(float hp, float speed, float attackdmg){ this.statistiche = new Stats(hp, speed, attackdmg); }
 
     public void setDirezione(String direzione){ this.direzione.setDirezione(direzione);}
     public String getDirezione(){ return this.direzione.getDirezione();}
 
-    public void setIsMoving( boolean isMoving){ this.isMoving = isMoving; }
-    public boolean getIsMoving(){ return this.isMoving; }
+    public void setIsMoving( boolean isMoving){ this.stati.setIsMoving(isMoving); }
 
+    public boolean isAlive(){ return stati.isAlive(); }
+    public boolean inCollisione(){ return stati.isInCollisione(); }
+    public boolean isMoving(){ return stati.isMoving(); }
 
+    public void setIsAlive(boolean isAlive){ stati.setIsAlive(isAlive); }
+    public void setInCollisione(boolean inCollisione){ stati.setInCollisione(inCollisione); }
+    public void setIsmoving(boolean isMoving){ stati.setIsMoving(isMoving);}
+
+    public Rectangle getHitbox(){ return this.hitbox; }
+
+    public Health getHealth() { return this.statistiche.getHealthObject(); } 
+
+    public void setStati(boolean isAlive, boolean inCollisione, boolean isMoving){
+        stati = new EntityState();
+        stati.setIsAlive(isAlive);
+        stati.setInCollisione(inCollisione); 
+        stati.setIsMoving(isMoving);
+    }
 
     public boolean checkIfDead(){
+
+        //DA IMPLEMENTARE
         return true;
     }
 
@@ -80,33 +94,6 @@ public abstract class Entity {
     public void setTexture(String path){
         texture = new TexturesEntity(path);
     }
+ 
 
-    public Health getHealth() {
-        return this.hp;
-    }
-
-    public Rectangle getHitbox(){
-        return this.hitbox;
-    }
-
-    public boolean getInCollisione(){
-        return inCollisione;
-    }
-
-    // Getters
-    public void setWorldX(float x) {
-        this.x = x;
-    }
-
-    public void setWorldY(float y) {
-        this.y = y;
-    }
-
-    public void setInCollisione(boolean state){
-        inCollisione = state;
-    }
-
-    
-
-    
 }

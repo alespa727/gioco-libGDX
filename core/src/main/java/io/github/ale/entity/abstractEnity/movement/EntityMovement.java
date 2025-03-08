@@ -37,15 +37,12 @@ public class EntityMovement {
     public static void spostaY(Entity entity, float y) {
 
         if (Math.abs(entity.getY() - y) > 0.1f) {
-
             aggiornaDirezioneY(entity, y);
             aggiornaCollisioni(entity);
             muoviAsseY(entity);
-
         } else {
-
+            entity.setInCollisione(false);
             setFermo(entity);
-
         }
     }
 
@@ -76,6 +73,10 @@ public class EntityMovement {
             }
         } else
             setFermo(entity);
+
+        if (collisioneX) {
+            entity.setInCollisione(true);
+        }
     }
 
     private static void muoviAsseY(Entity entity) {
@@ -89,6 +90,9 @@ public class EntityMovement {
             }
         } else
             setFermo(entity);
+        if (collisioneY) {
+            entity.setInCollisione(true);
+        }
     }
 
     private static void setFermo(Entity entity) {

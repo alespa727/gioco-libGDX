@@ -160,9 +160,9 @@ public class PlayerMovementManager {
 
     private void aggiornaStatoCollisione(Player p) {
         if (collisioneX)
-            p.inCollisione = true;
+            p.setInCollisione(true);
         if (collisioneY)
-            p.inCollisione = true;
+        p.setInCollisione(true);
     }
 
     private void muoviAsseX(Player p){
@@ -171,7 +171,7 @@ public class PlayerMovementManager {
                 p.setX(p.getX() - p.statistiche.getSpeed() * (float) elapsedTime);
             if (d)
                 p.setX(p.getX() + p.statistiche.getSpeed() * (float) elapsedTime);
-            p.inCollisione = false;
+            p.setInCollisione(false);
         }
     }
     private void muoviAsseY(Player p){
@@ -180,7 +180,7 @@ public class PlayerMovementManager {
                 p.setY(p.getY() - p.statistiche.getSpeed() * (float) elapsedTime);
             if (w)
                 p.setY(p.getY() + p.statistiche.getSpeed() * (float) elapsedTime);
-            p.inCollisione = false;
+            p.setInCollisione(false);
         }
     }
 }

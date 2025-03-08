@@ -17,6 +17,7 @@ public class Stats {
         this.baseSpeed = speed;
     }
 
+    public Health getHealthObject(){ return this.health; } 
     public float getHealth(){ return this.health.getHp(); } 
     public void regenHealth(float delta){ this.health.setHp(this.health.getHp()+delta);}
     public void regenHealthTo(float health){ this.health.setHp(health);}

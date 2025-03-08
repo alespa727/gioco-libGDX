@@ -22,8 +22,8 @@ public class MapManager {
         this.currentMapNum=startingMap;
         this.ambienteAperto=true;
         this.changeMap(camera);
-        p.setWorldX(6.5f);
-        p.setWorldY(5f);
+        p.setX(6.5f);
+        p.setY(5f);
         this.currentMap = new Map(camera, this.nome);
     }
 
@@ -68,8 +68,8 @@ public class MapManager {
         if (e) {
             if (!flag) {
                 changeMap(camera);
-                p.setWorldX(7.5f);
-                p.setWorldY(5f);
+                p.setX(7.5f);
+                p.setY(5f);
                 flag=true;
             }
         }
