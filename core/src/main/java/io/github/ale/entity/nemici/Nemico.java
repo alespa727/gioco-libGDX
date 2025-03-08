@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.Azioni;
 import io.github.ale.ComandiAzioni;
+import io.github.ale.entity.abstractEnity.Dimensioni;
 import io.github.ale.entity.abstractEnity.Entity;
 import io.github.ale.entity.abstractEnity.movement.EntityMovementManager;
 import io.github.ale.entity.player.Player;
@@ -50,6 +51,7 @@ public final class Nemico extends Entity{
         setStati(true, false, false);
         setStatistiche(100, 1.5f, 10);
         setDirezione("fermoS");
+        inizializzaDimensione(new Dimensioni(2f, 2f));
         inizializzaAnimazione();
     }
 
@@ -63,10 +65,7 @@ public final class Nemico extends Entity{
 
         setAnimation();
 
-        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox.width - hitbox.width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox.height - hitbox.height));
-
-        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), 2, 2);
+        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(), getSize().getHeight());
     }
 
     /**
@@ -79,7 +78,10 @@ public final class Nemico extends Entity{
         if (followsPlayer) followsPlayer(p, delta);
         
         movement.update(this);
-        
+
+        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox.width - hitbox.width));
+        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox.height - hitbox.height));
+
         hitbox.x = getX() + 0.65f;
         hitbox.y = getY() + 0.55f;
         range.x = getX();

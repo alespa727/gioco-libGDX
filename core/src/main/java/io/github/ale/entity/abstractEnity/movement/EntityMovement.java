@@ -46,22 +46,44 @@ public class EntityMovement {
         }
     }
 
+    /**
+     * decide la direzione da seguire in base alle coordinate da raggiungere
+     * @param entity
+     * @param y
+     */
     private static void aggiornaDirezioneX(Entity entity, float x) {
         if (entity.getX() < x) {
-            entity.setDirezione("D");
+            if (!entity.getDirezione().equals("D")) {
+                entity.setDirezione("D");
+            }
         } else {
-            entity.setDirezione("A");
+            if (!entity.getDirezione().equals("A")) {
+                entity.setDirezione("A");
+            }
         }
     }
 
+    /**
+     * decide la direzione da seguire in base alle coordinate da raggiungere
+     * @param entity
+     * @param y
+     */
     private static void aggiornaDirezioneY(Entity entity, float y) {
         if (entity.getY() < y) {
-            entity.setDirezione("W");
+            if (!entity.getDirezione().equals("W")) {
+                entity.setDirezione("W");
+            }
         } else {
-            entity.setDirezione("S");
+            if (!entity.getDirezione().equals("S")) {
+                entity.setDirezione("S");
+            }
         }
     }
 
+    /**
+     * autoesplicativa (cambia coordinate x in base a direzione)
+     * @param entity
+     */
     private static void muoviAsseX(Entity entity) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         if (!collisioneX) {
@@ -79,6 +101,10 @@ public class EntityMovement {
         }
     }
 
+    /**
+     * autoesplicativa (cambia coordinate y in base a direzione)
+     * @param entity
+     */
     private static void muoviAsseY(Entity entity) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         if (!collisioneY) {
@@ -95,6 +121,10 @@ public class EntityMovement {
         }
     }
 
+    /**
+     * setta direzione e variabile di stato a fermo
+     * @param entity
+     */
     private static void setFermo(Entity entity) {
         if (!entity.getDirezione().contains("fermo")) {
             entity.setDirezione("fermo".concat(entity.getDirezione()));
@@ -120,6 +150,11 @@ public class EntityMovement {
 
     }
 
+    
+     /**
+      * aggiorna le collisioni
+      * @param entity
+      */
     private static void aggiornaCollisioni(Entity entity) {
         collisioneY = Map.checkCollisionY(entity);
         collisioneX = Map.checkCollisionX(entity);

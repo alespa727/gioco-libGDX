@@ -159,7 +159,6 @@ public class Main implements ApplicationListener {
      */
 
     public void drawOggetti(){
-
         batch.begin();
         if (player.getY() > enemy.getY()) {
             player.draw(batch);

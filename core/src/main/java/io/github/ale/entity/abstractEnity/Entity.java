@@ -19,7 +19,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
     private Direzione direzione;
 
     private TexturesEntity texture;
-    private  Animation<TextureRegion> animation;
+    private Animation<TextureRegion> animation;
 
     public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
@@ -28,6 +28,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
     public Stats statistiche;
 
     protected Rectangle hitbox;
+    private Dimensioni size;
 
     protected abstract void create();
     public abstract void drawHitbox(ShapeRenderer renderer);
@@ -47,6 +48,10 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
     public void inizializzaDirezione(String direzione){ 
         this.direzione = new Direzione();
         this.direzione.setDirezione(direzione);
+    }
+
+    public void inizializzaDimensione(Dimensioni size){
+        this.size = size;
     }
 
     public void setDirezione(String direzione){ this.direzione.setDirezione(direzione);}
@@ -104,6 +109,14 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable{
 
     public void setTexture(String path){
         texture = new TexturesEntity(path);
+    }
+
+    public Dimensioni getSize() {
+        return size;
+    }
+
+    public void setSize(Dimensioni size) {
+        this.size = size;
     }
  
 

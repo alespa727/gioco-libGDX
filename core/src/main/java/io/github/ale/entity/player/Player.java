@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
+import io.github.ale.entity.abstractEnity.Dimensioni;
 import io.github.ale.entity.abstractEnity.Entity;
 import io.github.ale.maps.Map;
 
@@ -33,6 +34,7 @@ public class Player extends Entity{
         setStati(true, false, false);
         setStatistiche(100, 2.5f, 10);
         inizializzaAnimazione();
+        inizializzaDimensione(new Dimensioni(2f, 2f));
         movement = new PlayerMovementManager();
     }
 
@@ -46,12 +48,7 @@ public class Player extends Entity{
 
         setAnimation();
 
-
-        setX(MathUtils.clamp(getX(), 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width));
-        setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-hitbox.height*4f));
-        
-        
-        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), 2, 2);
+        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(), getSize().getHeight());
     }
 
     /**
@@ -74,10 +71,12 @@ public class Player extends Entity{
     public void update() {
         movement.update(this);
         
+        setX(MathUtils.clamp(getX(), 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width));
+        setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-hitbox.height*4f));
+
         hitbox.x = getX()+0.65f;
         hitbox.y = getY()+0.55f;
 
-      
         checkIfDead();
     }
 
