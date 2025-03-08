@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import io.github.ale.Azioni;
 import io.github.ale.ComandiAzioni;
 import io.github.ale.entity.Direzione;
-import io.github.ale.entity.Entity;
-import io.github.ale.entity.Health;
+import io.github.ale.entity.abstractEnity.Entity;
+import io.github.ale.entity.abstractEnity.stats.Health;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 
@@ -31,7 +31,7 @@ public final class Nemico extends Entity{
     EnemyMovementManager movement;
 
     public Nemico() {
-        this.speed = baseSpeed * delta;
+        this.speed = baseSpeed * speedMultiplier;
         this.attackDamage = baseAttackDamage * attackMultiplier;
         create();
     }
@@ -47,7 +47,7 @@ public final class Nemico extends Entity{
         setY(8f);
 
         baseSpeed = 1.5f;
-        delta = 1f;
+        speedMultiplier = 1f;
         baseAttackDamage = 10;
         attackMultiplier = 1f;
 

@@ -41,14 +41,14 @@ public class PlayerMovementManager {
 
         if (shift) {
             // System.out.println("SPRINT!");
-            p.delta = 1.5f;
-            p.speed = p.baseSpeed * p.delta;
+            p.speedMultiplier = 1.5f;
+            p.speed = p.baseSpeed * p.speedMultiplier;
         }
 
         if (!shift) {
             // System.out.println("NIENTE SPRINT");
-            p.delta = 1f;
-            p.speed = p.baseSpeed * p.delta;
+            p.speedMultiplier = 1f;
+            p.speed = p.baseSpeed * p.speedMultiplier;
         }
     }
 

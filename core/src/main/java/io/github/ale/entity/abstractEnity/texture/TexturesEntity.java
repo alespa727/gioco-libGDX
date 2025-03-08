@@ -1,8 +1,10 @@
-package io.github.ale.entity;
+package io.github.ale.entity.abstractEnity.texture;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+import io.github.ale.entity.Direzione;
 
 public class TexturesEntity {
     private final Texture entity;

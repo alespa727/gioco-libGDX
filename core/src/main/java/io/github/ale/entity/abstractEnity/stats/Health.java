@@ -1,4 +1,4 @@
-package io.github.ale.entity;
+package io.github.ale.entity.abstractEnity.stats;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Health {
     private float hp;
     private final Texture vita;
-    public Health(int hp){
+    public Health(float hp){
         this.hp = hp;
         vita = new Texture("healthbar.png");
     }

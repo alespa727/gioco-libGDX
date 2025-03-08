@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.entity.Direzione;
-import io.github.ale.entity.Entity;
-import io.github.ale.entity.Health;
+import io.github.ale.entity.abstractEnity.Entity;
+import io.github.ale.entity.abstractEnity.stats.Health;
 import io.github.ale.maps.Map;
 
 public class Player extends Entity{
@@ -18,7 +18,7 @@ public class Player extends Entity{
 
     // Costruttore
     public Player() {
-        this.speed = baseSpeed*delta;
+        this.speed = baseSpeed*speedMultiplier;
         create();
     }
 
@@ -36,7 +36,7 @@ public class Player extends Entity{
         baseAttackDamage = 10;
         attackMultiplier = 1f;
         baseSpeed = 2.5f;
-        delta = 1f;
+        speedMultiplier = 1f;
 
         movement = new PlayerMovementManager();
         hp = new Health(100);
