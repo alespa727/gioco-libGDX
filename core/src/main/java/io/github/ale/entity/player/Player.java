@@ -18,7 +18,6 @@ public class Player extends Entity{
 
     // Costruttore
     public Player() {
-        this.speed = baseSpeed*speedMultiplier;
         create();
     }
 
@@ -33,10 +32,7 @@ public class Player extends Entity{
         setX(5f);
         setY(5f);
 
-        baseAttackDamage = 10;
-        attackMultiplier = 1f;
-        baseSpeed = 2.5f;
-        speedMultiplier = 1f;
+        setStatistiche(100, 2.5f, 10);
 
         movement = new PlayerMovementManager();
         hp = new Health(100);
@@ -101,11 +97,11 @@ public class Player extends Entity{
     @Override
     public boolean checkIfDead() {
         // Logica per controllare se il giocatore è morto
-        if (hp.getHp() <= 0) {
+        if (statistiche.getHealth() <= 0) {
             this.isAlive=false;
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
-            hp.setHp(100);
+            statistiche.regenHealthTo(100);
         }
         return this.isAlive;
     }

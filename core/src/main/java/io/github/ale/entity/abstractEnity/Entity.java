@@ -18,6 +18,8 @@ public abstract class Entity {
     private float y;
     public Direzione direzione;
 
+    private boolean isMoving;
+
     private TexturesEntity texture;
 
     public Animation<TextureRegion> animation;
@@ -31,20 +33,9 @@ public abstract class Entity {
 
     public boolean inCollisione;
 
-    Stats statistiche;
+    public Stats statistiche;
 
     public Health hp;
-
-    
-
-    public float baseAttackDamage = 10;
-    public float attackMultiplier = 1f;
-    public float attackDamage;
-
-   
-    public float baseSpeed=1.5f;
-    public float speedMultiplier = 1f;
-    public float speed;
 
     
 
@@ -57,6 +48,16 @@ public abstract class Entity {
 
     public float getX() { return x; }
     public void setX(float x) { this.x = x; }
+
+    public void setStatistiche(float hp, float speed, float attackdmg){ this.statistiche = new Stats(hp, speed, attackdmg); }
+
+    public void setDirezione(String direzione){ this.direzione.setDirezione(direzione);}
+    public String getDirezione(){ return this.direzione.getDirezione();}
+
+    public void setIsMoving( boolean isMoving){ this.isMoving = isMoving; }
+    public boolean getIsMoving(){ return this.isMoving; }
+
+
 
     public boolean checkIfDead(){
         return true;

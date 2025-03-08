@@ -1,17 +1,18 @@
-package io.github.ale.entity.nemici;
+package io.github.ale.entity.abstractEnity.movement;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import io.github.ale.ComandiAzioni;
+import io.github.ale.entity.abstractEnity.Entity;
 
-public class EnemyMovementManager {
+public class EntityMovementManager {
 
     ArrayList<ComandiAzioni> azioni;
     boolean flag=false;
 
     int count=0;
-    public EnemyMovementManager(){
+    public EntityMovementManager(){
         azioni = new ArrayList<>();
     }
     /**
@@ -19,8 +20,8 @@ public class EnemyMovementManager {
      * @param p
      */
 
-    public void update(Nemico enemy){
-        movimento(enemy);
+    public void update(Entity entity){
+        movimento(entity);
     }
 
     public void updateAddAzione(ComandiAzioni[] azione){
@@ -31,30 +32,36 @@ public class EnemyMovementManager {
         azioni.clear();
     }
 
-    public void movimento(Nemico enemy){
+    public void movimento(Entity entity){
 
 
         if (azioni.isEmpty()) {
             return;
         }
-        
+
+        entity.setIsMoving(true);
+
         switch (azioni.get(count).getAzione()) {
-            case spostaX -> enemy.spostaX(azioni.get(count).getCoord());
-            case spostaY -> enemy.spostaY(azioni.get(count).getCoord());
-            case dashX -> enemy.dashX(azioni.get(count).getCoord());
-            case dashY -> enemy.dashY(azioni.get(count).getCoord());
+            case spostaX -> EntityMovement.spostaX(entity, azioni.get(count).getCoord());
+            case spostaY ->EntityMovement.spostaY(entity, azioni.get(count).getCoord());
+            case dashX -> EntityMovement.dashX(entity, azioni.get(count).getCoord());
+            case dashY -> EntityMovement.dashY(entity, azioni.get(count).getCoord());
             default -> {
             }
         }
+
         
         if (count==0 && !flag) {
             stampaAzioni();
             flag=true;
         }
 
-        if (enemy.getHasFinishedMoving() && count != azioni.size() - 1) {
-            count++;
-            stampaAzioni();
+        if (count != azioni.size() - 1) {
+            if (entity.getIsMoving()==false) {
+                count++;
+                stampaAzioni();
+            }
+            
         } 
  
     }

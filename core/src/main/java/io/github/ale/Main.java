@@ -93,7 +93,7 @@ public class Main implements ApplicationListener {
 
         maps.getMap().draw(camera);
 
-        //drawHitboxes();
+        drawHitboxes();
         drawOggetti();
         //drawHUD();
 
@@ -148,6 +148,7 @@ public class Main implements ApplicationListener {
             renderer.setColor(Color.RED);
         }else renderer.setColor(Color.BLACK);
         player.drawHitbox(renderer);
+        enemy.drawHitbox(renderer);
         enemy.drawEnemyRange(renderer);
         renderer.end();
 

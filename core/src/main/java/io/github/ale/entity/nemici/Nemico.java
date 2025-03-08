@@ -10,29 +10,24 @@ import io.github.ale.Azioni;
 import io.github.ale.ComandiAzioni;
 import io.github.ale.entity.Direzione;
 import io.github.ale.entity.abstractEnity.Entity;
-import io.github.ale.entity.abstractEnity.stats.Health;
+import io.github.ale.entity.abstractEnity.movement.EntityMovementManager;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 
 public final class Nemico extends Entity{
 
     private boolean inRange;
-    private boolean hasFinishedMoving;
-    private boolean isMovingX, isMovingY, isDashingX, isDashingY;
-
     private Rectangle range;
 
     public final boolean followsPlayer=true;
     public final boolean attacksPlayer=true;
 
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    private final float FOLLOWING_COOLDOWN = 0.2f;
+    private final float FOLLOWING_COOLDOWN = 4f;
 
-    EnemyMovementManager movement;
+    EntityMovementManager movement;
 
     public Nemico() {
-        this.speed = baseSpeed * speedMultiplier;
-        this.attackDamage = baseAttackDamage * attackMultiplier;
         create();
     }
 
@@ -42,24 +37,20 @@ public final class Nemico extends Entity{
     @Override
     protected void create() {
         isAlive = true;
-        hasFinishedMoving = true;
+
         setX(8f);
         setY(8f);
 
-        baseSpeed = 1.5f;
-        speedMultiplier = 1f;
-        baseAttackDamage = 10;
-        attackMultiplier = 1f;
+        setStatistiche(100, 1.5f, 10);
 
-        hp = new Health(100);
         setTexture("Finn.png");
         hitbox = new Rectangle(getX(), getY(), 0.65f, 0.4f);
         range = new Rectangle(getX(), getY(), 2f, 2f);
         direzione = new Direzione();
-        movement = new EnemyMovementManager();
+        movement = new EntityMovementManager();
         inRange = false;
 
-        direzione.setDirezione("fermoS");
+        setDirezione("fermoS");
         animation = getTexture().setAnimazione(direzione);
     }
 
@@ -99,29 +90,15 @@ public final class Nemico extends Entity{
 
     @Override
     public void drawHitbox(ShapeRenderer renderer){
-
+        renderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
     
-
-    // Getters
-    @Override
-    public void setWorldX(float x) {
-        setX(x);
-    }
-
-    @Override
-    public void setWorldY(float y) {
-        setY(y);
-    }
 
 
     public void drawEnemyRange(ShapeRenderer renderer){
         renderer.rect(range.x, range.y, range.width, range.height);
     }
 
-    public boolean getHasFinishedMoving(){
-        return hasFinishedMoving;
-    }
 
     private void attacksPlayer(Player p, float delta){
         if (cooldownAttack > 0) {
@@ -143,8 +120,8 @@ public final class Nemico extends Entity{
         if(cooldownFollowing <= 0){
             if (!inRange) {
                 ComandiAzioni[] comandi = new ComandiAzioni[2];
-                comandi[0] = new ComandiAzioni(Azioni.spostaY, p.getY());
-                comandi[1] = new ComandiAzioni(Azioni.spostaX, p.getX()+1);
+                comandi[1] = new ComandiAzioni(Azioni.spostaY, p.getY());
+                comandi[0] = new ComandiAzioni(Azioni.spostaX, p.getX()+1);
                 movement.updateAddAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
            
@@ -162,21 +139,15 @@ public final class Nemico extends Entity{
         if (cooldownAttack <= 0) {
             
             System.out.println("Nemico attacca il giocatore!");
-            p.getHealth().setHp(p.getHealth().getHp()-attackDamage);
-            System.out.println(p.getHealth().getHp());
+
+            p.statistiche.inflictDamage(statistiche.getAttackDamage());
+            System.out.println(p.statistiche.getHealth());
         
             cooldownAttack = ATTACK_COOLDOWN;
         }
     }
     
-    /**
-     * setta l'animazione attuale da utilizzare
-     */
-    @Override
-    public void setAnimation() {
-        animation = getTexture().setAnimazione(direzione);
-    }
-
+  
     /**
      * controlla se il player è nel range attacco
      */
@@ -189,152 +160,5 @@ public final class Nemico extends Entity{
             inRange = false;
     }
     
-    /**
-     * cambia il moltiplicatore d'attacco
-     * @param attackMultiplier
-     */
-    public void setAttackMultiplier(float attackMultiplier) {
-        this.attackMultiplier = attackMultiplier;
-        this.attackDamage = this.baseAttackDamage * this.attackMultiplier;
-    }
-
-    /**
-     * sposta il nemico nella casella specificata dell'asse x
-     * @param x
-     */
-    public void spostaX(float x) {
-        if (isMovingY || isDashingY || isDashingX)
-            return;
-
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        if (Math.abs(getX() - x) > 0.1f) {
-            if (getX() < x) {
-                setX(getX() + speed * deltaTime);
-                direzione.setDirezione("D");
-                hasFinishedMoving = false;
-                isMovingX = true;
-            } else {
-                setX(getX() - speed * deltaTime);
-                direzione.setDirezione("A");
-                hasFinishedMoving = false;
-                isMovingX = true;
-            }
-        } else {
-            setX(x);
-            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
-            hasFinishedMoving = true;
-            isMovingX = false;
-        }
-
-    }
-
-    /**
-     * sposta il nemico nella casella specificata dell'asse y
-     * @param x
-     */
-    public void spostaY(float y) {
-        if (isMovingX || isDashingY || isDashingX)
-            return;
-
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        if (Math.abs(getY() - y) > 0.1f) {
-            isMovingY = true;
-
-            if (getY() < y) {
-                setY(getY() + speed * deltaTime);
-                direzione.setDirezione("W");
-            } else {
-                setY(getY() - speed * deltaTime);
-                direzione.setDirezione("S");
-            }
-
-            hasFinishedMoving = false;
-        } else {
-            setY(y);
-            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
-            hasFinishedMoving = true;
-            isMovingY = false;
-        }
-
-    }
-
-    /**
-     * sposta il nemico con una "dash" nella casella specificata dell'asse x
-     * @param x
-     */
-    public void dashX(float x) {
-        if (isMovingX || isMovingY || isDashingY)
-            return;
-
-        float dashSpeed = 0.045f;
-        setX(getX() + (x - getX()) * dashSpeed);
-
-        // Controlla se il movimento è terminato
-        if (Math.abs(getX() - x) < 0.01f) {
-            setX(x);
-            hasFinishedMoving = true;
-        } else {
-            hasFinishedMoving = false;
-        }
-
-        // Imposta la direzione in base alla posizione attuale e alla destinazione
-        if (Math.abs(getX() - x) > 0.01f) {
-            if (getX() < x) {
-                direzione.setDirezione("D");
-                hasFinishedMoving = false;
-                isDashingX = true;
-            } else {
-                direzione.setDirezione("A");
-                hasFinishedMoving = false;
-                isDashingX = true;
-            }
-        } else {
-            setX(x);
-            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
-            hasFinishedMoving = true;
-            isDashingX = false;
-        }
-
-    }
-
-     /**
-     * sposta il nemico con una "dash" nella casella specificata dell'asse y
-     * @param x
-     */
-    public void dashY(float y) {
-        if (isMovingX || isMovingY || isDashingX)
-            return;
-
-        float dashSpeed = 0.045f;
-        setY(getY() + (y - getY()) * dashSpeed); 
-
-        
-        if (Math.abs(getY() - y) < 0.01f) {
-            setY(y);
-            hasFinishedMoving = true;
-        } else {
-            hasFinishedMoving = false;
-        }
-
-        
-        if (Math.abs(getY() - y) > 0.01f) {
-            if (getY() < y) {
-                direzione.setDirezione("W");
-                hasFinishedMoving = false;
-                isDashingY = true;
-            } else {
-                direzione.setDirezione("S");
-                hasFinishedMoving = false;
-                isDashingY = true;
-            }
-        } else {
-            setY(y);
-            direzione.setDirezione("fermo".concat(direzione.getDirezione()));
-            hasFinishedMoving = true;
-            isDashingY = false;
-        }
-
-    }
-
+    
 }

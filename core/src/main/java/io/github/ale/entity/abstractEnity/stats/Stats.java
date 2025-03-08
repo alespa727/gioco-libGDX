@@ -1,14 +1,14 @@
 package io.github.ale.entity.abstractEnity.stats;
 
 public class Stats {
-    private Health health;
+    private final Health health;
 
     private final float baseAttackDamage;
-    private float attackMultiplier;
+    private float attackMultiplier=1f;
     private float attackDamage;
 
     private final float baseSpeed;
-    private float speedMultiplier;
+    private float speedMultiplier=1f;
     private float speed;
     
     public Stats(float health, float speed, float attackdmg){
@@ -19,6 +19,7 @@ public class Stats {
 
     public float getHealth(){ return this.health.getHp(); } 
     public void regenHealth(float delta){ this.health.setHp(this.health.getHp()+delta);}
+    public void regenHealthTo(float health){ this.health.setHp(health);}
     public void inflictDamage(float delta){ this.health.setHp(this.health.getHp()-delta);}
 
     public void setAttackMultiplier( float attackMultiplier) { this.attackMultiplier = attackMultiplier; }

@@ -41,14 +41,13 @@ public class PlayerMovementManager {
 
         if (shift) {
             // System.out.println("SPRINT!");
-            p.speedMultiplier = 1.5f;
-            p.speed = p.baseSpeed * p.speedMultiplier;
+            p.statistiche.setSpeedMultiplier(1.5f);
+    
         }
 
         if (!shift) {
             // System.out.println("NIENTE SPRINT");
-            p.speedMultiplier = 1f;
-            p.speed = p.baseSpeed * p.speedMultiplier;
+            p.statistiche.setSpeedMultiplier(1f);
         }
     }
 
@@ -141,8 +140,8 @@ public class PlayerMovementManager {
     }
 
     private void aggiornaCollisioni(Player p) {
-        collisioneY = Map.checkCollisionY(p.direzione.getDirezione(), p);
-        collisioneX = Map.checkCollisionX(p.direzione.getDirezione(), p);
+        collisioneY = Map.checkCollisionY(p);
+        collisioneX = Map.checkCollisionX(p);
     }
 
     private void aggiornaDirezioneY(Player p) {
@@ -169,18 +168,18 @@ public class PlayerMovementManager {
     private void muoviAsseX(Player p){
         if (!collisioneX) {
             if (a)
-                p.setX(p.getX() - p.speed * (float) elapsedTime);
+                p.setX(p.getX() - p.statistiche.getSpeed() * (float) elapsedTime);
             if (d)
-                p.setX(p.getX() + p.speed * (float) elapsedTime);
+                p.setX(p.getX() + p.statistiche.getSpeed() * (float) elapsedTime);
             p.inCollisione = false;
         }
     }
     private void muoviAsseY(Player p){
         if (!collisioneY) {
             if (s)
-                p.setY(p.getY() - p.speed * (float) elapsedTime);
+                p.setY(p.getY() - p.statistiche.getSpeed() * (float) elapsedTime);
             if (w)
-                p.setY(p.getY() + p.speed * (float) elapsedTime);
+                p.setY(p.getY() + p.statistiche.getSpeed() * (float) elapsedTime);
             p.inCollisione = false;
         }
     }

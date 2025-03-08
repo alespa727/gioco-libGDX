@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.entity.player.Player;
+import io.github.ale.entity.abstractEnity.Entity;
 
 public class Map {
     private TiledMap map;
@@ -80,13 +80,13 @@ public class Map {
      * @param direzione
      * @return
      */
-    public static boolean checkCollisionY(String direzione, Player p){
+    public static boolean checkCollisionY(Entity entity){
         boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(p.getHitbox());
-        if (direzione.equals("W")) {
+        Rectangle hitbox = new Rectangle(entity.getHitbox());
+        if (entity.getDirezione().equals("W")) {
             hitbox.y+=1/16f;
         }
-        if (direzione.equals("S")) {
+        if (entity.getDirezione().equals("S")) {
             hitbox.y-=1/16f;
         }
 
@@ -105,13 +105,13 @@ public class Map {
      * @param direzione
      * @return
      */
-    public static boolean checkCollisionX(String direzione, Player p){
+    public static boolean checkCollisionX(Entity entity){
         boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(p.getHitbox());
-        if (direzione.equals("A")) {
+        Rectangle hitbox = new Rectangle(entity.getHitbox());
+        if (entity.getDirezione().equals("A")) {
             hitbox.x-=1/16f;
         }
-        if (direzione.equals("D")) {
+        if (entity.getDirezione().equals("D")) {
             hitbox.x+=1/16f;
         }
         for (int i = 0; i < width; i++) {
@@ -122,6 +122,31 @@ public class Map {
             }
         }
         //System.out.println(inCollision);
+        return inCollision;
+    }
+
+    /**
+     * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
+     * @param direzione
+     * @return
+     */
+    public static boolean checkCollisionX(Entity entity, float offset){
+        boolean inCollision=false;
+        Rectangle hitbox = new Rectangle(entity.getHitbox());
+        if (entity.getDirezione().equals("A")) {
+            hitbox.x-=offset;
+        }
+        if (entity.getDirezione().equals("D")) {
+            hitbox.x+=offset;
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision=true;
+                }
+            }
+        }
+        System.out.println(inCollision);
         return inCollision;
     }
 
