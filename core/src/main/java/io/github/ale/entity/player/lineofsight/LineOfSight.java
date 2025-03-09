@@ -1,4 +1,4 @@
-package io.github.ale.entity.player;
+package io.github.ale.entity.player.lineofsight;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

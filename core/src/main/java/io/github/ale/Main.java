@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.ale.camera.CameraStyles;
 import io.github.ale.entity.nemici.Nemico;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;

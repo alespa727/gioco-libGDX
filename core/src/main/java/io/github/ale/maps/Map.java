@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.entity.abstractEntity.Entity;
-import io.github.ale.entity.player.LineOfSight;
+import io.github.ale.entity.player.lineofsight.LineOfSight;
 
 public class Map {
     private TiledMap map;
