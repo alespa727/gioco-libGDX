@@ -12,7 +12,6 @@ import io.github.ale.entity.abstractEnity.graphics.EntityGraphics;
 import io.github.ale.entity.abstractEnity.state.Direzione;
 import io.github.ale.entity.abstractEnity.state.EntityState;
 import io.github.ale.entity.abstractEnity.stats.Stats;
-import io.github.ale.entity.abstractEnity.texture.TexturesEntity;
 import io.github.ale.interfaces.Creatable;
 
 public abstract class Entity implements io.github.ale.interfaces.Drawable, Creatable{
@@ -28,9 +27,6 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     private Direzione direzione;
     private Hitbox hitbox;
     private EntityGraphics graphics;
-    
-    private TexturesEntity texture;
-    private Animation<TextureRegion> animation;
 
     @Override
     public float getY() { return coordinate.y; }
@@ -40,134 +36,161 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     public float getX() { return coordinate.x; }
     public void setX(float x) { this.coordinate.x = x; }
 
+    @Override
+    public Dimensioni getSize() { return size; }
+    public void setSize(Dimensioni size) { this.size = size; }
 
+    @Override
+    public Animation<TextureRegion> getAnimazione() { return this.graphics.getAnimazione(); }
+
+    @Override
+    public void setAnimation() { this.graphics.setAnimation(this); }
+    /**
+     * Inizializza textures
+     */
+    public void inizializzaEntityGraphics(){
+        this.graphics = new EntityGraphics();
+    }
     
+    /**
+     * Inizializza le info dell'entita
+     * @param nome
+     * @param descrizione
+     */
     public void inizializzaInfo(String nome, String descrizione){
         this.info = new EntityInfo(nome, descrizione);
     }
 
+    /**
+     * inizializza le coordinate
+     * @param x
+     * @param y
+     */
     public void inizializzaCoordinate(float x, float y){
         coordinate = new Vector3(x, y, 0);
     }
 
-
-    public void setStatistiche(float hp, float speed, float attackdmg){ 
-        this.statistiche = new Stats(hp, speed, attackdmg); 
-    }
-
-    public void setDirezione(String direzione){ 
-        this.direzione.setDirezione(direzione);
-    }
-
-    public String getDirezione(){ 
-        return this.direzione.getDirezione();
-    }
-    
-    public boolean isAlive(){ 
-        return stati.isAlive(); 
-    }
-
-    public void setIsAlive(boolean isAlive){ 
-        stati.setIsAlive(isAlive);
-    }
-
-    public Rectangle getHitbox(){ 
-        return this.hitbox.getHitbox(); 
-    }
-
+    /**
+     * inizializza hitbox entità
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
     public void inizializzaHitbox(float x, float y, float width, float height){ 
         hitbox = new Hitbox(x, y, width, height);
     }
 
+    /**
+     * inizializza direzione entità
+     * @param direzione
+     */
     public void inizializzaDirezione(String direzione){ 
         this.direzione = new Direzione();
         this.direzione.setDirezione(direzione);
     }
     
+    /**
+     * inizializza stati entità
+     * @param isAlive
+     * @param inCollisione
+     * @param isMoving
+     */
     public void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving){
         stati = new EntityState();
         stati.setIsAlive(isAlive);
         stati.setInCollisione(inCollisione); 
         stati.setIsMoving(isMoving);
     }
-    
-    public Stats getStatistiche(){
-        return this.statistiche;
-    }
-    
-    
 
-    
+    /**
+     * inizializza animazione entità
+     */
+    public void inizializzaAnimazione() {
+        this.graphics.inizializzaAnimazione(this);
+     }
 
+    /**
+     * inizializza Dimensione della texture dell'entità
+     * @param size
+     */
     public void inizializzaDimensione(Dimensioni size){
         this.size = size;
     }
 
-    
-    public Direzione getDirezioneObject(){ return this.direzione;}
+    /**
+     * inizializza le statistiche basiche dell'entità
+     * @param hp
+     * @param speed
+     * @param attackdmg
+     */
+    public void inizializzaStatistiche(float hp, float speed, float attackdmg){ 
+        this.statistiche = new Stats(hp, speed, attackdmg); 
+    }
 
-    public void setIsMoving( boolean isMoving){ this.stati.setIsMoving(isMoving); }
+    /**
+     * setta la direzione
+     * @param direzione
+     */
+    public void setDirezione(String direzione){ 
+        this.direzione.setDirezione(direzione);
+    }
 
-    
-    public boolean inCollisione(){ return stati.isInCollisione(); }
-    public boolean isMoving(){ return stati.isMoving(); }
+    /**
+     * restituisce la direzione
+     * @return
+     */
+    public String getDirezione(){ 
+        return this.direzione.getDirezione();
+    }
 
-    
-    public void setInCollisione(boolean inCollisione){ stati.setInCollisione(inCollisione); }
-    public void setIsmoving(boolean isMoving){ stati.setIsMoving(isMoving);}
+    /**
+     * restituisce la stats
+     * @return
+     */
+    public Stats getStatistiche(){
+        return this.statistiche;
+    }
 
-
-    public boolean checkIfDead(){
-
-        //DA IMPLEMENTARE
-        return true;
+    /**
+     * restituisce la hitbox
+     * @return
+     */
+    public Rectangle getHitbox(){ 
+        return this.hitbox.getHitbox(); 
     }
 
     /**
      * setta l'animazione attuale da utilizzare
      */
 
-    @Override
-    public void setAnimation() {
-        if (animation == null || animation != texture.setAnimazione(getDirezione())) {
-            animation = texture.setAnimazione(getDirezione());
-        }
+    
+ 
+     public EntityState getStati(){
+        return stati;
     }
 
-    public void inizializzaAnimazione() {
-        animation = getTexture().setAnimazione(getDirezione());
-    }
-
-    @Override
-    public Animation<TextureRegion> getAnimazione() {
-        return animation;
-    }
-
-    public TexturesEntity getTexture(){
-        return texture;
-    }
-
-    public void setTexture(String path){
-        texture = new TexturesEntity(path);
-    }
-
-    public void setSize(Dimensioni size) {
-        this.size = size;
-    }
-
-    @Override
-    public Dimensioni getSize() {
-        return size;
-    }
-
+    /**
+     * restituisce nome entità
+     * @return
+     */
     public String getNome(){
         return this.info.getNome();
     }
 
+    /**
+     * restituisce descrizione
+     * @return
+     */
     public String getDescrizione(){
         return this.info.getDescrizione();
     }
 
+    /**
+     * restituisce oggetto contenente metodi delle texture
+     * @return
+     */
+    public EntityGraphics getEntityGraphics(){ return graphics; }
  
 
 }

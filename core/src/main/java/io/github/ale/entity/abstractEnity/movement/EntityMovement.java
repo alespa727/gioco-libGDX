@@ -22,7 +22,7 @@ public class EntityMovement {
             aggiornaCollisioni(entity);
             muoviAsseX(entity);
         } else {
-            entity.setInCollisione(false);
+            entity.getStati().setInCollisione(false);
             setFermo(entity);
         }
 
@@ -41,7 +41,7 @@ public class EntityMovement {
             aggiornaCollisioni(entity);
             muoviAsseY(entity);
         } else {
-            entity.setInCollisione(false);
+            entity.getStati().setInCollisione(false);
             setFermo(entity);
         }
     }
@@ -87,7 +87,7 @@ public class EntityMovement {
     private static void muoviAsseX(Entity entity) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         if (!collisioneX) {
-            entity.setInCollisione(false);
+            entity.getStati().setInCollisione(false);
             if (entity.getDirezione().equals("D")) {
                 entity.setX(entity.getX() + entity.getStatistiche().getSpeed() * deltaTime);
             } else {
@@ -97,7 +97,7 @@ public class EntityMovement {
             setFermo(entity);
 
         if (collisioneX) {
-            entity.setInCollisione(true);
+            entity.getStati().setInCollisione(true);
         }
     }
 
@@ -108,7 +108,7 @@ public class EntityMovement {
     private static void muoviAsseY(Entity entity) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         if (!collisioneY) {
-            entity.setInCollisione(false);
+            entity.getStati().setInCollisione(false);
             if (entity.getDirezione().equals("W")) {
                 entity.setY(entity.getY() + entity.getStatistiche().getSpeed() * deltaTime);
             } else {
@@ -117,7 +117,7 @@ public class EntityMovement {
         } else
             setFermo(entity);
         if (collisioneY) {
-            entity.setInCollisione(true);
+            entity.getStati().setInCollisione(true);
         }
     }
 
@@ -129,7 +129,7 @@ public class EntityMovement {
         if (!entity.getDirezione().contains("fermo")) {
             entity.setDirezione("fermo".concat(entity.getDirezione()));
         }
-        entity.setIsMoving(false);
+        entity.getStati().setIsMoving(false);
     }
 
     /**

@@ -35,10 +35,10 @@ public final class Nemico extends Entity{
      */
     @Override
     public final void create() {
-
+        inizializzaEntityGraphics();
         inizializzaCoordinate(8f, 8f);
 
-        setTexture("Finn.png");
+        getEntityGraphics().setTexture("Finn.png");
 
         inizializzaHitbox(getX(), getY(), 0.65f, 0.4f);
         range = new Rectangle(getX(), getY(), 2f, 2f);
@@ -47,7 +47,7 @@ public final class Nemico extends Entity{
         inRange = false;
 
         inizializzaStati(true, false, false);
-        setStatistiche(100, 1.5f, 10);
+        inizializzaStatistiche(100, 1.5f, 10);
         setDirezione("fermoS");
         inizializzaDimensione(new Dimensioni(2f, 2f));
         inizializzaAnimazione();

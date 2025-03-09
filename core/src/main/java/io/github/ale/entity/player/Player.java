@@ -23,14 +23,15 @@ public class Player extends Entity{
 
     @Override
     public final void create() {
+        inizializzaEntityGraphics();
         inizializzaCoordinate(5f, 5f);
 
-        setTexture("Finn.png");
+        getEntityGraphics().setTexture("Finn.png");
         inizializzaHitbox(getX(), getY(), 0.65f, 0.4f);
         inizializzaDirezione("fermoS");
 
         inizializzaStati(true, false, false);
-        setStatistiche(100, 2.5f, 10);
+        inizializzaStatistiche(100, 2.5f, 10);
         inizializzaAnimazione();
         inizializzaDimensione(new Dimensioni(2f, 2f));
         movement = new PlayerMovementManager();
@@ -44,7 +45,7 @@ public class Player extends Entity{
      */
     @Override
     public void drawHitbox(ShapeRenderer renderer) {
-        if (inCollisione()) {
+        if (getStati().inCollisione()) {
             renderer.setColor(Color.RED);
         }
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
@@ -71,15 +72,14 @@ public class Player extends Entity{
      * setta le animazioni del player a seconda della direzione
      */
 
-    @Override
     public boolean checkIfDead() {
         // Logica per controllare se il giocatore è morto
         if (getStatistiche().getHealth() <= 0) {
-            this.setIsAlive(false);
+            this.getStati().setIsAlive(false);
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
             getStatistiche().regenHealthTo(100);
         }
-        return this.isAlive();
+        return this.getStati().isAlive();
     }
 }

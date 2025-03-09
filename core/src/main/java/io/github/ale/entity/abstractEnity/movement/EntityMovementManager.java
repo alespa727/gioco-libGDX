@@ -38,7 +38,7 @@ public class EntityMovementManager {
             return;
         }
 
-        entity.setIsMoving(true);
+        entity.getStati().setIsMoving(true);
 
         switch (azioni.get(count).getAzione()) {
             case spostaX -> EntityMovement.spostaX(entity, azioni.get(count).getCoord());
@@ -56,7 +56,7 @@ public class EntityMovementManager {
         }
 
         if (count != azioni.size() - 1) {
-            if (entity.isMoving()==false) {
+            if (entity.getStati().isMoving()==false) {
                 count++;
                 stampaAzioni();
             }

@@ -13,7 +13,7 @@ public class EntityState {
         this.isAlive = isAlive;
     }
 
-    public boolean isInCollisione() {
+    public boolean inCollisione() {
         return inCollisione;
     }
 
