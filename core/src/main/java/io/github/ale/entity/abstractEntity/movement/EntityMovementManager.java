@@ -33,7 +33,19 @@ public class EntityMovementManager {
 
     public void clearAzioni(){
         azioni.clear();
+        count=0;
     }
+
+    public void addizioneAzioniCoordinate(){
+        for (int i = 0; i < azioni.size(); i++) {
+            for (int j = 0; j < azioni.size(); j++) {
+                if (azioni.get(i).getAzione().equals(azioni.get(j).getAzione())) {
+                    azioni.get(i).setCoord(azioni.get(j).getCoord());
+                }
+            }
+        }
+    }
+
 
     public void movimentoSuLista(Entity entity){
 
@@ -43,6 +55,8 @@ public class EntityMovementManager {
         }
 
         entity.getStati().setIsMoving(true);
+
+        addizioneAzioniCoordinate();
 
         switch (azioni.get(count).getAzione()) {
             case spostaX -> EntityMovement.spostaX(entity, azioni.get(count).getCoord());

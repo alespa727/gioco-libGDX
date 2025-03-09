@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.entity.abstractEntity.Entity;
+import io.github.ale.entity.player.LineOfSight;
 
 public class Map {
     private TiledMap map;
@@ -24,12 +25,14 @@ public class Map {
     private static Integer width;
     private static int height;
 
+    private static LineOfSight lineOfSight;
+
     public Map(OrthographicCamera camera, String name){
        
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
-
+        lineOfSight = new LineOfSight();
     }
 
     /**
@@ -74,6 +77,7 @@ public class Map {
             }
         }
         renderer.setColor(Color.BLACK);
+        lineOfSight.draw(renderer);
     }
     /**
      * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
@@ -156,7 +160,7 @@ public class Map {
 
     public void update(OrthographicCamera camera){
         mapRenderer.setView(camera);
-        mapRenderer.render();
+        mapRenderer.render();   
     }
 
     /**
@@ -173,6 +177,10 @@ public class Map {
     }
     public static int getHeight(){
         return height;
+    }
+
+    public static LineOfSight getLineOfSight() {
+        return lineOfSight;
     }
     
 

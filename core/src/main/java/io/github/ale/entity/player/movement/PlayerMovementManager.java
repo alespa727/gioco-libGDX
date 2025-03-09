@@ -66,8 +66,6 @@ public class PlayerMovementManager{
         a = keyH.a;
         d = keyH.d;
         
-        
-
         boolean oppostoY = w && s;
         boolean oppostoX = a && d;
         boolean anyKey = w || s || a || d;
@@ -88,7 +86,7 @@ public class PlayerMovementManager{
         switch (stato) {
             case OPPOSTOY -> {
                 addNotMoving(p);
-
+                
                 aggiornaDirezioneX(p);
                 aggiornaCollisioni(p);
 
@@ -159,6 +157,7 @@ public class PlayerMovementManager{
             p.setDirezione("A");
         if (d)
             p.setDirezione("D");
+
     }
 
     private void aggiornaStatoCollisione(Player p) {
@@ -173,13 +172,12 @@ public class PlayerMovementManager{
         if (!collisioneX) {
             float speed = p.getStatistiche().getSpeed();
             float x = p.getX();
+        
             if (a)
                 p.setX(x - speed * (float) elapsedTime);
             if (d)
                 p.setX(x + speed * (float) elapsedTime);
             p.getStati().setInCollisione(false);
-        }else{
-            addNotMoving(p);
         }
 
     }
@@ -188,13 +186,12 @@ public class PlayerMovementManager{
         if (!collisioneY) {
             float speed = p.getStatistiche().getSpeed();
             float y = p.getY();
+
             if (s)
                 p.setY(y - speed * (float) elapsedTime);
             if (w)
                 p.setY(y + speed * (float) elapsedTime);
             p.getStati().setInCollisione(false);
-        }else{
-            addNotMoving(p);
         }
 
     }

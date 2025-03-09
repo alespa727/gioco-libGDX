@@ -37,6 +37,7 @@ public class Player extends Entity{
         inizializzaStatistiche(100, 2.5f, 10);
         inizializzaAnimazione();
         inizializzaDimensione(new Dimensioni(2f, 2f));
+    
         movement = new PlayerMovementManager();
         entitymovement = new EntityMovementManager();
     }
@@ -72,6 +73,7 @@ public class Player extends Entity{
         getHitbox().y = getY()+0.55f;
 
         checkIfDead();
+        Map.getLineOfSight().update(this);
     }
 
     /**

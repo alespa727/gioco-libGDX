@@ -2,6 +2,7 @@ package io.github.ale.entity.nemici;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -18,11 +19,14 @@ public final class Nemico extends Entity{
     private boolean inRange;
     private Rectangle range;
 
-    public final boolean followsPlayer=true;
+    Circle tempPlayerCircle;
+    private Circle areaInseguimento;
+
+    public boolean inseguimentoPlayer;
     public final boolean attacksPlayer=true;
 
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    private final float FOLLOWING_COOLDOWN = 2f;
+    private final float FOLLOWING_COOLDOWN = 0.2f;
 
     EntityMovementManager movement;
 
@@ -35,6 +39,7 @@ public final class Nemico extends Entity{
      */
     @Override
     public final void create() {
+        inseguimentoPlayer=true;
         inizializzaEntityGraphics();
         inizializzaCoordinate(8f, 8f);
 
@@ -42,6 +47,7 @@ public final class Nemico extends Entity{
 
         inizializzaHitbox(getX(), getY(), 0.65f, 0.4f);
         range = new Rectangle(getX(), getY(), 2f, 2f);
+        
         inizializzaDirezione("fermoS");
         movement = new EntityMovementManager();
         inRange = false;
@@ -51,6 +57,7 @@ public final class Nemico extends Entity{
         setDirezione("fermoS");
         inizializzaDimensione(new Dimensioni(2f, 2f));
         inizializzaAnimazione();
+        areaInseguimento = new Circle(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, 4f);
     }
 
     /**
@@ -59,11 +66,10 @@ public final class Nemico extends Entity{
      * @param p
      */
     public void update(float delta, Player p) {
-
-        if (followsPlayer) followsPlayer(p, delta);
+        inArea(p);
         
-        movement.update(this);
-        
+        gestioneInseguimento(p, delta);
+       
         setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
         setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
 
@@ -72,7 +78,9 @@ public final class Nemico extends Entity{
         getHitbox().y = getY() + 0.55f;
         range.x = getX();
         range.y = getY();
-        if (attacksPlayer) attacksPlayer(p, delta);
+        areaInseguimento.x = getX()+getSize().getWidth()/2;
+        areaInseguimento.y = getY()+getSize().getHeight()/2;
+        if (attacksPlayer) attacksPlayer(delta);
     }
 
     @Override
@@ -85,15 +93,31 @@ public final class Nemico extends Entity{
             renderer.setColor(Color.BLUE);
         }
         renderer.rect(range.x, range.y, range.width, range.height);
+        if (inseguimentoPlayer) {
+            renderer.setColor(Color.VIOLET);
+        }
+        renderer.circle(areaInseguimento.x, areaInseguimento.y, areaInseguimento.radius, 100);
+        renderer.circle(tempPlayerCircle.x, tempPlayerCircle.y, tempPlayerCircle.radius, 100);
         renderer.setColor(Color.BLACK);
     }
 
 
-    private void attacksPlayer(Player p, float delta){
+    private void attacksPlayer(float delta){
         if (cooldownAttack > 0) {
             cooldownAttack -= delta;
         }
-        inAttackRange(p);
+    }
+
+    private void gestioneInseguimento(Player p, float delta){
+        if (inseguimentoPlayer){
+            movement.update(this);
+            followsPlayer(p, delta);
+        }else{
+            movement.clearAzioni();
+            if (!getDirezione().contains("fermo")) {
+                setDirezione("fermo" .concat(getDirezione())) ;
+            }
+        }
     }
 
     private void followsPlayer(Player p, float delta){
@@ -140,13 +164,16 @@ public final class Nemico extends Entity{
     /**
      * controlla se il player è nel range attacco
      */
-    private void inAttackRange(Player p) {
+    private void inArea(Player p) {
         Rectangle hitboxPlayer = p.getHitbox();
         if (range.overlaps(hitboxPlayer)) {
             inRange = true;
             attack(p);
         } else
             inRange = false;
+
+        tempPlayerCircle = new Circle(p.getX()+getSize().getWidth()/2, p.getY()+getSize().getHeight()/2, 0.5f);
+        inseguimentoPlayer = areaInseguimento.overlaps(tempPlayerCircle);
     }
     
     
