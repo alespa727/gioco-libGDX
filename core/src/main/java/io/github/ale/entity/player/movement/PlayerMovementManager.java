@@ -2,20 +2,23 @@ package io.github.ale.entity.player.movement;
 
 import com.badlogic.gdx.Gdx;
 
-import io.github.ale.entity.player.Player;
+import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.enums.StatiDiMovimento;
 import io.github.ale.maps.Map;
 
 public class PlayerMovementManager{
-    KeyHandlerPlayer keyH;
-    boolean w, s, a, d, shift;
-    double elapsedTime;
+    private KeyHandlerPlayer keyH;
+    private boolean w, s, a, d, shift;
+    private double elapsedTime;
 
-    boolean collisioneY;
-    boolean collisioneX;
+    private boolean collisioneY;
+    private boolean collisioneX;
 
-    StatiDiMovimento stato;
-    String lastDirezione;
+    private StatiDiMovimento stato;
+    private String lastDirezione;
+
+    private final float sprintSpeedMultiplier = 1.5f;
+    private final float baseSpeedMultiplier = 1f;
 
     public PlayerMovementManager() {
         keyH = new KeyHandlerPlayer();
@@ -27,9 +30,9 @@ public class PlayerMovementManager{
      * @param p
      */
     
-    public void update(Player p) {
+    public void update(Entity p) {
         keyH.input();
-        sprint(p);
+        speedMultiplier(p);
         movimento(p);
     }
 
@@ -37,20 +40,29 @@ public class PlayerMovementManager{
      * input sprint
      */
 
-    private void sprint(Player p) {
+    private void speedMultiplier(Entity p) {
         
         shift = keyH.shift;
 
+        boolean diagonale = (w && d) || (w && a) || (s && d) || (s && a);
+
+        float speed;
+
         if (shift) {
             // System.out.println("SPRINT!");
-            p.getStatistiche().setSpeedBuff(1.5f);
+            if (diagonale) speed = sprintSpeedMultiplier/1.41f;
+            else speed = sprintSpeedMultiplier;
+            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.2f);
     
         }
 
         if (!shift) {
+            if (diagonale) speed = baseSpeedMultiplier/1.41f;
+            else speed = baseSpeedMultiplier;
             // System.out.println("NIENTE SPRINT");
-            p.getStatistiche().setSpeedBuff(1f);
+            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.2f);
         }
+        System.out.println(p.getStatistiche().getSpeedBuff());
     }
 
     /**
@@ -58,7 +70,7 @@ public class PlayerMovementManager{
      * 
      * @param p
      */
-    private void movimento(Player p) {
+    private void movimento(Entity p) {
         elapsedTime = Gdx.graphics.getDeltaTime(); // moltiplicatore del movimento in base al framerate
         
         w = keyH.w;
@@ -134,25 +146,25 @@ public class PlayerMovementManager{
     
     }
 
-    private void addNotMoving(Player p){
+    private void addNotMoving(Entity p){
         if (!p.getDirezione().contains("fermo")) {
             p.setDirezione("fermo".concat(p.getDirezione()));
         }
     }
 
-    private void aggiornaCollisioni(Player p) {
+    private void aggiornaCollisioni(Entity p) {
         collisioneY = Map.checkCollisionY(p);
         collisioneX = Map.checkCollisionX(p);
     }
 
-    private void aggiornaDirezioneY(Player p) {
+    private void aggiornaDirezioneY(Entity p) {
         if (w)
             p.setDirezione("W");
         if (s)
             p.setDirezione("S");
     }
 
-    private void aggiornaDirezioneX(Player p) {
+    private void aggiornaDirezioneX(Entity p) {
         if (a)
             p.setDirezione("A");
         if (d)
@@ -160,14 +172,14 @@ public class PlayerMovementManager{
 
     }
 
-    private void aggiornaStatoCollisione(Player p) {
+    private void aggiornaStatoCollisione(Entity p) {
         if (collisioneX)
             p.getStati().setInCollisione(true);
         if (collisioneY)
             p.getStati().setInCollisione(true);
     }
 
-    private void muoviAsseX(Player p){
+    private void muoviAsseX(Entity p){
         
         if (!collisioneX) {
             float speed = p.getStatistiche().getSpeed();
@@ -181,7 +193,7 @@ public class PlayerMovementManager{
         }
 
     }
-    private void muoviAsseY(Player p){
+    private void muoviAsseY(Entity p){
 
         if (!collisioneY) {
             float speed = p.getStatistiche().getSpeed();

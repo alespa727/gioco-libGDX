@@ -32,5 +32,5 @@ public class Stats {
 
     public float getSpeed() { speed = speedMultiplier*baseSpeed; return speed; }
     public float getAttackDamage() { attackDamage = attackMultiplier * baseAttackDamage; return attackDamage; }
-
+    public float getSpeedBuff(){ return speedMultiplier;}
 }

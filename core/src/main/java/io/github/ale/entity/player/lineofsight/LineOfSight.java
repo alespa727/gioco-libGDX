@@ -16,7 +16,10 @@ public class LineOfSight {
     int mapHeight = Map.getHeight();
 
     public LineOfSight(){
+        mapWidth = Map.getWidth();
+        mapHeight = Map.getHeight();
         lineOfSightCircles = new Circle[mapWidth][mapHeight];
+        lineOfSight = new boolean[mapWidth][mapHeight];
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
                 lineOfSightCircles[i][j] = new Circle(i+0.5f, j+0.5f, 0.1f);
@@ -27,7 +30,10 @@ public class LineOfSight {
 
     public void update(Entity entity){
         if (mapWidth!=Map.getWidth() || mapWidth!=Map.getHeight()) {
+            mapWidth = Map.getWidth();
+            mapHeight = Map.getHeight();
             lineOfSightCircles = new Circle[mapWidth][mapHeight];
+            lineOfSight = new boolean[mapWidth][mapHeight];
             for (int i = 0; i < mapWidth; i++) {
                 for (int j = 0; j < mapHeight; j++) {
                     lineOfSightCircles[i][j] = new Circle(i+0.5f, j+0.5f, 0.1f);
