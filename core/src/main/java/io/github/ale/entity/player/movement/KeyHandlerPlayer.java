@@ -1,4 +1,4 @@
-package io.github.ale.entity.player;
+package io.github.ale.entity.player.movement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

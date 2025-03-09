@@ -1,17 +1,17 @@
-package io.github.ale.entity.abstractEnity;
+package io.github.ale.entity.abstractEntity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-import io.github.ale.entity.abstractEnity.caratteristiche.Dimensioni;
-import io.github.ale.entity.abstractEnity.caratteristiche.EntityInfo;
-import io.github.ale.entity.abstractEnity.caratteristiche.Hitbox;
-import io.github.ale.entity.abstractEnity.graphics.EntityGraphics;
-import io.github.ale.entity.abstractEnity.state.Direzione;
-import io.github.ale.entity.abstractEnity.state.EntityState;
-import io.github.ale.entity.abstractEnity.stats.Stats;
+import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
+import io.github.ale.entity.abstractEntity.caratteristiche.EntityInfo;
+import io.github.ale.entity.abstractEntity.caratteristiche.Hitbox;
+import io.github.ale.entity.abstractEntity.graphics.EntityGraphics;
+import io.github.ale.entity.abstractEntity.state.Direzione;
+import io.github.ale.entity.abstractEntity.state.EntityState;
+import io.github.ale.entity.abstractEntity.stats.Stats;
 import io.github.ale.interfaces.Creatable;
 
 public abstract class Entity implements io.github.ale.interfaces.Drawable, Creatable{

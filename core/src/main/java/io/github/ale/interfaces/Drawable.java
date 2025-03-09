@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import io.github.ale.entity.abstractEnity.caratteristiche.Dimensioni;
+import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
 
 public interface Drawable {
 

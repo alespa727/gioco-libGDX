@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.entity.abstractEnity.Entity;
+import io.github.ale.entity.abstractEntity.Entity;
 
 public class Map {
     private TiledMap map;

@@ -1,4 +1,4 @@
-package io.github.ale.entity.abstractEnity.state;
+package io.github.ale.entity.abstractEntity.state;
 
 public class Direzione {
     String direzione;

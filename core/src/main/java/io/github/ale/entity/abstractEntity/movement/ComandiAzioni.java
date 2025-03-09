@@ -1,4 +1,4 @@
-package io.github.ale.entity.abstractEnity.movement;
+package io.github.ale.entity.abstractEntity.movement;
 
 import io.github.ale.enums.Azioni;
 

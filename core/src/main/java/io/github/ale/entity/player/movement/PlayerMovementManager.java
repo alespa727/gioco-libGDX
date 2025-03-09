@@ -1,11 +1,12 @@
-package io.github.ale.entity.player;
+package io.github.ale.entity.player.movement;
 
 import com.badlogic.gdx.Gdx;
 
+import io.github.ale.entity.player.Player;
 import io.github.ale.enums.StatiDiMovimento;
 import io.github.ale.maps.Map;
 
-public class PlayerMovementManager {
+public class PlayerMovementManager{
     KeyHandlerPlayer keyH;
     boolean w, s, a, d, shift;
     double elapsedTime;
@@ -25,7 +26,7 @@ public class PlayerMovementManager {
      * 
      * @param p
      */
-
+    
     public void update(Player p) {
         keyH.input();
         sprint(p);
@@ -64,6 +65,8 @@ public class PlayerMovementManager {
         s = keyH.s;
         a = keyH.a;
         d = keyH.d;
+        
+        
 
         boolean oppostoY = w && s;
         boolean oppostoX = a && d;
@@ -162,7 +165,7 @@ public class PlayerMovementManager {
         if (collisioneX)
             p.getStati().setInCollisione(true);
         if (collisioneY)
-        p.getStati().setInCollisione(true);
+            p.getStati().setInCollisione(true);
     }
 
     private void muoviAsseX(Player p){
@@ -175,6 +178,8 @@ public class PlayerMovementManager {
             if (d)
                 p.setX(x + speed * (float) elapsedTime);
             p.getStati().setInCollisione(false);
+        }else{
+            addNotMoving(p);
         }
 
     }
@@ -188,6 +193,8 @@ public class PlayerMovementManager {
             if (w)
                 p.setY(y + speed * (float) elapsedTime);
             p.getStati().setInCollisione(false);
+        }else{
+            addNotMoving(p);
         }
 
     }

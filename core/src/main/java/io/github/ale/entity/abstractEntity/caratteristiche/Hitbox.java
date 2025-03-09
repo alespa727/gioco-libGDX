@@ -1,4 +1,4 @@
-package io.github.ale.entity.abstractEnity.caratteristiche;
+package io.github.ale.entity.abstractEntity.caratteristiche;
 
 import com.badlogic.gdx.math.Rectangle;
 

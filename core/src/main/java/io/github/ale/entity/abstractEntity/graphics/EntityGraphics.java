@@ -1,10 +1,10 @@
-package io.github.ale.entity.abstractEnity.graphics;
+package io.github.ale.entity.abstractEntity.graphics;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import io.github.ale.entity.abstractEnity.Entity;
-import io.github.ale.entity.abstractEnity.texture.TexturesEntity;
+import io.github.ale.entity.abstractEntity.Entity;
+import io.github.ale.entity.abstractEntity.texture.TexturesEntity;
 
 public class EntityGraphics {
     private TexturesEntity texture;

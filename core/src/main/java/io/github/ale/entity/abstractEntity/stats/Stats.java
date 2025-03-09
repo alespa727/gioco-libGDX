@@ -1,4 +1,4 @@
-package io.github.ale.entity.abstractEnity.stats;
+package io.github.ale.entity.abstractEntity.stats;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

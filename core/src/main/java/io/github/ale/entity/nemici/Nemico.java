@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.entity.abstractEnity.Entity;
-import io.github.ale.entity.abstractEnity.caratteristiche.Dimensioni;
-import io.github.ale.entity.abstractEnity.movement.ComandiAzioni;
-import io.github.ale.entity.abstractEnity.movement.EntityMovementManager;
+import io.github.ale.entity.abstractEntity.Entity;
+import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
+import io.github.ale.entity.abstractEntity.movement.ComandiAzioni;
+import io.github.ale.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.entity.player.Player;
 import io.github.ale.enums.Azioni;
 import io.github.ale.maps.Map;
@@ -22,7 +22,7 @@ public final class Nemico extends Entity{
     public final boolean attacksPlayer=true;
 
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    private final float FOLLOWING_COOLDOWN = 4f;
+    private final float FOLLOWING_COOLDOWN = 2f;
 
     EntityMovementManager movement;
 
@@ -111,7 +111,7 @@ public final class Nemico extends Entity{
                 ComandiAzioni[] comandi = new ComandiAzioni[2];
                 comandi[1] = new ComandiAzioni(Azioni.spostaY, p.getY());
                 comandi[0] = new ComandiAzioni(Azioni.spostaX, p.getX()+1);
-                movement.updateAddAzione(comandi);
+                movement.addAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
            
             }

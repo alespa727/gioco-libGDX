@@ -1,4 +1,4 @@
-package io.github.ale.entity.abstractEnity.caratteristiche;
+package io.github.ale.entity.abstractEntity.caratteristiche;
 
 public class Dimensioni {
     private final float width;

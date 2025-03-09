@@ -4,13 +4,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
-import io.github.ale.entity.abstractEnity.Entity;
-import io.github.ale.entity.abstractEnity.caratteristiche.Dimensioni;
+import io.github.ale.entity.abstractEntity.Entity;
+import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
+import io.github.ale.entity.abstractEntity.movement.EntityMovementManager;
+import io.github.ale.entity.player.movement.PlayerMovementManager;
 import io.github.ale.maps.Map;
 
 public class Player extends Entity{
     
     private PlayerMovementManager movement;
+    public EntityMovementManager entitymovement;
 
     // Costruttore
     public Player() {
@@ -35,6 +38,7 @@ public class Player extends Entity{
         inizializzaAnimazione();
         inizializzaDimensione(new Dimensioni(2f, 2f));
         movement = new PlayerMovementManager();
+        entitymovement = new EntityMovementManager();
     }
 
     
@@ -58,7 +62,9 @@ public class Player extends Entity{
     
     public void update() {
         movement.update(this);
-        
+        entitymovement.update(this);
+        entitymovement.clearAzioni();
+
         setX(MathUtils.clamp(getX(), 0-0.65f, Map.getWidth()-getHitbox().width-getHitbox().width));
         setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-getHitbox().height*4f));
 

@@ -1,17 +1,21 @@
-package io.github.ale.entity.abstractEnity.movement;
+package io.github.ale.entity.abstractEntity.movement;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import io.github.ale.entity.abstractEnity.Entity;
+import io.github.ale.entity.abstractEntity.Entity;
 
 public class EntityMovementManager {
 
-    ArrayList<ComandiAzioni> azioni;
-    boolean flag=false;
+    private ArrayList<ComandiAzioni> azioni;
+    private boolean flag=false;
 
-    int count=0;
+    private int count=0;
     public EntityMovementManager(){
+        inizializzaListaAzioni();
+    }
+
+    private void inizializzaListaAzioni(){
         azioni = new ArrayList<>();
     }
     /**
@@ -20,10 +24,10 @@ public class EntityMovementManager {
      */
 
     public void update(Entity entity){
-        movimento(entity);
+        movimentoSuLista(entity);
     }
 
-    public void updateAddAzione(ComandiAzioni[] azione){
+    public void addAzione(ComandiAzioni[] azione){
         Collections.addAll(azioni, azione);
     }
 
@@ -31,7 +35,7 @@ public class EntityMovementManager {
         azioni.clear();
     }
 
-    public void movimento(Entity entity){
+    public void movimentoSuLista(Entity entity){
 
 
         if (azioni.isEmpty()) {

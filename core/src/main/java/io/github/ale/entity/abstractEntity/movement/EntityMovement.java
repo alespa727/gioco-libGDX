@@ -1,8 +1,8 @@
-package io.github.ale.entity.abstractEnity.movement;
+package io.github.ale.entity.abstractEntity.movement;
 
 import com.badlogic.gdx.Gdx;
 
-import io.github.ale.entity.abstractEnity.Entity;
+import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.maps.Map;
 
 public class EntityMovement {
@@ -45,6 +45,7 @@ public class EntityMovement {
             setFermo(entity);
         }
     }
+
 
     /**
      * decide la direzione da seguire in base alle coordinate da raggiungere

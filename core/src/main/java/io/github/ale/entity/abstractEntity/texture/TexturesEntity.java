@@ -1,4 +1,4 @@
-package io.github.ale.entity.abstractEnity.texture;
+package io.github.ale.entity.abstractEntity.texture;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
