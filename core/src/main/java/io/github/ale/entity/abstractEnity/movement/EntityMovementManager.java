@@ -3,7 +3,6 @@ package io.github.ale.entity.abstractEnity.movement;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import io.github.ale.ComandiAzioni;
 import io.github.ale.entity.abstractEnity.Entity;
 
 public class EntityMovementManager {

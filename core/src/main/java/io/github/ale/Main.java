@@ -130,7 +130,7 @@ public class Main implements ApplicationListener {
     public void drawHUD(){
 
         hud.begin();
-        player.getHealth().draw(hud);
+        player.getStatistiche().drawHealth(hud);
         hud.end();
 
     }

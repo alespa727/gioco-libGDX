@@ -2,7 +2,7 @@ package io.github.ale.entity.player;
 
 import com.badlogic.gdx.Gdx;
 
-import io.github.ale.entity.abstractEnity.StatiDiMovimento;
+import io.github.ale.enums.StatiDiMovimento;
 import io.github.ale.maps.Map;
 
 public class PlayerMovementManager {
@@ -42,13 +42,13 @@ public class PlayerMovementManager {
 
         if (shift) {
             // System.out.println("SPRINT!");
-            p.statistiche.setSpeedMultiplier(1.5f);
+            p.getStatistiche().setSpeedBuff(1.5f);
     
         }
 
         if (!shift) {
             // System.out.println("NIENTE SPRINT");
-            p.statistiche.setSpeedMultiplier(1f);
+            p.getStatistiche().setSpeedBuff(1f);
         }
     }
 
@@ -166,21 +166,29 @@ public class PlayerMovementManager {
     }
 
     private void muoviAsseX(Player p){
+        
         if (!collisioneX) {
+            float speed = p.getStatistiche().getSpeed();
+            float x = p.getX();
             if (a)
-                p.setX(p.getX() - p.statistiche.getSpeed() * (float) elapsedTime);
+                p.setX(x - speed * (float) elapsedTime);
             if (d)
-                p.setX(p.getX() + p.statistiche.getSpeed() * (float) elapsedTime);
+                p.setX(x + speed * (float) elapsedTime);
             p.setInCollisione(false);
         }
+
     }
     private void muoviAsseY(Player p){
+
         if (!collisioneY) {
+            float speed = p.getStatistiche().getSpeed();
+            float y = p.getY();
             if (s)
-                p.setY(p.getY() - p.statistiche.getSpeed() * (float) elapsedTime);
+                p.setY(y - speed * (float) elapsedTime);
             if (w)
-                p.setY(p.getY() + p.statistiche.getSpeed() * (float) elapsedTime);
+                p.setY(y + speed * (float) elapsedTime);
             p.setInCollisione(false);
         }
+
     }
 }

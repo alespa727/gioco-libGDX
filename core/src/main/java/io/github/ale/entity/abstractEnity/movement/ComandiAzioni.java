@@ -1,8 +1,10 @@
-package io.github.ale;
+package io.github.ale.entity.abstractEnity.movement;
+
+import io.github.ale.enums.Azioni;
 
 public class ComandiAzioni {
-    Float coord;
-    Azioni azione;
+    private Float coord;
+    private Azioni azione;
 
 
     public ComandiAzioni(Azioni azione, Float coord){

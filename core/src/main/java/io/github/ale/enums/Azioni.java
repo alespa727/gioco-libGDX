@@ -1,4 +1,4 @@
-package io.github.ale;
+package io.github.ale.enums;
 
 public enum Azioni {
     spostaX,

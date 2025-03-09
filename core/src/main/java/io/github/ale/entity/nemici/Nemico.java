@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.ale.Azioni;
-import io.github.ale.ComandiAzioni;
-import io.github.ale.entity.abstractEnity.Dimensioni;
 import io.github.ale.entity.abstractEnity.Entity;
+import io.github.ale.entity.abstractEnity.caratteristiche.Dimensioni;
+import io.github.ale.entity.abstractEnity.movement.ComandiAzioni;
 import io.github.ale.entity.abstractEnity.movement.EntityMovementManager;
 import io.github.ale.entity.player.Player;
+import io.github.ale.enums.Azioni;
 import io.github.ale.maps.Map;
 
 public final class Nemico extends Entity{
@@ -46,7 +46,7 @@ public final class Nemico extends Entity{
         movement = new EntityMovementManager();
         inRange = false;
 
-        setStati(true, false, false);
+        inizializzaStati(true, false, false);
         setStatistiche(100, 1.5f, 10);
         setDirezione("fermoS");
         inizializzaDimensione(new Dimensioni(2f, 2f));
@@ -64,12 +64,12 @@ public final class Nemico extends Entity{
         
         movement.update(this);
         
-        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox.width - hitbox.width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox.height - hitbox.height));
+        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
+        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
 
         
-        hitbox.x = getX() + 0.65f;
-        hitbox.y = getY() + 0.55f;
+        getHitbox().x = getX() + 0.65f;
+        getHitbox().y = getY() + 0.55f;
         range.x = getX();
         range.y = getY();
         if (attacksPlayer) attacksPlayer(p, delta);
@@ -129,8 +129,8 @@ public final class Nemico extends Entity{
             
             System.out.println("Nemico attacca il giocatore!");
 
-            p.statistiche.inflictDamage(statistiche.getAttackDamage());
-            System.out.println(p.statistiche.getHealth());
+            p.getStatistiche().inflictDamage(getStatistiche().getAttackDamage());
+            System.out.println(p.getStatistiche().getHealth());
         
             cooldownAttack = ATTACK_COOLDOWN;
         }

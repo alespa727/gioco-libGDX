@@ -1,4 +1,4 @@
-package io.github.ale.entity.abstractEnity;
+package io.github.ale.enums;
 
 public enum StatiDiMovimento {
     W,

@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
-import io.github.ale.entity.abstractEnity.Dimensioni;
 import io.github.ale.entity.abstractEnity.Entity;
+import io.github.ale.entity.abstractEnity.caratteristiche.Dimensioni;
 import io.github.ale.maps.Map;
 
 public class Player extends Entity{
@@ -29,7 +29,7 @@ public class Player extends Entity{
         inizializzaHitbox(getX(), getY(), 0.65f, 0.4f);
         inizializzaDirezione("fermoS");
 
-        setStati(true, false, false);
+        inizializzaStati(true, false, false);
         setStatistiche(100, 2.5f, 10);
         inizializzaAnimazione();
         inizializzaDimensione(new Dimensioni(2f, 2f));
@@ -58,11 +58,11 @@ public class Player extends Entity{
     public void update() {
         movement.update(this);
         
-        setX(MathUtils.clamp(getX(), 0-0.65f, Map.getWidth()-hitbox.width-hitbox.width));
-        setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-hitbox.height*4f));
+        setX(MathUtils.clamp(getX(), 0-0.65f, Map.getWidth()-getHitbox().width-getHitbox().width));
+        setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-getHitbox().height*4f));
 
-        hitbox.x = getX()+0.65f;
-        hitbox.y = getY()+0.55f;
+        getHitbox().x = getX()+0.65f;
+        getHitbox().y = getY()+0.55f;
 
         checkIfDead();
     }
@@ -74,11 +74,11 @@ public class Player extends Entity{
     @Override
     public boolean checkIfDead() {
         // Logica per controllare se il giocatore è morto
-        if (statistiche.getHealth() <= 0) {
+        if (getStatistiche().getHealth() <= 0) {
             this.setIsAlive(false);
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
-            statistiche.regenHealthTo(100);
+            getStatistiche().regenHealthTo(100);
         }
         return this.isAlive();
     }

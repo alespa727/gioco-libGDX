@@ -1,5 +1,7 @@
 package io.github.ale.entity.abstractEnity.stats;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class Stats {
     private final Health health;
 
@@ -23,8 +25,10 @@ public class Stats {
     public void regenHealthTo(float health){ this.health.setHp(health);}
     public void inflictDamage(float delta){ this.health.setHp(this.health.getHp()-delta);}
 
-    public void setAttackMultiplier( float attackMultiplier) { this.attackMultiplier = attackMultiplier; }
-    public void setSpeedMultiplier( float speedMultiplier) { this.speedMultiplier = speedMultiplier; }
+    public void drawHealth(SpriteBatch hud){ this.health.draw(hud);}
+
+    public void setAttackDamageBuff( float attackMultiplier) { this.attackMultiplier = attackMultiplier; }
+    public void setSpeedBuff( float speedMultiplier) { this.speedMultiplier = speedMultiplier; }
 
     public float getSpeed() { speed = speedMultiplier*baseSpeed; return speed; }
     public float getAttackDamage() { attackDamage = attackMultiplier * baseAttackDamage; return attackDamage; }

@@ -89,9 +89,9 @@ public class EntityMovement {
         if (!collisioneX) {
             entity.setInCollisione(false);
             if (entity.getDirezione().equals("D")) {
-                entity.setX(entity.getX() + entity.statistiche.getSpeed() * deltaTime);
+                entity.setX(entity.getX() + entity.getStatistiche().getSpeed() * deltaTime);
             } else {
-                entity.setX(entity.getX() - entity.statistiche.getSpeed() * deltaTime);
+                entity.setX(entity.getX() - entity.getStatistiche().getSpeed() * deltaTime);
             }
         } else
             setFermo(entity);
@@ -110,9 +110,9 @@ public class EntityMovement {
         if (!collisioneY) {
             entity.setInCollisione(false);
             if (entity.getDirezione().equals("W")) {
-                entity.setY(entity.getY() + entity.statistiche.getSpeed() * deltaTime);
+                entity.setY(entity.getY() + entity.getStatistiche().getSpeed() * deltaTime);
             } else {
-                entity.setY(entity.getY() - entity.statistiche.getSpeed() * deltaTime);
+                entity.setY(entity.getY() - entity.getStatistiche().getSpeed() * deltaTime);
             }
         } else
             setFermo(entity);
