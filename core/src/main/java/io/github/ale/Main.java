@@ -34,6 +34,7 @@ public class Main implements ApplicationListener {
     private Nemico enemy;
     private Player player;
     
+    private MusicPlayer musicPlayer;
     
     @Override
     public void create() { 
@@ -234,6 +235,11 @@ public class Main implements ApplicationListener {
 
     public void updateMusic ()
     {
-        MusicPlayer player = new MusicPlayer(0);
+        if (musicPlayer != null)
+        {
+            musicPlayer.stopMusic();
+            musicPlayer = null;
+        }
+        musicPlayer = new MusicPlayer(0);
     }
 }
