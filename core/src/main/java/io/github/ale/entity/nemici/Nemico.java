@@ -147,7 +147,7 @@ public final class Nemico extends Entity{
         if(cooldownFollowing <= 0){
             if (!inRange) {
                 ComandiAzioni[] comandi = new ComandiAzioni[1];
-                comandi[0] = new ComandiAzioni(Azioni.sposta, p.getX()+1, p.getY());
+                comandi[0] = new ComandiAzioni(Azioni.sposta, p.getX(), p.getY());
                 movement.addAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
            
