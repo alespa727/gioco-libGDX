@@ -2,7 +2,6 @@ package io.github.ale;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +17,7 @@ import io.github.ale.entity.nemici.Nemico;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
+import io.github.ale.musicPlayer.MusicPlayer;
 
 public class Main implements ApplicationListener {
 
@@ -34,7 +34,6 @@ public class Main implements ApplicationListener {
     private Nemico enemy;
     private Player player;
     
-    public static Music music;
     
     @Override
     public void create() { 
@@ -47,7 +46,7 @@ public class Main implements ApplicationListener {
         inizializzaOggetti();
         inizializzaCamera();
         
-        music = Gdx.audio.newMusic(Gdx.files.internal("mymusic.mp3"));
+        updateMusic();
         maps = new MapManager(camera, player, 2); //map manager
     }
 
@@ -110,7 +109,6 @@ public class Main implements ApplicationListener {
     public void dispose() {
         batch.dispose();
         renderer.dispose();
-        music.dispose();
         hud.dispose();
     }
 
@@ -232,5 +230,10 @@ public class Main implements ApplicationListener {
         viewport = new FitViewport(32f, 18f, camera); //grandezza telecamera
         viewport.apply(); //applica cosa si vede
         
+    }
+
+    public void updateMusic ()
+    {
+        MusicPlayer player = new MusicPlayer(0);
     }
 }
