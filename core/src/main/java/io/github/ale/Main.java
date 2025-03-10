@@ -141,7 +141,7 @@ public class Main implements ApplicationListener {
      */
     public void drawHitboxes(){
         renderer.begin(ShapeType.Filled);
-        //maps.getMap().drawLineOfSight(renderer);
+        maps.getMap().drawLineOfSight(renderer);
         
         
         renderer.end();

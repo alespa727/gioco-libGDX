@@ -10,16 +10,16 @@ public class EntityMovement {
     private static boolean collisioneY;
     private static boolean collisioneX;
 
-    public static void sposta(Entity e, float x, float y){
+    public static void sposta(Entity e, float x, float y) {
         aggiornaDirezione(e, x, y);
         aggiornaCollisioni(e);
         muovi(e);
     }
 
-    private static void aggiornaDirezione(Entity e, float x, float y){
+    private static void aggiornaDirezione(Entity e, float x, float y) {
         e.getStatistiche().setSpeedBuff(1f);
-        if (Math.abs(e.getX() - x) > 0.3f && Math.abs(e.getY() - y) > 0.3f) {
-            e.getStatistiche().setSpeedBuff(1/1.41f);
+        if (Math.abs(e.getX() - x) > 0.5f && Math.abs(e.getY() - y) > 0.5f) {
+            e.getStatistiche().setSpeedBuff(1 / 1.41f);
             if (e.getX() < x && e.getY() > y) {
                 e.setDirezione("SD");
             }
@@ -27,18 +27,20 @@ public class EntityMovement {
                 e.setDirezione("SA");
             }
             if (e.getX() < x && e.getY() < y) {
-                
+
                 e.setDirezione("WD");
             }
             if (e.getX() > x && e.getY() < y) {
                 e.setDirezione("WA");
             }
-        }
-        else if (Math.abs(e.getX() - x) > 0.1f) aggiornaDirezioneX(e, x);
-        else if (Math.abs(e.getY() - y) > 0.1f) aggiornaDirezioneY(e, y);
-        else setFermo(e);
-        
-    }   
+        } else if (Math.abs(e.getX() - x) > 0.5f)
+            aggiornaDirezioneX(e, x);
+        else if (Math.abs(e.getY() - y) > 0.5f)
+            aggiornaDirezioneY(e, y);
+        else
+            setFermo(e);
+
+    }
 
     private static void muovi(Entity e) {
         float deltaTime = Gdx.graphics.getDeltaTime();
@@ -50,21 +52,30 @@ public class EntityMovement {
             } else if (e.getDirezione().equals("D") || e.getDirezione().equals("WD") || e.getDirezione().equals("SD")) {
                 e.setX(e.getX() + speed);
             }
-        }else setFermo(e);
-        
-       
+        }
+
         if (!collisioneY) {
             if (e.getDirezione().equals("W") || e.getDirezione().equals("WA") || e.getDirezione().equals("WD")) {
                 e.setY(e.getY() + speed);
             } else if (e.getDirezione().equals("S") || e.getDirezione().equals("SA") || e.getDirezione().equals("SD")) {
                 e.setY(e.getY() - speed);
             }
-        }else setFermo(e);
-    
+        }
+
+        
+        if (collisioneX) {
+            if (e.getDirezione().equals("D") || e.getDirezione().equals("A"))
+                setFermo(e);
+        }
+        if (collisioneY) {
+            if (e.getDirezione().equals("W") || e.getDirezione().equals("S"))
+                setFermo(e);
+        }
     }
 
     /**
      * decide la direzione da seguire in base alle coordinate da raggiungere
+     * 
      * @param entity
      * @param y
      */
@@ -82,6 +93,7 @@ public class EntityMovement {
 
     /**
      * decide la direzione da seguire in base alle coordinate da raggiungere
+     * 
      * @param entity
      * @param y
      */
@@ -99,6 +111,7 @@ public class EntityMovement {
 
     /**
      * setta direzione e variabile di stato a fermo
+     * 
      * @param entity
      */
     private static void setFermo(Entity entity) {
@@ -106,17 +119,17 @@ public class EntityMovement {
             entity.setDirezione("fermo".concat(entity.getDirezione()));
         }
         entity.getStati().setIsMoving(false);
-        
+
     }
-    
-     /**
-      * aggiorna le collisioni
-      * @param entity
-      */
+
+    /**
+     * aggiorna le collisioni
+     * 
+     * @param entity
+     */
     private static void aggiornaCollisioni(Entity entity) {
         collisioneY = Map.checkCollisionY(entity);
         collisioneX = Map.checkCollisionX(entity);
     }
-
 
 }

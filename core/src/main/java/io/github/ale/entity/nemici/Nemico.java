@@ -102,7 +102,10 @@ public final class Nemico extends Entity{
     @Override
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
-        renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
+        if (pursuing) {
+            renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
+        }
+        
     }
 
     public void drawEnemyRange(ShapeRenderer renderer){
@@ -110,7 +113,7 @@ public final class Nemico extends Entity{
             renderer.setColor(Color.BLUE);
         }
         renderer.rect(range.x, range.y, range.width, range.height);
-        if (inAreaInseguimento) {
+        if (pursuing) {
             renderer.setColor(Color.VIOLET);
         }
         renderer.circle(areaInseguimento.x, areaInseguimento.y, areaInseguimento.radius, 100);
@@ -191,7 +194,7 @@ public final class Nemico extends Entity{
 
         if (inAreaInseguimento) {
             pursuing = !Map.checkLineCollision(new Vector2(linea.a.x, linea.a.y), new Vector2(linea.b.x, linea.b.y));
-        }
+        }else pursuing = false;
 
     }
     
