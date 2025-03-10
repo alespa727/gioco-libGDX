@@ -100,7 +100,7 @@ public class Map {
 
     public void drawLineOfSight(ShapeRenderer renderer){
         renderer.setColor(Color.BLACK);
-        lineOfSight.draw(renderer);
+        //lineOfSight.draw(renderer);
     }
 
     public static int getWidth(){

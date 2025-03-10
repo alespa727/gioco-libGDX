@@ -194,8 +194,9 @@ public final class Nemico extends Entity{
 
         if (inAreaInseguimento) {
             pursuing = !Map.checkLineCollision(new Vector2(linea.a.x, linea.a.y), new Vector2(linea.b.x, linea.b.y));
+            
         }else pursuing = false;
 
-    }
+    } 
     
 }
