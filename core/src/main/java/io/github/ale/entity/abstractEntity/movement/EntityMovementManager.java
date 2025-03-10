@@ -53,8 +53,6 @@ public class EntityMovementManager {
         entity.getStati().setIsMoving(true);
 
         addizioneAzioniCoordinate();
-        System.out.println(azioni.get(count).getX());
-
 
         switch (azioni.get(count).getAzione()) {
             case sposta -> EntityMovement.sposta(entity, azioni.get(count).getX(), azioni.get(count).getY());

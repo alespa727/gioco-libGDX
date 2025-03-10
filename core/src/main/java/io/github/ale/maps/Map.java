@@ -133,10 +133,10 @@ public class Map {
     public static boolean checkCollisionX(Entity entity){
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.getHitbox());
-        if (entity.getDirezione().equals("A")) {
+        if (entity.getDirezione().contains("A")) {
             hitbox.x-=1/16f;
         }
-        if (entity.getDirezione().equals("D")) {
+        if (entity.getDirezione().contains("D")) {
             hitbox.x+=1/16f;
         }
         for (int i = 0; i < width; i++) {
@@ -158,10 +158,10 @@ public class Map {
     public static boolean checkCollisionY(Entity entity){
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.getHitbox());
-        if (entity.getDirezione().equals("W")) {
+        if (entity.getDirezione().contains("W")) {
             hitbox.y+=1/16f;
         }
-        if (entity.getDirezione().equals("S")) {
+        if (entity.getDirezione().contains("S")) {
             hitbox.y-=1/16f;
         }
 
