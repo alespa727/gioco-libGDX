@@ -17,7 +17,6 @@ import io.github.ale.entity.nemici.Nemico;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
-import io.github.ale.musicPlayer.MusicPlayer;
 
 public class Main implements ApplicationListener {
 
@@ -34,8 +33,6 @@ public class Main implements ApplicationListener {
     private Nemico enemy;
     private Player player;
     
-    private MusicPlayer musicPlayer;
-    
     @Override
     public void create() { 
         
@@ -47,7 +44,6 @@ public class Main implements ApplicationListener {
         inizializzaOggetti();
         inizializzaCamera();
         
-        updateMusic();
         maps = new MapManager(camera, player, 2); //map manager
     }
 
@@ -233,13 +229,4 @@ public class Main implements ApplicationListener {
         
     }
 
-    public void updateMusic ()
-    {
-        if (musicPlayer != null)
-        {
-            musicPlayer.stopMusic();
-            musicPlayer = null;
-        }
-        musicPlayer = new MusicPlayer(0);
-    }
 }

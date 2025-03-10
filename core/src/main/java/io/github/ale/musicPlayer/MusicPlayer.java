@@ -1,35 +1,59 @@
 package io.github.ale.musicPlayer;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.utils.ArrayMap;
 
 public class MusicPlayer {
-    private FileHandle audioSong;
-    private String songPath[];
+    private final ArrayMap<String, Music> playlist;
 
-    public MusicPlayer(int index) {
-        songPath = new String[] 
-        {
-                "assets/mymusic.mp3",
-        };
-        Init(index);
+    public MusicPlayer(String path) {
+        playlist = new ArrayMap<>(5);
+        playlist.put(path, Gdx.audio.newMusic(Gdx.files.internal(path)));
     }
 
-    private void Init (int index)
-    {
-        audioSong = new FileHandle(songPath[index]);
-        try {
-            Gdx.audio.newMusic(audioSong).play();
-            System.out.println("Music started");
-        } catch (GdxRuntimeException e) {
-            e.printStackTrace();
+    public void add(String path){
+        playlist.put(path, Gdx.audio.newMusic(Gdx.files.internal(path)));
+    }
+
+    public void play(String path){
+        playlist.get(path).play();
+    }
+
+    public void play(int index){
+        playlist.getValueAt(index).play();
+    }
+
+    public void pause(String path){
+        playlist.get(path).pause();
+    }
+
+    public void stop(String path){
+        for (int i = 0; i < playlist.size; i++) {
+            playlist.getValueAt(i).pause();
         }
     }
 
-    public void stopMusic() {
-        Gdx.audio.newMusic(audioSong).stop();
-        audioSong = null;
-        Gdx.app.log("MusicPlayer", "Music stopped");
+    public void setLooping(String path, boolean looping){
+        playlist.get(path).setLooping(looping);
     }
+
+    public void setLooping(int index, boolean looping){
+        playlist.getValueAt(index).setLooping(looping);
+    }
+
+    public void setVolume(float volume){
+        for (int i = 0; i < playlist.size; i++) {
+            playlist.getValueAt(i).setVolume(volume);
+        }
+    }
+
+    public void emptyPlaylist(){
+        for (int i = 0; i < playlist.size; i++) {
+            playlist.getValueAt(i).dispose();
+        }
+        playlist.clear(5);
+    }
+
+
 }

@@ -5,13 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import io.github.ale.entity.player.Player;
+import io.github.ale.musicPlayer.MusicPlayer;
 
 public class MapManager {
     private Map currentMap;
     private int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
-
+    private MusicPlayer playlist;
     private final int totalMaps=2;
 
     boolean flag;
@@ -23,6 +24,10 @@ public class MapManager {
         this.changeMap(camera);
         p.setX(6.5f);
         p.setY(5f);
+        playlist = new MusicPlayer("mymusic.mp3");
+        playlist.play(0);
+        playlist.setVolume(0.1f);
+        playlist.setLooping(0, true);
         this.currentMap = new Map(camera, this.nome);
     }
 
@@ -35,6 +40,7 @@ public class MapManager {
     }
 
     private void changeMap(OrthographicCamera camera){  
+    
         System.out.println("Mappa: "+currentMapNum);
         switch (currentMapNum) {
             case 1 -> { nome = "map2"; 
