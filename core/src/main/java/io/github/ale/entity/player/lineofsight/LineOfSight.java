@@ -50,7 +50,6 @@ public class LineOfSight {
     public void update(Entity e) {
 
         if (mapWidth != Map.getWidth() || mapHeight != Map.getHeight()) {
-            System.err.println("AAAA");
             create();
         }
 

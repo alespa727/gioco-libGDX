@@ -44,7 +44,7 @@ public class Main implements ApplicationListener {
         inizializzaOggetti();
         inizializzaCamera();
         
-        maps = new MapManager(camera, player, 2); //map manager
+        maps = new MapManager(camera, player, 1); //map manager
     }
 
     @Override

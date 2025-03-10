@@ -50,7 +50,7 @@ public final class Nemico extends Entity{
     public final void create() {
         
         inizializzaEntityGraphics();
-        inizializzaCoordinate(9f, 9f);
+        inizializzaCoordinate(5f, 12f);
 
         getEntityGraphics().setTexture("Finn.png");
 
