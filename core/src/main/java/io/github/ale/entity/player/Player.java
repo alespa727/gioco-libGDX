@@ -62,6 +62,7 @@ public class Player extends Entity{
      */
     
     public void update() {
+        Map.getLineOfSight().update(this);
         movement.update(this);
         entitymovement.update(this);
         entitymovement.clearAzioni();
@@ -73,7 +74,6 @@ public class Player extends Entity{
         getHitbox().y = getY()+0.55f;
 
         checkIfDead();
-        Map.getLineOfSight().update(this);
     }
 
     /**

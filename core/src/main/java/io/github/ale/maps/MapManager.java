@@ -58,7 +58,7 @@ public class MapManager {
         currentMapNum++;
         currentMap = null;
         currentMap = new Map(camera, nome);
-        
+
     }
     
     /** 

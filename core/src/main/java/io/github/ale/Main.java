@@ -196,7 +196,7 @@ public class Main implements ApplicationListener {
             CameraStyles.lerpTo(camera, new Vector2(player.getX() + 2f / 2, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
             
-            viewport.setWorldSize(12f, 12f*9f/16f);
+            viewport.setWorldSize(15f, 15f*9f/16f);
             viewport.apply();
             camera.update();
 

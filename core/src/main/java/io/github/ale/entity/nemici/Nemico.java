@@ -25,7 +25,7 @@ public final class Nemico extends Entity{
     private Rectangle range;
     private Segment linea;
 
-    Circle tempPlayerCircle;
+    private Circle playerCircle;
     private Circle areaInseguimento;
 
     public boolean inAreaInseguimento;
@@ -61,7 +61,8 @@ public final class Nemico extends Entity{
         linea = new Segment(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
         movement = new EntityMovementManager();
         inRange = false;
-
+        playerCircle = new Circle(0, 0, 0.5f);
+            
         inizializzaStati(true, false, false);
         inizializzaStatistiche(100, 1.5f, 10);
         setDirezione("fermoS");
@@ -117,7 +118,7 @@ public final class Nemico extends Entity{
             renderer.setColor(Color.VIOLET);
         }
         renderer.circle(areaInseguimento.x, areaInseguimento.y, areaInseguimento.radius, 100);
-        renderer.circle(tempPlayerCircle.x, tempPlayerCircle.y, tempPlayerCircle.radius, 100);
+        renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius, 100);
         renderer.setColor(Color.BLACK);
     }
 
@@ -189,8 +190,10 @@ public final class Nemico extends Entity{
     }
     
     public void inAreaInseguimento(Player p){
-        tempPlayerCircle = new Circle(p.getX()+getSize().getWidth()/2, p.getY()+getSize().getHeight()/2, 0.5f);
-        inAreaInseguimento = areaInseguimento.overlaps(tempPlayerCircle);
+        playerCircle.x = p.getX()+p.getSize().getWidth()/2;
+        playerCircle.y = p.getY()+p.getSize().getHeight()/2;
+        playerCircle.radius = 0.5f;
+        inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
 
         if (inAreaInseguimento) {
             pursuing = !Map.checkLineCollision(new Vector2(linea.a.x, linea.a.y), new Vector2(linea.b.x, linea.b.y));

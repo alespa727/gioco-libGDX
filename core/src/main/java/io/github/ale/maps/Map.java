@@ -33,14 +33,14 @@ public class Map {
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
-        lineOfSight = new LineOfSight();
+        lineOfSight = new LineOfSight(this, camera);
     }
 
      /**
      * aggiorna la vista per disegnare la mappa
      */
 
-     public void update(OrthographicCamera camera){
+    public void update(OrthographicCamera camera){
         mapRenderer.setView(camera);
         mapRenderer.render();   
     }
@@ -81,6 +81,7 @@ public class Map {
         height=(Integer) map.getProperties().get("height");
         collisionMap = new Boolean[width][height];
         collisionBoxes = new Rectangle[width][height];
+        
     }
 
     /**
