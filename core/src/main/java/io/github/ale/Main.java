@@ -90,7 +90,7 @@ public class Main implements ApplicationListener {
 
         maps.getMap().draw(camera);
 
-        //drawHitboxes();
+        drawHitboxes();
         drawOggetti();
         //drawHUD();
 
@@ -134,13 +134,13 @@ public class Main implements ApplicationListener {
      * disegna hitbox
      */
     public void drawHitboxes(){
-        renderer.begin(ShapeType.Filled);
+        renderer.begin(ShapeType.Line);
         maps.getMap().drawLineOfSight(renderer);
         
         
         renderer.end();
 
-        renderer.begin(ShapeType.Line);
+        /*renderer.begin(ShapeType.Line);
 
         if (player.getStati().inCollisione()) {
             renderer.setColor(Color.RED);
@@ -152,7 +152,7 @@ public class Main implements ApplicationListener {
 
         enemy.drawEnemyRange(renderer);
 
-        renderer.end();
+        renderer.end();*/
         
 
     }
