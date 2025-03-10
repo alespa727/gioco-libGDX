@@ -12,7 +12,7 @@ public class MapManager {
     private int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
-    private MusicPlayer playlist;
+    private final MusicPlayer playlist;
     private final int totalMaps=2;
 
     boolean flag;
