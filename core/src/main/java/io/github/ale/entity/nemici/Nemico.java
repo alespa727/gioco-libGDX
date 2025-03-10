@@ -1,10 +1,15 @@
 package io.github.ale.entity.nemici;
 
+
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Segment;
 
 import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
@@ -18,12 +23,16 @@ public final class Nemico extends Entity{
 
     private boolean inRange;
     private Rectangle range;
+    private Segment linea;
 
     Circle tempPlayerCircle;
     private Circle areaInseguimento;
 
-    public boolean inseguimentoPlayer;
+    public boolean inAreaInseguimento;
     public final boolean attacksPlayer=true;
+    
+    public boolean idle;
+    public boolean pursuing;
 
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
     private final float FOLLOWING_COOLDOWN = 0.2f;
@@ -39,9 +48,9 @@ public final class Nemico extends Entity{
      */
     @Override
     public final void create() {
-        inseguimentoPlayer=true;
+        
         inizializzaEntityGraphics();
-        inizializzaCoordinate(8f, 8f);
+        inizializzaCoordinate(9f, 9f);
 
         getEntityGraphics().setTexture("Finn.png");
 
@@ -49,6 +58,7 @@ public final class Nemico extends Entity{
         range = new Rectangle(getX(), getY(), 2f, 2f);
         
         inizializzaDirezione("fermoS");
+        linea = new Segment(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
         movement = new EntityMovementManager();
         inRange = false;
 
@@ -66,7 +76,8 @@ public final class Nemico extends Entity{
      * @param p
      */
     public void update(float delta, Player p) {
-        inArea(p);
+        inAreaInseguimento(p);
+        inAreaAttacco(p);
         
         gestioneInseguimento(p, delta);
        
@@ -80,12 +91,18 @@ public final class Nemico extends Entity{
         range.y = getY();
         areaInseguimento.x = getX()+getSize().getWidth()/2;
         areaInseguimento.y = getY()+getSize().getHeight()/2;
+        linea.a.x = getX()+getSize().getWidth()/2;
+        linea.a.y = getY()+getSize().getHeight()/2;
+        linea.b.x = p.getX()+p.getSize().getWidth()/2;
+        linea.b.y = p.getY()+p.getSize().getHeight()/2;
+
         if (attacksPlayer) attacksPlayer(delta);
     }
 
     @Override
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
+        renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
     }
 
     public void drawEnemyRange(ShapeRenderer renderer){
@@ -93,7 +110,7 @@ public final class Nemico extends Entity{
             renderer.setColor(Color.BLUE);
         }
         renderer.rect(range.x, range.y, range.width, range.height);
-        if (inseguimentoPlayer) {
+        if (inAreaInseguimento) {
             renderer.setColor(Color.VIOLET);
         }
         renderer.circle(areaInseguimento.x, areaInseguimento.y, areaInseguimento.radius, 100);
@@ -109,7 +126,7 @@ public final class Nemico extends Entity{
     }
 
     private void gestioneInseguimento(Player p, float delta){
-        if (inseguimentoPlayer){
+        if (pursuing){
             movement.update(this);
             followsPlayer(p, delta);
         }else{
@@ -129,9 +146,8 @@ public final class Nemico extends Entity{
         
         if(cooldownFollowing <= 0){
             if (!inRange) {
-                ComandiAzioni[] comandi = new ComandiAzioni[2];
-                comandi[1] = new ComandiAzioni(Azioni.spostaY, p.getY());
-                comandi[0] = new ComandiAzioni(Azioni.spostaX, p.getX()+1);
+                ComandiAzioni[] comandi = new ComandiAzioni[1];
+                comandi[0] = new ComandiAzioni(Azioni.sposta, p.getX()+1, p.getY());
                 movement.addAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
            
@@ -145,7 +161,6 @@ public final class Nemico extends Entity{
      * @param p
      */
     private void attack(Player p) {
-        
         if (cooldownAttack <= 0) {
             
             System.out.println("Nemico attacca il giocatore!");
@@ -161,17 +176,23 @@ public final class Nemico extends Entity{
     /**
      * controlla se il player è nel range attacco
      */
-    private void inArea(Player p) {
+    private void inAreaAttacco(Player p) {
         Rectangle hitboxPlayer = p.getHitbox();
         if (range.overlaps(hitboxPlayer)) {
             inRange = true;
             attack(p);
         } else
             inRange = false;
-
-        tempPlayerCircle = new Circle(p.getX()+getSize().getWidth()/2, p.getY()+getSize().getHeight()/2, 0.5f);
-        inseguimentoPlayer = areaInseguimento.overlaps(tempPlayerCircle);
     }
     
+    public void inAreaInseguimento(Player p){
+        tempPlayerCircle = new Circle(p.getX()+getSize().getWidth()/2, p.getY()+getSize().getHeight()/2, 0.5f);
+        inAreaInseguimento = areaInseguimento.overlaps(tempPlayerCircle);
+
+        if (inAreaInseguimento) {
+            pursuing = !Map.checkLineCollision(new Vector2(linea.a.x, linea.a.y), new Vector2(linea.b.x, linea.b.y));
+        }
+
+    }
     
 }

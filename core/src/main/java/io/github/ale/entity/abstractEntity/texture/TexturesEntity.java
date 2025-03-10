@@ -39,10 +39,23 @@ public class TexturesEntity {
         animations.put("S", new Animation<>(1 / 5f, movingDown));
         animations.put("A", new Animation<>(1 / 5f, movingLeft));
         animations.put("D", new Animation<>(1 / 5f, movingRight));
+
+        animations.put("WA", new Animation<>(1 / 5f, movingLeft));
+        animations.put("SA", new Animation<>(1 / 5f, movingLeft));
+
+        animations.put("SD", new Animation<>(1 / 5f, movingRight));
+        animations.put("WD", new Animation<>(1 / 5f, movingRight));
+
         animations.put("fermoW", new Animation<>(1 / 2f, up));
         animations.put("fermoS", new Animation<>(1 / 2f, down));
         animations.put("fermoA", new Animation<>(1 / 2f, left));
         animations.put("fermoD", new Animation<>(1 / 2f, right));
+
+        animations.put("fermoWA", new Animation<>(1 / 2f, left));
+        animations.put("fermoSA", new Animation<>(1 / 2f, left));
+
+        animations.put("fermoSD", new Animation<>(1 / 2f, right));
+        animations.put("fermoWD", new Animation<>(1 / 2f, right));
         
     }
 

@@ -12,6 +12,7 @@ public class LineOfSight {
     Circle[][] lineOfSightCircles;
     boolean[][] lineOfSight;
 
+
     int mapWidth;
     int mapHeight;
 
@@ -25,7 +26,7 @@ public class LineOfSight {
         lineOfSight = new boolean[mapWidth][mapHeight];
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
-                lineOfSightCircles[i][j] = new Circle(i + 0.5f, j + 0.5f, 0.1f);
+                lineOfSightCircles[i][j] = new Circle(i + 0.5f, j + 0.5f, 0.15f);
                 lineOfSight[i][j] = false;
             }
         }
@@ -43,16 +44,17 @@ public class LineOfSight {
     }
 
     public void draw(ShapeRenderer renderer) {
-        renderer.setColor(Color.BLACK);
+        
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
-
+                if (!lineOfSight[i][j]) {
+                    renderer.setColor(Color.CYAN);
+                }else renderer.setColor(Color.ORANGE);
                 renderer.circle(lineOfSightCircles[i][j].x, lineOfSightCircles[i][j].y, lineOfSightCircles[i][j].radius,
                         40);
 
             }
         }
-        renderer.setColor(Color.BLACK);
     }
 
     public void create() {

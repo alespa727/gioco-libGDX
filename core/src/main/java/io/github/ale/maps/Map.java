@@ -8,7 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.entity.player.lineofsight.LineOfSight;
@@ -28,11 +30,43 @@ public class Map {
     private static LineOfSight lineOfSight;
 
     public Map(OrthographicCamera camera, String name){
-       
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
         lineOfSight = new LineOfSight();
+    }
+
+     /**
+     * aggiorna la vista per disegnare la mappa
+     */
+
+     public void update(OrthographicCamera camera){
+        mapRenderer.setView(camera);
+        mapRenderer.render();   
+    }
+
+    /**
+     * disegna la mappa in generale
+     * @param camera
+     */
+    public void draw(OrthographicCamera camera){
+        mapRenderer.setView(camera);
+        mapRenderer.render();
+    }
+
+    /**
+     * disegna la hitbox dei tile con collisioni
+     * @param renderer
+     */
+    public void drawBoxes(ShapeRenderer renderer){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (collisionMap[i][j]!=null) {
+                    renderer.rect(collisionBoxes[i][j].x, collisionBoxes[i][j].y, collisionBoxes[i][j].width, collisionBoxes[i][j].height);
+                }
+            }
+        }
+        
     }
 
     /**
@@ -64,24 +98,56 @@ public class Map {
         }
     }
 
-    /**
-     * disegna la hitbox dei tile con collisioni
-     * @param renderer
-     */
-    public void drawBoxes(ShapeRenderer renderer){
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null) {
-                    renderer.rect(collisionBoxes[i][j].x, collisionBoxes[i][j].y, collisionBoxes[i][j].width, collisionBoxes[i][j].height);
-                }
-            }
-        }
-        
-    }
-
     public void drawLineOfSight(ShapeRenderer renderer){
         renderer.setColor(Color.BLACK);
         lineOfSight.draw(renderer);
+    }
+
+    public static int getWidth(){
+        return width;
+    }
+    public static int getHeight(){
+        return height;
+    }
+
+    public static LineOfSight getLineOfSight() {
+        return lineOfSight;
+    }
+    
+    public static boolean checkLineCollision(Vector2 e1, Vector2 e2){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (collisionMap[i][j]!=null && Intersector.intersectSegmentRectangle(e1, e2, collisionBoxes[i][j])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
+     * @param direzione
+     * @return
+     */
+    public static boolean checkCollisionX(Entity entity){
+        boolean inCollision=false;
+        Rectangle hitbox = new Rectangle(entity.getHitbox());
+        if (entity.getDirezione().equals("A")) {
+            hitbox.x-=1/16f;
+        }
+        if (entity.getDirezione().equals("D")) {
+            hitbox.x+=1/16f;
+        }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision=true;
+                }
+            }
+        }
+        //System.out.println(inCollision);
+        return inCollision;
     }
 
     /**
@@ -109,84 +175,4 @@ public class Map {
         //System.out.println(inCollision);
         return inCollision;
     }
-    /**
-     * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
-     * @param direzione
-     * @return
-     */
-    public static boolean checkCollisionX(Entity entity){
-        boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(entity.getHitbox());
-        if (entity.getDirezione().equals("A")) {
-            hitbox.x-=1/16f;
-        }
-        if (entity.getDirezione().equals("D")) {
-            hitbox.x+=1/16f;
-        }
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
-                    inCollision=true;
-                }
-            }
-        }
-        //System.out.println(inCollision);
-        return inCollision;
-    }
-
-    /**
-     * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
-     * @param direzione
-     * @return
-     */
-    public static boolean checkCollisionX(Entity entity, float offset){
-        boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(entity.getHitbox());
-        if (entity.getDirezione().equals("A")) {
-            hitbox.x-=offset;
-        }
-        if (entity.getDirezione().equals("D")) {
-            hitbox.x+=offset;
-        }
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
-                    inCollision=true;
-                }
-            }
-        }
-        System.out.println(inCollision);
-        return inCollision;
-    }
-
-    /**
-     * aggiorna la vista per disegnare la mappa
-     */
-
-    public void update(OrthographicCamera camera){
-        mapRenderer.setView(camera);
-        mapRenderer.render();   
-    }
-
-    /**
-     * disegna la mappa in generale
-     * @param camera
-     */
-    public void draw(OrthographicCamera camera){
-        mapRenderer.setView(camera);
-        mapRenderer.render();
-    }
-
-    public static int getWidth(){
-        return width;
-    }
-    public static int getHeight(){
-        return height;
-    }
-
-    public static LineOfSight getLineOfSight() {
-        return lineOfSight;
-    }
-    
-
 }

@@ -3,7 +3,7 @@ package io.github.ale.entity.abstractEntity;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
 import io.github.ale.entity.abstractEntity.caratteristiche.EntityInfo;
@@ -23,10 +23,20 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     private Dimensioni size;
     private EntityState stati;
     private Stats statistiche;
-    private Vector3 coordinate;
+    private Vector2 coordinate;
     private Direzione direzione;
     private Hitbox hitbox;
     private EntityGraphics graphics;
+
+    public Vector2 getVector(){
+        return coordinate;
+    }
+
+    public void setVector(float x, float y){
+        coordinate.x = x;
+        coordinate.y = y;
+    }
+
 
     @Override
     public float getY() { return coordinate.y; }
@@ -67,7 +77,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * @param y
      */
     public void inizializzaCoordinate(float x, float y){
-        coordinate = new Vector3(x, y, 0);
+        coordinate = new Vector2(x, y);
     }
 
     /**

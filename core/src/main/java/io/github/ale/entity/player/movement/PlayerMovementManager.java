@@ -71,7 +71,7 @@ public class PlayerMovementManager{
             if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino a 0, azzeralo
             p.getStatistiche().setSpeedBuff(newSpeedBuff);
         }
-        System.out.println(p.getStatistiche().getSpeedBuff());
+        
     }
 
     /**

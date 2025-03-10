@@ -37,12 +37,8 @@ public class EntityMovementManager {
     }
 
     public void addizioneAzioniCoordinate(){
-        for (int i = 0; i < azioni.size(); i++) {
-            for (int j = 0; j < azioni.size(); j++) {
-                if (azioni.get(i).getAzione().equals(azioni.get(j).getAzione())) {
-                    azioni.get(i).setCoord(azioni.get(j).getCoord());
-                }
-            }
+        if (count < azioni.size() - 1) {
+            count = azioni.size() -1;
         }
     }
 
@@ -57,12 +53,11 @@ public class EntityMovementManager {
         entity.getStati().setIsMoving(true);
 
         addizioneAzioniCoordinate();
+        System.out.println(azioni.get(count).getX());
+
 
         switch (azioni.get(count).getAzione()) {
-            case spostaX -> EntityMovement.spostaX(entity, azioni.get(count).getCoord());
-            case spostaY ->EntityMovement.spostaY(entity, azioni.get(count).getCoord());
-            case dashX -> EntityMovement.dashX(entity, azioni.get(count).getCoord());
-            case dashY -> EntityMovement.dashY(entity, azioni.get(count).getCoord());
+            case sposta -> EntityMovement.sposta(entity, azioni.get(count).getX(), azioni.get(count).getY());
             default -> {
             }
         }

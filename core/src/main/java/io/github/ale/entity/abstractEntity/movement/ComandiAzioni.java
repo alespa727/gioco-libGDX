@@ -3,14 +3,17 @@ package io.github.ale.entity.abstractEntity.movement;
 import io.github.ale.enums.Azioni;
 
 public class ComandiAzioni {
-    private Float coord;
+    private float x, y;
     private Azioni azione;
 
 
-    public ComandiAzioni(Azioni azione, Float coord){
+    public ComandiAzioni(Azioni azione, float x, float y){
         this.azione = azione;
-        this.coord = coord;
+        this.x = x;
+        this.y = y;
     }
+
+    
     public Azioni getAzione() {
         return azione;
     }
@@ -19,12 +22,20 @@ public class ComandiAzioni {
         this.azione = azione;
     }
 
-    public Float getCoord() {
-        return coord;
+    public float getX() {
+        return x;
     }
 
-    public void setCoord(Float coord) {
-        this.coord = coord;
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 
 }

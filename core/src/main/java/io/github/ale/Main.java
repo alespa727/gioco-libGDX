@@ -140,24 +140,26 @@ public class Main implements ApplicationListener {
      * disegna hitbox
      */
     public void drawHitboxes(){
+        renderer.begin(ShapeType.Filled);
+        //maps.getMap().drawLineOfSight(renderer);
+        
+        
+        renderer.end();
 
         renderer.begin(ShapeType.Line);
-        maps.getMap().drawBoxes(renderer);
+
         if (player.getStati().inCollisione()) {
             renderer.setColor(Color.RED);
         }else renderer.setColor(Color.BLACK);
+        maps.getMap().drawBoxes(renderer);
+
         player.drawHitbox(renderer);
         enemy.drawHitbox(renderer);
+
         enemy.drawEnemyRange(renderer);
+
         renderer.end();
-        renderer.begin(ShapeType.Filled);
-        maps.getMap().drawLineOfSight(renderer);
         
-        if (player.getStati().inCollisione()) {
-            renderer.setColor(Color.RED);
-        }else renderer.setColor(Color.BLACK);
-        
-        renderer.end();
 
     }
 
