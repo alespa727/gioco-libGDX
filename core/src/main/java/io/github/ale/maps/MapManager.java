@@ -45,7 +45,7 @@ public class MapManager {
             ambienteAperto=true;
             }
             case 2 -> { nome = "map";
-            ambienteAperto=false;
+            ambienteAperto=true;
             }
             default -> {
             }

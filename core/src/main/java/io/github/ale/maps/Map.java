@@ -76,9 +76,14 @@ public class Map {
                 }
             }
         }
+        
+    }
+
+    public void drawLineOfSight(ShapeRenderer renderer){
         renderer.setColor(Color.BLACK);
         lineOfSight.draw(renderer);
     }
+
     /**
      * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
      * @param direzione

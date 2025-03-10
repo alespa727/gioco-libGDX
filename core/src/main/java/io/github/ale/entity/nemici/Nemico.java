@@ -124,9 +124,6 @@ public final class Nemico extends Entity{
         if (cooldownFollowing > 0) {
             cooldownFollowing -= delta;
             //System.out.println(cooldownFollowing);
-            if (inRange) {
-                cooldownFollowing = 2f;
-            }
         }
         
         

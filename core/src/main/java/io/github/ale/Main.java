@@ -142,9 +142,6 @@ public class Main implements ApplicationListener {
     public void drawHitboxes(){
 
         renderer.begin(ShapeType.Line);
-        if (player.getStati().inCollisione()) {
-            renderer.setColor(Color.RED);
-        }else renderer.setColor(Color.BLACK);
         maps.getMap().drawBoxes(renderer);
         if (player.getStati().inCollisione()) {
             renderer.setColor(Color.RED);
@@ -152,6 +149,14 @@ public class Main implements ApplicationListener {
         player.drawHitbox(renderer);
         enemy.drawHitbox(renderer);
         enemy.drawEnemyRange(renderer);
+        renderer.end();
+        renderer.begin(ShapeType.Filled);
+        maps.getMap().drawLineOfSight(renderer);
+        
+        if (player.getStati().inCollisione()) {
+            renderer.setColor(Color.RED);
+        }else renderer.setColor(Color.BLACK);
+        
         renderer.end();
 
     }
@@ -195,7 +200,7 @@ public class Main implements ApplicationListener {
             CameraStyles.lerpTo(camera, new Vector2(player.getX() + 2f / 2, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
             
-            viewport.setWorldSize(11f, 11f*9f/16f);
+            viewport.setWorldSize(12f, 12f*9f/16f);
             viewport.apply();
             camera.update();
 

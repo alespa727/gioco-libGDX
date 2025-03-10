@@ -7,7 +7,7 @@ import io.github.ale.enums.StatiDiMovimento;
 import io.github.ale.maps.Map;
 
 public class PlayerMovementManager{
-    private KeyHandlerPlayer keyH;
+    private final KeyHandlerPlayer keyH;
     private boolean w, s, a, d, shift;
     private double elapsedTime;
 
@@ -45,22 +45,31 @@ public class PlayerMovementManager{
         shift = keyH.shift;
 
         boolean diagonale = (w && d) || (w && a) || (s && d) || (s && a);
+        boolean fermo = (!w && !s && !a && !d);
 
         float speed;
 
-        if (shift) {
+        if (shift && !fermo) {
             // System.out.println("SPRINT!");
             if (diagonale) speed = sprintSpeedMultiplier/1.41f;
             else speed = sprintSpeedMultiplier;
-            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.2f);
+            
+            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.1f);
     
         }
 
-        if (!shift) {
+        if (!shift && !fermo) {
             if (diagonale) speed = baseSpeedMultiplier/1.41f;
             else speed = baseSpeedMultiplier;
             // System.out.println("NIENTE SPRINT");
-            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.2f);
+            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.1f);
+        }
+
+        if (fermo) {
+            speed = 0;
+            float newSpeedBuff = p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) * 0.05f;
+            if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino a 0, azzeralo
+            p.getStatistiche().setSpeedBuff(newSpeedBuff);
         }
         System.out.println(p.getStatistiche().getSpeedBuff());
     }
