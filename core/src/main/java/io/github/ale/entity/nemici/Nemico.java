@@ -106,7 +106,6 @@ public final class Nemico extends Entity{
         if (pursuing) {
             renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
         }
-        
     }
 
     public void drawEnemyRange(ShapeRenderer renderer){
@@ -194,7 +193,9 @@ public final class Nemico extends Entity{
         playerCircle.y = p.getY()+p.getSize().getHeight()/2;
         playerCircle.radius = 0.5f;
         inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
-
+        if (pursuing && !inAreaInseguimento) {
+            
+        }
         if (inAreaInseguimento) {
             pursuing = !Map.checkLineCollision(new Vector2(linea.a.x, linea.a.y), new Vector2(linea.b.x, linea.b.y));
             

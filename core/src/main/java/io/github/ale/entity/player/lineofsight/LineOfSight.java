@@ -12,12 +12,19 @@ import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.maps.Map;
 
 public class LineOfSight {
-    private Circle[][] lineOfSightCircles;
+
+    private Vector3[][] centroCerchio;
+    private Segment[][] linea;
     private boolean[][] lineOfSight;
 
     private final Circle playerCircle;
-    private Circle[][] losArea;
-    private Segment[][] linea;
+    
+    private final float centroRaggio = 0.1f;
+    private final float losRaggio = 3.5f;
+
+    private final Circle circle;
+
+    
     
     private int mapWidth;
     private int mapHeight;
@@ -28,15 +35,17 @@ public class LineOfSight {
     public LineOfSight(Map map, OrthographicCamera cam) {
         mapWidth = Map.getWidth();
         mapHeight = Map.getHeight();
-        lineOfSightCircles = new Circle[mapWidth][mapHeight];
+
+        circle = new Circle();
+
+        centroCerchio = new Vector3[mapWidth][mapHeight];
         lineOfSight = new boolean[mapWidth][mapHeight];
-        losArea = new Circle[mapWidth][mapHeight];
         linea = new Segment[mapWidth][mapHeight];
+
         playerCircle = new Circle();
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
-                lineOfSightCircles[i][j] = new Circle(i + 0.5f, j + 0.5f, 0.1f);
-                losArea[i][j] = new Circle(i + 0.5f, j + 0.5f, 3.5f);
+                centroCerchio[i][j] = new Vector3(i + 0.5f, j + 0.5f, 0);
                 lineOfSight[i][j] = false;
                 linea[i][j] = new Segment(new Vector3(i + 0.5f, j + 0.5f, 0), new Vector3(0, 0, 0));
             }
@@ -65,9 +74,8 @@ public class LineOfSight {
                     renderer.setColor(Color.WHITE);
                 }else{
                     renderer.setColor(Color.YELLOW);
-                    renderer.circle(lineOfSightCircles[i][j].x, lineOfSightCircles[i][j].y, lineOfSightCircles[i][j].radius,
+                    renderer.circle(centroCerchio[i][j].x, centroCerchio[i][j].y, centroRaggio,
                             40);
-                    
                 } 
             }
         }
@@ -76,14 +84,14 @@ public class LineOfSight {
     public void create() {
         mapWidth = Map.getWidth();
         mapHeight = Map.getHeight();
-        lineOfSightCircles = new Circle[mapWidth][mapHeight];
+
+        centroCerchio = new Vector3[mapWidth][mapHeight];
         lineOfSight = new boolean[mapWidth][mapHeight];
-        losArea = new Circle[mapWidth][mapHeight];
         linea = new Segment[mapWidth][mapHeight];
+
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
-                lineOfSightCircles[i][j] = new Circle(i + 0.5f, j + 0.5f, 0.1f);
-                losArea[i][j] = new Circle(i + 0.5f, j + 0.5f, 3.5f);
+                centroCerchio[i][j] = new Vector3(i + 0.5f, j + 0.5f, 0);
                 lineOfSight[i][j] = false;
                 linea[i][j] = new Segment(new Vector3(i + 0.5f, j + 0.5f, 0), new Vector3(0, 0, 0));
             }
@@ -101,7 +109,10 @@ public class LineOfSight {
             for (int j = 0; j < mapHeight; j++) {
                 linea[i][j].b.x = e.getX()+e.getSize().getWidth()/2;
                 linea[i][j].b.y = e.getY()+e.getSize().getHeight()/2;
-                if (playerCircle.overlaps(losArea[i][j])) {
+                circle.x = centroCerchio[i][j].x;
+                circle.y = centroCerchio[i][j].y;
+                circle.radius = losRaggio;
+                if (playerCircle.overlaps(circle)) {
                     lineOfSight[i][j] = !Map.checkLineCollision(new Vector2(linea[i][j].a.x, linea[i][j].a.y), new Vector2(linea[i][j].b.x, linea[i][j].b.y));
                     
                 }else lineOfSight[i][j] = false;
