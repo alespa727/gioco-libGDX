@@ -184,7 +184,6 @@ public final class Nemico extends Entity{
         }
     }
     
-  
     /**
      * controlla se il player è nel range attacco
      */
@@ -204,7 +203,6 @@ public final class Nemico extends Entity{
         inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
 
         LineOfSight.mutualLineOfSight(this, areaInseguimento.radius);
-
     } 
     
 }
