@@ -202,23 +202,9 @@ public final class Nemico extends Entity{
         playerCircle.y = p.getY()+p.getSize().getHeight()/2;
         playerCircle.radius = 0.5f;
         inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
-        if (inAreaInseguimento) {
-            pursuing = true;
-        }
-        
-        if (inAreaInseguimento && Map.checkLineCollision(new Vector2(linea.a.x, linea.a.y), new Vector2(linea.b.x, linea.b.y))) {
-            if (LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)==null) {
-                pursuing = false;
-            }else{
-                obbiettivo = new Vector2(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius));
-                obbiettivo.x-=1f;
-                obbiettivo.y-=1f;
-                pursuing=true;
-            }
-        }
-        if (!inAreaInseguimento && Map.checkLineCollision(this.getVector(), p.getVector())) {
-            pursuing = false;
-        }
+
+        LineOfSight.mutualLineOfSight(this, areaInseguimento.radius);
+
     } 
     
 }
