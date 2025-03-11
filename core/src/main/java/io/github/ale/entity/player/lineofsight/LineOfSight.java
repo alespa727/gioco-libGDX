@@ -166,6 +166,7 @@ public class LineOfSight {
             objective = puntiComuni.get(minIndex);
         }
 
+
         return objective;
 
     }
