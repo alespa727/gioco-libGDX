@@ -32,19 +32,19 @@ public class Main implements ApplicationListener {
 
     private Nemico enemy;
     private Player player;
-    
+
     @Override
-    public void create() { 
-        
-        batch = new SpriteBatch(); //praticamente la cosa per disegnare
-        hud = new SpriteBatch(); //praticamente la cosa per disegnare la ui
-        renderer = new ShapeRenderer(); //disegna forme
+    public void create() {
+
+        batch = new SpriteBatch(); // praticamente la cosa per disegnare
+        hud = new SpriteBatch(); // praticamente la cosa per disegnare la ui
+        renderer = new ShapeRenderer(); // disegna forme
         // Configura la camera e la viewport
 
         inizializzaOggetti();
         inizializzaCamera();
-        
-        maps = new MapManager(camera, player, 1); //map manager
+
+        maps = new MapManager(camera, player, 1); // map manager
     }
 
     @Override
@@ -52,37 +52,37 @@ public class Main implements ApplicationListener {
 
         update();
         draw();
-        //System.err.println(player.getWorldX());
-        //System.err.println(player.getWorldY());
-        
+        // System.err.println(player.getWorldX());
+        // System.err.println(player.getWorldY());
+
     }
-        
+
     /**
      * aggiorna tutto il necessario
      */
     private void update() {
 
         float delta = Gdx.graphics.getDeltaTime(); // Ottiene il delta time
-        //aggiorna ogni cosa nel gioco
-        maps.update(camera, player); //update mappa, in caso di input
-        player.update(); //update player
+        // aggiorna ogni cosa nel gioco
+        maps.update(camera, player); // update mappa, in caso di input
+        player.update(); // update player
         enemy.update(delta, player);
-        updateCameraView(); //update telecamera
-        maps.getMap().update(camera); //update visualizzazione mappa
+        updateCameraView(); // update telecamera
+        maps.getMap().update(camera); // update visualizzazione mappa
 
-    }        
-        
+    }
+
     /**
      * disegna tutto il necessario
      */
 
     private void draw() {
-        elapsedTime+=Gdx.graphics.getDeltaTime();
-        //pulisce lo schermo
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        // pulisce lo schermo
 
         ScreenUtils.clear(Color.BLACK);
 
-        //non l'ho capito bene neanche io ma funziona con la videocamera
+        // non l'ho capito bene neanche io ma funziona con la videocamera
 
         viewport.apply();
         batch.setProjectionMatrix(camera.combined);
@@ -92,7 +92,7 @@ public class Main implements ApplicationListener {
 
         drawHitboxes();
         drawOggetti();
-        //drawHUD();
+        // drawHUD();
 
     }
 
@@ -109,20 +109,19 @@ public class Main implements ApplicationListener {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
-
-
-    //METODI AGGIUNTIVI
-
+    // METODI AGGIUNTIVI
 
     /**
      * disegna hud
      */
-    public void drawHUD(){
+    public void drawHUD() {
 
         hud.begin();
         player.getStatistiche().drawHealth(hud);
@@ -133,17 +132,20 @@ public class Main implements ApplicationListener {
     /**
      * disegna hitbox
      */
-    public void drawHitboxes(){
-        renderer.begin(ShapeType.Line);
-        maps.getMap().drawLineOfSight(renderer);
-        
-        renderer.end();
+    public void drawHitboxes() {
+        System.out.println(Player.loadedLos);
+        if (Player.loadedLos) {
+            renderer.begin(ShapeType.Line);
+            player.drawLineOfSight(renderer);
+            renderer.end();
+        }
 
         renderer.begin(ShapeType.Line);
 
         if (player.getStati().inCollisione()) {
             renderer.setColor(Color.RED);
-        }else renderer.setColor(Color.BLACK);
+        } else
+            renderer.setColor(Color.BLACK);
         maps.getMap().drawBoxes(renderer);
 
         player.drawHitbox(renderer);
@@ -152,7 +154,6 @@ public class Main implements ApplicationListener {
         enemy.drawEnemyRange(renderer);
 
         renderer.end();
-        
 
     }
 
@@ -160,54 +161,54 @@ public class Main implements ApplicationListener {
      * disegna immagini in generale
      */
 
-    public void drawOggetti(){
+    public void drawOggetti() {
         batch.begin();
         if (player.getY() > enemy.getY()) {
             player.draw(batch, elapsedTime);
             enemy.draw(batch, elapsedTime);
-        }else{
+        } else {
             enemy.draw(batch, elapsedTime);
             player.draw(batch, elapsedTime);
         }
         batch.end();
-        
+
     }
 
     /***
      * aggiorna cosa la telecamera deve seguire/modalità della telecamera
      */
 
-    public void updateCameraView(){
+    public void updateCameraView() {
 
-        float x = camera.viewportWidth/2;
-        float y = camera.viewportHeight/2;
-        if (!maps.getAmbiente()) { //tipo di telecamera
+        float x = camera.viewportWidth / 2;
+        float y = camera.viewportHeight / 2;
+        if (!maps.getAmbiente()) { // tipo di telecamera
 
             CameraStyles.lerpTo(camera, new Vector2(Map.getWidth() / 2f, player.getY() + 2f / 2));
-            CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
+            CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth() - x * 2, Map.getHeight() - y * 2);
 
-            viewport.setWorldSize(Map.getWidth(), Map.getHeight()/16f*9f);
+            viewport.setWorldSize(Map.getWidth(), Map.getHeight() / 16f * 9f);
             camera.update();
             viewport.apply();
 
-        }else{
-            
+        } else {
+
             CameraStyles.lerpTo(camera, new Vector2(player.getX() + 2f / 2, player.getY() + 2f / 2));
-            CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth()  - x * 2, Map.getHeight()  - y * 2);
-            
-            viewport.setWorldSize(15f, 15f*9f/16f);
+            CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth() - x * 2, Map.getHeight() - y * 2);
+
+            viewport.setWorldSize(15f, 15f * 9f / 16f);
             viewport.apply();
             camera.update();
 
         }
-        
+
     }
 
     /**
      * inizializza tutti gli oggetti
      */
 
-    public void inizializzaOggetti(){
+    public void inizializzaOggetti() {
 
         player = new Player();
         enemy = new Nemico();
@@ -217,14 +218,14 @@ public class Main implements ApplicationListener {
     /**
      * inizializza la telecamera
      */
-    
-    public void inizializzaCamera(){
 
-        camera = new OrthographicCamera(); //telecamera
-        camera.update(); //aggiornamento camera
-        viewport = new FitViewport(32f, 18f, camera); //grandezza telecamera
-        viewport.apply(); //applica cosa si vede
-        
+    public void inizializzaCamera() {
+
+        camera = new OrthographicCamera(); // telecamera
+        camera.update(); // aggiornamento camera
+        viewport = new FitViewport(32f, 18f, camera); // grandezza telecamera
+        viewport.apply(); // applica cosa si vede
+
     }
 
 }

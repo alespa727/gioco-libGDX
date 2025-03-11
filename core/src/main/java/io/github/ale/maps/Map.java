@@ -1,6 +1,5 @@
 package io.github.ale.maps;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.entity.abstractEntity.Entity;
-import io.github.ale.entity.player.lineofsight.LineOfSight;
 
 public class Map {
     private TiledMap map;
@@ -27,13 +25,13 @@ public class Map {
     private static Integer width;
     private static int height;
 
-    private static LineOfSight lineOfSight;
+    public static boolean isLoaded=false;
 
     public Map(OrthographicCamera camera, String name){
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
-        lineOfSight = new LineOfSight();
+        isLoaded = true;
     }
 
      /**
@@ -99,11 +97,7 @@ public class Map {
         }
     }
 
-    public void drawLineOfSight(ShapeRenderer renderer){
-        renderer.setColor(Color.BLACK);
-        lineOfSight.draw(renderer);
-    }
-
+    
     public static int getWidth(){
         return width;
     }
@@ -111,9 +105,7 @@ public class Map {
         return height;
     }
 
-    public static LineOfSight getLineOfSight() {
-        return lineOfSight;
-    }
+    
     
     public static boolean checkLineCollision(Vector2 e1, Vector2 e2){
         for (int i = 0; i < width; i++) {

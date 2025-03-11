@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
 import io.github.ale.entity.abstractEntity.movement.EntityMovementManager;
+import io.github.ale.entity.player.lineofsight.LineOfSight;
 import io.github.ale.entity.player.movement.PlayerMovementManager;
 import io.github.ale.maps.Map;
 
@@ -14,6 +15,10 @@ public class Player extends Entity{
     
     private PlayerMovementManager movement;
     public EntityMovementManager entitymovement;
+
+    
+    private static LineOfSight lineOfSight;
+    public static boolean loadedLos=false;
 
     // Costruttore
     public Player() {
@@ -37,12 +42,26 @@ public class Player extends Entity{
         inizializzaStatistiche(100, 2.5f, 10);
         inizializzaAnimazione();
         inizializzaDimensione(new Dimensioni(2f, 2f));
-    
+        
         movement = new PlayerMovementManager();
         entitymovement = new EntityMovementManager();
     }
 
     
+    public void drawLineOfSight(ShapeRenderer renderer){
+        renderer.setColor(Color.BLACK);
+        lineOfSight.draw(renderer);
+    }
+
+    public void inizializzaLOS(){
+        if (!loadedLos && Map.isLoaded) {
+            lineOfSight = new LineOfSight();
+            loadedLos = true;
+        }
+    }
+    public static LineOfSight getLineOfSight() {
+        return lineOfSight;
+    }
 
     /**
      * disegna l'hitbox del player
@@ -62,7 +81,12 @@ public class Player extends Entity{
      */
     
     public void update() {
-        Map.getLineOfSight().update(this);
+        if (loadedLos) {
+            getLineOfSight().update(this);
+        }
+        
+        inizializzaLOS();
+
         movement.update(this);
         entitymovement.update(this);
         entitymovement.clearAzioni();
