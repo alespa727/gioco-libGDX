@@ -37,6 +37,9 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
         coordinate.y = y;
     }
 
+    public Vector2 getCenterVector(){
+        return new Vector2(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2);
+    }
 
     @Override
     public float getY() { return coordinate.y; }

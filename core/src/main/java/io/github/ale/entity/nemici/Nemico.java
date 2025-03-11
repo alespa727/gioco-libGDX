@@ -82,6 +82,7 @@ public final class Nemico extends Entity{
      * @param p
      */
     public void update(float delta, Player p) {
+
         inAreaInseguimento(p);
         inAreaAttacco(p);
         
@@ -91,9 +92,6 @@ public final class Nemico extends Entity{
         setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
 
         //obbiettivo.set(LineOfSight.mutualLineOfSight(this));
-        
-        obbiettivo = p.getVector();
-        
         
         getHitbox().x = getX() + 0.65f;
         getHitbox().y = getY() + 0.55f;
@@ -115,6 +113,7 @@ public final class Nemico extends Entity{
         if (pursuing) {
             renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
         }
+
     }
 
     public void drawEnemyRange(ShapeRenderer renderer){
@@ -203,6 +202,19 @@ public final class Nemico extends Entity{
         inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
 
         LineOfSight.mutualLineOfSight(this, areaInseguimento.radius);
-    } 
-    
+
+        obbiettivo.set(p.getVector());
+
+        if (inAreaInseguimento) {
+            pursuing = !Map.checkLineCollision(p.getCenterVector(), getCenterVector());
+        }else pursuing = false;
+
+        if (inAreaInseguimento && !pursuing) {
+            if(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)!=null){
+                pursuing=true;
+                obbiettivo.set(new Vector2(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)).sub(1f, 1f));
+            }else pursuing = false;
+        }
+
+    }
 }

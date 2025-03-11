@@ -152,21 +152,6 @@ public class LineOfSight {
             }
         }
 
-        float min;
-
-        if (!puntiComuni.isEmpty()) {
-            min = Float.MAX_VALUE;
-
-            for (int i = 0; i < puntiComuni.size(); i++) {
-                if (min >= entityPosition.dst(puntiComuni.get(i))) {
-                    min = entityPosition.dst(puntiComuni.get(i));
-                    minIndex = i;
-                }
-            }
-            objective = puntiComuni.get(minIndex);
-        }
-
-
         return objective;
 
     }
