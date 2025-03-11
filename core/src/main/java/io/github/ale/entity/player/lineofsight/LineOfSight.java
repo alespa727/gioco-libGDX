@@ -72,14 +72,12 @@ public class LineOfSight {
 
     public void draw(ShapeRenderer renderer) {
         Vector2 p1;
-        Vector2 p2;
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
                 if (!lineOfSight[i][j]) {
                     renderer.setColor(Color.YELLOW);
                 } else {
                     p1 = new Vector2(linea[i][j].a.x, linea[i][j].a.y);
-                    p2 = new Vector2(linea[i][j].b.x, linea[i][j].b.y);
 
                     if (minIndex < puntiComuni.size() && puntiComuni.contains(p1)) {
                             renderer.setColor(Color.BLACK);
@@ -167,9 +165,6 @@ public class LineOfSight {
             }
             objective = puntiComuni.get(minIndex);
         }
-
-        System.out.println(puntiComuni.size());
-        System.out.println(minIndex);
 
         return objective;
 
