@@ -16,6 +16,7 @@ import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
 import io.github.ale.entity.abstractEntity.movement.ComandiAzioni;
 import io.github.ale.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.entity.player.Player;
+import io.github.ale.entity.player.lineofsight.LineOfSight;
 import io.github.ale.enums.Azioni;
 import io.github.ale.maps.Map;
 
@@ -24,6 +25,8 @@ public final class Nemico extends Entity{
     private boolean inRange;
     private Rectangle range;
     private Segment linea;
+
+    private Vector2 obbiettivo;
 
     private Circle playerCircle;
     private Circle areaInseguimento;
@@ -48,6 +51,8 @@ public final class Nemico extends Entity{
      */
     @Override
     public final void create() {
+
+        obbiettivo = new Vector2();
         
         inizializzaEntityGraphics();
         inizializzaCoordinate(5f, 12f);
@@ -85,6 +90,10 @@ public final class Nemico extends Entity{
         setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
         setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
 
+        //obbiettivo.set(LineOfSight.mutualLineOfSight(this));
+        
+        obbiettivo = p.getVector();
+        
         
         getHitbox().x = getX() + 0.65f;
         getHitbox().y = getY() + 0.55f;
@@ -131,7 +140,7 @@ public final class Nemico extends Entity{
     private void gestioneInseguimento(Player p, float delta){
         if (pursuing){
             movement.update(this);
-            followsPlayer(p, delta);
+            followsPlayer(delta);
         }else{
             movement.clearAzioni();
             if (!getDirezione().contains("fermo")) {
@@ -140,7 +149,7 @@ public final class Nemico extends Entity{
         }
     }
 
-    private void followsPlayer(Player p, float delta){
+    private void followsPlayer(float delta){
         if (cooldownFollowing > 0) {
             cooldownFollowing -= delta;
             //System.out.println(cooldownFollowing);
@@ -150,7 +159,7 @@ public final class Nemico extends Entity{
         if(cooldownFollowing <= 0){
             if (!inRange) {
                 ComandiAzioni[] comandi = new ComandiAzioni[1];
-                comandi[0] = new ComandiAzioni(Azioni.sposta, p.getX(), p.getY());
+                comandi[0] = new ComandiAzioni(Azioni.sposta, obbiettivo.x, obbiettivo.y);
                 movement.addAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
            
@@ -193,14 +202,23 @@ public final class Nemico extends Entity{
         playerCircle.y = p.getY()+p.getSize().getHeight()/2;
         playerCircle.radius = 0.5f;
         inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
-        if (pursuing && !inAreaInseguimento) {
-            
-        }
+        
+        LineOfSight.mutualLineOfSight(this, areaInseguimento.radius);
+        
+        boolean inseguimento = !inAreaInseguimento && pursuing;
+        boolean bloccato = LineOfSight.mutualLineOfSight(this, areaInseguimento.radius) != null;
         if (inAreaInseguimento) {
             pursuing = !Map.checkLineCollision(new Vector2(linea.a.x, linea.a.y), new Vector2(linea.b.x, linea.b.y));
-            
-        }else pursuing = false;
-
+        }else if (inseguimento || bloccato) {
+            if (LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)==null) {
+                pursuing = false;
+            }else{
+                obbiettivo = new Vector2(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius));
+                obbiettivo.x-=1f;
+                obbiettivo.y-=1f;
+                pursuing=true;
+            }
+        }
     } 
     
 }

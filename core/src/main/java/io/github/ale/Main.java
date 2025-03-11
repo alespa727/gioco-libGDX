@@ -139,7 +139,7 @@ public class Main implements ApplicationListener {
         
         renderer.end();
 
-        /*renderer.begin(ShapeType.Line);
+        renderer.begin(ShapeType.Line);
 
         if (player.getStati().inCollisione()) {
             renderer.setColor(Color.RED);
@@ -151,7 +151,7 @@ public class Main implements ApplicationListener {
 
         enemy.drawEnemyRange(renderer);
 
-        renderer.end();*/
+        renderer.end();
         
 
     }
