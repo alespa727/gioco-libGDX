@@ -47,22 +47,6 @@ public class Player extends Entity{
         entitymovement = new EntityMovementManager();
     }
 
-    
-    public void drawLineOfSight(ShapeRenderer renderer){
-        renderer.setColor(Color.BLACK);
-        lineOfSight.draw(renderer);
-    }
-
-    public void inizializzaLOS(){
-        if (!loadedLos && Map.isLoaded) {
-            lineOfSight = new LineOfSight();
-            loadedLos = true;
-        }
-    }
-    public static LineOfSight getLineOfSight() {
-        return lineOfSight;
-    }
-
     /**
      * disegna l'hitbox del player
      * @param renderer
@@ -113,5 +97,32 @@ public class Player extends Entity{
             getStatistiche().regenHealthTo(100);
         }
         return this.getStati().isAlive();
+    }
+
+    /**
+     * disegna punti da cui il player è visibile
+     * @param renderer
+     */
+    public void drawLineOfSight(ShapeRenderer renderer){
+        renderer.setColor(Color.BLACK);
+        lineOfSight.draw(renderer);
+    }
+
+    /**
+     * inizializza l'los solamente se non è mai stato caricato e la mappa è caricata
+     */
+    public void inizializzaLOS(){
+        if (!loadedLos && Map.isLoaded) {
+            lineOfSight = new LineOfSight();
+            loadedLos = true;
+        }
+    }
+
+    /**
+     * returna l'oggetto dei punti da cui il player è visibile
+     * @return
+     */
+    public static LineOfSight getLineOfSight() {
+        return lineOfSight;
     }
 }
