@@ -33,7 +33,7 @@ public class Map {
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
-        lineOfSight = new LineOfSight(this, camera);
+        lineOfSight = new LineOfSight();
     }
 
      /**

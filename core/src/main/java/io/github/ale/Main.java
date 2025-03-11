@@ -137,7 +137,6 @@ public class Main implements ApplicationListener {
         renderer.begin(ShapeType.Line);
         maps.getMap().drawLineOfSight(renderer);
         
-        
         renderer.end();
 
         /*renderer.begin(ShapeType.Line);

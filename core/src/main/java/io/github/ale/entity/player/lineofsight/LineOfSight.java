@@ -1,7 +1,6 @@
 package io.github.ale.entity.player.lineofsight;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,8 +22,6 @@ public class LineOfSight {
     private final float losRaggio = 3.5f;
 
     private final Circle circle;
-
-    
     
     private int mapWidth;
     private int mapHeight;
@@ -32,7 +29,7 @@ public class LineOfSight {
     /**
      * obbligatoriamente da fare senza il metodo create
      */
-    public LineOfSight(Map map, OrthographicCamera cam) {
+    public LineOfSight() {
         mapWidth = Map.getWidth();
         mapHeight = Map.getHeight();
 
@@ -68,14 +65,25 @@ public class LineOfSight {
     }
 
     public void draw(ShapeRenderer renderer) {
+        Vector2 p1;
+        Vector2 p2;
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
                 if (!lineOfSight[i][j]) {
                     renderer.setColor(Color.WHITE);
+                    
                 }else{
+                    p1 = new Vector2(linea[i][j].a.x, linea[i][j].a.y);
+                    p2 = new Vector2(linea[i][j].b.x, linea[i][j].b.y);
                     renderer.setColor(Color.YELLOW);
                     renderer.circle(centroCerchio[i][j].x, centroCerchio[i][j].y, centroRaggio,
                             40);
+                    renderer.line(p2, p1);
+                    //renderer.circle(centroCerchio[7][7].x, centroCerchio[7][7].y, losRaggio,
+                    //        40);
+                    renderer.line(p2, p1);
+                    renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius,
+                                    40);
                 } 
             }
         }
