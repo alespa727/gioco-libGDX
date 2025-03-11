@@ -82,16 +82,10 @@ public class LineOfSight {
                     p2 = new Vector2(linea[i][j].b.x, linea[i][j].b.y);
 
                     if (minIndex < puntiComuni.size() && puntiComuni.contains(p1)) {
-                
                             renderer.setColor(Color.BLACK);
-                        
-                    } else
-                        renderer.setColor(Color.WHITE);
+                    } else renderer.setColor(Color.WHITE);
                     renderer.circle(centroCerchio[i][j].x, centroCerchio[i][j].y, centroRaggio,
                             40);
-                    //renderer.line(p2, p1);
-                    // renderer.circle(centroCerchio[7][7].x, centroCerchio[7][7].y, losRaggio,
-                    // 40);
                     //renderer.line(p2, p1);
                     renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius,
                             40);
