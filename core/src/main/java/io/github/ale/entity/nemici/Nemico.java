@@ -209,7 +209,7 @@ public final class Nemico extends Entity{
             pursuing = !Map.checkLineCollision(p.getCenterVector(), getCenterVector());
         }else pursuing = false;
 
-        if (inAreaInseguimento && !pursuing) {
+        if (!pursuing) {
             if(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)!=null){
                 pursuing=true;
                 obbiettivo.set(new Vector2(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)).sub(1f, 1f));
