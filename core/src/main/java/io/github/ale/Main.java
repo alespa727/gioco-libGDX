@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.camera.CameraStyles;
 import io.github.ale.entity.abstractEntity.EntityConfig;
-import io.github.ale.entity.enemy.umani.Finn;
+import io.github.ale.entity.nemici.umani.Finn;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
@@ -91,7 +91,7 @@ public class Main implements ApplicationListener {
 
         maps.getMap().draw(camera);
 
-        //drawHitboxes();
+        drawHitboxes();
         drawOggetti();
         // drawHUD();
 
@@ -229,8 +229,8 @@ public class Main implements ApplicationListener {
 
         player = new Player(p);
         EntityConfig e = new EntityConfig();
-        e.x = 5f;
-        e.y = 5f;
+        e.x = 15f;
+        e.y = 15f;
         e.imgpath="Finn.png";
         e.width=0.65f;
         e.height=0.4f;

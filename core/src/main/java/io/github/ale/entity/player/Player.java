@@ -2,6 +2,7 @@ package io.github.ale.entity.player;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 
 import io.github.ale.entity.abstractEntity.Entity;
@@ -14,9 +15,10 @@ import io.github.ale.maps.Map;
 public class Player extends Entity{
     
     private PlayerMovementManager movement;
-    public EntityMovementManager entitymovement;
+    private EntityMovementManager entitymovement;
 
-    
+    private Circle circle;
+
     private static LineOfSight lineOfSight;
     public static boolean loadedLos=false;
 
@@ -34,6 +36,7 @@ public class Player extends Entity{
     public final void create() {
         movement = new PlayerMovementManager();
         entitymovement = new EntityMovementManager();
+        circle = new Circle(0, 0, 0.5f);
     }
 
     /**
@@ -59,6 +62,9 @@ public class Player extends Entity{
         }
         
         inizializzaLOS();
+
+        circle.x = getX()+getSize().getWidth()/2;
+        circle.y = getY()+getSize().getHeight()/2;
 
         movement.update(this);
         entitymovement.update(this);
@@ -95,6 +101,8 @@ public class Player extends Entity{
     public void drawLineOfSight(ShapeRenderer renderer){
         renderer.setColor(Color.BLACK);
         lineOfSight.draw(renderer);
+        renderer.circle(circle.x, circle.y, circle.radius, 100);
+        renderer.circle(circle.x, circle.y, Player.getLineOfSight().getRaggio(), 100);
     }
 
     /**
@@ -113,5 +121,9 @@ public class Player extends Entity{
      */
     public static LineOfSight getLineOfSight() {
         return lineOfSight;
+    }
+
+    public Circle circle(){
+        return circle;
     }
 }

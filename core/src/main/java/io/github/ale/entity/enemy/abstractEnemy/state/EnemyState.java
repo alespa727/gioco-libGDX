@@ -46,4 +46,5 @@ public class EnemyState {
     public void setOutOfPursuing(boolean outOfPursuing) {
         this.outOfPursuing = outOfPursuing;
     }
+
 }
