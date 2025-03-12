@@ -31,7 +31,7 @@ public abstract class Nemico extends Entity{
     private float areaAttacco;
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    public final float FOLLOWING_COOLDOWN = 0.6f;
+    public final float FOLLOWING_COOLDOWN = 1f;
 
     public Nemico(EntityConfig config) {
         super(config);
