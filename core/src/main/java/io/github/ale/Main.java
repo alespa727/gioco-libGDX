@@ -67,7 +67,8 @@ public class Main implements ApplicationListener {
         // aggiorna ogni cosa nel gioco
         maps.update(camera, player); // update mappa, in caso di input
         player.update(); // update player
-        enemy.update(delta, player);
+        enemy.updateEntity(delta, player);
+        enemy.updateEntityType();
         updateCameraView(); // update telecamera
         maps.getMap().update(camera); // update visualizzazione mappa
 

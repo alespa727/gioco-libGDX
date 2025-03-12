@@ -50,6 +50,7 @@ public class Player extends Entity{
         }
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
         renderer.setColor(Color.BLACK);
+       
     }
 
     /**

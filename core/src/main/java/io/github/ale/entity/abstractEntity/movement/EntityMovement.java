@@ -70,15 +70,6 @@ public class EntityMovement {
             }
         }
 
-        
-        if (collisioneX) {
-            e.setDirezione(e.getDirezione().replace("A", ""));
-            e.setDirezione(e.getDirezione().replace("D", ""));
-        }
-        if (collisioneY) {
-            e.setDirezione(e.getDirezione().replace("W", ""));
-            e.setDirezione(e.getDirezione().replace("S", ""));
-        }
     }
 
     /**

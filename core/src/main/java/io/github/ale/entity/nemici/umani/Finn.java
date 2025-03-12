@@ -1,7 +1,7 @@
 package io.github.ale.entity.nemici.umani;
 
 import io.github.ale.entity.abstractEntity.EntityConfig;
-import io.github.ale.entity.enemy.abstractEnemy.Nemico;
+import io.github.ale.entity.nemici.Nemico;
 
 public final class Finn extends Nemico{
 
@@ -9,9 +9,10 @@ public final class Finn extends Nemico{
         super(config);
         create();
     }
-    /**
-     * inizializza il nemico
-     */
+    
+    public void updateEntityType(){
+        
+    }
     
     @Override
     public void create() {
