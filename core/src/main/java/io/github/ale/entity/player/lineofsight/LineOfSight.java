@@ -14,6 +14,8 @@ import io.github.ale.maps.Map;
 
 public class LineOfSight {
 
+    static int count;
+
     private static final ArrayList<Vector2> puntiComuni = new ArrayList<>();
     private static int minIndex;
 
@@ -25,7 +27,7 @@ public class LineOfSight {
     private static final Vector2 entityPosition = new Vector2();
 
     private final float centroRaggio = 0.1f;
-    private final float losRaggio = 5f;
+    private final float losRaggio = 5.5f;
 
     private final Circle circle;
 
@@ -68,7 +70,7 @@ public class LineOfSight {
         if (mapWidth != Map.getWidth() || mapHeight != Map.getHeight()) {
             create();
         }
-
+        
         updatePlayerCircle(e);
         updateLosValue(e);
 
@@ -140,7 +142,7 @@ public class LineOfSight {
 
     public static Vector2 mutualLineOfSight(Entity e, Entity e2, float area) {
         puntiComuni.clear();
-
+        
         boolean los;
         Vector2 objective = null;
         entityPosition.set(e.getX() + e.getSize().getWidth() / 2, e.getY() + e.getSize().getHeight() / 2);
@@ -159,11 +161,15 @@ public class LineOfSight {
         if (!puntiComuni.isEmpty()) {
             objective = minimo(e, e2);
         }
+        
+     
+        System.out.println(objective);
+        
 
         return objective;
 
     }
-
+ 
     public static Vector2 minimo(Entity e1, Entity e2){
         Vector2 minimo = new Vector2();
         float min = Float.MAX_VALUE;

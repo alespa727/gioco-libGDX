@@ -1,10 +1,9 @@
-package io.github.ale.entity.nemici;
+package io.github.ale.entity.enemy;
 
 
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -21,6 +20,8 @@ import io.github.ale.maps.Map;
 
 public abstract class Nemico extends Entity{
 
+    boolean flag=false;
+
     private final EntityMovementManager movement;
 
     private final EnemyState stati;
@@ -30,7 +31,7 @@ public abstract class Nemico extends Entity{
     private float areaAttacco;
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    public final float FOLLOWING_COOLDOWN = .5f;
+    public final float FOLLOWING_COOLDOWN = 0.6f;
 
     public Nemico(EntityConfig config) {
         super(config);
@@ -42,6 +43,11 @@ public abstract class Nemico extends Entity{
     public EnemyState getEnemyStates(){ return stati;}
     public EntityMovementManager getMovementManager(){ return movement; }
 
+    /**
+     * area di inseguimento, area in cui puo fare attack()
+     * @param inseguimento
+     * @param attacco
+     */
     public void setAree(float inseguimento, float attacco){ 
         this.areaInseguimento=inseguimento;
         this.areaAttacco=attacco;
@@ -56,27 +62,20 @@ public abstract class Nemico extends Entity{
 
         inAreaInseguimento(p);
         inAreaAttacco(p);
-        
+        mantieniNeiLimiti();
         gestioneInseguimento(p, delta);
-       
-        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
-
-        //obbiettivo.set(LineOfSight.mutualLineOfSight(this));
-        
-        getHitbox().x = getX() + 0.65f;
-        getHitbox().y = getY() + 0.55f;
+        adjustHitbox();
 
         awareness.setRange(getX(), getY(), areaAttacco, areaAttacco);
-
         awareness.setAreaInseguimento(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, areaInseguimento);
-
-    
         awareness.setVisione(getCenterVector().x, getCenterVector().y,  p.getCenterVector().x, p.getCenterVector().y);
 
-        attacksPlayer(delta);
+        if (cooldownAttack > 0) {
+            cooldownAttack -= delta;
+        }
     }
 
+   
     @Override
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
@@ -86,10 +85,12 @@ public abstract class Nemico extends Entity{
         if (stati.isPursuing() && !stati.isOutOfPursuing()) {
             renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getVisione().b.x, awareness.getVisione().b.y, 0.1f);
         }
-
-
     }
 
+    /**
+     * disegna il range del nemico (attacco e inseguimento)
+     * @param renderer
+     */
     public void drawEnemyRange(ShapeRenderer renderer){
         if (stati.isInRange()) {
             renderer.setColor(Color.BLUE);
@@ -103,17 +104,20 @@ public abstract class Nemico extends Entity{
     }
 
 
-    private void attacksPlayer(float delta){
-        if (cooldownAttack > 0) {
-            cooldownAttack -= delta;
-        }
-    }
-
+    /**
+     * 
+     * @param p
+     * @param delta
+     */
     private void gestioneInseguimento(Player p, float delta){
         boolean inseguimento = (stati.isPursuing() && !stati.isInRange()) || (stati.isOutOfPursuing() && !stati.isInRange());
         if (inseguimento){
             movement.update(this);
             followsPlayer(p, delta);
+            if (flag) {
+                cooldownFollowing=0;
+                flag=false;
+            }
         }else{
             movement.clearAzioni();
             if (!getDirezione().contains("fermo")) {
@@ -122,23 +126,25 @@ public abstract class Nemico extends Entity{
         }
     }
 
+    /**
+     * inseguimento player cooldown
+     * @param p
+     * @param delta
+     */
     private void followsPlayer(Player p, float delta){
         if (cooldownFollowing > 0) {
             cooldownFollowing -= delta;
             //System.out.println(cooldownFollowing);
         }
         
-        
         if(cooldownFollowing <= 0){
             if (!stati.isInRange()) {
-                
                 ComandiAzioni[] comandi = new ComandiAzioni[1];
                 comandi[0] = new ComandiAzioni(Azioni.sposta, awareness.getObbiettivo().x, awareness.getObbiettivo().y);
                 movement.addAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
                 
-            }
-            
+            }else flag=true;
         }
     }
 
@@ -170,11 +176,15 @@ public abstract class Nemico extends Entity{
             stati.setInRange(false);
     }
     
+    /**
+     * setta l'obbiettivo del nemico
+     * @param p
+     */
     public void inAreaInseguimento(Player p){
         stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(p.circle()));
 
         LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius);
-
+       
         if (stati.isPursuing() || !stati.isInAreaInseguimento()) {
             if(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)!=null){
                 stati.setOutOfPursuing(true);
@@ -193,8 +203,9 @@ public abstract class Nemico extends Entity{
             awareness.setObbiettivo(p.getVector().x, p.getVector().y);
         }
 
-        
-
+        if (!stati.isPursuing() || stati.isOutOfPursuing()) {
+            stati.setIdle(true);
+        }else stati.setIdle(false);
     }
 
     public EnemyAwareness getAwareness() {

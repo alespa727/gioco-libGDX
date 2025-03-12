@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.camera.CameraStyles;
 import io.github.ale.entity.abstractEntity.EntityConfig;
-import io.github.ale.entity.nemici.umani.Finn;
+import io.github.ale.entity.enemy.umani.Finn;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
@@ -199,7 +199,7 @@ public class Main implements ApplicationListener {
             CameraStyles.lerpTo(camera, new Vector2(player.getX() + 2f / 2, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth() - x * 2, Map.getHeight() - y * 2);
 
-            viewport.setWorldSize(15f, 15f * 9f / 16f);
+            viewport.setWorldSize(20f, 20f * 9f / 16f);
             viewport.apply();
             camera.update();
 
@@ -230,7 +230,7 @@ public class Main implements ApplicationListener {
 
         player = new Player(p);
         EntityConfig e = new EntityConfig();
-        e.x = 15f;
+        e.x = 3f;
         e.y = 15f;
         e.imgpath="Finn.png";
         e.width=0.65f;

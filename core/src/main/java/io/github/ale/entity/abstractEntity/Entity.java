@@ -2,6 +2,7 @@ package io.github.ale.entity.abstractEntity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -13,6 +14,7 @@ import io.github.ale.entity.abstractEntity.state.Direzione;
 import io.github.ale.entity.abstractEntity.state.EntityState;
 import io.github.ale.entity.abstractEntity.stats.Stats;
 import io.github.ale.interfaces.Creatable;
+import io.github.ale.maps.Map;
 
 public abstract class Entity implements io.github.ale.interfaces.Drawable, Creatable{
 
@@ -185,11 +187,17 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     }
 
     /**
+     * restituisce la hitbox
+     * @return
+     */
+    public void adjustHitbox(){ 
+        this.hitbox.adjust(this);
+    }
+
+    /**
      * setta l'animazione attuale da utilizzare
      */
 
-    
- 
      public EntityState getStati(){
         return stati;
     }
@@ -215,6 +223,11 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * @return
      */
     public final EntityGraphics getEntityGraphics(){ return graphics; }
+
+    public void mantieniNeiLimiti(){
+        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
+        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
+    }
  
 
 }

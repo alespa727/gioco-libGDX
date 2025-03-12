@@ -43,10 +43,10 @@ public class MapManager {
     
         System.out.println("Mappa: "+currentMapNum);
         switch (currentMapNum) {
-            case 1 -> { nome = "map2"; 
+            case 1 -> { nome = "map3"; 
             ambienteAperto=true;
             }
-            case 2 -> { nome = "map";
+            case 2 -> { nome = "map2";
             ambienteAperto=true;
             }
             default -> {

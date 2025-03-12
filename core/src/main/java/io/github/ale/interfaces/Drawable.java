@@ -25,6 +25,10 @@ public interface Drawable {
                 getSize().getHeight());
     }
 
+    /**
+     * disegna la hitbox
+     * @param renderer
+     */
     public abstract void drawHitbox(ShapeRenderer renderer);
 
     public float getX();

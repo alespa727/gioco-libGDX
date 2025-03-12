@@ -1,7 +1,7 @@
-package io.github.ale.entity.nemici.umani;
+package io.github.ale.entity.enemy.umani;
 
 import io.github.ale.entity.abstractEntity.EntityConfig;
-import io.github.ale.entity.nemici.Nemico;
+import io.github.ale.entity.enemy.Nemico;
 
 public final class Finn extends Nemico{
 
@@ -17,7 +17,7 @@ public final class Finn extends Nemico{
     @Override
     public void create() {
         
-        setAree(5f, 2f);
+        setAree(5.5f, 2f);
         
     }
 }
