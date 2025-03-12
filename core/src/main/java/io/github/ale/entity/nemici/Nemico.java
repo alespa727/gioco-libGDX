@@ -27,6 +27,7 @@ public final class Nemico extends Entity{
     private Segment linea;
 
     private Vector2 obbiettivo;
+    private Vector2 obbiettivoDrawCoord;
 
     private Circle playerCircle;
     private Circle areaInseguimento;
@@ -36,6 +37,7 @@ public final class Nemico extends Entity{
     
     public boolean idle;
     public boolean pursuing;
+    public boolean outOfPursuing;
 
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
     private final float FOLLOWING_COOLDOWN = 0.2f;
@@ -53,6 +55,7 @@ public final class Nemico extends Entity{
     public final void create() {
 
         obbiettivo = new Vector2();
+        obbiettivoDrawCoord = new Vector2();
         
         inizializzaEntityGraphics();
         inizializzaCoordinate(5f, 12f);
@@ -110,7 +113,10 @@ public final class Nemico extends Entity{
     @Override
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
-        if (pursuing) {
+        if (outOfPursuing) {
+            renderer.rectLine(linea.a.x, linea.a.y, obbiettivoDrawCoord.x, obbiettivoDrawCoord.y, 0.1f);
+        }
+        if (pursuing && !outOfPursuing) {
             renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
         }
 
@@ -137,7 +143,8 @@ public final class Nemico extends Entity{
     }
 
     private void gestioneInseguimento(Player p, float delta){
-        if (pursuing){
+        boolean inseguimento = (pursuing && !inRange) || (outOfPursuing && !inRange);
+        if (inseguimento){
             movement.update(this);
             followsPlayer(delta);
         }else{
@@ -201,20 +208,27 @@ public final class Nemico extends Entity{
         playerCircle.radius = 0.5f;
         inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
 
-        LineOfSight.mutualLineOfSight(this, areaInseguimento.radius);
+        LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius);
 
-        obbiettivo.set(p.getVector());
-
-        if (inAreaInseguimento) {
+        if (inAreaInseguimento && !Map.checkLineCollision(p.getCenterVector(), getCenterVector())) {
             pursuing = !Map.checkLineCollision(p.getCenterVector(), getCenterVector());
-        }else pursuing = false;
-
-        if (!pursuing) {
-            if(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)!=null){
-                pursuing=true;
-                obbiettivo.set(new Vector2(LineOfSight.mutualLineOfSight(this, areaInseguimento.radius)).sub(1f, 1f));
-            }else pursuing = false;
+            obbiettivoDrawCoord=new Vector2(p.getCenterVector());
+            obbiettivo=new Vector2(p.getVector());
+        }else if (!inAreaInseguimento) {
+            if(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)!=null){
+                outOfPursuing=true;
+                obbiettivo.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)).sub(1f, 1f));
+                obbiettivoDrawCoord.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)));
+            }else{
+                pursuing = false;
+                outOfPursuing=false;
+            } 
+            
         }
+
+       
+
+        
 
     }
 }

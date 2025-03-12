@@ -134,7 +134,7 @@ public class LineOfSight {
         }
     }
 
-    public static Vector2 mutualLineOfSight(Entity e, float area) {
+    public static Vector2 mutualLineOfSight(Entity e, Entity e2, float area) {
         puntiComuni.clear();
 
         boolean los;
@@ -152,23 +152,27 @@ public class LineOfSight {
             }
         }
 
-        float min;
-
         if (!puntiComuni.isEmpty()) {
-            min = Float.MAX_VALUE;
-
-            for (int i = 0; i < puntiComuni.size(); i++) {
-                if (min >= entityPosition.dst(puntiComuni.get(i))) {
-                    min = entityPosition.dst(puntiComuni.get(i));
-                    minIndex = i;
-                }
-            }
-            objective = puntiComuni.get(minIndex);
+            objective = minimo(e, e2);
+            System.out.println(puntiComuni.get(0));
         }
 
+        
 
         return objective;
 
+    }
+
+    public static Vector2 minimo(Entity e1, Entity e2){
+        Vector2 minimo = new Vector2();
+        float min = Float.MAX_VALUE;
+        for (Vector2 puntiComuni1 : puntiComuni) {
+            if (puntiComuni1.dst(e1.getCenterVector())+puntiComuni1.dst(e2.getCenterVector()) < min) {
+                min = puntiComuni1.dst(e1.getCenterVector())+puntiComuni1.dst(e2.getCenterVector());
+                minimo = puntiComuni1;
+            }
+        }
+        return minimo;
     }
 
 }
