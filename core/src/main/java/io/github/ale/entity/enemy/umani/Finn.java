@@ -18,6 +18,6 @@ public final class Finn extends Nemico{
     public void create() {
         
         setAree(5.5f, 2f);
-        
+        //////////////ADADADADA
     }
 }
