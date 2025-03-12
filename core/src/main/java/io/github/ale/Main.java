@@ -90,7 +90,7 @@ public class Main implements ApplicationListener {
 
         maps.getMap().draw(camera);
 
-        drawHitboxes();
+        //drawHitboxes();
         drawOggetti();
         // drawHUD();
 
@@ -133,7 +133,7 @@ public class Main implements ApplicationListener {
      * disegna hitbox
      */
     public void drawHitboxes() {
-        System.out.println(Player.loadedLos);
+
         if (Player.loadedLos) {
             renderer.begin(ShapeType.Line);
             player.drawLineOfSight(renderer);

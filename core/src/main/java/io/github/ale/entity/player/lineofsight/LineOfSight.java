@@ -25,7 +25,7 @@ public class LineOfSight {
     private static final Vector2 entityPosition = new Vector2();
 
     private final float centroRaggio = 0.1f;
-    private final float losRaggio = 4f;
+    private final float losRaggio = 5f;
 
     private final Circle circle;
 
@@ -52,6 +52,10 @@ public class LineOfSight {
                 linea[i][j] = new Segment(new Vector3(i + 0.5f, j + 0.5f, 0), new Vector3(0, 0, 0));
             }
         }
+    }
+
+    public float getRaggio(){
+        return losRaggio;
     }
 
     /**
@@ -154,10 +158,7 @@ public class LineOfSight {
 
         if (!puntiComuni.isEmpty()) {
             objective = minimo(e, e2);
-            System.out.println(puntiComuni.get(0));
         }
-
-        
 
         return objective;
 
@@ -168,8 +169,10 @@ public class LineOfSight {
         float min = Float.MAX_VALUE;
         for (Vector2 puntiComuni1 : puntiComuni) {
             if (puntiComuni1.dst(e1.getCenterVector())+puntiComuni1.dst(e2.getCenterVector()) < min) {
+                
                 min = puntiComuni1.dst(e1.getCenterVector())+puntiComuni1.dst(e2.getCenterVector());
                 minimo = puntiComuni1;
+                
             }
         }
         return minimo;

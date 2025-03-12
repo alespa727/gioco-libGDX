@@ -69,7 +69,7 @@ public class EntityMovementManager {
         if (count != azioni.size() - 1) {
             if (entity.getStati().isMoving()==false) {
                 count++;
-                stampaAzioni();
+                //stampaAzioni();
             }
             
         } 

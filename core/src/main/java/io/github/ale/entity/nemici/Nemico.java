@@ -40,7 +40,7 @@ public final class Nemico extends Entity{
     public boolean outOfPursuing;
 
     private final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    private final float FOLLOWING_COOLDOWN = 0.2f;
+    private final float FOLLOWING_COOLDOWN = .5f;
 
     EntityMovementManager movement;
 
@@ -76,7 +76,7 @@ public final class Nemico extends Entity{
         setDirezione("fermoS");
         inizializzaDimensione(new Dimensioni(2f, 2f));
         inizializzaAnimazione();
-        areaInseguimento = new Circle(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, 4f);
+        areaInseguimento = new Circle(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, 5f);
     }
 
     /**
@@ -85,7 +85,6 @@ public final class Nemico extends Entity{
      * @param p
      */
     public void update(float delta, Player p) {
-
         inAreaInseguimento(p);
         inAreaAttacco(p);
         
@@ -120,6 +119,7 @@ public final class Nemico extends Entity{
             renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
         }
 
+
     }
 
     public void drawEnemyRange(ShapeRenderer renderer){
@@ -132,6 +132,7 @@ public final class Nemico extends Entity{
         }
         renderer.circle(areaInseguimento.x, areaInseguimento.y, areaInseguimento.radius, 100);
         renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius, 100);
+        renderer.circle(playerCircle.x, playerCircle.y, Player.getLineOfSight().getRaggio(), 100);
         renderer.setColor(Color.BLACK);
     }
 
@@ -146,7 +147,7 @@ public final class Nemico extends Entity{
         boolean inseguimento = (pursuing && !inRange) || (outOfPursuing && !inRange);
         if (inseguimento){
             movement.update(this);
-            followsPlayer(delta);
+            followsPlayer(p, delta);
         }else{
             movement.clearAzioni();
             if (!getDirezione().contains("fermo")) {
@@ -155,7 +156,7 @@ public final class Nemico extends Entity{
         }
     }
 
-    private void followsPlayer(float delta){
+    private void followsPlayer(Player p, float delta){
         if (cooldownFollowing > 0) {
             cooldownFollowing -= delta;
             //System.out.println(cooldownFollowing);
@@ -164,11 +165,12 @@ public final class Nemico extends Entity{
         
         if(cooldownFollowing <= 0){
             if (!inRange) {
+                
                 ComandiAzioni[] comandi = new ComandiAzioni[1];
                 comandi[0] = new ComandiAzioni(Azioni.sposta, obbiettivo.x, obbiettivo.y);
                 movement.addAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
-           
+                
             }
             
         }
@@ -210,23 +212,24 @@ public final class Nemico extends Entity{
 
         LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius);
 
-        if (inAreaInseguimento && !Map.checkLineCollision(p.getCenterVector(), getCenterVector())) {
-            pursuing = !Map.checkLineCollision(p.getCenterVector(), getCenterVector());
-            obbiettivoDrawCoord=new Vector2(p.getCenterVector());
-            obbiettivo=new Vector2(p.getVector());
-        }else if (!inAreaInseguimento) {
+        if (pursuing || !inAreaInseguimento) {
             if(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)!=null){
                 outOfPursuing=true;
                 obbiettivo.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)).sub(1f, 1f));
                 obbiettivoDrawCoord.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)));
             }else{
                 pursuing = false;
+                movement.clearAzioni();
                 outOfPursuing=false;
             } 
+        }
+        
+        if (inAreaInseguimento && !Map.checkLineCollision(p.getCenterVector(), getCenterVector())) {
+            pursuing = !Map.checkLineCollision(p.getCenterVector(), getCenterVector());
+            obbiettivoDrawCoord=new Vector2(p.getCenterVector());
+            obbiettivo=new Vector2(p.getVector());
             
         }
-
-       
 
         
 

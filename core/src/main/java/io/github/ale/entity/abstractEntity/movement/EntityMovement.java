@@ -20,6 +20,8 @@ public class EntityMovement {
         e.getStatistiche().setSpeedBuff(1f);
         if (Math.abs(e.getX() - x) > 0.01f && Math.abs(e.getY() - y) > 0.01f) {
             e.getStatistiche().setSpeedBuff(1 / 1.41f);
+
+
             if (e.getX() < x && e.getY() > y) {
                 e.setDirezione("SD");
             }
@@ -33,6 +35,7 @@ public class EntityMovement {
             if (e.getX() > x && e.getY() < y) {
                 e.setDirezione("WA");
             }
+
         } else if (Math.abs(e.getX() - x) > 0.01f)
             aggiornaDirezioneX(e, x);
         else if (Math.abs(e.getY() - y) > 0.01f)
@@ -45,6 +48,11 @@ public class EntityMovement {
     private static void muovi(Entity e) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         float speed = e.getStatistiche().getSpeed() * deltaTime;
+
+        if (collisioneX || collisioneY) {
+            e.getStatistiche().setSpeedBuff(1f);
+        }
+
 
         if (!collisioneX) {
             if (e.getDirezione().equals("A") || e.getDirezione().equals("WA") || e.getDirezione().equals("SA")) {
@@ -64,12 +72,12 @@ public class EntityMovement {
 
         
         if (collisioneX) {
-            if (e.getDirezione().equals("D") || e.getDirezione().equals("A"))
-                setFermo(e);
+            e.setDirezione(e.getDirezione().replace("A", ""));
+            e.setDirezione(e.getDirezione().replace("D", ""));
         }
         if (collisioneY) {
-            if (e.getDirezione().equals("W") || e.getDirezione().equals("S"))
-                setFermo(e);
+            e.setDirezione(e.getDirezione().replace("W", ""));
+            e.setDirezione(e.getDirezione().replace("S", ""));
         }
     }
 
