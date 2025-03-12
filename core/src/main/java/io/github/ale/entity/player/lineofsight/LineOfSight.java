@@ -163,7 +163,7 @@ public class LineOfSight {
         }
         
      
-        System.out.println(objective);
+        //System.out.println(objective);
         
 
         return objective;

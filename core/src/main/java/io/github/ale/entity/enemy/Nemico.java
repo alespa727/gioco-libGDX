@@ -73,6 +73,10 @@ public abstract class Nemico extends Entity{
         if (cooldownAttack > 0) {
             cooldownAttack -= delta;
         }
+
+        if(stati.isIdle()){
+            wandering();
+        }
     }
 
    
@@ -123,6 +127,10 @@ public abstract class Nemico extends Entity{
             if (!getDirezione().contains("fermo")) {
                 setDirezione("fermo" .concat(getDirezione())) ;
             }
+        }
+        System.out.println(stati.isIdle());
+        if(stati.isIdle()){
+
         }
     }
 
@@ -186,6 +194,7 @@ public abstract class Nemico extends Entity{
         LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius);
        
         if (stati.isPursuing() || !stati.isInAreaInseguimento()) {
+            
             if(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)!=null){
                 stati.setOutOfPursuing(true);
                 awareness.getObbiettivo().set(new Vector2(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)).sub(1f, 1f));
@@ -203,9 +212,19 @@ public abstract class Nemico extends Entity{
             awareness.setObbiettivo(p.getVector().x, p.getVector().y);
         }
 
-        if (!stati.isPursuing() || stati.isOutOfPursuing()) {
+        
+        if (!stati.isPursuing()) {
             stati.setIdle(true);
-        }else stati.setIdle(false);
+        }else{
+            areaInseguimento=5.5f;
+            stati.setIdle(false);
+        }
+        if (!stati.isOutOfPursuing()) {
+            stati.setIdle(true);
+        }else{
+            areaInseguimento=5.5f;
+            stati.setIdle(false);
+        }
     }
 
     public EnemyAwareness getAwareness() {
@@ -214,5 +233,9 @@ public abstract class Nemico extends Entity{
 
     public void setAwareness(EnemyAwareness awareness) {
         this.awareness = awareness;
+    }
+
+    public void wandering(){
+        areaInseguimento=1f;
     }
 }
