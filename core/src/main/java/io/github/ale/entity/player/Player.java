@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
 import io.github.ale.entity.abstractEntity.Entity;
-import io.github.ale.entity.abstractEntity.caratteristiche.Dimensioni;
+import io.github.ale.entity.abstractEntity.EntityConfig;
 import io.github.ale.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.entity.player.lineofsight.LineOfSight;
 import io.github.ale.entity.player.movement.PlayerMovementManager;
@@ -21,7 +21,8 @@ public class Player extends Entity{
     public static boolean loadedLos=false;
 
     // Costruttore
-    public Player() {
+    public Player(EntityConfig config) {
+        super(config);
         create();
     }
 
@@ -31,18 +32,6 @@ public class Player extends Entity{
 
     @Override
     public final void create() {
-        inizializzaEntityGraphics();
-        inizializzaCoordinate(5f, 5f);
-
-        getEntityGraphics().setTexture("Finn.png");
-        inizializzaHitbox(getX(), getY(), 0.65f, 0.4f);
-        inizializzaDirezione("fermoS");
-
-        inizializzaStati(true, false, false);
-        inizializzaStatistiche(100, 2.5f, 10);
-        inizializzaAnimazione();
-        inizializzaDimensione(new Dimensioni(2f, 2f));
-        
         movement = new PlayerMovementManager();
         entitymovement = new EntityMovementManager();
     }

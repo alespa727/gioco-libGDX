@@ -1,4 +1,4 @@
-package io.github.ale.entity.nemici;
+package io.github.ale.entity.enemy.abstractEnemy;
 
 
 
@@ -14,6 +14,7 @@ import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.entity.abstractEntity.EntityConfig;
 import io.github.ale.entity.abstractEntity.movement.ComandiAzioni;
 import io.github.ale.entity.abstractEntity.movement.EntityMovementManager;
+import io.github.ale.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.entity.player.Player;
 import io.github.ale.entity.player.lineofsight.LineOfSight;
 import io.github.ale.enums.Azioni;
@@ -21,7 +22,8 @@ import io.github.ale.maps.Map;
 
 public abstract class Nemico extends Entity{
 
-    public boolean inRange;
+    EnemyState stati;
+
     public Rectangle range;
     public Segment linea;
 
@@ -30,14 +32,10 @@ public abstract class Nemico extends Entity{
 
     public Circle playerCircle;
     public Circle areaInseguimento;
-
-    public boolean inAreaInseguimento;
+    
     public final boolean attacksPlayer=true;
     
-    public boolean idle;
-    public boolean pursuing;
-    public boolean outOfPursuing;
-
+    
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
     public final float FOLLOWING_COOLDOWN = .5f;
 
@@ -45,10 +43,12 @@ public abstract class Nemico extends Entity{
 
     public Nemico(EntityConfig config) {
         super(config);
+        stati = new EnemyState();
     }
 
+    public EnemyState getEnemyStates(){ return stati;}
     
-
+    
     /**
      * aggiorna lo stato del nemico
      * @param delta variabile del tempo
@@ -82,10 +82,10 @@ public abstract class Nemico extends Entity{
     @Override
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
-        if (outOfPursuing) {
+        if (stati.isOutOfPursuing()) {
             renderer.rectLine(linea.a.x, linea.a.y, obbiettivoDrawCoord.x, obbiettivoDrawCoord.y, 0.1f);
         }
-        if (pursuing && !outOfPursuing) {
+        if (stati.isPursuing() && !stati.isOutOfPursuing()) {
             renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
         }
 
@@ -93,11 +93,11 @@ public abstract class Nemico extends Entity{
     }
 
     public void drawEnemyRange(ShapeRenderer renderer){
-        if (inRange) {
+        if (stati.isInRange()) {
             renderer.setColor(Color.BLUE);
         }
         renderer.rect(range.x, range.y, range.width, range.height);
-        if (pursuing) {
+        if (stati.isPursuing()) {
             renderer.setColor(Color.VIOLET);
         }
         renderer.circle(areaInseguimento.x, areaInseguimento.y, areaInseguimento.radius, 100);
@@ -114,7 +114,7 @@ public abstract class Nemico extends Entity{
     }
 
     private void gestioneInseguimento(Player p, float delta){
-        boolean inseguimento = (pursuing && !inRange) || (outOfPursuing && !inRange);
+        boolean inseguimento = (stati.isPursuing() && !stati.isInRange()) || (stati.isOutOfPursuing() && !stati.isInRange());
         if (inseguimento){
             movement.update(this);
             followsPlayer(p, delta);
@@ -134,7 +134,7 @@ public abstract class Nemico extends Entity{
         
         
         if(cooldownFollowing <= 0){
-            if (!inRange) {
+            if (!stati.isInRange()) {
                 
                 ComandiAzioni[] comandi = new ComandiAzioni[1];
                 comandi[0] = new ComandiAzioni(Azioni.sposta, obbiettivo.x, obbiettivo.y);
@@ -168,34 +168,34 @@ public abstract class Nemico extends Entity{
     private void inAreaAttacco(Player p) {
         Rectangle hitboxPlayer = p.getHitbox();
         if (range.overlaps(hitboxPlayer)) {
-            inRange = true;
+            stati.setInRange(true);
             attack(p);
         } else
-            inRange = false;
+            stati.setInRange(false);
     }
     
     public void inAreaInseguimento(Player p){
         playerCircle.x = p.getX()+p.getSize().getWidth()/2;
         playerCircle.y = p.getY()+p.getSize().getHeight()/2;
         playerCircle.radius = 0.5f;
-        inAreaInseguimento = areaInseguimento.overlaps(playerCircle);
+        stati.setInAreaInseguimento(areaInseguimento.overlaps(playerCircle));
 
         LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius);
 
-        if (pursuing || !inAreaInseguimento) {
+        if (stati.isPursuing() || !stati.isInAreaInseguimento()) {
             if(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)!=null){
-                outOfPursuing=true;
+                stati.setOutOfPursuing(true);
                 obbiettivo.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)).sub(1f, 1f));
                 obbiettivoDrawCoord.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)));
             }else{
-                pursuing = false;
+                stati.setPursuing(false);
                 movement.clearAzioni();
-                outOfPursuing=false;
+                stati.setOutOfPursuing(false);
             } 
         }
         
-        if (inAreaInseguimento && !Map.checkLineCollision(p.getCenterVector(), getCenterVector())) {
-            pursuing = !Map.checkLineCollision(p.getCenterVector(), getCenterVector());
+        if (stati.isInAreaInseguimento() && !Map.checkLineCollision(p.getCenterVector(), getCenterVector())) {
+            stati.setPursuing(!Map.checkLineCollision(p.getCenterVector(), getCenterVector()));
             obbiettivoDrawCoord=new Vector2(p.getCenterVector());
             obbiettivo=new Vector2(p.getVector());
             

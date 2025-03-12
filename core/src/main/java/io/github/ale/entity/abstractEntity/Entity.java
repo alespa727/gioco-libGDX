@@ -28,6 +28,17 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     private Hitbox hitbox;
     private EntityGraphics graphics;
 
+    public Entity(EntityConfig config){
+        inizializzaEntityGraphics();
+        inizializzaCoordinate(config.x, config.y);
+        getEntityGraphics().setTexture(config.imgpath);
+        inizializzaHitbox(getX(), getY(), config.width, config.height);
+        inizializzaDirezione(config.direzione);
+        inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
+        inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
+        inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
+        inizializzaAnimazione();
+    }
     public Vector2 getVector(){
         return coordinate;
     }
@@ -42,11 +53,11 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     }
 
     @Override
-    public float getY() { return coordinate.y; }
+    public final float getY() { return coordinate.y; }
     public void setY(float y) {this.coordinate.y = y;}
 
     @Override
-    public float getX() { return coordinate.x; }
+    public final float getX() { return coordinate.x; }
     public void setX(float x) { this.coordinate.x = x; }
 
     @Override
@@ -57,11 +68,11 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     public Animation<TextureRegion> getAnimazione() { return this.graphics.getAnimazione(); }
 
     @Override
-    public void setAnimation() { this.graphics.setAnimation(this); }
+    public final void setAnimation() { this.graphics.setAnimation(this); }
     /**
      * Inizializza textures
      */
-    public void inizializzaEntityGraphics(){
+    public final void inizializzaEntityGraphics(){
         this.graphics = new EntityGraphics();
     }
     
@@ -70,7 +81,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * @param nome
      * @param descrizione
      */
-    public void inizializzaInfo(String nome, String descrizione){
+    public final void inizializzaInfo(String nome, String descrizione){
         this.info = new EntityInfo(nome, descrizione);
     }
 
@@ -79,7 +90,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * @param x
      * @param y
      */
-    public void inizializzaCoordinate(float x, float y){
+    public final void inizializzaCoordinate(float x, float y){
         coordinate = new Vector2(x, y);
     }
 
@@ -90,7 +101,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * @param width
      * @param height
      */
-    public void inizializzaHitbox(float x, float y, float width, float height){ 
+    public final void inizializzaHitbox(float x, float y, float width, float height){ 
         hitbox = new Hitbox(x, y, width, height);
     }
 
@@ -98,7 +109,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * inizializza direzione entità
      * @param direzione
      */
-    public void inizializzaDirezione(String direzione){ 
+    public final void inizializzaDirezione(String direzione){ 
         this.direzione = new Direzione();
         this.direzione.setDirezione(direzione);
     }
@@ -109,7 +120,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * @param inCollisione
      * @param isMoving
      */
-    public void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving){
+    public final void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving){
         stati = new EntityState();
         stati.setIsAlive(isAlive);
         stati.setInCollisione(inCollisione); 
@@ -119,7 +130,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     /**
      * inizializza animazione entità
      */
-    public void inizializzaAnimazione() {
+    public final void inizializzaAnimazione() {
         this.graphics.inizializzaAnimazione(this);
      }
 
@@ -127,7 +138,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * inizializza Dimensione della texture dell'entità
      * @param size
      */
-    public void inizializzaDimensione(Dimensioni size){
+    public final void inizializzaDimensione(Dimensioni size){
         this.size = size;
     }
 
@@ -137,7 +148,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * @param speed
      * @param attackdmg
      */
-    public void inizializzaStatistiche(float hp, float speed, float attackdmg){ 
+    public final void inizializzaStatistiche(float hp, float speed, float attackdmg){ 
         this.statistiche = new Stats(hp, speed, attackdmg); 
     }
 
@@ -203,7 +214,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
      * restituisce oggetto contenente metodi delle texture
      * @return
      */
-    public EntityGraphics getEntityGraphics(){ return graphics; }
+    public final EntityGraphics getEntityGraphics(){ return graphics; }
  
 
 }

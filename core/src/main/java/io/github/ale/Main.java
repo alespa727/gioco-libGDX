@@ -13,7 +13,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.camera.CameraStyles;
-import io.github.ale.entity.nemici.Nemico;
+import io.github.ale.entity.abstractEntity.EntityConfig;
+import io.github.ale.entity.enemy.umani.Finn;
 import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
@@ -30,7 +31,7 @@ public class Main implements ApplicationListener {
 
     private MapManager maps;
 
-    private Nemico enemy;
+    private Finn enemy;
     private Player player;
 
     @Override
@@ -210,9 +211,42 @@ public class Main implements ApplicationListener {
      */
 
     public void inizializzaOggetti() {
+        EntityConfig p = new EntityConfig();
+        p.x = 5f;
+        p.y = 5f;
+        p.imgpath="Finn.png";
+        p.width=0.65f;
+        p.height=0.4f;
+        p.direzione="fermoS";
+        p.isAlive=true;
+        p.inCollisione=false;
+        p.isMoving=false;
+        p.hp = 100;
+        p.speed = 2.5f;
+        p.attackdmg=10;
+        p.imageHeight=2f;
+        p.imageWidth=2f;
 
-        player = new Player();
-        enemy = new Nemico();
+        player = new Player(p);
+        EntityConfig e = new EntityConfig();
+        e.x = 5f;
+        e.y = 5f;
+        e.imgpath="Finn.png";
+        e.width=0.65f;
+        e.height=0.4f;
+        e.direzione="fermoS";
+        e.isAlive=true;
+        e.inCollisione=false;
+        e.isMoving=false;
+        e.hp = 100;
+        e.speed = 1.5f;
+        e.attackdmg=10;
+        e.imageHeight=2f;
+        e.imageWidth=2f;
+
+        this.enemy = new Finn(e);
+
+        
 
     }
 
