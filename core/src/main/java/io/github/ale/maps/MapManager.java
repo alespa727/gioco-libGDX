@@ -85,4 +85,8 @@ public class MapManager {
         return ambienteAperto;
     }
 
+    public MusicPlayer getPlaylist(){
+        return this.playlist;
+    }
+
 }

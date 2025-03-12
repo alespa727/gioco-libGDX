@@ -48,7 +48,7 @@ public class MusicPlayer {
         }
     }
 
-    public void emptyPlaylist(){
+    public void empty(){
         for (int i = 0; i < playlist.size; i++) {
             playlist.getValueAt(i).dispose();
         }

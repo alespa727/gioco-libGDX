@@ -106,6 +106,7 @@ public class Main implements ApplicationListener {
         batch.dispose();
         renderer.dispose();
         hud.dispose();
+        maps.getPlaylist().empty();
     }
 
     @Override
