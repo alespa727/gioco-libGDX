@@ -4,15 +4,16 @@ package io.github.ale.entity.enemy.abstractEnemy;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.Segment;
 
 import io.github.ale.entity.abstractEntity.Entity;
 import io.github.ale.entity.abstractEntity.EntityConfig;
 import io.github.ale.entity.abstractEntity.movement.ComandiAzioni;
 import io.github.ale.entity.abstractEntity.movement.EntityMovementManager;
-import io.github.ale.entity.enemy.abstractEnemy.awareness.EnemyAwareness;
 import io.github.ale.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.entity.player.Player;
 import io.github.ale.entity.player.lineofsight.LineOfSight;
@@ -21,31 +22,32 @@ import io.github.ale.maps.Map;
 
 public abstract class Nemico extends Entity{
 
-    private final EntityMovementManager movement;
+    EnemyState stati;
 
-    private final EnemyState stati;
-    private EnemyAwareness awareness;
+    public Rectangle range;
+    public Segment linea;
 
-    private float areaInseguimento;
-    private float areaAttacco;
+    public Vector2 obbiettivo;
+    public Vector2 obbiettivoDrawCoord;
+
+    public Circle playerCircle;
+    public Circle areaInseguimento;
+    
+    public final boolean attacksPlayer=true;
+    
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
     public final float FOLLOWING_COOLDOWN = .5f;
 
+    public EntityMovementManager movement;
+
     public Nemico(EntityConfig config) {
         super(config);
-        this.movement = new EntityMovementManager();
-        this.stati = new EnemyState();
-        this.awareness = new EnemyAwareness();
+        stati = new EnemyState();
     }
 
     public EnemyState getEnemyStates(){ return stati;}
-    public EntityMovementManager getMovementManager(){ return movement; }
-
-    public void setAree(float inseguimento, float attacco){ 
-        this.areaInseguimento=inseguimento;
-        this.areaAttacco=attacco;
-    }
+    
     
     /**
      * aggiorna lo stato del nemico
@@ -53,7 +55,6 @@ public abstract class Nemico extends Entity{
      * @param p
      */
     public void update(float delta, Player p) {
-
         inAreaInseguimento(p);
         inAreaAttacco(p);
         
@@ -66,25 +67,26 @@ public abstract class Nemico extends Entity{
         
         getHitbox().x = getX() + 0.65f;
         getHitbox().y = getY() + 0.55f;
+        range.x = getX();
+        range.y = getY();
+        areaInseguimento.x = getX()+getSize().getWidth()/2;
+        areaInseguimento.y = getY()+getSize().getHeight()/2;
+        linea.a.x = getX()+getSize().getWidth()/2;
+        linea.a.y = getY()+getSize().getHeight()/2;
+        linea.b.x = p.getX()+p.getSize().getWidth()/2;
+        linea.b.y = p.getY()+p.getSize().getHeight()/2;
 
-        awareness.setRange(getX(), getY(), 2f, 2f);
-
-        awareness.setAreaInseguimento(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, 5f);
-
-    
-        awareness.setVisione(getCenterVector().x, getCenterVector().y,  p.getCenterVector().x, p.getCenterVector().y);
-
-        attacksPlayer(delta);
+        if (attacksPlayer) attacksPlayer(delta);
     }
 
     @Override
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
         if (stati.isOutOfPursuing()) {
-            renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getObbiettivoDrawCoord().x, awareness.getObbiettivoDrawCoord().y, 0.1f);
+            renderer.rectLine(linea.a.x, linea.a.y, obbiettivoDrawCoord.x, obbiettivoDrawCoord.y, 0.1f);
         }
         if (stati.isPursuing() && !stati.isOutOfPursuing()) {
-            renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getVisione().b.x, awareness.getVisione().b.y, 0.1f);
+            renderer.rectLine(linea.a.x, linea.a.y, linea.b.x, linea.b.y, 0.1f);
         }
 
 
@@ -94,11 +96,13 @@ public abstract class Nemico extends Entity{
         if (stati.isInRange()) {
             renderer.setColor(Color.BLUE);
         }
-        renderer.rect(awareness.getRange().x, awareness.getRange().y, awareness.getRange().width, awareness.getRange().height);
+        renderer.rect(range.x, range.y, range.width, range.height);
         if (stati.isPursuing()) {
             renderer.setColor(Color.VIOLET);
         }
-        renderer.circle(awareness.getAreaInseguimento().x, awareness.getAreaInseguimento().y, awareness.getAreaInseguimento().radius, 100);
+        renderer.circle(areaInseguimento.x, areaInseguimento.y, areaInseguimento.radius, 100);
+        renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius, 100);
+        renderer.circle(playerCircle.x, playerCircle.y, Player.getLineOfSight().getRaggio(), 100);
         renderer.setColor(Color.BLACK);
     }
 
@@ -133,7 +137,7 @@ public abstract class Nemico extends Entity{
             if (!stati.isInRange()) {
                 
                 ComandiAzioni[] comandi = new ComandiAzioni[1];
-                comandi[0] = new ComandiAzioni(Azioni.sposta, awareness.getObbiettivo().x, awareness.getObbiettivo().y);
+                comandi[0] = new ComandiAzioni(Azioni.sposta, obbiettivo.x, obbiettivo.y);
                 movement.addAzione(comandi);
                 cooldownFollowing = FOLLOWING_COOLDOWN;
                 
@@ -163,7 +167,7 @@ public abstract class Nemico extends Entity{
      */
     private void inAreaAttacco(Player p) {
         Rectangle hitboxPlayer = p.getHitbox();
-        if (awareness.getRange().overlaps(hitboxPlayer)) {
+        if (range.overlaps(hitboxPlayer)) {
             stati.setInRange(true);
             attack(p);
         } else
@@ -171,15 +175,18 @@ public abstract class Nemico extends Entity{
     }
     
     public void inAreaInseguimento(Player p){
-        stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(p.circle()));
+        playerCircle.x = p.getX()+p.getSize().getWidth()/2;
+        playerCircle.y = p.getY()+p.getSize().getHeight()/2;
+        playerCircle.radius = 0.5f;
+        stati.setInAreaInseguimento(areaInseguimento.overlaps(playerCircle));
 
-        LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius);
+        LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius);
 
         if (stati.isPursuing() || !stati.isInAreaInseguimento()) {
-            if(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)!=null){
+            if(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)!=null){
                 stati.setOutOfPursuing(true);
-                awareness.getObbiettivo().set(new Vector2(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)).sub(1f, 1f));
-                awareness.getObbiettivoDrawCoord().set(new Vector2(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)));
+                obbiettivo.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)).sub(1f, 1f));
+                obbiettivoDrawCoord.set(new Vector2(LineOfSight.mutualLineOfSight(this, p, areaInseguimento.radius)));
             }else{
                 stati.setPursuing(false);
                 movement.clearAzioni();
@@ -189,19 +196,12 @@ public abstract class Nemico extends Entity{
         
         if (stati.isInAreaInseguimento() && !Map.checkLineCollision(p.getCenterVector(), getCenterVector())) {
             stati.setPursuing(!Map.checkLineCollision(p.getCenterVector(), getCenterVector()));
-            awareness.setObbiettivoDrawCoord(p.getCenterVector().x, p.getCenterVector().y);
-            awareness.setObbiettivo(p.getVector().x, p.getVector().y);
+            obbiettivoDrawCoord=new Vector2(p.getCenterVector());
+            obbiettivo=new Vector2(p.getVector());
+            
         }
 
         
 
-    }
-
-    public EnemyAwareness getAwareness() {
-        return awareness;
-    }
-
-    public void setAwareness(EnemyAwareness awareness) {
-        this.awareness = awareness;
     }
 }

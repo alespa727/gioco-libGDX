@@ -91,7 +91,7 @@ public class Main implements ApplicationListener {
 
         maps.getMap().draw(camera);
 
-        drawHitboxes();
+        //drawHitboxes();
         drawOggetti();
         // drawHUD();
 
@@ -229,8 +229,8 @@ public class Main implements ApplicationListener {
 
         player = new Player(p);
         EntityConfig e = new EntityConfig();
-        e.x = 15f;
-        e.y = 15f;
+        e.x = 5f;
+        e.y = 5f;
         e.imgpath="Finn.png";
         e.width=0.65f;
         e.height=0.4f;
