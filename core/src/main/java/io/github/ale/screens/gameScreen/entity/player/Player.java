@@ -1,5 +1,6 @@
 package io.github.ale.screens.gameScreen.entity.player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
@@ -16,6 +17,10 @@ public class Player extends Entity{
     
     private PlayerMovementManager movement;
     private EntityMovementManager entitymovement;
+
+    private final float maxDamageTime = 0.273f;
+    private float countdownKnockback = 0.273f;
+    private float countdownDamage=0.273f;
 
     private Circle circle;
 
@@ -58,8 +63,42 @@ public class Player extends Entity{
      */
     
     public void update() {
+        float delta = Gdx.graphics.getDeltaTime();
         if (loadedLos) {
             getLineOfSight().update(this);
+        }
+
+        if (getStatistiche().gotDamaged) {
+            countdownDamage-=delta;
+            countdownKnockback-=delta;
+            if (countdownDamage<=0) {
+                countdownDamage=maxDamageTime;
+                countdownKnockback=maxDamageTime;
+                getStatistiche().gotDamaged=false;
+            }
+            if (!Map.checkCollisionX(this)) {
+                if (countdownKnockback>0) {
+                    if (getStatistiche().direzioneDanno.contains("A")) {
+                        setX(getX()+(getX()-1-getX())*0.02f);
+                    }
+                    if (getStatistiche().direzioneDanno.contains("D")) {
+                        setX(getX()+(getX()+1-getX())*0.02f);
+                    }
+    
+                    if (getStatistiche().direzioneDanno.contains("W")) {
+                        setY(getY()+(getY()+1-getY())*0.02f);
+                    }
+                    if (getStatistiche().direzioneDanno.contains("S")) {
+                        setY(getY()+(getY()-1-getY())*0.02f);
+    
+                    }
+                    
+                }
+            }else{
+                setX(getX()+(getX()-0.025f-getX())*0.2f);
+                countdownKnockback=0f;
+            }
+            
         }
         
         inizializzaLOS();

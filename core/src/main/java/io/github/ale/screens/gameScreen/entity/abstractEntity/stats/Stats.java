@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Stats {
     private final Health health;
 
+    public boolean gotDamaged = false;
+    public String direzioneDanno;
+
     private final float baseAttackDamage;
     private float attackMultiplier=1f;
     private float attackDamage;
@@ -23,7 +26,10 @@ public class Stats {
     public float getHealth(){ return this.health.getHp(); } 
     public void regenHealth(float delta){ this.health.setHp(this.health.getHp()+delta);}
     public void regenHealthTo(float health){ this.health.setHp(health);}
-    public void inflictDamage(float delta){ this.health.setHp(this.health.getHp()-delta);}
+    public void inflictDamage(float delta){
+         this.health.setHp(this.health.getHp()-delta);
+         gotDamaged=true;
+    }
 
     public void drawHealth(SpriteBatch hud){ this.health.draw(hud);}
 

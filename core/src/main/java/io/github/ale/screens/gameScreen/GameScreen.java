@@ -29,7 +29,6 @@ public class GameScreen implements Screen {
     FitViewport viewport;
     OrthographicCamera camera;
 
-
     private MapManager maps;
 
     private Finn enemy;

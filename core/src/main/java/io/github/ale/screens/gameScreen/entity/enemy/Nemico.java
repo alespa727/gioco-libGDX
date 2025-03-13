@@ -12,6 +12,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.ComandiAzioni;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.state.Direzione;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.awareness.EnemyAwareness;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.screens.gameScreen.entity.player.Player;
@@ -130,6 +131,25 @@ public abstract class Nemico extends Entity{
             }
         }
         
+        if (stati.isInRange()) {
+            if (Math.abs(p.getX()-getX()) > Math.abs(p.getY()-getY())) {
+                if (p.getX() < getX()) {
+                    setDirezione("fermoA");
+                }
+                if (p.getX() > getX()) {
+                    setDirezione("fermoD");
+                }
+            }else{   
+                if (p.getY() > getY()) {
+                    setDirezione("fermoW");
+                }
+                if (p.getY() < getY()) {
+                    setDirezione("fermoS");
+                }
+            }
+            
+        }
+
         if(stati.isIdle()){
 
         }
@@ -167,6 +187,7 @@ public abstract class Nemico extends Entity{
             System.out.println("Nemico attacca il giocatore!");
 
             p.getStatistiche().inflictDamage(getStatistiche().getAttackDamage());
+            p.getStatistiche().direzioneDanno=getDirezione();
             System.out.println(p.getStatistiche().getHealth());
         
             cooldownAttack = ATTACK_COOLDOWN;

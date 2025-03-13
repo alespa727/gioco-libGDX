@@ -1,12 +1,14 @@
 package io.github.ale.screens.gameScreen.interfaces;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Dimensioni;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
 
 public interface Drawable {
 
@@ -20,11 +22,15 @@ public interface Drawable {
         elapsedTime += Gdx.graphics.getDeltaTime();
 
         setAnimation();
-
+        if(getStatistiche().gotDamaged){
+            batch.setColor(1, 0, 0, 0.6f);
+        }
         batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(),
                getSize().getHeight());
+        batch.setColor(Color.WHITE);
     }
 
+    public Stats getStatistiche();
     /**
      * disegna la hitbox
      * @param renderer
