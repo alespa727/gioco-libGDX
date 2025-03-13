@@ -111,8 +111,9 @@ public class GameScreen implements Screen {
 
         
         drawOggetti();
-        drawHitboxes();
+        //drawHitboxes();
         // drawHUD();
+        drawLineOfSight();
 
     }
 
@@ -171,6 +172,9 @@ public class GameScreen implements Screen {
 
         game.renderer.end();
         
+    }
+
+    public void drawLineOfSight(){
         if (Player.loadedLos) {
             game.renderer.begin(ShapeType.Filled);
             player.drawLineOfSight(game.renderer);

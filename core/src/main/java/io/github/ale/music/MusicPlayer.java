@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.musicPlayer;
+package io.github.ale.music;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;

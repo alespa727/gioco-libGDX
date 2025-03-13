@@ -129,7 +129,7 @@ public abstract class Nemico extends Entity{
                 setDirezione("fermo" .concat(getDirezione())) ;
             }
         }
-        System.out.println(stati.isIdle());
+        
         if(stati.isIdle()){
 
         }

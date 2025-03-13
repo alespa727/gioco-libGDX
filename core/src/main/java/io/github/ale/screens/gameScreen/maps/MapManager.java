@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-import io.github.ale.screens.gameScreen.musicPlayer.MusicPlayer;
+import io.github.ale.music.MusicPlayer;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 
 public class MapManager {
