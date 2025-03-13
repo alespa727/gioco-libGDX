@@ -18,14 +18,13 @@ public class MainScreen implements Screen{
     private Skin skin;
     private Stage stage;
     private Table root;
-
     
     public MainScreen(MyGame game) {
         this.game = game;
     }
 
     @Override
-    public void show() {
+    public void show() { //come un costruttore praticamente
         stage = new Stage(new ScreenViewport());
               
         Gdx.input.setInputProcessor(stage);

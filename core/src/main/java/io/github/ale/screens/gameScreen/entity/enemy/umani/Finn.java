@@ -1,7 +1,7 @@
 package io.github.ale.screens.gameScreen.entity.enemy.umani;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.enemy.Nemico;
+import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 
 public final class Finn extends Nemico{
@@ -31,7 +31,6 @@ public final class Finn extends Nemico{
             player().getStatistiche().inflictDamage(getStatistiche().getAttackDamage());
             player().getStatistiche().direzioneDanno=getDirezione();
             System.out.println(player().getStatistiche().getHealth());
-            
         
             setAtkCooldown(ATTACK_COOLDOWN);
         }

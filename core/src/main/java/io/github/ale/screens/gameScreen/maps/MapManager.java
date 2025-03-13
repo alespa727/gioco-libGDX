@@ -3,11 +3,16 @@ package io.github.ale.screens.gameScreen.maps;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.music.MusicPlayer;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 
 public class MapManager {
+    private final Player player;
+    private final OrthographicCamera camera;
+    private final FitViewport viewport;
     private Map currentMap;
     private int currentMapNum;
     private String nome;
@@ -17,13 +22,16 @@ public class MapManager {
 
     boolean flag;
 
-    public MapManager(OrthographicCamera camera, Player p, int startingMap){
+    public MapManager(OrthographicCamera camera, FitViewport viewport, Player player, int startingMap){
+        this.player=player;
+        this.camera=camera;
+        this.viewport=viewport;
         this.flag=false;
         this.currentMapNum=startingMap;
         this.ambienteAperto=true;
-        this.changeMap(camera);
-        p.setX(6.5f);
-        p.setY(5f);
+        this.changeMap();
+        this.player.setX(6.5f);
+        this.player.setY(5f);
         playlist = new MusicPlayer("mymusic.mp3");
         playlist.play(0);
         playlist.setVolume(0.1f);
@@ -31,23 +39,21 @@ public class MapManager {
         this.currentMap = new Map(camera, this.nome);
     }
 
-    /**
-     * restituisce la mappa attuale
-     * @return
-     */
-    public Map getMap() {
-        return currentMap;
-    }
+    public void drawCollisions(ShapeRenderer renderer){ this.currentMap.drawCollisions(renderer);}
+    public void render(){ this.currentMap.render();}
+    public void draw(){ this.currentMap.draw(); }
 
-    private void changeMap(OrthographicCamera camera){  
+    private void changeMap(){  
     
         System.out.println("Mappa: "+currentMapNum);
         switch (currentMapNum) {
             case 1 -> { nome = "map3"; 
             ambienteAperto=true;
+            viewport.setWorldSize(20f, 20f*9/16f);
             }
             case 2 -> { nome = "map2";
             ambienteAperto=true;
+            viewport.setWorldSize(15f, 15*9/16f);
             }
             default -> {
             }
@@ -58,20 +64,20 @@ public class MapManager {
         currentMapNum++;
         currentMap = null;
         currentMap = new Map(camera, nome);
-
+        viewport.apply();
     }
     
     /** 
      * controlla per eventuale cambio mappa 
     */
-    public void update(OrthographicCamera camera, Player p){
+    public void checkInput(){
         boolean e = Gdx.input.isKeyPressed(Input.Keys.E);
 
         if (e) {
             if (!flag) {
-                changeMap(camera);
-                p.setX(7.5f);
-                p.setY(5f);
+                changeMap();
+                this.player.setX(7.5f);
+                this.player.setY(5f);
                 flag=true;
             }
         }

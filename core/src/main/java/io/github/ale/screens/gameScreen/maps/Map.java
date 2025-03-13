@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 
 public class Map {
+    private final OrthographicCamera camera;
     private TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
 
@@ -28,6 +29,7 @@ public class Map {
     public static boolean isLoaded=false;
 
     public Map(OrthographicCamera camera, String name){
+        this.camera=camera;
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
@@ -38,7 +40,7 @@ public class Map {
      * aggiorna la vista per disegnare la mappa
      */
 
-    public void update(OrthographicCamera camera){
+    public void render(){
         mapRenderer.setView(camera);
         mapRenderer.render();   
     }
@@ -47,7 +49,7 @@ public class Map {
      * disegna la mappa in generale
      * @param camera
      */
-    public void draw(OrthographicCamera camera){
+    public void draw(){
         mapRenderer.setView(camera);
         mapRenderer.render();
     }
@@ -56,7 +58,7 @@ public class Map {
      * disegna la hitbox dei tile con collisioni
      * @param renderer
      */
-    public void drawBoxes(ShapeRenderer renderer){
+    public void drawCollisions(ShapeRenderer renderer){
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (collisionMap[i][j]!=null) {
@@ -64,7 +66,6 @@ public class Map {
                 }
             }
         }
-        
     }
 
     /**

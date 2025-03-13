@@ -228,7 +228,7 @@ public abstract class Entity implements Drawable, Creatable{
 
     public void mantieniNeiLimiti(){
         setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
+        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height-getHitbox().height));
     }
     
     public void kill(){

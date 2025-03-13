@@ -1,7 +1,8 @@
-package io.github.ale.screens.gameScreen.entity.enemy;
+package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy;
 
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -63,8 +64,8 @@ public abstract class Nemico extends Entity{
      * @param delta variabile del tempo
      * @param p
      */
-    public void updateEntity(float delta) {
-
+    public void updateEntity() {
+        float delta = Gdx.graphics.getDeltaTime();
         inAreaInseguimento();
         inAreaAttacco();
         mantieniNeiLimiti();

@@ -65,7 +65,7 @@ public class Player extends Entity {
      * aggiorna le informazioni del player
      */
 
-    public void update() {
+    public void render() {
         float delta = Gdx.graphics.getDeltaTime();
         if (loadedLos) {
             getLineOfSight().update(this);

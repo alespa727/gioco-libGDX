@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -24,7 +23,6 @@ public class GameScreen implements Screen {
     private final MyGame game;
 
     private float elapsedTime;
-    private SpriteBatch hud;
 
     private FitViewport viewport;
     private OrthographicCamera camera;
@@ -38,26 +36,19 @@ public class GameScreen implements Screen {
         this.game=game;
     }
 
-    public void create() {
-        
-        inizializzaCamera();
-
-        
-        hud = new SpriteBatch(); // praticamente la cosa per disegnare la ui
-        // Configura la camera e la viewport
-
+    @Override
+    public void show() { //METODO CREATE
+        inizializzaCamera();     // Configura la camera e la viewport
         inizializzaOggetti();
 
-        maps = new MapManager(camera, player, 1); // map manager
+        maps = new MapManager(camera, viewport, player, 1); // map manager
     }
 
     @Override
     public void render(float delta) {
 
-        update();
+        update(delta);
         draw();
-        // System.err.println(player.getWorldX());
-        // System.err.println(player.getWorldY());
 
     }
 
@@ -77,23 +68,20 @@ public class GameScreen implements Screen {
     /**
      * aggiorna tutto il necessario
      */
-    private void update() {
-
-        float delta = Gdx.graphics.getDeltaTime(); // Ottiene il delta time
+    private void update(float delta) {
         // aggiorna ogni cosa nel gioco
-        maps.update(camera, player); // update mappa, in caso di input
+        maps.checkInput(); // update mappa, in caso di input
         if (player.getStati().isAlive()) {
-            player.update(); // update player
-            
+            player.render(); // update player
         }else{
-            hide();
+            pause();
             game.setScreen(game.gameOver);
         } 
         
-        enemy.updateEntity(delta);
+        enemy.updateEntity();
         enemy.updateEntityType();
         updateCameraView(); // update telecamera
-        maps.getMap().update(camera); // update visualizzazione mappa
+        maps.render(); // update visualizzazione mappa
 
     }
 
@@ -113,12 +101,10 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.renderer.setProjectionMatrix(camera.combined);
 
-        maps.getMap().draw(camera);
+        maps.draw();
 
-        
         drawOggetti();
         //drawHitboxes();
-        // drawHUD();
         //drawLineOfSight();
 
     }
@@ -132,7 +118,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         game.batch.dispose();
         game.renderer.dispose();
-        hud.dispose();
         maps.getPlaylist().empty();
     }
 
@@ -144,36 +129,20 @@ public class GameScreen implements Screen {
     public void resume() {
     }
 
-    // METODI AGGIUNTIVI
-
-    /**
-     * disegna hud
-     */
-    public void drawHUD() {
-
-        hud.begin();
-        player.getStatistiche().drawHealth(hud);
-        hud.end();
-
-    }
-
     /**
      * disegna hitbox
      */
     public void drawHitboxes() {
-
-        
-
         game.renderer.begin(ShapeType.Line);
 
         if (player.getStati().inCollisione()) {
             game.renderer.setColor(Color.RED);
         } else game.renderer.setColor(Color.BLACK);
-        maps.getMap().drawBoxes(game.renderer);
+
+        maps.drawCollisions(game.renderer);
 
         player.drawHitbox(game.renderer);
         enemy.drawHitbox(game.renderer);
-
         enemy.drawEnemyRange(game.renderer);
 
         game.renderer.end();
@@ -194,6 +163,9 @@ public class GameScreen implements Screen {
 
     public void drawOggetti() {
         game.batch.begin();
+
+        //EntityManager.draw(); (eventualmente)
+
         if (player.getY() > enemy.getY()) {
             player.draw(game.batch, elapsedTime);
             enemy.draw(game.batch, elapsedTime);
@@ -202,7 +174,6 @@ public class GameScreen implements Screen {
             player.draw(game.batch, elapsedTime);
         }
         game.batch.end();
-
     }
 
     /***
@@ -218,7 +189,6 @@ public class GameScreen implements Screen {
             CameraStyles.lerpTo(camera, new Vector2(Map.getWidth() / 2f, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth() - x * 2, Map.getHeight() - y * 2);
 
-            viewport.setWorldSize(Map.getWidth(), Map.getHeight() / 16f * 9f);
             camera.update();
             viewport.apply();
 
@@ -226,8 +196,6 @@ public class GameScreen implements Screen {
 
             CameraStyles.lerpTo(camera, new Vector2(player.getX() + 2f / 2, player.getY() + 2f / 2));
             CameraStyles.boundaries(camera, new Vector3(x, y, 0), Map.getWidth() - x * 2, Map.getHeight() - y * 2);
-
-            viewport.setWorldSize(20f, 20f * 9f / 16f);
             viewport.apply();
             camera.update();
 
@@ -277,13 +245,6 @@ public class GameScreen implements Screen {
 
         
 
-    }
-
-    
-
-    @Override
-    public void show() {
-        create();
     }
 
     @Override
