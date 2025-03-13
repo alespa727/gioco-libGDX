@@ -1,11 +1,10 @@
 package io.github.ale;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -19,42 +18,59 @@ import io.github.ale.entity.player.Player;
 import io.github.ale.maps.Map;
 import io.github.ale.maps.MapManager;
 
-public class Main implements ApplicationListener {
+public class GameScreen implements Screen {
+
+    MyGame game;
 
     private float elapsedTime;
-    private SpriteBatch batch;
     private SpriteBatch hud;
-    private FitViewport viewport;
 
-    private OrthographicCamera camera;
-    private ShapeRenderer renderer;
+    FitViewport viewport;
+    OrthographicCamera camera;
+
 
     private MapManager maps;
 
     private Finn enemy;
     private Player player;
 
-    @Override
-    public void create() {
+    public GameScreen(MyGame game){
+        this.game=game;
+    }
 
-        batch = new SpriteBatch(); // praticamente la cosa per disegnare
+    public void create(float delta) {
+        
+        inizializzaCamera();
+
+        
         hud = new SpriteBatch(); // praticamente la cosa per disegnare la ui
-        renderer = new ShapeRenderer(); // disegna forme
         // Configura la camera e la viewport
 
         inizializzaOggetti();
-        inizializzaCamera();
 
         maps = new MapManager(camera, player, 1); // map manager
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
 
         update();
         draw();
         // System.err.println(player.getWorldX());
         // System.err.println(player.getWorldY());
+
+    }
+
+    /**
+     * inizializza la telecamera
+     */
+
+     public void inizializzaCamera() {
+
+        camera = new OrthographicCamera(); // telecamera
+        camera.update(); // aggiornamento camera
+        viewport = new FitViewport(32f, 18f, camera); // grandezza telecamera
+        viewport.apply(); // applica cosa si vede
 
     }
 
@@ -87,8 +103,8 @@ public class Main implements ApplicationListener {
         // non l'ho capito bene neanche io ma funziona con la videocamera
 
         viewport.apply();
-        batch.setProjectionMatrix(camera.combined);
-        renderer.setProjectionMatrix(camera.combined);
+        game.batch.setProjectionMatrix(camera.combined);
+        game.renderer.setProjectionMatrix(camera.combined);
 
         maps.getMap().draw(camera);
 
@@ -106,8 +122,8 @@ public class Main implements ApplicationListener {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        renderer.dispose();
+        game.batch.dispose();
+        game.renderer.dispose();
         hud.dispose();
         maps.getPlaylist().empty();
     }
@@ -140,25 +156,24 @@ public class Main implements ApplicationListener {
 
         
 
-        renderer.begin(ShapeType.Line);
+        game.renderer.begin(ShapeType.Line);
 
         if (player.getStati().inCollisione()) {
-            renderer.setColor(Color.RED);
-        } else
-            renderer.setColor(Color.BLACK);
-        maps.getMap().drawBoxes(renderer);
+            game.renderer.setColor(Color.RED);
+        } else game.renderer.setColor(Color.BLACK);
+        maps.getMap().drawBoxes(game.renderer);
 
-        player.drawHitbox(renderer);
-        enemy.drawHitbox(renderer);
+        player.drawHitbox(game.renderer);
+        enemy.drawHitbox(game.renderer);
 
-        enemy.drawEnemyRange(renderer);
+        enemy.drawEnemyRange(game.renderer);
 
-        renderer.end();
+        game.renderer.end();
         
         if (Player.loadedLos) {
-            renderer.begin(ShapeType.Filled);
-            player.drawLineOfSight(renderer);
-            renderer.end();
+            game.renderer.begin(ShapeType.Filled);
+            player.drawLineOfSight(game.renderer);
+            game.renderer.end();
         }
     }
 
@@ -167,15 +182,15 @@ public class Main implements ApplicationListener {
      */
 
     public void drawOggetti() {
-        batch.begin();
+        game.batch.begin();
         if (player.getY() > enemy.getY()) {
-            player.draw(batch, elapsedTime);
-            enemy.draw(batch, elapsedTime);
+            player.draw(game.batch, elapsedTime);
+            enemy.draw(game.batch, elapsedTime);
         } else {
-            enemy.draw(batch, elapsedTime);
-            player.draw(batch, elapsedTime);
+            enemy.draw(game.batch, elapsedTime);
+            player.draw(game.batch, elapsedTime);
         }
-        batch.end();
+        game.batch.end();
 
     }
 
@@ -253,17 +268,16 @@ public class Main implements ApplicationListener {
 
     }
 
-    /**
-     * inizializza la telecamera
-     */
+    
 
-    public void inizializzaCamera() {
+    @Override
+    public void show() {
+        
+    }
 
-        camera = new OrthographicCamera(); // telecamera
-        camera.update(); // aggiornamento camera
-        viewport = new FitViewport(32f, 18f, camera); // grandezza telecamera
-        viewport.apply(); // applica cosa si vede
-
+    @Override
+    public void hide() {
+       
     }
 
 }
