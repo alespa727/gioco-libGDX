@@ -3,10 +3,12 @@ package io.github.ale;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import io.github.ale.screens.gameScreen.GameScreen;
+
 public class MyGame extends com.badlogic.gdx.Game{
 
-    SpriteBatch batch;
-    ShapeRenderer renderer;
+    public SpriteBatch batch;
+    public ShapeRenderer renderer;
 
     GameScreen gameScreen = new GameScreen(this);
     @Override
