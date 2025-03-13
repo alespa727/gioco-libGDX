@@ -152,7 +152,7 @@ public class Map {
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.getHitbox());
         if (entity.getDirezione().contains("W")) {
-            hitbox.y+=1/16f;
+            hitbox.y+=1/8f;
         }
         if (entity.getDirezione().contains("S")) {
             hitbox.y-=1/16f;

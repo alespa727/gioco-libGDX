@@ -92,8 +92,9 @@ public class Main implements ApplicationListener {
 
         maps.getMap().draw(camera);
 
-        drawHitboxes();
+        
         drawOggetti();
+        drawHitboxes();
         // drawHUD();
 
     }
@@ -137,11 +138,7 @@ public class Main implements ApplicationListener {
      */
     public void drawHitboxes() {
 
-        if (Player.loadedLos) {
-            renderer.begin(ShapeType.Line);
-            player.drawLineOfSight(renderer);
-            renderer.end();
-        }
+        
 
         renderer.begin(ShapeType.Line);
 
@@ -157,7 +154,12 @@ public class Main implements ApplicationListener {
         enemy.drawEnemyRange(renderer);
 
         renderer.end();
-
+        
+        if (Player.loadedLos) {
+            renderer.begin(ShapeType.Filled);
+            player.drawLineOfSight(renderer);
+            renderer.end();
+        }
     }
 
     /**

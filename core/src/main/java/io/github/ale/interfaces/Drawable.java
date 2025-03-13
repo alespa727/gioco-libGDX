@@ -22,7 +22,7 @@ public interface Drawable {
         setAnimation();
 
         batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(),
-                getSize().getHeight());
+               getSize().getHeight());
     }
 
     /**

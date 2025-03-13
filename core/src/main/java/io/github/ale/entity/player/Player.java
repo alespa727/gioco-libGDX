@@ -50,7 +50,7 @@ public class Player extends Entity{
         }
         renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
         renderer.setColor(Color.BLACK);
-       
+        renderer.circle(circle.x, circle.y, 5.5f, 40);
     }
 
     /**
@@ -102,8 +102,8 @@ public class Player extends Entity{
     public void drawLineOfSight(ShapeRenderer renderer){
         renderer.setColor(Color.BLACK);
         lineOfSight.draw(renderer);
-        renderer.circle(circle.x, circle.y, circle.radius, 100);
-        renderer.circle(circle.x, circle.y, Player.getLineOfSight().getRaggio(), 100);
+        //renderer.circle(circle.x, circle.y, circle.radius, 100);
+        //renderer.circle(circle.x, circle.y, Player.getLineOfSight().getRaggio(), 100);
     }
 
     /**

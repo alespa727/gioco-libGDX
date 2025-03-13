@@ -51,7 +51,7 @@ public abstract class Entity implements io.github.ale.interfaces.Drawable, Creat
     }
 
     public Vector2 getCenterVector(){
-        return new Vector2(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2);
+        return new Vector2(getX()+getSize().getWidth()/2, getHitbox().y);
     }
 
     @Override

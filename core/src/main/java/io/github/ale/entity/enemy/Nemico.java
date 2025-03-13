@@ -68,6 +68,7 @@ public abstract class Nemico extends Entity{
 
         awareness.setRange(getX(), getY(), areaAttacco, areaAttacco);
         awareness.setAreaInseguimento(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, areaInseguimento);
+    
         awareness.setVisione(getCenterVector().x, getCenterVector().y,  p.getCenterVector().x, p.getCenterVector().y);
 
         if (cooldownAttack > 0) {

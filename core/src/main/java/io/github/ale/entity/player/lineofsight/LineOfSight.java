@@ -89,10 +89,10 @@ public class LineOfSight {
                             renderer.setColor(Color.BLACK);
                     } else renderer.setColor(Color.WHITE);
                     renderer.circle(centroCerchio[i][j].x, centroCerchio[i][j].y, centroRaggio,
-                            40);
-                    //renderer.line(p2, p1);
-                    renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius,
-                            40);
+                           40);
+                    //renderer.line(p1, new Vector2(linea[i][j].b.x, linea[i][j].b.y));
+                    //renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius,
+                    //        40);
                 }
             }
         }
