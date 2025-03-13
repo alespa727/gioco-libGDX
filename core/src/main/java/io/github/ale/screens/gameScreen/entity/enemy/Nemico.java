@@ -12,7 +12,6 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.ComandiAzioni;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.state.Direzione;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.awareness.EnemyAwareness;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.screens.gameScreen.entity.player.Player;
@@ -34,7 +33,7 @@ public abstract class Nemico extends Entity{
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
     public final float FOLLOWING_COOLDOWN = 1f;
 
-    public Nemico(EntityConfig config) {
+    public Nemico(EntityConfig config, Player p) {
         super(config);
         this.movement = new EntityMovementManager();
         this.stati = new EnemyState();
@@ -181,18 +180,7 @@ public abstract class Nemico extends Entity{
      * il nemico attacca
      * @param p
      */
-    private void attack(Player p) {
-        if (cooldownAttack <= 0) {
-            
-            System.out.println("Nemico attacca il giocatore!");
-
-            p.getStatistiche().inflictDamage(getStatistiche().getAttackDamage());
-            p.getStatistiche().direzioneDanno=getDirezione();
-            System.out.println(p.getStatistiche().getHealth());
-        
-            cooldownAttack = ATTACK_COOLDOWN;
-        }
-    }
+    public abstract void attack(Player p);
     
     /**
      * controlla se il player è nel range attacco
@@ -210,7 +198,7 @@ public abstract class Nemico extends Entity{
      * setta l'obbiettivo del nemico
      * @param p
      */
-    public void inAreaInseguimento(Player p){
+    private void inAreaInseguimento(Player p){
         stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(p.circle()));
 
         LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius);
@@ -260,4 +248,6 @@ public abstract class Nemico extends Entity{
     public void wandering(){
         areaInseguimento=1f;
     }
+
+    
 }

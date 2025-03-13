@@ -14,20 +14,20 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMov
 import io.github.ale.screens.gameScreen.entity.player.lineofsight.LineOfSight;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
 
-public class Player extends Entity{
-    
+public class Player extends Entity {
+
     private PlayerMovementManager movement;
     private EntityMovementManager entitymovement;
 
     private final float maxDamageTime = 0.273f;
     private float countdownKnockback = 0.273f;
-    private float countdownDamage=0.273f;
+    private float countdownDamage = 0.273f;
 
     private Circle circle;
     private Vector2 lastPos;
 
     private static LineOfSight lineOfSight;
-    public static boolean loadedLos=false;
+    public static boolean loadedLos = false;
 
     // Costruttore
     public Player(EntityConfig config) {
@@ -49,6 +49,7 @@ public class Player extends Entity{
 
     /**
      * disegna l'hitbox del player
+     * 
      * @param renderer
      */
     @Override
@@ -61,34 +62,38 @@ public class Player extends Entity{
         renderer.circle(circle.x, circle.y, 5.5f, 40);
     }
 
-  
-
     /**
      * aggiorna le informazioni del player
      */
-    
+
     public void update() {
         float delta = Gdx.graphics.getDeltaTime();
         if (loadedLos) {
             getLineOfSight().update(this);
         }
 
-        knockback(delta);
-        
-        inizializzaLOS();
+        if (getStatistiche().gotDamaged) {
+            countdownDamage -= delta;
+            countdownKnockback -= delta;
+            if (countdownDamage <= 0) {
+                countdownDamage = maxDamageTime;
+                countdownKnockback = maxDamageTime;
+                getStatistiche().gotDamaged = false;
+            }
+        }
+        // knockback(delta);
 
-        circle.x = getX()+getSize().getWidth()/2;
-        circle.y = getY()+getSize().getHeight()/2;
+        inizializzaLOS();
+        circle.x = getX() + getSize().getWidth() / 2;
+        circle.y = getY() + getSize().getHeight() / 2;
 
         movement.update(this);
         entitymovement.update(this);
         entitymovement.clearAzioni();
+        mantieniNeiLimiti();
 
-        setX(MathUtils.clamp(getX(), 0-0.65f, Map.getWidth()-getHitbox().width-getHitbox().width));
-        setY(MathUtils.clamp(getY(), 0-0.55f, Map.getHeight()-getHitbox().height*4f));
-
-        getHitbox().x = getX()+0.65f;
-        getHitbox().y = getY()+0.55f;
+        getHitbox().x = getX() + 0.65f;
+        getHitbox().y = getY() + 0.55f;
 
         checkIfDead();
     }
@@ -110,19 +115,21 @@ public class Player extends Entity{
 
     /**
      * disegna punti da cui il player è visibile
+     * 
      * @param renderer
      */
-    public void drawLineOfSight(ShapeRenderer renderer){
+    public void drawLineOfSight(ShapeRenderer renderer) {
         renderer.setColor(Color.BLACK);
         lineOfSight.draw(renderer);
-        //renderer.circle(circle.x, circle.y, circle.radius, 100);
-        //renderer.circle(circle.x, circle.y, Player.getLineOfSight().getRaggio(), 100);
+        // renderer.circle(circle.x, circle.y, circle.radius, 100);
+        // renderer.circle(circle.x, circle.y, Player.getLineOfSight().getRaggio(),
+        // 100);
     }
 
     /**
      * inizializza l'los solamente se non è mai stato caricato e la mappa è caricata
      */
-    public void inizializzaLOS(){
+    public void inizializzaLOS() {
         if (!loadedLos && Map.isLoaded) {
             lineOfSight = new LineOfSight();
             loadedLos = true;
@@ -131,57 +138,48 @@ public class Player extends Entity{
 
     /**
      * returna l'oggetto dei punti da cui il player è visibile
+     * 
      * @return
      */
     public static LineOfSight getLineOfSight() {
         return lineOfSight;
     }
 
-    public Circle circle(){
+    public Circle circle() {
         return circle;
     }
 
-    public void knockback(float delta){
-        if (getStatistiche().gotDamaged) {
-            countdownDamage-=delta;
-            countdownKnockback-=delta;
-            if (countdownDamage<=0) {
-                countdownDamage=maxDamageTime;
-                countdownKnockback=maxDamageTime;
-                getStatistiche().gotDamaged=false;
-            }
-            if (!Map.checkCollisionX(this)) {
-                if (countdownKnockback>0) {
-                    lastPos.x=getX();
-                    if (getStatistiche().direzioneDanno.contains("A")) {
-                        setX(getX()+(getX()-1f-getX())*0.04f);
-                    }
-                    if (getStatistiche().direzioneDanno.contains("D")) {
-                        setX(getX()+(getX()+1f-getX())*0.04f);
-                    }
-    
-                
-                    
+    public void knockback(float delta) {
+
+        if (!Map.checkCollisionX(this)) {
+            if (countdownKnockback > 0) {
+                lastPos.x = getX();
+                if (getStatistiche().direzioneDanno.contains("A")) {
+                    setX(getX() + (getX() - 1f - getX()) * 0.04f);
                 }
-            }else{
-                setX(lastPos.x);
-                countdownKnockback=0f;
-            }
-            if (!Map.checkCollisionY(this)) {
-                if (countdownKnockback>0) {
-                    lastPos.y=getY();
-                    if (getStatistiche().direzioneDanno.contains("S")) {
-                        setY(getY()+(getY()-1f-getY())*0.04f);
-                    }
-                    if (getStatistiche().direzioneDanno.contains("W")) {
-                        setY(getY()+(getY()+1f-getY())*0.04f);
-                    }
+                if (getStatistiche().direzioneDanno.contains("D")) {
+                    setX(getX() + (getX() + 1f - getX()) * 0.04f);
                 }
-            }else{
-                setY(lastPos.y);
-                countdownKnockback=0f;
+
             }
-            
+        } else {
+            setX(lastPos.x);
+            countdownKnockback = 0f;
         }
+        if (!Map.checkCollisionY(this)) {
+            if (countdownKnockback > 0) {
+                lastPos.y = getY();
+                if (getStatistiche().direzioneDanno.contains("S")) {
+                    setY(getY() + (getY() - 1f - getY()) * 0.04f);
+                }
+                if (getStatistiche().direzioneDanno.contains("W")) {
+                    setY(getY() + (getY() + 1f - getY()) * 0.04f);
+                }
+            }
+        } else {
+            setY(lastPos.y);
+            countdownKnockback = 0f;
+        }
+
     }
 }

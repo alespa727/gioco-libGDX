@@ -14,10 +14,13 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.graphics.EntityGra
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.Direzione;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
+import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.interfaces.Creatable;
 import io.github.ale.screens.gameScreen.interfaces.Drawable;
 
 public abstract class Entity implements Drawable, Creatable{
+
+    Player player;
 
     public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
     public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
@@ -175,6 +178,7 @@ public abstract class Entity implements Drawable, Creatable{
      * restituisce la stats
      * @return
      */
+    @Override
     public Stats getStatistiche(){
         return this.statistiche;
     }
@@ -228,6 +232,11 @@ public abstract class Entity implements Drawable, Creatable{
     public void mantieniNeiLimiti(){
         setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
         setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height - getHitbox().height));
+    }
+    
+    public void kill(){
+        getStatistiche().inflictDamage(getStatistiche().getHealth());
+        stati.setIsAlive(false);
     }
  
 

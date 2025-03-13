@@ -12,12 +12,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.MyGame;
-import io.github.ale.screens.gameScreen.maps.Map;
-import io.github.ale.screens.gameScreen.maps.MapManager;
 import io.github.ale.screens.gameScreen.camera.CameraStyles;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.maps.Map;
+import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class GameScreen implements Screen {
 
@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
         this.game=game;
     }
 
-    public void create(float delta) {
+    public void create() {
         
         inizializzaCamera();
 
@@ -82,7 +82,14 @@ public class GameScreen implements Screen {
         float delta = Gdx.graphics.getDeltaTime(); // Ottiene il delta time
         // aggiorna ogni cosa nel gioco
         maps.update(camera, player); // update mappa, in caso di input
-        player.update(); // update player
+        if (player.getStati().isAlive()) {
+            player.update(); // update player
+            
+        }else{
+            hide();
+            game.setScreen(game.gameOver);
+        } 
+        
         enemy.updateEntity(delta, player);
         enemy.updateEntityType();
         updateCameraView(); // update telecamera
@@ -110,7 +117,7 @@ public class GameScreen implements Screen {
 
         
         drawOggetti();
-        //drawHitboxes();
+        drawHitboxes();
         // drawHUD();
         drawLineOfSight();
 
@@ -266,7 +273,7 @@ public class GameScreen implements Screen {
         e.imageHeight=2f;
         e.imageWidth=2f;
 
-        this.enemy = new Finn(e);
+        this.enemy = new Finn(e, player);
 
         
 
@@ -276,7 +283,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        
+        create();
     }
 
     @Override

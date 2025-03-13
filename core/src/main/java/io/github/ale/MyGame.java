@@ -3,20 +3,22 @@ package io.github.ale;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import io.github.ale.screens.defeatScreen.DefeatScreen;
 import io.github.ale.screens.gameScreen.GameScreen;
+import io.github.ale.screens.mainScreen.MainScreen;
 
 public class MyGame extends com.badlogic.gdx.Game{
 
     public SpriteBatch batch;
     public ShapeRenderer renderer;
 
-    GameScreen gameScreen = new GameScreen(this);
+    public GameScreen gameScreen = new GameScreen(this);
+    public DefeatScreen gameOver = new DefeatScreen(this);
     @Override
     public void create() {
         batch = new SpriteBatch(); // praticamente la cosa per disegnare
         renderer = new ShapeRenderer(); // disegna forme
-        gameScreen.create(1f);
-        setScreen(gameScreen);
+        setScreen(new MainScreen(this));
     }
 
     @Override
