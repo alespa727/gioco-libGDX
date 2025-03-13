@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
@@ -23,6 +24,7 @@ public class Player extends Entity{
     private float countdownDamage=0.273f;
 
     private Circle circle;
+    private Vector2 lastPos;
 
     private static LineOfSight lineOfSight;
     public static boolean loadedLos=false;
@@ -42,6 +44,7 @@ public class Player extends Entity{
         movement = new PlayerMovementManager();
         entitymovement = new EntityMovementManager();
         circle = new Circle(0, 0, 0.5f);
+        lastPos = new Vector2();
     }
 
     /**
@@ -58,6 +61,8 @@ public class Player extends Entity{
         renderer.circle(circle.x, circle.y, 5.5f, 40);
     }
 
+  
+
     /**
      * aggiorna le informazioni del player
      */
@@ -68,38 +73,7 @@ public class Player extends Entity{
             getLineOfSight().update(this);
         }
 
-        if (getStatistiche().gotDamaged) {
-            countdownDamage-=delta;
-            countdownKnockback-=delta;
-            if (countdownDamage<=0) {
-                countdownDamage=maxDamageTime;
-                countdownKnockback=maxDamageTime;
-                getStatistiche().gotDamaged=false;
-            }
-            if (!Map.checkCollisionX(this)) {
-                if (countdownKnockback>0) {
-                    if (getStatistiche().direzioneDanno.contains("A")) {
-                        setX(getX()+(getX()-1-getX())*0.02f);
-                    }
-                    if (getStatistiche().direzioneDanno.contains("D")) {
-                        setX(getX()+(getX()+1-getX())*0.02f);
-                    }
-    
-                    if (getStatistiche().direzioneDanno.contains("W")) {
-                        setY(getY()+(getY()+1-getY())*0.02f);
-                    }
-                    if (getStatistiche().direzioneDanno.contains("S")) {
-                        setY(getY()+(getY()-1-getY())*0.02f);
-    
-                    }
-                    
-                }
-            }else{
-                setX(getX()+(getX()-0.025f-getX())*0.2f);
-                countdownKnockback=0f;
-            }
-            
-        }
+        knockback(delta);
         
         inizializzaLOS();
 
@@ -165,5 +139,49 @@ public class Player extends Entity{
 
     public Circle circle(){
         return circle;
+    }
+
+    public void knockback(float delta){
+        if (getStatistiche().gotDamaged) {
+            countdownDamage-=delta;
+            countdownKnockback-=delta;
+            if (countdownDamage<=0) {
+                countdownDamage=maxDamageTime;
+                countdownKnockback=maxDamageTime;
+                getStatistiche().gotDamaged=false;
+            }
+            if (!Map.checkCollisionX(this)) {
+                if (countdownKnockback>0) {
+                    lastPos.x=getX();
+                    if (getStatistiche().direzioneDanno.contains("A")) {
+                        setX(getX()+(getX()-1f-getX())*0.04f);
+                    }
+                    if (getStatistiche().direzioneDanno.contains("D")) {
+                        setX(getX()+(getX()+1f-getX())*0.04f);
+                    }
+    
+                
+                    
+                }
+            }else{
+                setX(lastPos.x);
+                countdownKnockback=0f;
+            }
+            if (!Map.checkCollisionY(this)) {
+                if (countdownKnockback>0) {
+                    lastPos.y=getY();
+                    if (getStatistiche().direzioneDanno.contains("S")) {
+                        setY(getY()+(getY()-1f-getY())*0.04f);
+                    }
+                    if (getStatistiche().direzioneDanno.contains("W")) {
+                        setY(getY()+(getY()+1f-getY())*0.04f);
+                    }
+                }
+            }else{
+                setY(lastPos.y);
+                countdownKnockback=0f;
+            }
+            
+        }
     }
 }

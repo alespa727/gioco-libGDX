@@ -124,6 +124,7 @@ public class Map {
      * @return
      */
     public static boolean checkCollisionX(Entity entity){
+        int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.getHitbox());
         if (entity.getDirezione().contains("A")) {
@@ -132,13 +133,21 @@ public class Map {
         if (entity.getDirezione().contains("D")) {
             hitbox.x+=1/16f;
         }
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
-                    inCollision=true;
+        int minTileX = Math.max(0, (int) (hitbox.x));
+        int maxTileX = Math.min(width - 1, (int) ((hitbox.x + hitbox.width)));
+        int minTileY = Math.max(0, (int) (hitbox.y));
+        int maxTileY = Math.min(height - 1, (int) ((hitbox.y + hitbox.height)));
+
+        for (int i = minTileX; i <= maxTileX; i++) {
+            for (int j = minTileY; j <= maxTileY; j++) {
+                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision = true;
+                    
                 }
+                count++;
             }
         }
+        System.out.println(count);
         //System.out.println(inCollision);
         return inCollision;
     }
@@ -149,6 +158,7 @@ public class Map {
      * @return
      */
     public static boolean checkCollisionY(Entity entity){
+        int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.getHitbox());
         if (entity.getDirezione().contains("W")) {
@@ -158,13 +168,20 @@ public class Map {
             hitbox.y-=1/16f;
         }
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
-                    inCollision=true;
+        int minTileX = Math.max(0, (int) (hitbox.x));
+        int maxTileX = Math.min(width - 1, (int) ((hitbox.x + hitbox.width)));
+        int minTileY = Math.max(0, (int) (hitbox.y));
+        int maxTileY = Math.min(height - 1, (int) ((hitbox.y + hitbox.height)));
+
+        for (int i = minTileX; i <= maxTileX; i++) {
+            for (int j = minTileY; j <= maxTileY; j++) {
+                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision = true;
                 }
+                count++;
             }
         }
+        System.out.println(count);
         //System.out.println(inCollision);
         return inCollision;
     }
