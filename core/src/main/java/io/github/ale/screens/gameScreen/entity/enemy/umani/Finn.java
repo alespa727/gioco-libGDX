@@ -18,22 +18,22 @@ public final class Finn extends Nemico{
     @Override
     public void create() {
         
-        setAree(5.5f, 2f);
+        setAree(5.5f, 1.5f);
         //////////////ADADADADA
     }
 
     @Override
-    public void attack(Player p) {
-        if (cooldownAttack <= 0) {
+    public void attack() {
+        if (getAtkCooldown() <= 0) {
                 
             System.out.println("Finn attacca il giocatore!");
 
-            p.getStatistiche().inflictDamage(getStatistiche().getAttackDamage());
-            p.getStatistiche().direzioneDanno=getDirezione();
-            System.out.println(p.getStatistiche().getHealth());
+            player().getStatistiche().inflictDamage(getStatistiche().getAttackDamage());
+            player().getStatistiche().direzioneDanno=getDirezione();
+            System.out.println(player().getStatistiche().getHealth());
             
         
-            cooldownAttack = ATTACK_COOLDOWN;
+            setAtkCooldown(ATTACK_COOLDOWN);
         }
     }
 }

@@ -21,13 +21,13 @@ import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class GameScreen implements Screen {
 
-    MyGame game;
+    private final MyGame game;
 
     private float elapsedTime;
     private SpriteBatch hud;
 
-    FitViewport viewport;
-    OrthographicCamera camera;
+    private FitViewport viewport;
+    private OrthographicCamera camera;
 
     private MapManager maps;
 
@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
             game.setScreen(game.gameOver);
         } 
         
-        enemy.updateEntity(delta, player);
+        enemy.updateEntity(delta);
         enemy.updateEntityType();
         updateCameraView(); // update telecamera
         maps.getMap().update(camera); // update visualizzazione mappa
@@ -117,9 +117,9 @@ public class GameScreen implements Screen {
 
         
         drawOggetti();
-        drawHitboxes();
+        //drawHitboxes();
         // drawHUD();
-        drawLineOfSight();
+        //drawLineOfSight();
 
     }
 

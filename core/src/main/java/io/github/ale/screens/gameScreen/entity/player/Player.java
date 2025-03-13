@@ -4,15 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entity.player.lineofsight.LineOfSight;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
+import io.github.ale.screens.gameScreen.maps.Map;
 
 public class Player extends Entity {
 

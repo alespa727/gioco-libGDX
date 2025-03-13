@@ -124,7 +124,7 @@ public class Map {
      * @return
      */
     public static boolean checkCollisionX(Entity entity){
-        int count=0;
+        //int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.getHitbox());
         if (entity.getDirezione().contains("A")) {
@@ -144,10 +144,10 @@ public class Map {
                     inCollision = true;
                     
                 }
-                count++;
+                //count++;
             }
         }
-        System.out.println(count);
+        //System.out.println(count);
         //System.out.println(inCollision);
         return inCollision;
     }
@@ -158,7 +158,7 @@ public class Map {
      * @return
      */
     public static boolean checkCollisionY(Entity entity){
-        int count=0;
+        //int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.getHitbox());
         if (entity.getDirezione().contains("W")) {
@@ -178,10 +178,10 @@ public class Map {
                 if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
                     inCollision = true;
                 }
-                count++;
+                //count++;
             }
         }
-        System.out.println(count);
+        //System.out.println(count);
         //System.out.println(inCollision);
         return inCollision;
     }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.ComandiAzioni;
@@ -17,13 +16,13 @@ import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemySt
 import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.entity.player.lineofsight.LineOfSight;
 import io.github.ale.screens.gameScreen.enums.Azioni;
+import io.github.ale.screens.gameScreen.maps.Map;
 
 public abstract class Nemico extends Entity{
-
-    boolean flag=false;
+    
+    private final Player player;
 
     private final EntityMovementManager movement;
-
     private final EnemyState stati;
     private EnemyAwareness awareness;
 
@@ -31,10 +30,15 @@ public abstract class Nemico extends Entity{
     private float areaAttacco;
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    public final float FOLLOWING_COOLDOWN = 1f;
+    public final float FOLLOWING_COOLDOWN = 0.5f;
+    
+    public float cooldownFollowing=0;
 
-    public Nemico(EntityConfig config, Player p) {
+    private boolean flag=false;
+
+    public Nemico(EntityConfig config, Player player) {
         super(config);
+        this.player = player;
         this.movement = new EntityMovementManager();
         this.stati = new EnemyState();
         this.awareness = new EnemyAwareness();
@@ -42,6 +46,7 @@ public abstract class Nemico extends Entity{
 
     public EnemyState getEnemyStates(){ return stati;}
     public EntityMovementManager getMovementManager(){ return movement; }
+    protected Player player(){ return player;}
 
     /**
      * area di inseguimento, area in cui puo fare attack()
@@ -58,21 +63,21 @@ public abstract class Nemico extends Entity{
      * @param delta variabile del tempo
      * @param p
      */
-    public void updateEntity(float delta, Player p) {
+    public void updateEntity(float delta) {
 
-        inAreaInseguimento(p);
-        inAreaAttacco(p);
+        inAreaInseguimento();
+        inAreaAttacco();
         mantieniNeiLimiti();
-        gestioneInseguimento(p, delta);
+        gestioneInseguimento(delta);
         adjustHitbox();
 
         awareness.setRange(getX(), getY(), areaAttacco, areaAttacco);
         awareness.setAreaInseguimento(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, areaInseguimento);
     
-        awareness.setVisione(getCenterVector().x, getCenterVector().y,  p.getCenterVector().x, p.getCenterVector().y);
+        awareness.setVisione(getCenterVector().x, getCenterVector().y,  player.getCenterVector().x, player.getCenterVector().y);
 
-        if (cooldownAttack > 0) {
-            cooldownAttack -= delta;
+        if (getAtkCooldown() > 0) {
+            setAtkCooldown(getAtkCooldown()-delta);
         }
 
         if(stati.isIdle()){
@@ -114,11 +119,11 @@ public abstract class Nemico extends Entity{
      * @param p
      * @param delta
      */
-    private void gestioneInseguimento(Player p, float delta){
+    private void gestioneInseguimento(float delta){
         boolean inseguimento = (stati.isPursuing() && !stati.isInRange()) || (stati.isOutOfPursuing() && !stati.isInRange());
         if (inseguimento){
             movement.update(this);
-            followsPlayer(p, delta);
+            followsPlayer(delta);
             if (flag) {
                 cooldownFollowing=0;
                 flag=false;
@@ -131,18 +136,18 @@ public abstract class Nemico extends Entity{
         }
         
         if (stati.isInRange()) {
-            if (Math.abs(p.getX()-getX()) > Math.abs(p.getY()-getY())) {
-                if (p.getX() < getX()) {
+            if (Math.abs(player.getX()-getX()) > Math.abs(player.getY()-getY())) {
+                if (player.getX() < getX()) {
                     setDirezione("fermoA");
                 }
-                if (p.getX() > getX()) {
+                if (player.getX() > getX()) {
                     setDirezione("fermoD");
                 }
             }else{   
-                if (p.getY() > getY()) {
+                if (player.getY() > getY()) {
                     setDirezione("fermoW");
                 }
-                if (p.getY() < getY()) {
+                if (player.getY() < getY()) {
                     setDirezione("fermoS");
                 }
             }
@@ -159,7 +164,7 @@ public abstract class Nemico extends Entity{
      * @param p
      * @param delta
      */
-    private void followsPlayer(Player p, float delta){
+    private void followsPlayer(float delta){
         if (cooldownFollowing > 0) {
             cooldownFollowing -= delta;
             //System.out.println(cooldownFollowing);
@@ -180,16 +185,16 @@ public abstract class Nemico extends Entity{
      * il nemico attacca
      * @param p
      */
-    public abstract void attack(Player p);
+    public abstract void attack();
     
     /**
      * controlla se il player è nel range attacco
      */
-    private void inAreaAttacco(Player p) {
-        Rectangle hitboxPlayer = p.getHitbox();
+    private void inAreaAttacco() {
+        Rectangle hitboxPlayer = player.getHitbox();
         if (awareness.getRange().overlaps(hitboxPlayer)) {
             stati.setInRange(true);
-            attack(p);
+            attack();
         } else
             stati.setInRange(false);
     }
@@ -198,17 +203,17 @@ public abstract class Nemico extends Entity{
      * setta l'obbiettivo del nemico
      * @param p
      */
-    private void inAreaInseguimento(Player p){
-        stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(p.circle()));
+    private void inAreaInseguimento(){
+        stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(player.circle()));
 
-        LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius);
+        LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius);
        
         if (stati.isPursuing() || !stati.isInAreaInseguimento()) {
             
-            if(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)!=null){
+            if(LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius)!=null){
                 stati.setOutOfPursuing(true);
-                awareness.getObbiettivo().set(new Vector2(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)).sub(1f, 1f));
-                awareness.getObbiettivoDrawCoord().set(new Vector2(LineOfSight.mutualLineOfSight(this, p, awareness.getAreaInseguimento().radius)));
+                awareness.getObbiettivo().set(new Vector2(LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius)).sub(1f, 1f));
+                awareness.getObbiettivoDrawCoord().set(new Vector2(LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius)));
             }else{
                 stati.setPursuing(false);
                 movement.clearAzioni();
@@ -216,10 +221,10 @@ public abstract class Nemico extends Entity{
             } 
         }
         
-        if (stati.isInAreaInseguimento() && !Map.checkLineCollision(p.getCenterVector(), getCenterVector())) {
-            stati.setPursuing(!Map.checkLineCollision(p.getCenterVector(), getCenterVector()));
-            awareness.setObbiettivoDrawCoord(p.getCenterVector().x, p.getCenterVector().y);
-            awareness.setObbiettivo(p.getVector().x, p.getVector().y);
+        if (stati.isInAreaInseguimento() && !Map.checkLineCollision(player.getCenterVector(), getCenterVector())) {
+            stati.setPursuing(!Map.checkLineCollision(player.getCenterVector(), getCenterVector()));
+            awareness.setObbiettivoDrawCoord(player.getCenterVector().x, player.getCenterVector().y);
+            awareness.setObbiettivo(player.getVector().x, player.getVector().y);
         }
 
         

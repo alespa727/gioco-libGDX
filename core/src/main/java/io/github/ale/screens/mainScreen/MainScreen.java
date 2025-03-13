@@ -3,6 +3,8 @@ package io.github.ale.screens.mainScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -12,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.ale.MyGame;
 
 public class MainScreen implements Screen{
-    private MyGame game;
+    private final MyGame game;
     private Skin skin;
     private Stage stage;
     private Table root;
@@ -20,18 +22,26 @@ public class MainScreen implements Screen{
     
     public MainScreen(MyGame game) {
         this.game = game;
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
+        stage = new Stage(new ScreenViewport());
+              
+        Gdx.input.setInputProcessor(stage);
         root = new Table();
         root.setFillParent(true);
         skin = new Skin(Gdx.files.internal("metal-ui.json"));
         stage.addActor(root);
     
         TextButton button1 = new TextButton("Play", skin);
+        button1.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(game.gameScreen);
+                return true;
+	}
+        });
         root.add(button1).fill();
 
         Table table = new Table();

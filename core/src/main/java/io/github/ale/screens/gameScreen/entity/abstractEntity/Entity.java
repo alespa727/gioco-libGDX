@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Dimensioni;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.EntityInfo;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Hitbox;
@@ -14,16 +13,13 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.graphics.EntityGra
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.Direzione;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
-import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.interfaces.Creatable;
 import io.github.ale.screens.gameScreen.interfaces.Drawable;
+import io.github.ale.screens.gameScreen.maps.Map;
 
 public abstract class Entity implements Drawable, Creatable{
 
-    Player player;
-
-    public float cooldownAttack = 0; // Tempo rimanente prima del prossimo attacco
-    public float cooldownFollowing = 0; // Tempo rimanente prima del prossimo attacco
+    private float atkCooldown=0; // Tempo rimanente prima del prossimo attacco
 
     private EntityInfo info;
     private Dimensioni size;
@@ -48,6 +44,7 @@ public abstract class Entity implements Drawable, Creatable{
     public Vector2 getVector(){
         return coordinate;
     }
+    
 
     public void setVector(float x, float y){
         coordinate.x = x;
@@ -237,6 +234,14 @@ public abstract class Entity implements Drawable, Creatable{
     public void kill(){
         getStatistiche().inflictDamage(getStatistiche().getHealth());
         stati.setIsAlive(false);
+    }
+
+    public float getAtkCooldown() {
+        return atkCooldown;
+    }
+
+    public void setAtkCooldown(float atkCooldown) {
+        this.atkCooldown = atkCooldown;
     }
  
 
