@@ -6,6 +6,7 @@ import io.github.ale.screens.gameScreen.entity.player.Player;
 
 public final class Finn extends Nemico{
 
+    
     public Finn(EntityConfig config, Player p){
         super(config, p);
         create();
@@ -20,7 +21,7 @@ public final class Finn extends Nemico{
     public void create() {
         
         setAree(5.5f, 1.5f);
-        //////////////ADADADADA
+        
     }
 
     @Override

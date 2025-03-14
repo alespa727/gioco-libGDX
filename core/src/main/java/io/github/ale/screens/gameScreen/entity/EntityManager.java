@@ -16,7 +16,7 @@ public class EntityManager {
     private final Player player;
     private final Array<Entity> entita;
 
-    private EntityConfig p;
+    private final EntityConfig p;
 
     public EntityManager(MyGame game) {
         entita = new Array<>();
@@ -60,6 +60,9 @@ public class EntityManager {
         entita.add(new Finn(e, player));
     }
 
+    /**
+     * renderizza tutte le entità
+     */
     public void render() {
         if (!player.stati().isAlive()) {
             game.setScreen(game.gameOver);
@@ -70,6 +73,10 @@ public class EntityManager {
         }
     }
 
+    /**
+     * disegna tutte le entità in ordine (verticale)
+     * @param elapsedTime
+     */
     public void draw(float elapsedTime) {
         sort();
         for (Entity e : entita) {
@@ -78,6 +85,10 @@ public class EntityManager {
         }
     }
 
+    /**
+     * disegna tutte le hitbox delle entità
+     * @param renderer
+     */
     public void hitbox(ShapeRenderer renderer){
         
         for (Entity e : entita) {
@@ -86,6 +97,10 @@ public class EntityManager {
         
     }
 
+    /**
+     * disegna tutti i range delle entità
+     * @param renderer
+     */
     public void range(ShapeRenderer renderer){
         
         for (Entity e : entita) {
@@ -94,6 +109,10 @@ public class EntityManager {
         
     }
 
+    /**
+     * controlla se ci sono collisioni
+     * @param renderer
+     */
     public void checkEachCollision(ShapeRenderer renderer){
         for (Entity e : entita) {
             if (e.stati().inCollisione()) {
@@ -103,12 +122,11 @@ public class EntityManager {
         }
     }
 
-    public void respawn(){
-        if (!p.isAlive) {
-            player.respawn();
-        }
-    }
-
+    /**
+     * inverte la posizione di due entità nella lista
+     * @param i
+     * @param j
+     */
     public void swap(int i, int j) {
         Entity temp = entita.get(i);
         entita.set(i, entita.get(j)); // This is where an error occurs. It says a variable is expected.
@@ -127,14 +145,26 @@ public class EntityManager {
                 }
     }
 
+    /**
+     * restituisce il player
+     * @return
+     */
     public Player player() {
         return player;
     }
 
+    /**
+     * restituisce l'entità con indice @param index
+     * @return
+     */
     public Entity entita(int index) {
         return entita.get(index);
     }
 
+    /**
+     * restituisce il nemico con indice @param index (senza contare le altre entità)
+     * @return
+     */
     public Nemico nemico(int index){
         Nemico nemico;
         int count=0;
