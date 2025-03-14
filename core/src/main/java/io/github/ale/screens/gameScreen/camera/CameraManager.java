@@ -10,7 +10,7 @@ import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class CameraManager {
-    private OrthographicCamera camera;
+    private final OrthographicCamera camera;
     /**
      * inizializza la telecamera
      */

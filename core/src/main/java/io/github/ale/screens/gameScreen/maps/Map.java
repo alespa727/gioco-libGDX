@@ -58,7 +58,7 @@ public class Map {
      * disegna la hitbox dei tile con collisioni
      * @param renderer
      */
-    public void drawCollisions(ShapeRenderer renderer){
+    public void collisions(ShapeRenderer renderer){
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (collisionMap[i][j]!=null) {

@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        update(delta);
+        update();
         draw();
 
     }
@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
     /**
      * aggiorna tutto il necessario
      */
-    private void update(float delta) {
+    private void update() {
         // aggiorna ogni cosa nel gioco
         maps.checkInput(); // update mappa, in caso di input
         entities.render();
@@ -76,7 +76,7 @@ public class GameScreen implements Screen {
         maps.draw();
 
         drawOggetti();
-        //drawHitboxes();
+        drawHitboxes();
         drawLineOfSight();
 
     }
@@ -107,15 +107,10 @@ public class GameScreen implements Screen {
     public void drawHitboxes() {
         game.renderer.begin(ShapeType.Line);
 
-        if (entities.player().getStati().inCollisione()) {
-            game.renderer.setColor(Color.RED);
-        } else game.renderer.setColor(Color.BLACK);
-
-        maps.drawCollisions(game.renderer);
-
-        entities.player().drawHitbox(game.renderer);
-        entities.entita(0).drawHitbox(game.renderer);
-        entities.entita(0).drawRange(game.renderer);
+        entities.checkEachCollision(game.renderer);
+        maps.collisions(game.renderer);
+        entities.hitbox(game.renderer);
+        entities.range(game.renderer);
 
         game.renderer.end();
         

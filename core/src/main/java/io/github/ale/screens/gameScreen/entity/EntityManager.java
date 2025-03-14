@@ -1,10 +1,13 @@
 package io.github.ale.screens.gameScreen.entity;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 
@@ -69,6 +72,32 @@ public class EntityManager {
         sort();
         for (Entity e : entita) {
             e.draw(game.batch, elapsedTime);
+            
+        }
+    }
+
+    public void hitbox(ShapeRenderer renderer){
+        
+        for (Entity e : entita) {
+            e.drawHitbox(renderer);
+        }
+        
+    }
+
+    public void range(ShapeRenderer renderer){
+        
+        for (Entity e : entita) {
+            e.drawRange(renderer);
+        }
+        
+    }
+
+    public void checkEachCollision(ShapeRenderer renderer){
+        for (Entity e : entita) {
+            if (e.getStati().inCollisione()) {
+                renderer.setColor(Color.RED);
+                return;
+            } else renderer.setColor(Color.BLACK);
         }
     }
 
@@ -96,5 +125,22 @@ public class EntityManager {
 
     public Entity entita(int index) {
         return entita.get(index);
+    }
+
+    public Nemico nemico(int index){
+        Nemico nemico;
+        int count=0;
+        for (Entity e : entita) {
+            if (!(e instanceof Nemico)) {
+                //System.out.println("non un nemico");
+            } else {
+                if (index>=count) {
+                    nemico = (Nemico) e;
+                    return nemico;
+                }
+                count++;
+            }
+        }
+        return null;
     }
 }

@@ -39,7 +39,7 @@ public class MapManager {
         this.currentMap = new Map(camera, this.nome);
     }
 
-    public void drawCollisions(ShapeRenderer renderer){ this.currentMap.drawCollisions(renderer);}
+    public void collisions(ShapeRenderer renderer){ this.currentMap.collisions(renderer);}
     public void render(){ this.currentMap.render();}
     public void draw(){ this.currentMap.draw(); }
 

@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Segment;
 
-import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.maps.Map;
 
 public class LineOfSight {
 
@@ -138,7 +138,7 @@ public class LineOfSight {
         }
     }
 
-    public static Vector2 mutualLineOfSight(Entity e, Entity e2, float area) {
+    public static Vector2 mutualLineOfSight(Entity e, Entity e2, float area) { //e -> entita e2-> player
         puntiComuni.clear();
         
         boolean los;
@@ -167,6 +167,8 @@ public class LineOfSight {
         return objective;
 
     }
+
+    
  
     public static Vector2 minimo(Entity e1, Entity e2){
         Vector2 minimo = new Vector2();

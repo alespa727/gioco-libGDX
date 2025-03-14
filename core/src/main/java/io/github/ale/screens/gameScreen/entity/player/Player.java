@@ -65,6 +65,7 @@ public class Player extends Entity {
      * aggiorna le informazioni del player
      */
 
+    @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
         if (loadedLos) {

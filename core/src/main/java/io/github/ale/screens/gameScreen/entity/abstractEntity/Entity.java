@@ -61,7 +61,7 @@ public abstract class Entity implements Drawable, Creatable{
     }
 
     public Vector2 getCenterVector(){
-        return new Vector2(getX()+getSize().getWidth()/2, getHitbox().y);
+        return new Vector2(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2);
     }
 
     @Override

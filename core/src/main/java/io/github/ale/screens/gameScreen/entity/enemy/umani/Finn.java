@@ -11,6 +11,7 @@ public final class Finn extends Nemico{
         create();
     }
     
+    @Override
     public void updateEntityType(){
         
     }

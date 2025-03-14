@@ -64,6 +64,7 @@ public abstract class Nemico extends Entity{
      * @param delta variabile del tempo
      * @param p
      */
+    @Override
     public void updateEntity() {
         float delta = Gdx.graphics.getDeltaTime();
         inAreaInseguimento();
@@ -72,7 +73,7 @@ public abstract class Nemico extends Entity{
         gestioneInseguimento(delta);
         adjustHitbox();
 
-        awareness.setRange(getX(), getY(), areaAttacco, areaAttacco);
+        awareness.setRange(getCenterVector().x - areaAttacco/2, getCenterVector().y - areaAttacco/2, areaAttacco, areaAttacco);
         awareness.setAreaInseguimento(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, areaInseguimento);
     
         awareness.setVisione(getCenterVector().x, getCenterVector().y,  player.getCenterVector().x, player.getCenterVector().y);
@@ -102,6 +103,7 @@ public abstract class Nemico extends Entity{
      * disegna il range del nemico (attacco e inseguimento)
      * @param renderer
      */
+    @Override
     public void drawRange(ShapeRenderer renderer){
         if (stati.isInRange()) {
             renderer.setColor(Color.BLUE);
