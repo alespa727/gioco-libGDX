@@ -53,7 +53,7 @@ public class EntityManager {
         e.isMoving = false;
         e.hp = 100;
         e.speed = 1.5f;
-        e.attackdmg = 50;
+        e.attackdmg = 20;
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 

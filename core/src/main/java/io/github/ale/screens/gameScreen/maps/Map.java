@@ -129,7 +129,6 @@ public class Map {
         for (int i = 0; i < Map.width; i++) {
             for (int j = 0; j < Map.height; j++) {
                 if (collisionMap[i][j]!=null && temp.overlaps(collisionBoxes[i][j])) {
-                    System.out.println(true);
                     return true;
                 }
             }

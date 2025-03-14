@@ -22,6 +22,8 @@ public class Player extends Entity {
     private float countdownKnockback = 0.273f;
     private float countdownDamage = 0.273f;
 
+    float delta;
+
     private Circle circle;
     private Vector2 lastPos;
 
@@ -67,7 +69,7 @@ public class Player extends Entity {
 
     @Override
     public void render() {
-        float delta = Gdx.graphics.getDeltaTime();
+        delta = Gdx.graphics.getDeltaTime();
         if (loadedLos) {
             getLineOfSight().update(this);
         }
@@ -149,39 +151,44 @@ public class Player extends Entity {
         return circle;
     }
 
-    public void knockback(float delta) {
-
-        if (!Map.checkCollisionX(this)) {
-            if (countdownKnockback > 0) {
-                lastPos.x = getX();
-                if (statistiche().direzioneDanno.contains("A")) {
-                    setX(getX() + (getX() - 1f - getX()) * 0.04f);
-                }
-                if (statistiche().direzioneDanno.contains("D")) {
-                    setX(getX() + (getX() + 1f - getX()) * 0.04f);
-                }
-
-            }
-        } else {
-            setX(lastPos.x);
-            countdownKnockback = 0f;
-        }
-        if (!Map.checkCollisionY(this)) {
-            if (countdownKnockback > 0) {
-                lastPos.y = getY();
-                if (statistiche().direzioneDanno.contains("S")) {
-                    setY(getY() + (getY() - 1f - getY()) * 0.04f);
-                }
-                if (statistiche().direzioneDanno.contains("W")) {
-                    setY(getY() + (getY() + 1f - getY()) * 0.04f);
-                }
-            }
-        } else {
-            setY(lastPos.y);
-            countdownKnockback = 0f;
-        }
-
+    public void startKnockback(float angolo){
+        countdownKnockback = 1f;
+        knockback(angolo);
     }
+
+    public void knockback(float angolo) {
+        float knockback = 1f;
+    
+        if (countdownKnockback > 0) {
+            float dx = coordinate().x+getSize().getWidth()/2 +(float) Math.cos(Math.toRadians(angolo)) * knockback;
+            float dy = (float) Math.sin(Math.toRadians(angolo)) * knockback;
+        
+        
+            if (!Map.checkCollisionX(this)) {
+                if (countdownKnockback > 0) {
+                    lastPos.x = getX();
+                    setX(getX() + dx);
+                }
+            } else {
+                setX(lastPos.x);
+                countdownKnockback = 0f;
+            }
+        
+            // Gestione del knockback sull'asse Y
+            if (!Map.checkCollisionY(this)) {
+                if (countdownKnockback > 0) {
+                    lastPos.y = getY();
+                    setY(getY() + dy);
+                }
+            } else {
+                setY(lastPos.y);
+                countdownKnockback = 0f;
+            }
+                countdownKnockback-=delta;
+        }
+        
+    }
+    
 
     @Override
     public void updateEntity() {

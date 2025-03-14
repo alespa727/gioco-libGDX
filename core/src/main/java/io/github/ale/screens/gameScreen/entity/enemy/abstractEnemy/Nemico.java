@@ -30,7 +30,7 @@ public abstract class Nemico extends Entity{
     private float areaAttacco;
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    public final float FOLLOWING_COOLDOWN = 0.5f;
+    public final float FOLLOWING_COOLDOWN = 0.75f;
     
     public float cooldownFollowing=0;
 
@@ -210,10 +210,19 @@ public abstract class Nemico extends Entity{
         stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(player.circle()));
         Vector2 lineOfSightPoint = player.getLineOfSight().mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius);
         boolean mutualLos = lineOfSightPoint!=null;
-        boolean lineCollision = Map.checkLineCollision(player.coordinateCentro(), coordinateCentro());
+        boolean lineCollision = 
+    Map.checkLineCollision(new Vector2(hitbox().x + hitbox().width, hitbox().y), 
+                           new Vector2(player.hitbox().x + player.hitbox().width, player.hitbox().y)) 
+|| Map.checkLineCollision(new Vector2(hitbox().x, hitbox().y), 
+                          new Vector2(player.hitbox().x, player.hitbox().y)) 
+|| Map.checkLineCollision(new Vector2(hitbox().x + hitbox().width, hitbox().y + hitbox().height), 
+                          new Vector2(player.hitbox().x + player.hitbox().width, player.hitbox().y + player.hitbox().height)) 
+|| Map.checkLineCollision(new Vector2(hitbox().x, hitbox().y + hitbox().height), 
+                          new Vector2(player.hitbox().x, player.hitbox().y + player.hitbox().height));
+
         if (stati.isPursuing() || !stati.inAreaInseguimento()) {
-            
             if(mutualLos){
+                
                 stati.setSearching(true);
                 awareness.getObbiettivo().set(new Vector2(lineOfSightPoint).sub(1f, 1f));
                 awareness.getObbiettivoDrawCoord().set(new Vector2(lineOfSightPoint));

@@ -185,8 +185,8 @@ public class LineOfSight {
             for (int j = 0; j < mapHeight; j++) {
                 if (lineOfSight[i][j]) {
                     Vector2 point = new Vector2(linea[i][j].a.x, linea[i][j].a.y);
-    
-                    los = !Map.checkLineCollision(point, entityPosition) && 
+                    
+                    los = checkFullLineOfSight(nemico, point) && 
                           !Map.checkRectangleCollision(
                               point.x - nemico.getAwareness().getRange().width / 2,
                               point.y - nemico.getAwareness().getRange().height / 2,
@@ -206,6 +206,26 @@ public class LineOfSight {
     
         return objective;
     }
+
+    private boolean checkFullLineOfSight(Nemico nemico, Vector2 target) {
+        float x = nemico.hitbox().x;
+        float y = nemico.hitbox().y;
+        float w = nemico.hitbox().width;
+        float h = nemico.hitbox().height;
+    
+        // Quattro punti della hitbox
+        Vector2 topLeft = new Vector2(x, y + h);
+        Vector2 topRight = new Vector2(x + w, y + h);
+        Vector2 bottomLeft = new Vector2(x, y);
+        Vector2 bottomRight = new Vector2(x + w, y);
+    
+        // Controlla se almeno un angolo ha una linea libera fino al target
+        return !Map.checkLineCollision(topLeft, target) &&
+               !Map.checkLineCollision(topRight, target) &&
+               !Map.checkLineCollision(bottomLeft, target) &&
+               !Map.checkLineCollision(bottomRight, target);
+    }
+    
     
 
     public Vector2 minimo(Entity e1, Entity e2) {

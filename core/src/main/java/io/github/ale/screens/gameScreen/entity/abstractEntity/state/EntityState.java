@@ -4,6 +4,7 @@ public class EntityState {
     private boolean isAlive;
     private boolean inCollisione;
     private boolean isMoving;
+    private boolean immortality;
 
     public boolean isAlive() {
         return isAlive;
@@ -28,4 +29,13 @@ public class EntityState {
     public void setIsMoving(boolean isMoving) {
         this.isMoving = isMoving;
     }
+
+    public boolean immortality(){
+        return immortality;
+    }
+
+    public void setImmortality(boolean immortality){
+        this.immortality = immortality;
+    }
+
 }

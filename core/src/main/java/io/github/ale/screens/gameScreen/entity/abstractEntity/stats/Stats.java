@@ -26,9 +26,11 @@ public class Stats {
     public float getHealth(){ return this.health.getHp(); } 
     public void regenHealth(float delta){ this.health.setHp(this.health.getHp()+delta);}
     public void regenHealthTo(float health){ this.health.setHp(health);}
-    public void inflictDamage(float delta){
-         this.health.setHp(this.health.getHp()-delta);
-         gotDamaged=true;
+    public void inflictDamage(float delta, boolean immortality){
+        if (!immortality) {
+            this.health.setHp(this.health.getHp()-delta);
+            gotDamaged=true;
+        }
     }
 
     public void drawHealth(SpriteBatch hud){ this.health.draw(hud);}

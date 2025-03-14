@@ -21,7 +21,7 @@ public final class Finn extends Nemico{
     public void create() {
         
         setAree(5.5f, 1.5f);
-        
+
     }
 
     @Override
@@ -30,8 +30,14 @@ public final class Finn extends Nemico{
                 
             System.out.println("Finn attacca il giocatore!");
 
-            player().statistiche().inflictDamage(statistiche().getAttackDamage());
+            player().statistiche().inflictDamage(statistiche().getAttackDamage(), player().stati().immortality());
             player().statistiche().direzioneDanno=direzione();
+
+            float angolo = calcolaAngolo( coordinateCentro().x, coordinateCentro().y, player().coordinateCentro().x, player().coordinateCentro().y);
+
+            System.out.println("Angolo di attacco: " + angolo + "°");
+
+            player().knockback(angolo);
             System.out.println(player().statistiche().getHealth());
         
             setAtkCooldown(ATTACK_COOLDOWN);
