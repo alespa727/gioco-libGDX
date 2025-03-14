@@ -23,13 +23,13 @@ public class EntityGraphics {
      */
 
     public void setAnimation(Entity entity) {
-         if (animation == null || animation != texture.setAnimazione(entity.getDirezione())) {
-             animation = texture.setAnimazione(entity.getDirezione());
+         if (animation == null || animation != texture.setAnimazione(entity.direzione())) {
+             animation = texture.setAnimazione(entity.direzione());
          }
     }
  
      public void inizializzaAnimazione(Entity entity) {
-         animation = getTexture().setAnimazione(entity.getDirezione());
+         animation = getTexture().setAnimazione(entity.direzione());
      }
 
      public Animation<TextureRegion> getAnimazione() {

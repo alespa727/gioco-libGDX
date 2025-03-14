@@ -127,11 +127,11 @@ public class Map {
     public static boolean checkCollisionX(Entity entity){
         //int count=0;
         boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(entity.getHitbox());
-        if (entity.getDirezione().contains("A")) {
+        Rectangle hitbox = new Rectangle(entity.hitbox());
+        if (entity.direzione().contains("A")) {
             hitbox.x-=1/16f;
         }
-        if (entity.getDirezione().contains("D")) {
+        if (entity.direzione().contains("D")) {
             hitbox.x+=1/16f;
         }
         int minTileX = Math.max(0, (int) (hitbox.x));
@@ -161,11 +161,11 @@ public class Map {
     public static boolean checkCollisionY(Entity entity){
         //int count=0;
         boolean inCollision=false;
-        Rectangle hitbox = new Rectangle(entity.getHitbox());
-        if (entity.getDirezione().contains("W")) {
+        Rectangle hitbox = new Rectangle(entity.hitbox());
+        if (entity.direzione().contains("W")) {
             hitbox.y+=1/8f;
         }
-        if (entity.getDirezione().contains("S")) {
+        if (entity.direzione().contains("S")) {
             hitbox.y-=1/16f;
         }
 

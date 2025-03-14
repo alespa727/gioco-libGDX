@@ -22,6 +22,8 @@ public abstract class Entity implements Drawable, Creatable{
 
     private float atkCooldown=0; // Tempo rimanente prima del prossimo attacco
 
+    private final EntityConfig config;
+
     private EntityInfo info;
     private Dimensioni size;
     private EntityState stati;
@@ -32,6 +34,7 @@ public abstract class Entity implements Drawable, Creatable{
     private EntityGraphics graphics;
 
     public Entity(EntityConfig config){
+        this.config = config;
         inizializzaEntityGraphics();
         inizializzaCoordinate(config.x, config.y);
         getEntityGraphics().setTexture(config.imgpath);
@@ -43,25 +46,87 @@ public abstract class Entity implements Drawable, Creatable{
         inizializzaAnimazione();
     }
 
+    public EntityConfig config(){
+        return this.config;
+    }
+
     public void render(){
         updateEntity();
         updateEntityType();
     }
+
     public abstract void updateEntity();
     public abstract void updateEntityType();
     public abstract void drawRange(ShapeRenderer renderer);
-    public Vector2 getVector(){
-        return coordinate;
+
+    public void kill(){
+        statistiche().inflictDamage(statistiche().getHealth());
+        stati.setIsAlive(false);
+    }
+
+    public void respawn(){
+        stati().setIsAlive(config.isAlive);
+        //this.setX(config.x);
+        //this.setY(config.y);
+        this.statistiche().gotDamaged=false;
     }
     
-
-    public void setVector(float x, float y){
-        coordinate.x = x;
-        coordinate.y = y;
+    /**
+     * restituisce nome entità
+     * @return
+     */
+    public String nome(){
+        return this.info.getNome();
     }
 
-    public Vector2 getCenterVector(){
+    /**
+     * restituisce descrizione
+     * @return
+     */
+    public String descrizione(){
+        return this.info.getDescrizione();
+    }
+
+    /**
+     * restituisce la direzione
+     * @return
+     */
+    public String direzione(){ 
+        return this.direzione.getDirezione();
+    }
+
+    /**
+     * restituisce la stats
+     * @return
+     */
+    @Override
+    public Stats statistiche(){
+        return this.statistiche;
+    }
+
+    /**
+     * restituisce la hitbox
+     * @return
+     */
+    public Rectangle hitbox(){ 
+        return this.hitbox.getHitbox(); 
+    }
+
+    public EntityState stati(){
+        return stati;
+    }
+
+    public Vector2 coordinate(){
+        return new Vector2(coordinate);
+    }
+
+    public Vector2 coordinateCentro(){
         return new Vector2(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2);
+    }
+    
+    public void setCoordinate(float x, float y){
+        coordinate.x = x;
+        coordinate.y = y;
     }
 
     @Override
@@ -173,62 +238,12 @@ public abstract class Entity implements Drawable, Creatable{
     }
 
     /**
-     * restituisce la direzione
-     * @return
-     */
-    public String getDirezione(){ 
-        return this.direzione.getDirezione();
-    }
-
-    /**
-     * restituisce la stats
-     * @return
-     */
-    @Override
-    public Stats getStatistiche(){
-        return this.statistiche;
-    }
-
-    /**
-     * restituisce la hitbox
-     * @return
-     */
-    public Rectangle getHitbox(){ 
-        return this.hitbox.getHitbox(); 
-    }
-
-    /**
      * restituisce la hitbox
      * @return
      */
     public void adjustHitbox(){ 
         this.hitbox.adjust(this);
     }
-
-    /**
-     * setta l'animazione attuale da utilizzare
-     */
-
-     public EntityState getStati(){
-        return stati;
-    }
-
-    /**
-     * restituisce nome entità
-     * @return
-     */
-    public String getNome(){
-        return this.info.getNome();
-    }
-
-    /**
-     * restituisce descrizione
-     * @return
-     */
-    public String getDescrizione(){
-        return this.info.getDescrizione();
-    }
-
     /**
      * restituisce oggetto contenente metodi delle texture
      * @return
@@ -236,16 +251,11 @@ public abstract class Entity implements Drawable, Creatable{
     public final EntityGraphics getEntityGraphics(){ return graphics; }
 
     public void mantieniNeiLimiti(){
-        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - getHitbox().width - getHitbox().width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - getHitbox().height-getHitbox().height));
-    }
-    
-    public void kill(){
-        getStatistiche().inflictDamage(getStatistiche().getHealth());
-        stati.setIsAlive(false);
+        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox().width - hitbox().width));
+        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox().height-hitbox().height));
     }
 
-    public float getAtkCooldown() {
+    public float atkCooldown() {
         return atkCooldown;
     }
 

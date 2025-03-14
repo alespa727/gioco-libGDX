@@ -174,8 +174,8 @@ public class LineOfSight {
         Vector2 minimo = new Vector2();
         float min = Float.MAX_VALUE;
         for (Vector2 puntiComuni1 : puntiComuni) {
-            if (puntiComuni1.dst(e1.getCenterVector())+puntiComuni1.dst(e2.getCenterVector()) <= min) {
-                    min = puntiComuni1.dst(e1.getCenterVector())+puntiComuni1.dst(e2.getCenterVector());
+            if (puntiComuni1.dst(e1.coordinateCentro())+puntiComuni1.dst(e2.coordinateCentro()) <= min) {
+                    min = puntiComuni1.dst(e1.coordinateCentro())+puntiComuni1.dst(e2.coordinateCentro());
                     minimo = puntiComuni1;
             }
         }

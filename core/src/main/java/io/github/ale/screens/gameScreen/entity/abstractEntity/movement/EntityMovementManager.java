@@ -50,7 +50,7 @@ public class EntityMovementManager {
             return;
         }
 
-        entity.getStati().setIsMoving(true);
+        entity.stati().setIsMoving(true);
 
         addizioneAzioniCoordinate();
 
@@ -67,7 +67,7 @@ public class EntityMovementManager {
         }
 
         if (count != azioni.size() - 1) {
-            if (entity.getStati().isMoving()==false) {
+            if (entity.stati().isMoving()==false) {
                 count++;
                 //stampaAzioni();
             }

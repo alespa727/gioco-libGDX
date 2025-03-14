@@ -15,8 +15,6 @@ import io.github.ale.screens.gameScreen.maps.Map;
 
 public class Player extends Entity {
 
-    private EntityConfig config;
-
     private PlayerMovementManager movement;
     private EntityMovementManager entitymovement;
 
@@ -33,15 +31,7 @@ public class Player extends Entity {
     // Costruttore
     public Player(EntityConfig config) {
         super(config);
-        this.config = config;
         create();
-    }
-
-    public void respawn(){
-        getStati().setIsAlive(config.isAlive);
-        //this.setX(config.x);
-        //this.setY(config.y);
-        this.getStatistiche().gotDamaged=false;
     }
 
     /**
@@ -63,10 +53,10 @@ public class Player extends Entity {
      */
     @Override
     public void drawHitbox(ShapeRenderer renderer) {
-        if (getStati().inCollisione()) {
+        if (stati().inCollisione()) {
             renderer.setColor(Color.RED);
         }
-        renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
+        renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
         renderer.setColor(Color.BLACK);
         renderer.circle(circle.x, circle.y, 5.5f, 40);
     }
@@ -82,13 +72,13 @@ public class Player extends Entity {
             getLineOfSight().update(this);
         }
 
-        if (getStatistiche().gotDamaged) {
+        if (statistiche().gotDamaged) {
             countdownDamage -= delta;
             countdownKnockback -= delta;
             if (countdownDamage <= 0) {
                 countdownDamage = maxDamageTime;
                 countdownKnockback = maxDamageTime;
-                getStatistiche().gotDamaged = false;
+                statistiche().gotDamaged = false;
             }
         }
         // knockback(delta);
@@ -102,8 +92,8 @@ public class Player extends Entity {
         entitymovement.clearAzioni();
         mantieniNeiLimiti();
 
-        getHitbox().x = getX() + 0.65f;
-        getHitbox().y = getY() + 0.55f;
+        hitbox().x = getX() + 0.65f;
+        hitbox().y = getY() + 0.55f;
 
         checkIfDead();
     }
@@ -114,13 +104,13 @@ public class Player extends Entity {
 
     public boolean checkIfDead() {
         // Logica per controllare se il giocatore è morto
-        if (getStatistiche().getHealth() <= 0) {
-            this.getStati().setIsAlive(false);
+        if (statistiche().getHealth() <= 0) {
+            this.stati().setIsAlive(false);
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
-            getStatistiche().regenHealthTo(100);
+            statistiche().regenHealthTo(100);
         }
-        return this.getStati().isAlive();
+        return this.stati().isAlive();
     }
 
     /**
@@ -164,10 +154,10 @@ public class Player extends Entity {
         if (!Map.checkCollisionX(this)) {
             if (countdownKnockback > 0) {
                 lastPos.x = getX();
-                if (getStatistiche().direzioneDanno.contains("A")) {
+                if (statistiche().direzioneDanno.contains("A")) {
                     setX(getX() + (getX() - 1f - getX()) * 0.04f);
                 }
-                if (getStatistiche().direzioneDanno.contains("D")) {
+                if (statistiche().direzioneDanno.contains("D")) {
                     setX(getX() + (getX() + 1f - getX()) * 0.04f);
                 }
 
@@ -179,10 +169,10 @@ public class Player extends Entity {
         if (!Map.checkCollisionY(this)) {
             if (countdownKnockback > 0) {
                 lastPos.y = getY();
-                if (getStatistiche().direzioneDanno.contains("S")) {
+                if (statistiche().direzioneDanno.contains("S")) {
                     setY(getY() + (getY() - 1f - getY()) * 0.04f);
                 }
-                if (getStatistiche().direzioneDanno.contains("W")) {
+                if (statistiche().direzioneDanno.contains("W")) {
                     setY(getY() + (getY() + 1f - getY()) * 0.04f);
                 }
             }

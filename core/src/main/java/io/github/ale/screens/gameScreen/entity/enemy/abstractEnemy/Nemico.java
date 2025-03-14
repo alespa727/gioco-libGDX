@@ -73,13 +73,13 @@ public abstract class Nemico extends Entity{
         gestioneInseguimento(delta);
         adjustHitbox();
 
-        awareness.setRange(getCenterVector().x - areaAttacco/2, getCenterVector().y - areaAttacco/2, areaAttacco, areaAttacco);
+        awareness.setRange(coordinateCentro().x - areaAttacco/2, coordinateCentro().y - areaAttacco/2, areaAttacco, areaAttacco);
         awareness.setAreaInseguimento(getX()+getSize().getWidth()/2, getY()+getSize().getHeight()/2, areaInseguimento);
     
-        awareness.setVisione(getCenterVector().x, getCenterVector().y,  player.getCenterVector().x, player.getCenterVector().y);
+        awareness.setVisione(coordinateCentro().x, coordinateCentro().y,  player.coordinateCentro().x, player.coordinateCentro().y);
 
-        if (getAtkCooldown() > 0) {
-            setAtkCooldown(getAtkCooldown()-delta);
+        if (atkCooldown() > 0) {
+            setAtkCooldown(atkCooldown()-delta);
         }
 
         if(stati.isIdle()){
@@ -90,7 +90,7 @@ public abstract class Nemico extends Entity{
    
     @Override
     public void drawHitbox(ShapeRenderer renderer){
-        renderer.rect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
+        renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
         if (stati.isOutOfPursuing()) {
             renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getObbiettivoDrawCoord().x, awareness.getObbiettivoDrawCoord().y, 0.1f);
         }
@@ -133,8 +133,8 @@ public abstract class Nemico extends Entity{
             }
         }else{
             movement.clearAzioni();
-            if (!getDirezione().contains("fermo")) {
-                setDirezione("fermo" .concat(getDirezione())) ;
+            if (!direzione().contains("fermo")) {
+                setDirezione("fermo" .concat(direzione())) ;
             }
         }
         
@@ -194,7 +194,7 @@ public abstract class Nemico extends Entity{
      * controlla se il player è nel range attacco
      */
     private void inAreaAttacco() {
-        Rectangle hitboxPlayer = player.getHitbox();
+        Rectangle hitboxPlayer = player.hitbox();
         if (awareness.getRange().overlaps(hitboxPlayer)) {
             stati.setInRange(true);
             attack();
@@ -224,10 +224,10 @@ public abstract class Nemico extends Entity{
             } 
         }
         
-        if (stati.isInAreaInseguimento() && !Map.checkLineCollision(player.getCenterVector(), getCenterVector())) {
-            stati.setPursuing(!Map.checkLineCollision(player.getCenterVector(), getCenterVector()));
-            awareness.setObbiettivoDrawCoord(player.getCenterVector().x, player.getCenterVector().y);
-            awareness.setObbiettivo(player.getVector().x, player.getVector().y);
+        if (stati.isInAreaInseguimento() && !Map.checkLineCollision(player.coordinateCentro(), coordinateCentro())) {
+            stati.setPursuing(!Map.checkLineCollision(player.coordinateCentro(), coordinateCentro()));
+            awareness.setObbiettivoDrawCoord(player.coordinateCentro().x, player.coordinateCentro().y);
+            awareness.setObbiettivo(player.coordinate().x, player.coordinate().y);
         }
 
         

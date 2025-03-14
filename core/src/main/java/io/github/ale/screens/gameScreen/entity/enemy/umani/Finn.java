@@ -25,13 +25,13 @@ public final class Finn extends Nemico{
 
     @Override
     public void attack() {
-        if (getAtkCooldown() <= 0) {
+        if (atkCooldown() <= 0) {
                 
             System.out.println("Finn attacca il giocatore!");
 
-            player().getStatistiche().inflictDamage(getStatistiche().getAttackDamage());
-            player().getStatistiche().direzioneDanno=getDirezione();
-            System.out.println(player().getStatistiche().getHealth());
+            player().statistiche().inflictDamage(statistiche().getAttackDamage());
+            player().statistiche().direzioneDanno=direzione();
+            System.out.println(player().statistiche().getHealth());
         
             setAtkCooldown(ATTACK_COOLDOWN);
         }

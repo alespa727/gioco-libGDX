@@ -2,7 +2,6 @@ package io.github.ale.screens.gameScreen.entity.player.movement;
 
 import com.badlogic.gdx.Gdx;
 
-
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.enums.StatiDiMovimento;
 import io.github.ale.screens.gameScreen.maps.Map;
@@ -55,7 +54,7 @@ public class PlayerMovementManager{
             if (diagonale) speed = sprintSpeedMultiplier/1.41f;
             else speed = sprintSpeedMultiplier;
             
-            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.1f);
+            p.statistiche().setSpeedBuff(p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) *0.1f);
     
         }
 
@@ -63,14 +62,14 @@ public class PlayerMovementManager{
             if (diagonale) speed = baseSpeedMultiplier/1.41f;
             else speed = baseSpeedMultiplier;
             // System.out.println("NIENTE SPRINT");
-            p.getStatistiche().setSpeedBuff(p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) *0.1f);
+            p.statistiche().setSpeedBuff(p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) *0.1f);
         }
 
         if (fermo) {
             speed = 0;
-            float newSpeedBuff = p.getStatistiche().getSpeedBuff() + (speed - p.getStatistiche().getSpeedBuff()) * 0.05f;
+            float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.05f;
             if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino a 0, azzeralo
-            p.getStatistiche().setSpeedBuff(newSpeedBuff);
+            p.statistiche().setSpeedBuff(newSpeedBuff);
         }
         
     }
@@ -149,16 +148,16 @@ public class PlayerMovementManager{
             default -> {
             }
         }
-        lastDirezione = p.getDirezione();
-        if (!lastDirezione.equals(p.getDirezione())) {
-            System.out.println(p.getDirezione());
+        lastDirezione = p.direzione();
+        if (!lastDirezione.equals(p.direzione())) {
+            System.out.println(p.direzione());
         }
     
     }
 
     private void addNotMoving(Entity p){
-        if (!p.getDirezione().contains("fermo")) {
-            p.setDirezione("fermo".concat(p.getDirezione()));
+        if (!p.direzione().contains("fermo")) {
+            p.setDirezione("fermo".concat(p.direzione()));
         }
     }
 
@@ -184,36 +183,36 @@ public class PlayerMovementManager{
 
     private void aggiornaStatoCollisione(Entity p) {
         if (collisioneX)
-            p.getStati().setInCollisione(true);
+            p.stati().setInCollisione(true);
         if (collisioneY)
-            p.getStati().setInCollisione(true);
+            p.stati().setInCollisione(true);
     }
 
     private void muoviAsseX(Entity p){
         
         if (!collisioneX) {
-            float speed = p.getStatistiche().getSpeed();
+            float speed = p.statistiche().getSpeed();
             float x = p.getX();
         
             if (a)
                 p.setX(x - speed * (float) elapsedTime);
             if (d)
                 p.setX(x + speed * (float) elapsedTime);
-            p.getStati().setInCollisione(false);
+            p.stati().setInCollisione(false);
         }
 
     }
     private void muoviAsseY(Entity p){
 
         if (!collisioneY) {
-            float speed = p.getStatistiche().getSpeed();
+            float speed = p.statistiche().getSpeed();
             float y = p.getY();
 
             if (s)
                 p.setY(y - speed * (float) elapsedTime);
             if (w)
                 p.setY(y + speed * (float) elapsedTime);
-            p.getStati().setInCollisione(false);
+            p.stati().setInCollisione(false);
         }
 
     }

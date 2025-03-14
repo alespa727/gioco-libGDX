@@ -61,7 +61,7 @@ public class EntityManager {
     }
 
     public void render() {
-        if (!player.getStati().isAlive()) {
+        if (!player.stati().isAlive()) {
             game.setScreen(game.gameOver);
         }
 
@@ -96,7 +96,7 @@ public class EntityManager {
 
     public void checkEachCollision(ShapeRenderer renderer){
         for (Entity e : entita) {
-            if (e.getStati().inCollisione()) {
+            if (e.stati().inCollisione()) {
                 renderer.setColor(Color.RED);
                 return;
             } else renderer.setColor(Color.BLACK);

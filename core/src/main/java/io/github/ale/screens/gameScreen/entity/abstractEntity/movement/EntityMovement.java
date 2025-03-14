@@ -17,9 +17,9 @@ public class EntityMovement {
     }
 
     private static void aggiornaDirezione(Entity e, float x, float y) {
-        e.getStatistiche().setSpeedBuff(1f);
+        e.statistiche().setSpeedBuff(1f);
         if (Math.abs(e.getX() - x) > 0.01f && Math.abs(e.getY() - y) > 0.01f) {
-            e.getStatistiche().setSpeedBuff(1 / 1.41f);
+            e.statistiche().setSpeedBuff(1 / 1.41f);
 
 
             if (e.getX() < x && e.getY() > y) {
@@ -47,25 +47,25 @@ public class EntityMovement {
 
     private static void muovi(Entity e) {
         float deltaTime = Gdx.graphics.getDeltaTime();
-        float speed = e.getStatistiche().getSpeed() * deltaTime;
+        float speed = e.statistiche().getSpeed() * deltaTime;
 
         if (collisioneX || collisioneY) {
-            e.getStatistiche().setSpeedBuff(1f);
+            e.statistiche().setSpeedBuff(1f);
         }
 
 
         if (!collisioneX) {
-            if (e.getDirezione().equals("A") || e.getDirezione().equals("WA") || e.getDirezione().equals("SA")) {
+            if (e.direzione().equals("A") || e.direzione().equals("WA") || e.direzione().equals("SA")) {
                 e.setX(e.getX() - speed);
-            } else if (e.getDirezione().equals("D") || e.getDirezione().equals("WD") || e.getDirezione().equals("SD")) {
+            } else if (e.direzione().equals("D") || e.direzione().equals("WD") || e.direzione().equals("SD")) {
                 e.setX(e.getX() + speed);
             }
         }
 
         if (!collisioneY) {
-            if (e.getDirezione().equals("W") || e.getDirezione().equals("WA") || e.getDirezione().equals("WD")) {
+            if (e.direzione().equals("W") || e.direzione().equals("WA") || e.direzione().equals("WD")) {
                 e.setY(e.getY() + speed);
-            } else if (e.getDirezione().equals("S") || e.getDirezione().equals("SA") || e.getDirezione().equals("SD")) {
+            } else if (e.direzione().equals("S") || e.direzione().equals("SA") || e.direzione().equals("SD")) {
                 e.setY(e.getY() - speed);
             }
         }
@@ -80,11 +80,11 @@ public class EntityMovement {
      */
     private static void aggiornaDirezioneX(Entity entity, float x) {
         if (entity.getX() < x) {
-            if (!entity.getDirezione().equals("D")) {
+            if (!entity.direzione().equals("D")) {
                 entity.setDirezione("D");
             }
         } else {
-            if (!entity.getDirezione().equals("A")) {
+            if (!entity.direzione().equals("A")) {
                 entity.setDirezione("A");
             }
         }
@@ -98,11 +98,11 @@ public class EntityMovement {
      */
     private static void aggiornaDirezioneY(Entity entity, float y) {
         if (entity.getY() < y) {
-            if (!entity.getDirezione().equals("W")) {
+            if (!entity.direzione().equals("W")) {
                 entity.setDirezione("W");
             }
         } else {
-            if (!entity.getDirezione().equals("S")) {
+            if (!entity.direzione().equals("S")) {
                 entity.setDirezione("S");
             }
         }
@@ -114,10 +114,10 @@ public class EntityMovement {
      * @param entity
      */
     private static void setFermo(Entity entity) {
-        if (!entity.getDirezione().contains("fermo")) {
-            entity.setDirezione("fermo".concat(entity.getDirezione()));
+        if (!entity.direzione().contains("fermo")) {
+            entity.setDirezione("fermo".concat(entity.direzione()));
         }
-        entity.getStati().setIsMoving(false);
+        entity.stati().setIsMoving(false);
 
     }
 

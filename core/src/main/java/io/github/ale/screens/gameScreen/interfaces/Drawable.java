@@ -22,7 +22,7 @@ public interface Drawable {
         elapsedTime += Gdx.graphics.getDeltaTime();
 
         setAnimation();
-        if(getStatistiche().gotDamaged){
+        if(statistiche().gotDamaged){
             batch.setColor(1, 0, 0, 0.6f);
         }
         batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(),
@@ -30,7 +30,7 @@ public interface Drawable {
         batch.setColor(Color.WHITE);
     }
 
-    public Stats getStatistiche();
+    public Stats statistiche();
     /**
      * disegna la hitbox
      * @param renderer
