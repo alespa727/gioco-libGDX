@@ -31,6 +31,10 @@ public class EntityMovementManager {
         Collections.addAll(azioni, azione);
     }
 
+    public void addAzione(ComandiAzioni azione){
+        Collections.addAll(azioni, azione);
+    }
+
     public void clearAzioni(){
         azioni.clear();
         count=0;

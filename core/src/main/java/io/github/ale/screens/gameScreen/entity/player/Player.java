@@ -21,6 +21,8 @@ public class Player extends Entity {
     private final float maxDamageTime = 0.273f;
     private float countdownKnockback = 0.273f;
     private float countdownDamage = 0.273f;
+    float dx, firstX;
+    float dy, firstY;
 
     float delta;
 
@@ -88,7 +90,6 @@ public class Player extends Entity {
         inizializzaLOS();
         circle.x = getX() + getSize().getWidth() / 2;
         circle.y = getY() + getSize().getHeight() / 2;
-
         movement.update(this);
         entitymovement.update(this);
         entitymovement.clearAzioni();
@@ -151,42 +152,49 @@ public class Player extends Entity {
         return circle;
     }
 
-    public void startKnockback(float angolo){
-        countdownKnockback = 1f;
-        knockback(angolo);
-    }
+    /*public void startKnockback(float angolo){
+        countdownKnockback=0.2f;
+        this.angolo = angolo;
+        firstX = getX();
+        firstY = getY();
+        dx = (float) Math.cos(Math.toRadians(angolo));
+        dy = (float) Math.sin(Math.toRadians(angolo));
+    }*/
 
     public void knockback(float angolo) {
-        float knockback = 1f;
-    
-        if (countdownKnockback > 0) {
-            float dx = coordinate().x+getSize().getWidth()/2 +(float) Math.cos(Math.toRadians(angolo)) * knockback;
-            float dy = (float) Math.sin(Math.toRadians(angolo)) * knockback;
+        /*if (countdownKnockback>0) {
+            ComandiAzioni azione = new ComandiAzioni(Azioni.sposta, firstX+dx, firstY+dy);
+            System.out.println(getX());
+            System.out.println(getY());
+            System.out.println(firstX+dx);
+            System.out.println(firstY+dy);
+            entitymovement.addAzione(azione);
+            entitymovement.update(this);
+            countdownKnockback-=delta;
+        }*/
         
-        
-            if (!Map.checkCollisionX(this)) {
-                if (countdownKnockback > 0) {
-                    lastPos.x = getX();
-                    setX(getX() + dx);
-                }
-            } else {
-                setX(lastPos.x);
-                countdownKnockback = 0f;
+       
+        if (!Map.checkCollisionX(this)) {
+            if (countdownKnockback > 0) {
+                lastPos.x = getX();
+                setX(getX() + dx);
             }
-        
-            // Gestione del knockback sull'asse Y
-            if (!Map.checkCollisionY(this)) {
-                if (countdownKnockback > 0) {
-                    lastPos.y = getY();
-                    setY(getY() + dy);
-                }
-            } else {
-                setY(lastPos.y);
-                countdownKnockback = 0f;
-            }
-                countdownKnockback-=delta;
+        } else {
+            setX(lastPos.x);
+            countdownKnockback = 0f;
         }
-        
+    
+        // Gestione del knockback sull'asse Y
+        if (!Map.checkCollisionY(this)) {
+            if (countdownKnockback > 0) {
+                lastPos.y = getY();
+                setY(getY() + dy);
+            }
+        } else {
+            setY(lastPos.y);
+            countdownKnockback = 0f;
+        }
+            
     }
     
 

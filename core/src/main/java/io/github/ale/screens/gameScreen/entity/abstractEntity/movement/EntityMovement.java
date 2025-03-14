@@ -3,7 +3,6 @@ package io.github.ale.screens.gameScreen.entity.abstractEntity.movement;
 import com.badlogic.gdx.Gdx;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
-import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public class EntityMovement {

@@ -37,7 +37,7 @@ public final class Finn extends Nemico{
 
             System.out.println("Angolo di attacco: " + angolo + "°");
 
-            player().knockback(angolo);
+            player().knockback(angolo);//startKnockback(angolo);
             System.out.println(player().statistiche().getHealth());
         
             setAtkCooldown(ATTACK_COOLDOWN);
