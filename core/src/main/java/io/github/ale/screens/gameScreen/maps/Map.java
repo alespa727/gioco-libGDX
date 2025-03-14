@@ -14,9 +14,12 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 
 public class Map {
+
     private final OrthographicCamera camera;
     private TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
+
+    private static Rectangle temp;
 
     private TiledMapTileLayer collisionLayer;
 
@@ -29,6 +32,7 @@ public class Map {
     public static boolean isLoaded=false;
 
     public Map(OrthographicCamera camera, String name){
+        temp = new Rectangle();
         this.camera=camera;
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
@@ -66,6 +70,7 @@ public class Map {
                 }
             }
         }
+        //renderer.rect(temp.x, temp.y, temp.width, temp.height);
     }
 
     /**
@@ -108,10 +113,23 @@ public class Map {
 
     
     
-    public static boolean checkLineCollision(Vector2 e1, Vector2 e2){
+    public static boolean checkLineCollision(Vector2 p1, Vector2 p2){
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null && Intersector.intersectSegmentRectangle(e1, e2, collisionBoxes[i][j])) {
+                if (collisionMap[i][j]!=null && Intersector.intersectSegmentRectangle(p1, p2, collisionBoxes[i][j])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkRectangleCollision(float x, float y, float width, float height){
+        temp.set(x, y, width, height);
+        for (int i = 0; i < Map.width; i++) {
+            for (int j = 0; j < Map.height; j++) {
+                if (collisionMap[i][j]!=null && temp.overlaps(collisionBoxes[i][j])) {
+                    System.out.println(true);
                     return true;
                 }
             }

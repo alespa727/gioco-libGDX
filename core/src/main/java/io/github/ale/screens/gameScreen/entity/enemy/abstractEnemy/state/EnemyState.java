@@ -5,9 +5,9 @@ public class EnemyState {
     private boolean inRange;
     private boolean idle;
     private boolean pursuing;
-    private boolean outOfPursuing;
+    private boolean searching;
 
-    public boolean isInAreaInseguimento() {
+    public boolean inAreaInseguimento() {
         return inAreaInseguimento;
     }
 
@@ -15,7 +15,7 @@ public class EnemyState {
         this.inAreaInseguimento = inAreaInseguimento;
     }
 
-    public boolean isInRange() {
+    public boolean inRange() {
         return inRange;
     }
 
@@ -23,7 +23,7 @@ public class EnemyState {
         this.inRange = inRange;
     }
 
-    public boolean isIdle() {
+    public boolean idle() {
         return idle;
     }
 
@@ -39,12 +39,12 @@ public class EnemyState {
         this.pursuing = pursuing;
     }
 
-    public boolean isOutOfPursuing() {
-        return outOfPursuing;
+    public boolean searching() {
+        return searching;
     }
 
-    public void setOutOfPursuing(boolean outOfPursuing) {
-        this.outOfPursuing = outOfPursuing;
+    public void setSearching(boolean searching) {
+        this.searching = searching;
     }
 
 }

@@ -1,38 +1,38 @@
 package io.github.ale.screens.gameScreen.entity.player.lineofsight;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Segment;
+import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public class LineOfSight {
 
-    private static final ArrayList<Vector2> puntiComuni = new ArrayList<>();
-    private static int minIndex;
+    private Array<Vector2> puntiComuni;
+    private int minIndex;
 
-   
+    private final Array<Vector2> v;
 
-    private static Vector3[][] centroCerchio;
-    private static Segment[][] linea;
-    private static boolean[][] lineOfSight;
+    private Vector3[][] centroCerchio;
+    private Segment[][] linea;
+    private boolean[][] lineOfSight;
 
     private final Circle playerCircle;
-    private static final Vector2 entityPosition = new Vector2();
+    private final Vector2 entityPosition = new Vector2();
 
     private final float centroRaggio = 0.1f;
     private final float losRaggio = 5.5f;
 
     private final Circle circle;
 
-    private static int mapWidth;
-    private static int mapHeight;
+    private int mapWidth;
+    private int mapHeight;
 
     /**
      * obbligatoriamente da fare senza il metodo create
@@ -41,6 +41,12 @@ public class LineOfSight {
         mapWidth = Map.getWidth();
         mapHeight = Map.getHeight();
         circle = new Circle();
+
+        v = new Array<>();
+        for (int index = 0; index < 5; index++) {
+            v.add(new Vector2());
+        }
+        puntiComuni = new Array<>();
 
         centroCerchio = new Vector3[mapWidth][mapHeight];
         lineOfSight = new boolean[mapWidth][mapHeight];
@@ -56,7 +62,7 @@ public class LineOfSight {
         }
     }
 
-    public float getRaggio(){
+    public float getRaggio() {
         return losRaggio;
     }
 
@@ -70,7 +76,7 @@ public class LineOfSight {
         if (mapWidth != Map.getWidth() || mapHeight != Map.getHeight()) {
             create();
         }
-        
+
         updatePlayerCircle(e);
         updateLosValue(e);
 
@@ -85,14 +91,15 @@ public class LineOfSight {
                 } else {
                     p1 = new Vector2(linea[i][j].a.x, linea[i][j].a.y);
 
-                    if (minIndex < puntiComuni.size() && puntiComuni.contains(p1)) {
-                            renderer.setColor(Color.BLACK);
-                    } else renderer.setColor(Color.WHITE);
+                    if (minIndex < puntiComuni.size && puntiComuni.contains(p1, false)) {
+                        renderer.setColor(Color.BLACK);
+                    } else
+                        renderer.setColor(Color.WHITE);
                     renderer.circle(centroCerchio[i][j].x, centroCerchio[i][j].y, centroRaggio,
-                           40);
-                    //renderer.line(p1, new Vector2(linea[i][j].b.x, linea[i][j].b.y));
-                    //renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius,
-                    //        40);
+                            40);
+                    // renderer.line(p1, new Vector2(linea[i][j].b.x, linea[i][j].b.y));
+                    // renderer.circle(playerCircle.x, playerCircle.y, playerCircle.radius,
+                    // 40);
                 }
             }
         }
@@ -130,17 +137,16 @@ public class LineOfSight {
                 circle.y = centroCerchio[i][j].y;
                 circle.radius = losRaggio;
                 if (playerCircle.overlaps(circle)) {
-                    lineOfSight[i][j] = !Map.checkLineCollision(new Vector2(linea[i][j].a.x, linea[i][j].a.y),
-                            new Vector2(linea[i][j].b.x, linea[i][j].b.y));
-
+                    v.get(0).set(linea[i][j].a.x, linea[i][j].a.y);
+                    v.get(1).set(linea[i][j].b.x, linea[i][j].b.y);
+                    lineOfSight[i][j] = !Map.checkLineCollision(v.get(0), v.get(1));
                 } else
                     lineOfSight[i][j] = false;
-
             }
         }
     }
 
-    public static Vector2 mutualLineOfSight(Entity e, Entity e2, float area) { //e -> entita e2-> player
+    public Vector2 mutualLineOfSight(Entity e, Entity e2, float area) { // e -> entita e2-> player
         puntiComuni.clear();
         
         boolean los;
@@ -161,27 +167,64 @@ public class LineOfSight {
         if (!puntiComuni.isEmpty()) {
             objective = minimo(e, e2);
         }
-        
-     
-        //System.out.println(objective);
-        
+
+        // System.out.println(objective);
 
         return objective;
 
     }
 
+    public Vector2 mutualLineOfSight(Nemico nemico, Entity e2, float area) {
+        puntiComuni.clear();
     
- 
-    public static Vector2 minimo(Entity e1, Entity e2){
+        boolean los;
+        Vector2 objective = null;
+        entityPosition.set(nemico.getX() + nemico.getSize().getWidth() / 2, nemico.getY() + nemico.getSize().getHeight() / 2);
+    
+        for (int i = 0; i < mapWidth; i++) {
+            for (int j = 0; j < mapHeight; j++) {
+                if (lineOfSight[i][j]) {
+                    Vector2 point = new Vector2(linea[i][j].a.x, linea[i][j].a.y);
+    
+                    los = !Map.checkLineCollision(point, entityPosition) && 
+                          !Map.checkRectangleCollision(
+                              point.x - nemico.getAwareness().getRange().width / 2,
+                              point.y - nemico.getAwareness().getRange().height / 2,
+                              nemico.getAwareness().getRange().width,
+                              nemico.getAwareness().getRange().height);
+    
+                    if (los && entityPosition.dst(point) < area) {
+                        puntiComuni.add(point);
+                    }
+                }
+            }
+        }
+    
+        if (!puntiComuni.isEmpty()) {
+            objective = minimo(nemico, e2);
+        }
+    
+        return objective;
+    }
+    
+
+    public Vector2 minimo(Entity e1, Entity e2) {
         Vector2 minimo = new Vector2();
         float min = Float.MAX_VALUE;
         for (Vector2 puntiComuni1 : puntiComuni) {
-            if (puntiComuni1.dst(e1.coordinateCentro())+puntiComuni1.dst(e2.coordinateCentro()) <= min) {
-                    min = puntiComuni1.dst(e1.coordinateCentro())+puntiComuni1.dst(e2.coordinateCentro());
+            float distanzaTotale = puntiComuni1.dst(e1.coordinateCentro()) + puntiComuni1.dst(e2.coordinateCentro());
+            if (distanzaTotale <= min) {
+                min = puntiComuni1.dst(e1.coordinateCentro()) + puntiComuni1.dst(e2.coordinateCentro());
+                minimo = puntiComuni1;
+            } else if (Math.abs(distanzaTotale - min) <= 0.2f) {
+                float distanzaDaGiocatore = puntiComuni1.dst(e2.coordinateCentro());
+                float distanzaDaNemico = puntiComuni1.dst(e1.coordinateCentro());
+
+                if (distanzaDaGiocatore < distanzaDaNemico) {
                     minimo = puntiComuni1;
+                }
             }
         }
         return minimo;
     }
-
 }

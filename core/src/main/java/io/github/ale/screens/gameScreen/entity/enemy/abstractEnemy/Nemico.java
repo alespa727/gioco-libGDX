@@ -15,7 +15,6 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMov
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.awareness.EnemyAwareness;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.screens.gameScreen.entity.player.Player;
-import io.github.ale.screens.gameScreen.entity.player.lineofsight.LineOfSight;
 import io.github.ale.screens.gameScreen.enums.Azioni;
 import io.github.ale.screens.gameScreen.maps.Map;
 
@@ -82,7 +81,7 @@ public abstract class Nemico extends Entity{
             setAtkCooldown(atkCooldown()-delta);
         }
 
-        if(stati.isIdle()){
+        if(stati.idle()){
             wandering();
         }
     }
@@ -91,12 +90,13 @@ public abstract class Nemico extends Entity{
     @Override
     public void drawHitbox(ShapeRenderer renderer){
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
-        if (stati.isOutOfPursuing()) {
+        if (stati.searching()) {
             renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getObbiettivoDrawCoord().x, awareness.getObbiettivoDrawCoord().y, 0.1f);
         }
-        if (stati.isPursuing() && !stati.isOutOfPursuing()) {
+        if (stati.isPursuing() && !stati.searching()) {
             renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getVisione().b.x, awareness.getVisione().b.y, 0.1f);
         }
+        renderer.rect(awareness.getObbiettivoDrawCoord().x - getAwareness().getRange().width/2, awareness.getObbiettivoDrawCoord().y - getAwareness().getRange().height/2, getAwareness().getRange().width, getAwareness().getRange().height);
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class Nemico extends Entity{
      */
     @Override
     public void drawRange(ShapeRenderer renderer){
-        if (stati.isInRange()) {
+        if (stati.inRange()) {
             renderer.setColor(Color.BLUE);
         }
         renderer.rect(awareness.getRange().x, awareness.getRange().y, awareness.getRange().width, awareness.getRange().height);
@@ -123,7 +123,7 @@ public abstract class Nemico extends Entity{
      * @param delta
      */
     private void gestioneInseguimento(float delta){
-        boolean inseguimento = (stati.isPursuing() && !stati.isInRange()) || (stati.isOutOfPursuing() && !stati.isInRange());
+        boolean inseguimento = (stati.isPursuing() && !stati.inRange()) || (stati.searching() && !stati.inRange());
         if (inseguimento){
             movement.update(this);
             followsPlayer(delta);
@@ -138,7 +138,7 @@ public abstract class Nemico extends Entity{
             }
         }
         
-        if (stati.isInRange()) {
+        if (stati.inRange()) {
             if (Math.abs(player.getX()-getX()) > Math.abs(player.getY()-getY())) {
                 if (player.getX() < getX()) {
                     setDirezione("fermoA");
@@ -157,7 +157,7 @@ public abstract class Nemico extends Entity{
             
         }
 
-        if(stati.isIdle()){
+        if(stati.idle()){
 
         }
     }
@@ -174,7 +174,7 @@ public abstract class Nemico extends Entity{
         }
         
         if(cooldownFollowing <= 0){
-            if (!stati.isInRange()) {
+            if (!stati.inRange()) {
                 ComandiAzioni[] comandi = new ComandiAzioni[1];
                 comandi[0] = new ComandiAzioni(Azioni.sposta, awareness.getObbiettivo().x, awareness.getObbiettivo().y);
                 movement.addAzione(comandi);
@@ -208,42 +208,38 @@ public abstract class Nemico extends Entity{
      */
     private void inAreaInseguimento(){
         stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(player.circle()));
-
-        LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius);
-       
-        if (stati.isPursuing() || !stati.isInAreaInseguimento()) {
+        Vector2 lineOfSightPoint = player.getLineOfSight().mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius);
+        boolean mutualLos = lineOfSightPoint!=null;
+        boolean lineCollision = Map.checkLineCollision(player.coordinateCentro(), coordinateCentro());
+        if (stati.isPursuing() || !stati.inAreaInseguimento()) {
             
-            if(LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius)!=null){
-                stati.setOutOfPursuing(true);
-                awareness.getObbiettivo().set(new Vector2(LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius)).sub(1f, 1f));
-                awareness.getObbiettivoDrawCoord().set(new Vector2(LineOfSight.mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius)));
+            if(mutualLos){
+                stati.setSearching(true);
+                awareness.getObbiettivo().set(new Vector2(lineOfSightPoint).sub(1f, 1f));
+                awareness.getObbiettivoDrawCoord().set(new Vector2(lineOfSightPoint));
             }else{
                 stati.setPursuing(false);
                 movement.clearAzioni();
-                stati.setOutOfPursuing(false);
+                stati.setSearching(false);
             } 
         }
         
-        if (stati.isInAreaInseguimento() && !Map.checkLineCollision(player.coordinateCentro(), coordinateCentro())) {
-            stati.setPursuing(!Map.checkLineCollision(player.coordinateCentro(), coordinateCentro()));
+        if (stati.inAreaInseguimento() && !lineCollision) {
+            stati.setPursuing(!lineCollision);
             awareness.setObbiettivoDrawCoord(player.coordinateCentro().x, player.coordinateCentro().y);
             awareness.setObbiettivo(player.coordinate().x, player.coordinate().y);
         }
 
         
-        if (!stati.isPursuing()) {
+        if (!stati.isPursuing() && !stati.searching()) {
             stati.setIdle(true);
-        }else{
-            areaInseguimento=5.5f;
+        } else {
             stati.setIdle(false);
-        }
-        if (!stati.isOutOfPursuing()) {
-            stati.setIdle(true);
-        }else{
-            areaInseguimento=5.5f;
-            stati.setIdle(false);
+            areaInseguimento = 5.5f;
         }
     }
+
+    
 
     public EnemyAwareness getAwareness() {
         return awareness;

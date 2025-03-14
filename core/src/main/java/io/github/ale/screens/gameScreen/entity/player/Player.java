@@ -141,7 +141,7 @@ public class Player extends Entity {
      * 
      * @return
      */
-    public static LineOfSight getLineOfSight() {
+    public LineOfSight getLineOfSight() {
         return lineOfSight;
     }
 
