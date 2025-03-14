@@ -15,6 +15,8 @@ import io.github.ale.screens.gameScreen.maps.Map;
 
 public class Player extends Entity {
 
+    private EntityConfig config;
+
     private PlayerMovementManager movement;
     private EntityMovementManager entitymovement;
 
@@ -31,7 +33,15 @@ public class Player extends Entity {
     // Costruttore
     public Player(EntityConfig config) {
         super(config);
+        this.config = config;
         create();
+    }
+
+    public void respawn(){
+        getStati().setIsAlive(config.isAlive);
+        //this.setX(config.x);
+        //this.setY(config.y);
+        this.getStatistiche().gotDamaged=false;
     }
 
     /**

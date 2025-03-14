@@ -16,10 +16,12 @@ public class EntityManager {
     private final Player player;
     private final Array<Entity> entita;
 
+    private EntityConfig p;
+
     public EntityManager(MyGame game) {
         entita = new Array<>();
         this.game = game;
-        EntityConfig p = new EntityConfig();
+        p = new EntityConfig();
         p.x = 5f;
         p.y = 5f;
         p.imgpath = "Finn.png";
@@ -51,7 +53,7 @@ public class EntityManager {
         e.isMoving = false;
         e.hp = 100;
         e.speed = 1.5f;
-        e.attackdmg = 10;
+        e.attackdmg = 50;
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
@@ -98,6 +100,12 @@ public class EntityManager {
                 renderer.setColor(Color.RED);
                 return;
             } else renderer.setColor(Color.BLACK);
+        }
+    }
+
+    public void respawn(){
+        if (!p.isAlive) {
+            player.respawn();
         }
     }
 

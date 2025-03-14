@@ -24,17 +24,24 @@ public class GameScreen implements Screen {
 
     private float elapsedTime;
 
+    private boolean loaded=false;
+
     public GameScreen(MyGame game){
         this.game=game;
     }
 
     @Override
     public void show() { //METODO CREATE
-        camera = new CameraManager();   // Configura la camera
-        viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
-        viewport.apply(); // applica cosa si vede
-        entities = new EntityManager(game);
-        maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
+        System.err.println(loaded);
+        if (!loaded) {
+            loaded=true;
+            camera = new CameraManager();   // Configura la camera
+            viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
+            viewport.apply(); // applica cosa si vede
+            entities = new EntityManager(game);
+            maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
+        }
+        entities.player().respawn();
     }
 
     @Override
