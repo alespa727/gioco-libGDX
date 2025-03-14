@@ -102,7 +102,7 @@ public abstract class Nemico extends Entity{
      * disegna il range del nemico (attacco e inseguimento)
      * @param renderer
      */
-    public void drawEnemyRange(ShapeRenderer renderer){
+    public void drawRange(ShapeRenderer renderer){
         if (stati.isInRange()) {
             renderer.setColor(Color.BLUE);
         }

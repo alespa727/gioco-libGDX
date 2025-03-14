@@ -181,4 +181,19 @@ public class Player extends Entity {
         }
 
     }
+
+    @Override
+    public void updateEntity() {
+        
+    }
+
+    @Override
+    public void updateEntityType() {
+        
+    }
+
+    @Override
+    public void drawRange(ShapeRenderer renderer) {
+       
+    }
 }

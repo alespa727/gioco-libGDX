@@ -1,5 +1,100 @@
 package io.github.ale.screens.gameScreen.entity;
 
-public class EntityManager {
+import com.badlogic.gdx.utils.Array;
 
+import io.github.ale.MyGame;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
+import io.github.ale.screens.gameScreen.entity.player.Player;
+
+public class EntityManager {
+    private final MyGame game;
+    private final Player player;
+    private final Array<Entity> entita;
+
+    public EntityManager(MyGame game) {
+        entita = new Array<>();
+        this.game = game;
+        EntityConfig p = new EntityConfig();
+        p.x = 5f;
+        p.y = 5f;
+        p.imgpath = "Finn.png";
+        p.width = 0.65f;
+        p.height = 0.4f;
+        p.direzione = "fermoS";
+        p.isAlive = true;
+        p.inCollisione = false;
+        p.isMoving = false;
+        p.hp = 100;
+        p.speed = 2.5f;
+        p.attackdmg = 10;
+        p.imageHeight = 2f;
+        p.imageWidth = 2f;
+
+        player = new Player(p);
+
+        entita.add(player);
+
+        EntityConfig e = new EntityConfig();
+        e.x = 3f;
+        e.y = 15f;
+        e.imgpath = "Finn.png";
+        e.width = 0.65f;
+        e.height = 0.4f;
+        e.direzione = "fermoS";
+        e.isAlive = true;
+        e.inCollisione = false;
+        e.isMoving = false;
+        e.hp = 100;
+        e.speed = 1.5f;
+        e.attackdmg = 10;
+        e.imageHeight = 2f;
+        e.imageWidth = 2f;
+
+        entita.add(new Finn(e, player));
+    }
+
+    public void render() {
+        if (!player.getStati().isAlive()) {
+            game.setScreen(game.gameOver);
+        }
+
+        for (Entity e : entita) {
+            e.render();
+        }
+    }
+
+    public void draw(float elapsedTime) {
+        sort();
+        for (Entity e : entita) {
+            e.draw(game.batch, elapsedTime);
+        }
+    }
+
+    public void swap(int i, int j) {
+        Entity temp = entita.get(i);
+        entita.set(i, entita.get(j)); // This is where an error occurs. It says a variable is expected.
+        entita.set(j, temp); // This is where an error occurs. It says a variable is expected.
+    }
+
+    /**
+     * riordina le entità in base alla coordinata y
+     */
+    public void sort() {
+        int n = entita.size;
+        for (int i = 2; i <= n; i++)
+            for (int j = 0; j <= n - i; j++)
+                if (entita.get(j).getY() < entita.get(j + 1).getY()) {
+                    swap(j, j + 1);
+                }
+    }
+
+    public Player player() {
+        return player;
+    }
+
+    public Entity entita(int index) {
+        return entita.get(index);
+    }
 }

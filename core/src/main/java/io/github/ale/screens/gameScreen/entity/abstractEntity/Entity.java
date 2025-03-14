@@ -2,6 +2,7 @@ package io.github.ale.screens.gameScreen.entity.abstractEntity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -41,6 +42,14 @@ public abstract class Entity implements Drawable, Creatable{
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaAnimazione();
     }
+
+    public void render(){
+        updateEntity();
+        updateEntityType();
+    }
+    public abstract void updateEntity();
+    public abstract void updateEntityType();
+    public abstract void drawRange(ShapeRenderer renderer);
     public Vector2 getVector(){
         return coordinate;
     }
