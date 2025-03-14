@@ -1,0 +1,16 @@
+package io.github.ale.screens.gameScreen.pool;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pool.Poolable;
+
+public class VectorPoolable extends Vector2 implements Pool.Poolable {
+
+    public VectorPoolable() {
+        super();
+    }
+
+    @Override
+    public void reset() {
+        this.set(0, 0);
+    }
+}

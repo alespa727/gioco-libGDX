@@ -17,6 +17,8 @@ public class LineOfSight {
     private static final ArrayList<Vector2> puntiComuni = new ArrayList<>();
     private static int minIndex;
 
+   
+
     private static Vector3[][] centroCerchio;
     private static Segment[][] linea;
     private static boolean[][] lineOfSight;
