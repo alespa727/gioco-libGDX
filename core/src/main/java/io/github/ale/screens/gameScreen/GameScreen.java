@@ -30,6 +30,7 @@ public class GameScreen implements Screen {
     private MapManager maps;
     private FitViewport viewport;
 
+    @SuppressWarnings("unused")
     private ShapeRenderer gui;
     private Gui rect;
 

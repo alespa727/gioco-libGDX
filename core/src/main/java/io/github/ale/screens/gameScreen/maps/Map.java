@@ -115,7 +115,7 @@ public class Map {
     
     
     public static boolean checkLineCollision(Vector2 p1, Vector2 p2){
-        int controlli=0;
+        //int controlli=0;
         int minTileX = Math.max(0, (int) (CameraManager.limiti()[0].x-2f));
         int maxTileX = Math.min(width - 1, (int) (CameraManager.limiti()[2].x+2f));
         int minTileY = Math.max(0, (int) (CameraManager.limiti()[0].y-2f));

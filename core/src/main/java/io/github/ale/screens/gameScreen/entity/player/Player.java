@@ -22,9 +22,6 @@ public class Player extends Entity {
     private float countdownKnockback = 0.273f;
     private float countdownDamage = 0.273f;
 
-    boolean flag=false;
-
-    float angolo;
     float dx;
     float dy;
 
