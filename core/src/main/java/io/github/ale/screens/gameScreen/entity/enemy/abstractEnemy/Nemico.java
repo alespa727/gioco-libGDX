@@ -30,7 +30,7 @@ public abstract class Nemico extends Entity{
     private float areaAttacco;
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    public final float FOLLOWING_COOLDOWN = 0.75f;
+    public final float FOLLOWING_COOLDOWN = 0.4f;
     
     public float cooldownFollowing=0;
 
@@ -92,6 +92,10 @@ public abstract class Nemico extends Entity{
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
         if (stati.searching()) {
             renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getObbiettivoDrawCoord().x, awareness.getObbiettivoDrawCoord().y, 0.1f);
+            renderer.rectLine(hitbox().x, hitbox().y, player().hitbox().x, player().hitbox().y, 0.0001f);
+            renderer.rectLine(hitbox().x+hitbox().width, hitbox().y, player().hitbox().x+player().hitbox().width, player().hitbox().y, 0.0001f);
+            renderer.rectLine(hitbox().x, hitbox().y+hitbox().height, player().hitbox().x, player().hitbox().y+player().hitbox().height, 0.0001f);
+            renderer.rectLine(hitbox().x+hitbox().width, hitbox().y+hitbox().height, player().hitbox().x+player().hitbox().width, player().hitbox().y+player().hitbox().height, 0.0001f);
         }
         if (stati.isPursuing() && !stati.searching()) {
             renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getVisione().b.x, awareness.getVisione().b.y, 0.1f);

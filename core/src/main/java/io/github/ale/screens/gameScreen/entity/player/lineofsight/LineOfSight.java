@@ -140,7 +140,7 @@ public class LineOfSight {
                 if (playerCircle.overlaps(circle)) {
                     v.get(0).set(linea[i][j].a.x, linea[i][j].a.y);
                     v.get(1).set(linea[i][j].b.x, linea[i][j].b.y);
-                    lineOfSight[i][j] = !Map.checkLineCollision(v.get(0), v.get(1));
+                    lineOfSight[i][j] = !checkFullLineOfSight(e, v.get(0));
                 } else
                     lineOfSight[i][j] = false;
             }
@@ -156,7 +156,7 @@ public class LineOfSight {
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
                 if (lineOfSight[i][j]) {
-                    los = !Map.checkLineCollision(new Vector2(linea[i][j].a.x, linea[i][j].a.y), entityPosition);
+                    los = !getPathCollision(e, e2);
                     if (los && entityPosition.dst(new Vector2(linea[i][j].a.x, linea[i][j].a.y)) < area) {
                         objective = new Vector2(linea[i][j].a.x, linea[i][j].a.y);
                         puntiComuni.add(objective);
@@ -175,6 +175,15 @@ public class LineOfSight {
 
     }
 
+    public boolean getPathCollision(Entity e, Entity p){
+        
+        boolean collision1=Map.checkLineCollision(new Vector2(p.hitbox().x+p.hitbox().width, p.hitbox().y), new Vector2(p.hitbox().x+p.hitbox().width, p.hitbox().y));
+        boolean collision2=Map.checkLineCollision(new Vector2(p.hitbox().x, p.hitbox().y), new Vector2(p.hitbox().x, p.hitbox().y));
+        boolean collision3=Map.checkLineCollision(new Vector2(p.hitbox().x, p.hitbox().y+p.hitbox().height), new Vector2(p.hitbox().x, p.hitbox().y+p.hitbox().height));
+        boolean collision4=Map.checkLineCollision(new Vector2(p.hitbox().x+p.hitbox().width, p.hitbox().y+p.hitbox().height), new Vector2(p.hitbox().x+p.hitbox().width, p.hitbox().y+p.hitbox().height));
+        return collision1 || collision2 || collision3 || collision4;
+    }
+
     public Vector2 mutualLineOfSight(Nemico nemico, Entity e2, float area) {
         temp.clear();
     
@@ -187,12 +196,12 @@ public class LineOfSight {
                 if (lineOfSight[i][j]) {
                     Vector2 point = new Vector2(linea[i][j].a.x, linea[i][j].a.y);
                     
-                    los = checkFullLineOfSight(nemico, point) && 
+                    los = !checkFullLineOfSight(nemico, point)/* && 
                           !Map.checkRectangleCollision(
                               point.x - nemico.getAwareness().getRange().width / 2,
                               point.y - nemico.getAwareness().getRange().height / 2,
                               nemico.getAwareness().getRange().width,
-                              nemico.getAwareness().getRange().height);
+                              nemico.getAwareness().getRange().height) */;
     
                     if (los && entityPosition.dst(point) < area) {
                         temp.add(point);
@@ -210,23 +219,31 @@ public class LineOfSight {
         return objective;
     }
 
-    private boolean checkFullLineOfSight(Nemico nemico, Vector2 target) {
-        float x = nemico.hitbox().x;
-        float y = nemico.hitbox().y;
-        float w = nemico.hitbox().width;
-        float h = nemico.hitbox().height;
+    private boolean checkFullLineOfSight(Entity e, Vector2 target) {
+        float x = e.hitbox().x;
+        float y = e.hitbox().y;
+        float w = e.hitbox().width;
+        float h = e.hitbox().height;
     
         // Quattro punti della hitbox
         Vector2 topLeft = new Vector2(x, y + h);
         Vector2 topRight = new Vector2(x + w, y + h);
         Vector2 bottomLeft = new Vector2(x, y);
         Vector2 bottomRight = new Vector2(x + w, y);
+
+        float x1 = target.x - w/2, y1 = target.y - h/2;
+        // Quattro punti 
+        Vector2 topLeft1 = new Vector2(x1, y1 + h);
+        Vector2 topRight1 = new Vector2(x1 + w, y1 + h);
+        Vector2 bottomLeft1 = new Vector2(x1, y1);
+        Vector2 bottomRight1 = new Vector2(x1 + w, y1);
+        
     
         // Controlla se almeno un angolo ha una linea libera fino al target
-        return !Map.checkLineCollision(topLeft, target) &&
-               !Map.checkLineCollision(topRight, target) &&
-               !Map.checkLineCollision(bottomLeft, target) &&
-               !Map.checkLineCollision(bottomRight, target);
+        return Map.checkLineCollision(topLeft, topLeft1) ||
+               Map.checkLineCollision(topRight, topRight1) ||
+               Map.checkLineCollision(bottomLeft, bottomLeft1) ||
+               Map.checkLineCollision(bottomRight, bottomRight1);
     }
     
     

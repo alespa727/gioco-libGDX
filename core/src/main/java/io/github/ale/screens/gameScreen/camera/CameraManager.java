@@ -69,7 +69,7 @@ public class CameraManager {
             camera.update();
 
         }
-
+        //System.out.println(camera.frustum.planePoints[0]);
     }
 
     public OrthographicCamera get() {

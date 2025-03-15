@@ -21,8 +21,12 @@ public class Player extends Entity {
     private final float maxDamageTime = 0.273f;
     private float countdownKnockback = 0.273f;
     private float countdownDamage = 0.273f;
-    float dx, firstX;
-    float dy, firstY;
+
+    boolean flag=false;
+
+    float angolo;
+    float dx;
+    float dy;
 
     float delta;
 
@@ -99,6 +103,7 @@ public class Player extends Entity {
         hitbox().y = getY() + 0.55f;
 
         checkIfDead();
+        
     }
 
     /**
@@ -152,14 +157,9 @@ public class Player extends Entity {
         return circle;
     }
 
-    /*public void startKnockback(float angolo){
-        countdownKnockback=0.2f;
-        this.angolo = angolo;
-        firstX = getX();
-        firstY = getY();
-        dx = (float) Math.cos(Math.toRadians(angolo));
-        dy = (float) Math.sin(Math.toRadians(angolo));
-    }*/
+    public void inverseKnockback(){
+        
+    }
 
     public void knockback(float angolo) {
         /*if (countdownKnockback>0) {
@@ -172,27 +172,19 @@ public class Player extends Entity {
             entitymovement.update(this);
             countdownKnockback-=delta;
         }*/
+
+        dx = (float) Math.cos(Math.toRadians(angolo)) * 0.2F;
+        dy = (float) Math.sin(Math.toRadians(angolo)) * 0.2F;
         
        
-        if (!Map.checkCollisionX(this)) {
-            if (countdownKnockback > 0) {
-                lastPos.x = getX();
-                setX(getX() + dx);
-            }
-        } else {
-            setX(lastPos.x);
-            countdownKnockback = 0f;
-        }
-    
-        // Gestione del knockback sull'asse Y
-        if (!Map.checkCollisionY(this)) {
-            if (countdownKnockback > 0) {
-                lastPos.y = getY();
-                setY(getY() + dy);
-            }
-        } else {
-            setY(lastPos.y);
-            countdownKnockback = 0f;
+        if (!Map.checkCollisionX(this) && !Map.checkCollisionY(this)) {
+            lastPos.x = getX();
+            setX(getX() + dx);
+            lastPos.y = getY();
+            setY(getY() + dy);
+            flag=false;
+        }else{
+            flag=true;
         }
             
     }

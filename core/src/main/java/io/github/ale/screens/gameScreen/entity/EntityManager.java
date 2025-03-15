@@ -92,7 +92,7 @@ public final class EntityManager {
     public Entity entita(int id){
         for (Entity e : entita) {
             if (e.id() == id) {
-                System.out.println("Entità trovata!");
+                //System.out.println("Entità trovata!");
                 return e;
             }
         }

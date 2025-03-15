@@ -160,7 +160,6 @@ public class Map {
             for (int j = minTileY; j <= maxTileY; j++) {
                 if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
                     inCollision = true;
-                    
                 }
                 //count++;
             }
