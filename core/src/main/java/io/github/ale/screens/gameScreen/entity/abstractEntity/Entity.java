@@ -37,6 +37,7 @@ public abstract class Entity implements Drawable, Creatable {
         this.config = config;
         inizializzaEntityGraphics();
         inizializzaCoordinate(config.x, config.y);
+        inizializzaInfo(config.nome, config.descrizione, config.id);
         getEntityGraphics().setTexture(config.imgpath);
         inizializzaHitbox(getX(), getY(), config.width, config.height);
         inizializzaDirezione(config.direzione);
@@ -49,6 +50,8 @@ public abstract class Entity implements Drawable, Creatable {
     public EntityConfig config() {
         return this.config;
     }
+
+    public int id(){ return info.id(); }
 
     public void render() {
         updateEntity();
@@ -191,8 +194,8 @@ public abstract class Entity implements Drawable, Creatable {
      * @param nome
      * @param descrizione
      */
-    public final void inizializzaInfo(String nome, String descrizione) {
-        this.info = new EntityInfo(nome, descrizione);
+    public final void inizializzaInfo(String nome, String descrizione, int id) {
+        this.info = new EntityInfo(nome, descrizione, id);
     }
 
     /**

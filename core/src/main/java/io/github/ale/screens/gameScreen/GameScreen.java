@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
         update();
         draw();
 
+        entities.entita(2);
     }
 
     /**
@@ -85,6 +86,8 @@ public class GameScreen implements Screen {
         drawOggetti();
         drawHitboxes();
         drawLineOfSight();
+
+        entities.player().los().clearPuntiComuni();
 
     }
 

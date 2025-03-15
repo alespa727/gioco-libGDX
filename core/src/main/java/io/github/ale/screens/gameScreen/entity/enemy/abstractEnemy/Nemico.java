@@ -208,7 +208,7 @@ public abstract class Nemico extends Entity{
      */
     private void inAreaInseguimento(){
         stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(player.circle()));
-        Vector2 lineOfSightPoint = player.getLineOfSight().mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius);
+        Vector2 lineOfSightPoint = player.los().mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius);
         boolean mutualLos = lineOfSightPoint!=null;
         boolean lineCollision = 
     Map.checkLineCollision(new Vector2(hitbox().x + hitbox().width, hitbox().y), 

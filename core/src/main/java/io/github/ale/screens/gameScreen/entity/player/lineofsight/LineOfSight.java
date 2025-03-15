@@ -13,8 +13,8 @@ import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public class LineOfSight {
-
-    private Array<Vector2> puntiComuni;
+    private final Array<Vector2> temp;
+    private final Array<Vector2> puntiComuni;
     private int minIndex;
 
     private final Array<Vector2> v;
@@ -47,6 +47,7 @@ public class LineOfSight {
             v.add(new Vector2());
         }
         puntiComuni = new Array<>();
+        temp = new Array<>();
 
         centroCerchio = new Vector3[mapWidth][mapHeight];
         lineOfSight = new boolean[mapWidth][mapHeight];
@@ -175,7 +176,7 @@ public class LineOfSight {
     }
 
     public Vector2 mutualLineOfSight(Nemico nemico, Entity e2, float area) {
-        puntiComuni.clear();
+        temp.clear();
     
         boolean los;
         Vector2 objective = null;
@@ -194,16 +195,18 @@ public class LineOfSight {
                               nemico.getAwareness().getRange().height);
     
                     if (los && entityPosition.dst(point) < area) {
-                        puntiComuni.add(point);
+                        temp.add(point);
                     }
                 }
             }
         }
     
-        if (!puntiComuni.isEmpty()) {
+        if (!temp.isEmpty()) {
             objective = minimo(nemico, e2);
         }
     
+        addPunti();
+
         return objective;
     }
 
@@ -231,7 +234,7 @@ public class LineOfSight {
     public Vector2 minimo(Entity e1, Entity e2) {
         Vector2 minimo = new Vector2();
         float min = Float.MAX_VALUE;
-        for (Vector2 puntiComuni1 : puntiComuni) {
+        for (Vector2 puntiComuni1 : temp) {
             float distanzaTotale = puntiComuni1.dst(e1.coordinateCentro()) + puntiComuni1.dst(e2.coordinateCentro());
             if (distanzaTotale <= min) {
                 min = puntiComuni1.dst(e1.coordinateCentro()) + puntiComuni1.dst(e2.coordinateCentro());
@@ -246,5 +249,13 @@ public class LineOfSight {
             }
         }
         return minimo;
+    }
+
+    public void clearPuntiComuni(){
+        puntiComuni.clear();
+    }
+
+    private void addPunti(){
+        puntiComuni.addAll(temp);
     }
 }

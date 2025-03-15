@@ -73,7 +73,7 @@ public class Player extends Entity {
     public void render() {
         delta = Gdx.graphics.getDeltaTime();
         if (loadedLos) {
-            getLineOfSight().update(this);
+            los().update(this);
         }
 
         if (statistiche().gotDamaged) {
@@ -144,7 +144,7 @@ public class Player extends Entity {
      * 
      * @return
      */
-    public LineOfSight getLineOfSight() {
+    public LineOfSight los() {
         return lineOfSight;
     }
 

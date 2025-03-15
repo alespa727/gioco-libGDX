@@ -1,5 +1,8 @@
 package io.github.ale.screens.gameScreen.entity;
 
+import static java.lang.System.err;
+import java.lang.reflect.Constructor;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
@@ -11,8 +14,11 @@ import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 
-public class EntityManager {
+public final class EntityManager {
     private final MyGame game;
+
+    private int entityidcount=0;
+
     private final Player player;
     private final Array<Entity> entita;
 
@@ -22,6 +28,7 @@ public class EntityManager {
         entita = new Array<>();
         this.game = game;
         p = new EntityConfig();
+        p.id = entityidcount;
         p.x = 5f;
         p.y = 5f;
         p.imgpath = "Finn.png";
@@ -39,9 +46,13 @@ public class EntityManager {
 
         player = new Player(p);
 
+        entityidcount++;
+
         entita.add(player);
 
         EntityConfig e = new EntityConfig();
+        e.nome = "Finn";
+        e.descrizione = "Nemico pericoloso";
         e.x = 3f;
         e.y = 15f;
         e.imgpath = "Finn.png";
@@ -57,9 +68,39 @@ public class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        entita.add(new Finn(e, player));
+
+        add(Finn.class, e);
+        e.x = 1f;
+        e.y = 2f;
+        add(Finn.class, e);
     }
 
+    public void add(Class<? extends Entity> e, EntityConfig config) {
+        try {
+
+            Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, Player.class);//Cerca il costruttore 
+            config.id=entityidcount;
+            Entity newEntity = c.newInstance(config, player);// Crea una nuova entità
+            entita.add(newEntity); //aggiunge entità
+            entityidcount++;
+
+        } catch (Exception ex) {
+            err.println("Errore nel creare l'entità");
+        }
+    }
+    
+    public Entity entita(int id){
+        for (Entity e : entita) {
+            if (e.id() == id) {
+                System.out.println("Entità trovata!");
+                return e;
+            }
+        }
+        System.err.println("Entità non trovata!");
+        return null;
+    }
+    
+    
     /**
      * renderizza tutte le entità
      */
@@ -129,8 +170,8 @@ public class EntityManager {
      */
     public void swap(int i, int j) {
         Entity temp = entita.get(i);
-        entita.set(i, entita.get(j)); // This is where an error occurs. It says a variable is expected.
-        entita.set(j, temp); // This is where an error occurs. It says a variable is expected.
+        entita.set(i, entita.get(j));
+        entita.set(j, temp);
     }
 
     /**
@@ -152,15 +193,6 @@ public class EntityManager {
     public Player player() {
         return player;
     }
-
-    /**
-     * restituisce l'entità con indice @param index
-     * @return
-     */
-    public Entity entita(int index) {
-        return entita.get(index);
-    }
-
     /**
      * restituisce il nemico con indice @param index (senza contare le altre entità)
      * @return
