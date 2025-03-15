@@ -76,34 +76,12 @@ public class Player extends Entity {
     @Override
     public void render() {
         delta = Gdx.graphics.getDeltaTime();
-        if (loadedLos) {
-            los().update(this);
-        }
-
-        if (statistiche().gotDamaged) {
-            countdownDamage -= delta;
-            countdownKnockback -= delta;
-            if (countdownDamage <= 0) {
-                countdownDamage = maxDamageTime;
-                countdownKnockback = maxDamageTime;
-                statistiche().gotDamaged = false;
-            }
-        }
+        
         // knockback(delta);
-
-        inizializzaLOS();
-        circle.x = getX() + getSize().getWidth() / 2;
-        circle.y = getY() + getSize().getHeight() / 2;
-        movement.update(this);
-        entitymovement.update(this);
-        entitymovement.clearAzioni();
-        mantieniNeiLimiti();
-
-        hitbox().x = getX() + 0.65f;
-        hitbox().y = getY() + 0.55f;
+        updateEntityType();
+        updateEntity();
 
         checkIfDead();
-        
     }
 
     /**
@@ -182,7 +160,7 @@ public class Player extends Entity {
             setX(getX() + dx);
             lastPos.y = getY();
             setY(getY() + dy);
-            flag=false;
+            
         }else{
             flag=true;
         }
@@ -192,12 +170,34 @@ public class Player extends Entity {
 
     @Override
     public void updateEntity() {
-        
+        entitymovement.update(this);
+        entitymovement.clearAzioni();
+        mantieniNeiLimiti();
+
+        hitbox().x = getX() + 0.65f;
+        hitbox().y = getY() + 0.55f;
     }
 
     @Override
     public void updateEntityType() {
-        
+        if (loadedLos) {
+            los().update(this);
+        }
+
+        if (statistiche().gotDamaged) {
+            countdownDamage -= delta;
+            countdownKnockback -= delta;
+            if (countdownDamage <= 0) {
+                countdownDamage = maxDamageTime;
+                countdownKnockback = maxDamageTime;
+                statistiche().gotDamaged = false;
+            }
+        }
+
+        inizializzaLOS();
+        circle.x = getX() + getSize().getWidth() / 2;
+        circle.y = getY() + getSize().getHeight() / 2;
+        movement.update(this);
     }
 
     @Override
