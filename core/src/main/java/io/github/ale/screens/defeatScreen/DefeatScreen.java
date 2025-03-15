@@ -40,7 +40,7 @@ public class DefeatScreen implements Screen{
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(game.gameScreen);
                 return true;
-	}
+	    }
         });
         root.add(button1).fill().pad(300);
     }
