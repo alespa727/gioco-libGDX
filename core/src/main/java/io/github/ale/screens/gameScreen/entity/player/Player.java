@@ -151,18 +151,18 @@ public class Player extends Entity {
             countdownKnockback-=delta;
         }*/
 
-        dx = (float) Math.cos(Math.toRadians(angolo)) * 0.2F;
-        dy = (float) Math.sin(Math.toRadians(angolo)) * 0.2F;
+        dx = (float) Math.cos(Math.toRadians(angolo)) * 0.3F;
+        dy = (float) Math.sin(Math.toRadians(angolo)) * 0.3F;
         
-       
-        if (!Map.checkCollisionX(this) && !Map.checkCollisionY(this)) {
+       System.out.println(angolo);
+        if (!Map.checkCollisionX(this, 0.3f, angolo)) {
             lastPos.x = getX();
-            setX(getX() + dx);
+            setX(getX() + dx); 
+        }
+        
+        if (!Map.checkCollisionY(this, 0.3f, angolo)) {
             lastPos.y = getY();
             setY(getY() + dy);
-            
-        }else{
-            flag=true;
         }
             
     }

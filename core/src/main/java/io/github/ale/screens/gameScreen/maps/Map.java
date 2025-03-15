@@ -170,6 +170,39 @@ public class Map {
     }
 
     /**
+     * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
+     * @param direzione
+     * @return
+     */
+    public static boolean checkCollisionX(Entity entity, float offset, float angolo){
+        //int count=0;
+        boolean inCollision=false;
+        Rectangle hitbox = new Rectangle(entity.hitbox());
+        if (angolo > 90) {
+            hitbox.x-=offset;
+        }
+        if (angolo < 90) {
+            hitbox.x+=offset;
+        }
+        int minTileX = Math.max(0, (int) (hitbox.x));
+        int maxTileX = Math.min(width - 1, (int) ((hitbox.x + hitbox.width)));
+        int minTileY = Math.max(0, (int) (hitbox.y));
+        int maxTileY = Math.min(height - 1, (int) ((hitbox.y + hitbox.height)));
+
+        for (int i = minTileX; i <= maxTileX; i++) {
+            for (int j = minTileY; j <= maxTileY; j++) {
+                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision = true;
+                }
+                //count++;
+            }
+        }
+        //System.out.println(count);
+        //System.out.println(inCollision);
+        return inCollision;
+    }
+
+    /**
      * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
      * @param direzione
      * @return
@@ -183,6 +216,40 @@ public class Map {
         }
         if (entity.direzione().contains("S")) {
             hitbox.y-=1/16f;
+        }
+
+        int minTileX = Math.max(0, (int) (hitbox.x));
+        int maxTileX = Math.min(width - 1, (int) ((hitbox.x + hitbox.width)));
+        int minTileY = Math.max(0, (int) (hitbox.y));
+        int maxTileY = Math.min(height - 1, (int) ((hitbox.y + hitbox.height)));
+
+        for (int i = minTileX; i <= maxTileX; i++) {
+            for (int j = minTileY; j <= maxTileY; j++) {
+                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                    inCollision = true;
+                }
+                //count++;
+            }
+        }
+        //System.out.println(count);
+        //System.out.println(inCollision);
+        return inCollision;
+    }
+
+    /**
+     * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
+     * @param direzione
+     * @return
+     */
+    public static boolean checkCollisionY(Entity entity, float offset, float angolo){
+        //int count=0;
+        boolean inCollision=false;
+        Rectangle hitbox = new Rectangle(entity.hitbox());
+        if (angolo < 180 || angolo > 0) {
+            hitbox.y+=offset;
+        }
+        if (angolo < 0 || angolo > 180) {
+            hitbox.y-=offset;
         }
 
         int minTileX = Math.max(0, (int) (hitbox.x));
