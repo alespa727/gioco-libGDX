@@ -20,7 +20,7 @@ public final class Finn extends Nemico{
     @Override
     public void create() {
         
-        setAree(5.5f, 1.5f);
+        setAree(5.5f, 1f);
 
     }
 

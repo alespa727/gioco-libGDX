@@ -3,24 +3,35 @@ package io.github.ale.screens.gameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.MyGame;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.gui.Gui;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class GameScreen implements Screen {
 
     private final MyGame game;
 
+    private Stage stage;
+    private Table root;
+
     private EntityManager entities;
     private CameraManager camera;
     private MapManager maps;
     private FitViewport viewport;
+
+    private ShapeRenderer gui;
+    private Gui rect;
 
     private float elapsedTime;
 
@@ -34,7 +45,15 @@ public class GameScreen implements Screen {
     public void show() { //METODO CREATE
         System.err.println(loaded);
         if (!loaded) {
+            rect = new Gui();
+            gui = new ShapeRenderer();
+            stage = new Stage(new ScreenViewport());
+            root = new Table();
+            root.setFillParent(true);
+            stage.addActor(root);
+            
             loaded=true;
+            
             camera = new CameraManager();   // Configura la camera
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
@@ -88,7 +107,13 @@ public class GameScreen implements Screen {
         //drawLineOfSight();
 
         entities.player().los().clearPuntiComuni();
+        drawGUI();
+    }
 
+    public void drawGUI(){
+        rect.draw(entities.player());
+        stage.act();
+        stage.draw();
     }
 
     @Override
