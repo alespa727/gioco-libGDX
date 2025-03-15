@@ -76,7 +76,7 @@ public class DefeatScreen implements Screen{
 
     @Override
     public void hide() {
-        
+        dispose();
     }
 
 }
