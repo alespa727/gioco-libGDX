@@ -152,12 +152,12 @@ public class Player extends Entity {
         dy = (float) Math.sin(Math.toRadians(angolo)) * 0.3F;
         
        System.out.println(angolo);
-        if (!Map.checkCollisionX(this, 0.3f, angolo)) {
+        if (!Map.checkCollisionX(this, 0.4f, angolo)) {
             lastPos.x = getX();
             setX(getX() + dx); 
         }
         
-        if (!Map.checkCollisionY(this, 0.3f, angolo)) {
+        if (!Map.checkCollisionY(this, 0.4f, angolo)) {
             lastPos.y = getY();
             setY(getY() + dy);
         }

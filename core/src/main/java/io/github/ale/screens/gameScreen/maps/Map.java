@@ -199,10 +199,10 @@ public class Map {
         //int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.hitbox());
-        if (angolo > 90) {
+        if (angolo > 90 && angolo < 270) {
             hitbox.x-=offset;
         }
-        if (angolo < 90) {
+        if (angolo < 90 || angolo > 270) {
             hitbox.x+=offset;
         }
         int minTileX = Math.max(0, (int) (hitbox.x));
@@ -219,7 +219,7 @@ public class Map {
             }
         }
         //System.out.println(count);
-        //System.out.println(inCollision);
+        System.out.println(inCollision);
         return inCollision;
     }
 
@@ -266,10 +266,10 @@ public class Map {
         //int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.hitbox());
-        if (angolo < 180 || angolo > 0) {
+        if (angolo < 180) {
             hitbox.y+=offset;
         }
-        if (angolo < 0 || angolo > 180) {
+        if (angolo > 180) {
             hitbox.y-=offset;
         }
 

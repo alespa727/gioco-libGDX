@@ -18,9 +18,9 @@ public class EntityMovement {
 
     private static void aggiornaDirezione(Entity e, float x, float y) {
         e.statistiche().setSpeedBuff(1f);
-        if (Math.abs(e.getX() - x) > 0.01f && Math.abs(e.getY() - y) > 0.01f) {
-            
 
+        if (Math.abs(e.getX() - x) > 0.01f && Math.abs(e.getY() - y) > 0.01f) {
+        
             if (e.getX() < x && e.getY() > y) {
                 e.setDirezione("SD");
             }
