@@ -11,6 +11,7 @@ import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class CameraManager {
     private final OrthographicCamera camera;
+    private static Vector3[] punti;
     /**
      * inizializza la telecamera
      */
@@ -18,7 +19,10 @@ public class CameraManager {
     public CameraManager(){
         camera = new OrthographicCamera(); // telecamera
         camera.update(); // aggiornamento camera
-    
+        punti  = new Vector3[4];
+        for (int i = 0; i < 4; i++) {
+            punti[i] = new Vector3(camera.frustum.planePoints[i]);
+        }
     }
 
     public void lerpTo(Vector2 coords){
@@ -69,7 +73,14 @@ public class CameraManager {
             camera.update();
 
         }
-        //System.out.println(camera.frustum.planePoints[0]);
+        for (int i = 0; i < 4; i++) {
+            punti[i] = new Vector3(camera.frustum.planePoints[i]);
+        }
+        //System.out.println();
+    }
+    
+    public static Vector3[] limiti(){
+        return punti;
     }
 
     public OrthographicCamera get() {

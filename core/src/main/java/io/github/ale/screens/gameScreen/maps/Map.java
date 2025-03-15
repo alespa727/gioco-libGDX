@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 
 public class Map {
@@ -26,7 +27,7 @@ public class Map {
     private static Boolean collisionMap [][];
     private static Rectangle collisionBoxes [][];
 
-    private static Integer width;
+    private static int width;
     private static int height;
 
     public static boolean isLoaded=false;
@@ -114,25 +115,45 @@ public class Map {
     
     
     public static boolean checkLineCollision(Vector2 p1, Vector2 p2){
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+        int controlli=0;
+        int minTileX = Math.max(0, (int) (CameraManager.limiti()[0].x-2f));
+        int maxTileX = Math.min(width - 1, (int) (CameraManager.limiti()[2].x+2f));
+        int minTileY = Math.max(0, (int) (CameraManager.limiti()[0].y-2f));
+        int maxTileY = Math.min(height - 1, (int) (CameraManager.limiti()[2].y+2f));
+        /*System.out.print(CameraManager.limiti()[0].x);
+        System.out.print(" "+CameraManager.limiti()[0].y);
+        System.out.print(" "+CameraManager.limiti()[2].x);
+        System.out.println(" "+CameraManager.limiti()[2].y);*/
+        for (int i = minTileX; i <= maxTileX; i++) {
+            for (int j = minTileY; j <= maxTileY; j++) {
                 if (collisionMap[i][j]!=null && Intersector.intersectSegmentRectangle(p1, p2, collisionBoxes[i][j])) {
                     return true;
                 }
+                controlli++;
             }
         }
+        //System.out.println(controlli);
         return false;
     }
 
     public static boolean checkRectangleCollision(float x, float y, float width, float height){
         temp.set(x, y, width, height);
-        for (int i = 0; i < Map.width; i++) {
-            for (int j = 0; j < Map.height; j++) {
+        int minTileX = Math.max(0, (int) (CameraManager.limiti()[0].x-2f));
+        int maxTileX = Math.min(Map.width - 1, (int) (CameraManager.limiti()[2].x+2f));
+        int minTileY = Math.max(0, (int) (CameraManager.limiti()[0].y-2f));
+        int maxTileY = Math.min(Map.height - 1, (int) (CameraManager.limiti()[2].y+2f));
+        /*System.out.print(CameraManager.limiti()[0].x);
+        System.out.print(" "+CameraManager.limiti()[0].y);
+        System.out.print(" "+CameraManager.limiti()[2].x);
+        System.out.println(" "+CameraManager.limiti()[2].y);*/
+        for (int i = minTileX; i <= maxTileX; i++) {
+            for (int j = minTileY; j <= maxTileY; j++) {
                 if (collisionMap[i][j]!=null && temp.overlaps(collisionBoxes[i][j])) {
                     return true;
                 }
             }
         }
+        
         return false;
     }
 
