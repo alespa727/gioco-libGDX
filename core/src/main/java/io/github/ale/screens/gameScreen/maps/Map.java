@@ -129,7 +129,7 @@ public class Map {
                 if (collisionMap[i][j]!=null && Intersector.intersectSegmentRectangle(p1, p2, collisionBoxes[i][j])) {
                     return true;
                 }
-                controlli++;
+                //controlli++;
             }
         }
         //System.out.println(controlli);
