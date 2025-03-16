@@ -137,25 +137,28 @@ public abstract class Nemico extends Entity{
             }
         }else{
             movement.clearAzioni();
-            if (!direzione().contains("fermo")) {
-                setDirezione("fermo" .concat(direzione())) ;
+            if (direzione().x==1f || direzione().x==-1f) {
+                direzione().x=direzione().x/2;
+            }
+            if (direzione().y==1f || direzione().y==-1f) {
+                direzione().y=direzione().y/2;
             }
         }
         
         if (stati.inRange()) {
             if (Math.abs(player.getX()-getX()) > Math.abs(player.getY()-getY())) {
                 if (player.getX() < getX()) {
-                    setDirezione("fermoA");
+                    direzione().set(-0.5f, 0);
                 }
                 if (player.getX() > getX()) {
-                    setDirezione("fermoD");
+                    direzione().set(0.5f, 0);
                 }
             }else{   
                 if (player.getY() > getY()) {
-                    setDirezione("fermoW");
+                    direzione().set(0, 0.5f);
                 }
                 if (player.getY() < getY()) {
-                    setDirezione("fermoS");
+                    direzione().set(0, -0.5f);
                 }
             }
             

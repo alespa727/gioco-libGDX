@@ -166,10 +166,10 @@ public class Map {
         //int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.hitbox());
-        if (entity.direzione().contains("A")) {
+        if (entity.direzione().x < 0) {
             hitbox.x-=1/16f;
         }
-        if (entity.direzione().contains("D")) {
+        if (entity.direzione().x > 0) {
             hitbox.x+=1/16f;
         }
         int minTileX = Math.max(0, (int) (hitbox.x));
@@ -232,10 +232,10 @@ public class Map {
         //int count=0;
         boolean inCollision=false;
         Rectangle hitbox = new Rectangle(entity.hitbox());
-        if (entity.direzione().contains("W")) {
+        if (entity.direzione().y > 0) {
             hitbox.y+=1/8f;
         }
-        if (entity.direzione().contains("S")) {
+        if (entity.direzione().y < 0) {
             hitbox.y-=1/16f;
         }
 

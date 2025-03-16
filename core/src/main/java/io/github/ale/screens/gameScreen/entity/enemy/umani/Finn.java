@@ -31,7 +31,6 @@ public final class Finn extends Nemico{
             System.out.println("Finn attacca il giocatore!");
 
             player().statistiche().inflictDamage(statistiche().getAttackDamage(), player().stati().immortality());
-            player().statistiche().direzioneDanno=direzione();
 
             float angolo = calcolaAngolo( coordinateCentro().x, coordinateCentro().y, player().coordinateCentro().x, player().coordinateCentro().y);
 

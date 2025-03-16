@@ -148,16 +148,14 @@ public class PlayerMovementManager{
             default -> {
             }
         }
-        lastDirezione = p.direzione();
-        if (!lastDirezione.equals(p.direzione())) {
-            System.out.println(p.direzione());
-        }
-    
     }
 
     private void addNotMoving(Entity p){
-        if (!p.direzione().contains("fermo")) {
-            p.setDirezione("fermo".concat(p.direzione()));
+        if(p.direzione().x == 1f || p.direzione().x == -1f){
+            p.direzione().x = p.direzione().x/2;
+        }
+        if(p.direzione().y == 1f || p.direzione().y == -1f){
+            p.direzione().y = p.direzione().y/2;
         }
     }
 
@@ -168,16 +166,16 @@ public class PlayerMovementManager{
 
     private void aggiornaDirezioneY(Entity p) {
         if (w)
-            p.setDirezione("W");
+            p.direzione().set(0, 1f);
         if (s)
-            p.setDirezione("S");
+            p.direzione().set(0, -1f);
     }
 
     private void aggiornaDirezioneX(Entity p) {
         if (a)
-            p.setDirezione("A");
+            p.direzione().set(-1f, 0);
         if (d)
-            p.setDirezione("D");
+            p.direzione().set(1f, 0);
 
     }
 

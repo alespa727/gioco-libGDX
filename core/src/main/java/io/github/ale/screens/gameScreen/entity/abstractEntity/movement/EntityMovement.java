@@ -1,6 +1,7 @@
 package io.github.ale.screens.gameScreen.entity.abstractEntity.movement;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.maps.Map;
@@ -22,17 +23,17 @@ public class EntityMovement {
         if (Math.abs(e.getX() - x) > 0.01f && Math.abs(e.getY() - y) > 0.01f) {
         
             if (e.getX() < x && e.getY() > y) {
-                e.setDirezione("SD");
+                e.setDirezione(new Vector2(1f, -1f));
             }
             if (e.getX() > x && e.getY() > y) {
-                e.setDirezione("SA");
+                e.setDirezione(new Vector2(-1f, -1f));
             }
             if (e.getX() < x && e.getY() < y) {
 
-                e.setDirezione("WD");
+                e.setDirezione(new Vector2(1f, 1f));
             }
             if (e.getX() > x && e.getY() < y) {
-                e.setDirezione("WA");
+                e.setDirezione(new Vector2(-1f, 1f));
             }
 
             e.statistiche().setSpeedBuff(1 / 1.41f);
@@ -56,17 +57,17 @@ public class EntityMovement {
 
 
         if (!collisioneX) {
-            if (e.direzione().equals("A") || e.direzione().equals("WA") || e.direzione().equals("SA")) {
+            if (e.direzione().x == -1f) {
                 e.setX(e.getX() - speed);
-            } else if (e.direzione().equals("D") || e.direzione().equals("WD") || e.direzione().equals("SD")) {
+            } else if (e.direzione().x == 1f) {
                 e.setX(e.getX() + speed);
             }
         }
 
         if (!collisioneY) {
-            if (e.direzione().equals("W") || e.direzione().equals("WA") || e.direzione().equals("WD")) {
+            if (e.direzione().y == 1f) {
                 e.setY(e.getY() + speed);
-            } else if (e.direzione().equals("S") || e.direzione().equals("SA") || e.direzione().equals("SD")) {
+            } else if (e.direzione().y == -1f) {
                 e.setY(e.getY() - speed);
             }
         }
@@ -80,12 +81,12 @@ public class EntityMovement {
      */
     private static void aggiornaDirezioneX(Entity entity, float x) {
         if (entity.getX() < x) {
-            if (!entity.direzione().equals("D")) {
-                entity.setDirezione("D");
+            if (!entity.direzione().epsilonEquals(1f, 0)) {
+                entity.direzione().set(1f, 0);
             }
         } else {
-            if (!entity.direzione().equals("A")) {
-                entity.setDirezione("A");
+            if (!entity.direzione().epsilonEquals(-1f, 0)) {
+                entity.direzione().set(-1f, 0);
             }
         }
     }
@@ -98,12 +99,12 @@ public class EntityMovement {
      */
     private static void aggiornaDirezioneY(Entity entity, float y) {
         if (entity.getY() < y) {
-            if (!entity.direzione().equals("W")) {
-                entity.setDirezione("W");
+            if (!entity.direzione().epsilonEquals(0, 1f)) {
+                entity.direzione().set(0, 1f);
             }
         } else {
-            if (!entity.direzione().equals("S")) {
-                entity.setDirezione("S");
+            if (!entity.direzione().epsilonEquals(0, -1f)) {
+                entity.direzione().set(0, -1f);
             }
         }
     }
@@ -114,8 +115,11 @@ public class EntityMovement {
      * @param entity
      */
     private static void setFermo(Entity entity) {
-        if (!entity.direzione().contains("fermo")) {
-            entity.setDirezione("fermo".concat(entity.direzione()));
+        if (entity.direzione().x==1f || entity.direzione().x==-1f) {
+            entity.direzione().x=entity.direzione().x/2;
+        }
+        if (entity.direzione().y==1f || entity.direzione().y==-1f) {
+            entity.direzione().y=entity.direzione().y/2;
         }
         entity.stati().setIsMoving(false);
 

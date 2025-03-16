@@ -40,7 +40,7 @@ public abstract class Entity implements Drawable, Creatable {
         inizializzaInfo(config.nome, config.descrizione, config.id);
         getEntityGraphics().setTexture(config.imgpath);
         inizializzaHitbox(getX(), getY(), config.width, config.height);
-        inizializzaDirezione(config.direzione);
+        inizializzaDirezione(new Vector2(0, -0.5f));
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
@@ -99,7 +99,7 @@ public abstract class Entity implements Drawable, Creatable {
      * 
      * @return
      */
-    public String direzione() {
+    public Vector2 direzione() {
         return this.direzione.getDirezione();
     }
 
@@ -225,7 +225,7 @@ public abstract class Entity implements Drawable, Creatable {
      * 
      * @param direzione
      */
-    public final void inizializzaDirezione(String direzione) {
+    public final void inizializzaDirezione(Vector2 direzione) {
         this.direzione = new Direzione();
         this.direzione.setDirezione(direzione);
     }
@@ -277,7 +277,7 @@ public abstract class Entity implements Drawable, Creatable {
      * 
      * @param direzione
      */
-    public void setDirezione(String direzione) {
+    public void setDirezione(Vector2 direzione) {
         this.direzione.setDirezione(direzione);
     }
 

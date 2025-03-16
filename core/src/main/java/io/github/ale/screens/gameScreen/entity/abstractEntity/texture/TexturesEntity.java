@@ -3,6 +3,7 @@ package io.github.ale.screens.gameScreen.entity.abstractEntity.texture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class TexturesEntity {
@@ -16,7 +17,7 @@ public class TexturesEntity {
     private final TextureRegion[] left; // Frame per la direzione sinistra fermo
     private final TextureRegion[] right; // Frame per la direzione destra fermo
     
-    private final ObjectMap<String, Animation <TextureRegion>> animations;
+    private final ObjectMap<Vector2, Animation <TextureRegion>> animations;
 
     public TexturesEntity(String path){
         entity = new Texture(path);
@@ -35,27 +36,27 @@ public class TexturesEntity {
 
         salvaAnimazioni(entity);
 
-        animations.put("W", new Animation<>(1 / 5f, movingUp));
-        animations.put("S", new Animation<>(1 / 5f, movingDown));
-        animations.put("A", new Animation<>(1 / 5f, movingLeft));
-        animations.put("D", new Animation<>(1 / 5f, movingRight));
+        animations.put(new Vector2(0, 1f), new Animation<>(1 / 5f, movingUp));
+        animations.put(new Vector2(0, -1f), new Animation<>(1 / 5f, movingDown));
+        animations.put(new Vector2(-1f, 0), new Animation<>(1 / 5f, movingLeft));
+        animations.put(new Vector2(1f, 0), new Animation<>(1 / 5f, movingRight));
 
-        animations.put("WA", new Animation<>(1 / 5f, movingLeft));
-        animations.put("SA", new Animation<>(1 / 5f, movingLeft));
+        animations.put(new Vector2(-1f, 1f), new Animation<>(1 / 5f, movingLeft));
+        animations.put(new Vector2(-1f, -1f), new Animation<>(1 / 5f, movingLeft));
 
-        animations.put("SD", new Animation<>(1 / 5f, movingRight));
-        animations.put("WD", new Animation<>(1 / 5f, movingRight));
+        animations.put(new Vector2(1f, -1f), new Animation<>(1 / 5f, movingRight));
+        animations.put(new Vector2(1f, 1f), new Animation<>(1 / 5f, movingRight));
 
-        animations.put("fermoW", new Animation<>(1 / 2f, up));
-        animations.put("fermoS", new Animation<>(1 / 2f, down));
-        animations.put("fermoA", new Animation<>(1 / 2f, left));
-        animations.put("fermoD", new Animation<>(1 / 2f, right));
+        animations.put(new Vector2(0, 0.5f), new Animation<>(1 / 2f, up));
+        animations.put(new Vector2(0, -0.5f), new Animation<>(1 / 2f, down));
+        animations.put(new Vector2(-0.5f, 0), new Animation<>(1 / 2f, left));
+        animations.put(new Vector2(0.5f, 0), new Animation<>(1 / 2f, right));
 
-        animations.put("fermoWA", new Animation<>(1 / 2f, left));
-        animations.put("fermoSA", new Animation<>(1 / 2f, left));
+        animations.put(new Vector2(-0.5f, 0.5f), new Animation<>(1 / 2f, left));
+        animations.put(new Vector2(-0.5f, -0.5f), new Animation<>(1 / 2f, left));
 
-        animations.put("fermoSD", new Animation<>(1 / 2f, right));
-        animations.put("fermoWD", new Animation<>(1 / 2f, right));
+        animations.put(new Vector2(0.5f, -0.5f), new Animation<>(1 / 2f, right));
+        animations.put(new Vector2(0.5f, 0.5f), new Animation<>(1 / 2f, right));
         
     }
 
@@ -95,7 +96,7 @@ public class TexturesEntity {
      * @return
      */
 
-    public Animation<TextureRegion> setAnimazione(String direzione) {
+    public Animation<TextureRegion> setAnimazione(Vector2 direzione) {
         return animations.get(direzione);
     }
 }
