@@ -16,6 +16,8 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 
 public class Map {
 
+    GameGraph graph;
+
     private final OrthographicCamera camera;
     private TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -24,7 +26,7 @@ public class Map {
 
     private TiledMapTileLayer collisionLayer;
 
-    private static Boolean collisionMap [][];
+    private static boolean collisions[][];
     private static Rectangle collisionBoxes [][];
 
     private static int width;
@@ -33,12 +35,18 @@ public class Map {
     public static boolean isLoaded=false;
 
     public Map(OrthographicCamera camera, String name){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                collisions[i][j]=false;
+            }
+        }
         temp = new Rectangle();
         this.camera=camera;
         loadMap(name);
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
         isLoaded = true;
+        graph = new GameGraph(width, height, collisions);
     }
 
      /**
@@ -66,11 +74,13 @@ public class Map {
     public void collisions(ShapeRenderer renderer){
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (collisionMap[i][j]!=null) {
+                if (collisionBoxes[i][j]!=null) {
                     renderer.rect(collisionBoxes[i][j].x, collisionBoxes[i][j].y, collisionBoxes[i][j].width, collisionBoxes[i][j].height);
+                    
                 }
             }
         }
+        graph.drawGraphConnections(renderer, graph);
         //renderer.rect(temp.x, temp.y, temp.width, temp.height);
     }
 
@@ -84,25 +94,40 @@ public class Map {
 
         width=(Integer) map.getProperties().get("width");
         height=(Integer) map.getProperties().get("height");
-        collisionMap = new Boolean[width][height];
+        collisions = new boolean[width][height];
         collisionBoxes = new Rectangle[width][height];
         
     }
 
-    /**
-     * carica le collisioni
+        /**
+     * Carica la mappa delle collisioni
      */
-    private void loadCollisionMap(){
+    private void loadCollisionMap() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Cell tile = collisionLayer.getCell(i, j);
-                collisionMap[i][j]=(Boolean) tile.getTile().getProperties().get("solido");
-                if (collisionMap[i][j]!=null) {
-                    collisionBoxes[i][j] = new Rectangle(1f*i, 1f*j, 1f,1f);
+
+                // Controllo per evitare NullPointerException
+                if (tile != null && tile.getTile() != null && tile.getTile().getProperties().containsKey("solido")) {
+                    collisions[i][j] = (Boolean) tile.getTile().getProperties().get("solido");
                 }
+                float size;
+                float posX, posY;
+                // Creazione della collision box (rimosso il controllo inutile)
+                if(collisions[i][j]==true){
+                    posX=i;
+                    posY=j;
+                    size=1f;
+                }else{
+                    posX=0;
+                    posY=0;
+                    size=0f;
+                }
+                collisionBoxes[i][j] = new Rectangle(1f * posX, 1f * posY, size, size);
             }
         }
     }
+
 
     
     public static int getWidth(){
@@ -126,7 +151,7 @@ public class Map {
         System.out.println(" "+CameraManager.limiti()[2].y);*/
         for (int i = minTileX; i <= maxTileX; i++) {
             for (int j = minTileY; j <= maxTileY; j++) {
-                if (collisionMap[i][j]!=null && Intersector.intersectSegmentRectangle(p1, p2, collisionBoxes[i][j])) {
+                if (collisionBoxes[i][j]!=null && Intersector.intersectSegmentRectangle(p1, p2, collisionBoxes[i][j])) {
                     return true;
                 }
                 //controlli++;
@@ -148,7 +173,7 @@ public class Map {
         System.out.println(" "+CameraManager.limiti()[2].y);*/
         for (int i = minTileX; i <= maxTileX; i++) {
             for (int j = minTileY; j <= maxTileY; j++) {
-                if (collisionMap[i][j]!=null && temp.overlaps(collisionBoxes[i][j])) {
+                if (collisionBoxes[i][j]!=null && temp.overlaps(collisionBoxes[i][j])) {
                     return true;
                 }
             }
@@ -179,7 +204,7 @@ public class Map {
 
         for (int i = minTileX; i <= maxTileX; i++) {
             for (int j = minTileY; j <= maxTileY; j++) {
-                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                if (collisionBoxes[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
                     inCollision = true;
                 }
                 //count++;
@@ -212,7 +237,7 @@ public class Map {
 
         for (int i = minTileX; i <= maxTileX; i++) {
             for (int j = minTileY; j <= maxTileY; j++) {
-                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                if (collisionBoxes[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
                     inCollision = true;
                 }
                 //count++;
@@ -246,7 +271,7 @@ public class Map {
 
         for (int i = minTileX; i <= maxTileX; i++) {
             for (int j = minTileY; j <= maxTileY; j++) {
-                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                if (collisionBoxes[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
                     inCollision = true;
                 }
                 //count++;
@@ -280,7 +305,7 @@ public class Map {
 
         for (int i = minTileX; i <= maxTileX; i++) {
             for (int j = minTileY; j <= maxTileY; j++) {
-                if (collisionMap[i][j] != null && hitbox.overlaps(collisionBoxes[i][j])) {
+                if (collisionBoxes[i][j]!=null && hitbox.overlaps(collisionBoxes[i][j])) {
                     inCollision = true;
                 }
                 //count++;

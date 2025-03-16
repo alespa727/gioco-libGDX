@@ -104,7 +104,7 @@ public class GameScreen implements Screen {
         maps.draw();
 
         drawOggetti();
-        //drawHitboxes();
+        drawHitboxes();
         //drawLineOfSight();
 
         entities.player().los().clearPuntiComuni();
