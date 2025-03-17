@@ -20,7 +20,7 @@ public class GameGraph implements IndexedGraph<Node> {
         this.height = height;
         this.walkable = new boolean[width][height];
 
-        // Inverti la mappa delle collisioni per ottenere le celle attraversabili
+        //trasformo le posizioni con collisioni a quelle camminabili
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 this.walkable[x][y] = !collisions[x][y]; // true = attraversabile, false = ostacolo
@@ -30,65 +30,6 @@ public class GameGraph implements IndexedGraph<Node> {
         // Genera il grafo con nodi e connessioni
         generateGraph();
     }
-
-    // Metodo per generare i nodi e le connessioni del grafo
-    private void generateGraph() {
-        Node[][] grid = new Node[width][height];
-
-        // Creazione dei nodi
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (walkable[x][y]) { // Solo celle attraversabili
-                    Node node = new Node(x, y);
-                    grid[x][y] = node;
-                    nodes.add(node); // Aggiungi alla lista dei nodi
-                }
-            }
-        }
-
-        // Creazione delle connessioni tra i nodi
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (grid[x][y] != null) {
-                    connectNeighbors(grid, x, y); // Connetti il nodo con i suoi vicini
-                }
-            }
-        }
-    }
-
-    private void connectNeighbors(Node[][] grid, int x, int y) {
-        Node node = grid[x][y];
-        int[][] directions = {
-            { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },   // Cardinali (Nord, Est, Sud, Ovest)
-            { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 } // Diagonali
-        };
-    
-        for (int[] dir : directions) {
-            int nx = x + dir[0];
-            int ny = y + dir[1];
-    
-            // Verifica che il nodo vicino sia valido e attraversabile
-            if (nx >= 0 && nx < width && ny >= 0 && ny < height && grid[nx][ny] != null) {
-                if (Math.abs(dir[0]) + Math.abs(dir[1]) == 2) { 
-                    // Caso diagonale: controlla che entrambe le direzioni cardinali siano libere
-                    int checkX = x + dir[0];
-                    int checkY = y; // Direzione orizzontale
-                    int checkX2 = x;
-                    int checkY2 = y + dir[1]; // Direzione verticale
-    
-                    if (grid[checkX][checkY] == null || grid[checkX2][checkY2] == null) {
-                        // Salta la connessione diagonale se uno dei lati cardinali è occupato
-                        continue;
-                    }
-                }
-    
-                // Calcola il costo della connessione
-                float cost = (dir[0] == 0 || dir[1] == 0) ? 1.0f : 1.4f; // 1.0 per cardinali, 1.4 per diagonali
-                node.addConnection(grid[nx][ny], cost); // Aggiungi la connessione
-            }
-        }
-    }
-    
 
     @Override
     public Array<Connection<Node>> getConnections(Node fromNode) {
@@ -101,6 +42,9 @@ public class GameGraph implements IndexedGraph<Node> {
         // Restituisce un indice unico per ogni nodo
         return node.y * Map.getWidth() + node.x; // Deve essere basato sulle coordinate x, y
     }
+    
+
+
 
     @Override
     public int getNodeCount() {
@@ -108,6 +52,69 @@ public class GameGraph implements IndexedGraph<Node> {
         return nodes.size;
     }
 
+    /**
+     * genera il grafo
+     */
+    private void generateGraph() {
+        Node[][] grid = new Node[width][height];
+
+        // crea i nodi
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (walkable[x][y]) { // Solo celle attraversabili
+                    Node node = new Node(x, y);
+                    grid[x][y] = node;
+                    nodes.add(node); // Aggiungi alla lista dei nodi
+                }
+            }
+        }
+
+        // per ogni nodo crea le connessioni ai vicini
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (grid[x][y] != null) {
+                    connectNeighbors(grid, x, y); // Connetti il nodo con i suoi vicini
+                }
+            }
+        }
+    }
+
+    private void connectNeighbors(Node[][] grid, int x, int y) {
+        Node node = grid[x][y];
+        int[][] directions = {
+            { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },   // Direzioni x/y
+            { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 } // Diagonali
+        };
+    
+        for (int[] dir : directions) {
+            int nx = x + dir[0];
+            int ny = y + dir[1];
+    
+            // Verifica che il nodo vicino sia valido e attraversabile
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height && grid[nx][ny] != null) {
+                if (Math.abs(dir[0]) + Math.abs(dir[1]) == 2) { 
+                    int checkX = x + dir[0];
+                    int checkY = y; // Direzione orizzontale
+                    int checkX2 = x;
+                    int checkY2 = y + dir[1]; // Direzione verticale
+    
+                    // salta direzione diagonale se le altre direzioni sono occupate
+                    if (grid[checkX][checkY] == null || grid[checkX2][checkY2] == null) {
+                        continue;
+                    }
+                }
+    
+                // Calcola il costo della connessione
+                float cost = (dir[0] == 0 || dir[1] == 0) ? 1.0f : 1.4f; // se una delle due coordinate sono uguali a zero allora il costo sarà 1 se no 1.41
+                node.addConnection(grid[nx][ny], cost); // Aggiungi la connessione
+            }
+        }
+    }
+
+    /**
+     * disegna nodi
+     * @param shapeRenderer
+     */
     public void drawNodes(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.BLUE); // Colore dei nodi
 
@@ -119,8 +126,12 @@ public class GameGraph implements IndexedGraph<Node> {
         shapeRenderer.setColor(Color.BLACK);
     }
 
+    /**
+     * disegna connessioni
+     * @param shapeRenderer
+     */
     public void drawConnections(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(Color.RED); // Colore delle linee di connessione
+        shapeRenderer.setColor(Color.BLACK); // Colore delle linee di connessione
     
         for (Node node : nodes) {
             for (Connection<Node> connection : node.connessioni) {
@@ -134,6 +145,11 @@ public class GameGraph implements IndexedGraph<Node> {
         shapeRenderer.setColor(Color.BLACK);
     }
 
+    /**
+     * @param x
+     * @param y
+     * @return
+     */
     public Node getNodeAt(int x, int y) {
         for (Node node : nodes) {
             // Controlla se le coordinate corrispondono
@@ -145,6 +161,13 @@ public class GameGraph implements IndexedGraph<Node> {
         return null;
     }
 
+
+    /**
+     * restituisci nodo più vicino
+     * @param x
+     * @param y
+     * @return
+     */
     public Node getClosestNode(float x, float y) {
         Node closestNode = null;
         float closestDistance = Float.MAX_VALUE;

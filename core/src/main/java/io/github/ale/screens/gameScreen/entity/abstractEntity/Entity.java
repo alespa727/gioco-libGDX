@@ -41,7 +41,7 @@ public abstract class Entity implements Drawable, Creatable {
         inizializzaInfo(config.nome, config.descrizione, config.id);
         getEntityGraphics().setTexture(config.imgpath);
         inizializzaHitbox(getX(), getY(), config.width, config.height);
-        inizializzaDirezione(new Vector2(0, -0.5f));
+        inizializzaDirezione(new Vector2(0, 1));
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         inizializzaAnimazione();
@@ -59,7 +59,6 @@ public abstract class Entity implements Drawable, Creatable {
     }
 
     public abstract void updateEntity();
-
     public abstract void updateEntityType();
 
     public abstract void drawRange(ShapeRenderer renderer);

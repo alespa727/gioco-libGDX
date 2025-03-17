@@ -34,6 +34,9 @@ public class DefeatScreen implements Screen{
         skin = new Skin(Gdx.files.internal("metal-ui.json"));
         stage.addActor(root);
     
+        Table table = new Table();
+        root.add(table);
+
         TextButton button1 = new TextButton("Play again", skin);
         button1.addListener(new InputListener(){
             @Override
@@ -42,7 +45,16 @@ public class DefeatScreen implements Screen{
                 return true;
 	    }
         });
-        root.add(button1).fill().pad(300);
+        table.add(button1);
+        TextButton button2 = new TextButton("Main menu", skin);
+        button2.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(game.mainScreen);
+                return true;
+	    }
+        });
+        table.add(button2);
     }
 
     @Override

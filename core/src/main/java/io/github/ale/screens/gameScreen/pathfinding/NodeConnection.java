@@ -7,12 +7,21 @@ public class NodeConnection implements Connection<Node> {
     private final Node toNode;
     private final float cost;
 
+    /**
+     * conessione fra nodi
+     * @param fromNode
+     * @param toNode
+     * @param cost
+     */
     public NodeConnection(Node fromNode, Node toNode, float cost) {
         this.fromNode = fromNode;
         this.toNode = toNode;
         this.cost = cost;
     }
 
+    /**
+     * restituisce il costo del nodo
+     */
     @Override
     public float getCost() {
         return cost;

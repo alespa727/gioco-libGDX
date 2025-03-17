@@ -7,17 +7,18 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public class EntityMovementManager {
-    boolean fermo=false;
+    public boolean fermo;
     Vector2 direction;
     public boolean sulNodo;
     private Node lastNode;
     private Node node;
-    private static final float REACHED_THRESHOLD = 1/32f; 
+    private static final float REACHED_THRESHOLD = 1/16f; 
 
     public void setGoal(Node start, Node node) {
         this.lastNode=start;
         this.node = node;
         sulNodo=true;
+        fermo=false;
     }
 
     public void setFermo(Entity e) {

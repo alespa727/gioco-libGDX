@@ -12,23 +12,50 @@ public class Node{
         this.y = y;
     }
 
+    /**
+     * coordinata x del nodo
+     * @return
+     */
     public float getX(){
         return x+0.5f;
     }
 
+    /**
+     * coordinata y del nodo
+     * @return
+     */
     public float getY(){
         return y+0.5f;
     }
-    // Metodo per aggiungere una connessione
+    
+    /**
+     * aggiunge una connessione ad un nodo
+     * @param toNode
+     * @param cost
+     */
     public void addConnection(Node toNode, float cost) {
         connessioni.add(new NodeConnection(this, toNode, cost));
     }
 
+    /**
+     * restituisce tutte le connessioni
+     * @return
+     */
     public Array<Connection<Node>> getConnections() {
         return connessioni;
     }
     
-    
+    /**
+     * restituisce tutti i nodi vicini
+     * @return
+     */
+    public Array<Node> getNeighbors() {
+        Array<Node> neighbors = new Array<>();
+        for (Connection<Node> conn : connessioni) {
+            neighbors.add(conn.getToNode()); // Ottieni il nodo di destinazione della connessione
+        }
+        return neighbors;
+    }
 }
 
 

@@ -47,18 +47,24 @@ public class MainScreen implements Screen{
         root.add(table);
 
         
-        TextButton button2 = new TextButton("Play", skin);
+        TextButton button2 = new TextButton("Settings", skin);
         table.add(button2);
-        TextButton button3 = new TextButton("Play", skin);
+        TextButton button3 = new TextButton("Salvataggi", skin);
         table.add(button3);
         
         table.row();
 
-        TextButton button4 = new TextButton("Play", skin);
+        TextButton button4 = new TextButton("Crediti", skin);
         table.add(button4);
-        TextButton button5 = new TextButton("Play", skin);
+        TextButton button5 = new TextButton("Exit", skin);
         table.add(button5);
-
+        button5.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.app.exit();
+                return true;
+	}
+        });
         table.setDebug(true);
     }
 

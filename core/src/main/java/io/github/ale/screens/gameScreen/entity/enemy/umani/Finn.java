@@ -13,7 +13,8 @@ public final class Finn extends Nemico {
 
     @Override
     public void updateEntityType() {
-        renderPath();
+        renderPath(player().coordinateCentro().x, player().coordinateCentro().y);
+        //renderPath(10f, 10f);
     }
 
     
