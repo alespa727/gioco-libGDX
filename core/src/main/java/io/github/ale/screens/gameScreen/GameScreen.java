@@ -52,9 +52,9 @@ public class GameScreen implements Screen {
             root = new Table();
             root.setFillParent(true);
             stage.addActor(root);
-            
+
             loaded=true;
-            
+
             camera = new CameraManager();   // Configura la camera
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
@@ -148,7 +148,7 @@ public class GameScreen implements Screen {
         entities.hitbox(game.renderer);
         //entities.range(game.renderer);
         //Map.getGraph().drawConnections(game.renderer);
-        
+
         game.renderer.end();
     }
 
@@ -167,14 +167,14 @@ public class GameScreen implements Screen {
     public void drawOggetti() {
         game.batch.begin();
 
-        entities.draw(elapsedTime); 
+        entities.draw(elapsedTime);
 
         game.batch.end();
     }
 
     @Override
     public void hide() {
-       
+
     }
 
 }
