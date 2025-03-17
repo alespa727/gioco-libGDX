@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.maps;
+package io.github.ale.screens.gameScreen.pathfinding;
 
 import com.badlogic.gdx.ai.pfa.Heuristic;
 
@@ -6,7 +6,7 @@ public class HeuristicDistance implements Heuristic<Node> {
 
     @Override
     public float estimate(Node node, Node endNode) {
-        return Math.abs(endNode.x - node.x) + Math.abs(endNode.y - node.y);
+        return (float) Math.sqrt(Math.pow(endNode.x - node.x, 2) + Math.pow(endNode.y - node.y, 2));
     }
 
 }

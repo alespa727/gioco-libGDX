@@ -1,88 +1,55 @@
 package io.github.ale.screens.gameScreen.entity.abstractEntity.movement;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public class EntityMovementManager {
 
-    private ArrayList<ComandiAzioni> azioni;
-    private boolean flag=false;
+    public EntityMovementManager() {
 
-    private int count=0;
-    public EntityMovementManager(){
-        inizializzaListaAzioni();
     }
 
-    private void inizializzaListaAzioni(){
-        azioni = new ArrayList<>();
-    }
-    /**
-     * aggiorna i vari parametri in base al movimento
-     * @param p
-     */
-
-    public void update(Entity entity){
-        movimentoSuLista(entity);
-    }
-
-    public void addAzione(ComandiAzioni[] azione){
-        Collections.addAll(azioni, azione);
-    }
-
-    public void addAzione(ComandiAzioni azione){
-        Collections.addAll(azioni, azione);
-    }
-
-    public void clearAzioni(){
-        azioni.clear();
-        count=0;
-    }
-
-    public void addizioneAzioniCoordinate(){
-        if (count < azioni.size() - 1) {
-            count = azioni.size() -1;
+    public void update(DefaultGraphPath<Node> path, Array<Vector2> direzioni, Entity e) {
+        if (path == null || path.getCount() == 0 || path.getCount() <= 1) {
+            return; // Nessun percorso valido o percorso completato
         }
-    }
-
-
-    public void movimentoSuLista(Entity entity){
-
-
-        if (azioni.isEmpty()) {
-            return;
-        }
-
-        entity.stati().setIsMoving(true);
-
-        addizioneAzioniCoordinate();
-
-        switch (azioni.get(count).getAzione()) {
-            case sposta -> EntityMovement.sposta(entity, azioni.get(count).getX(), azioni.get(count).getY());
-            default -> {
-            }
-        }
-
         
-        if (count==0 && !flag) {
-            stampaAzioni();
-            flag=true;
+        if (direzioni.get(0).epsilonEquals(1, 1) 
+        || direzioni.get(0).epsilonEquals(-1, 1)
+        || direzioni.get(0).epsilonEquals(1, -1)
+        || direzioni.get(0).epsilonEquals(-1, -1)) {
+            e.statistiche().setSpeedBuff(1/1.41f);
+        }else{
+            e.statistiche().setSpeedBuff(1f);
         }
 
-        if (count != azioni.size() - 1) {
-            if (entity.stati().isMoving()==false) {
-                count++;
-                //stampaAzioni();
-            }
+        if (Math.abs(e.getX() + e.getSize().getWidth() / 2 - path.get(1).getX()) < 0.1f) {
+           
+        } else if (e.getX() + e.getSize().getWidth() / 2 < path.get(1).getX()) {
+            System.out.println("DESTRA");
+            e.direzione().x=1f;
+            e.setX(e.getX() + e.statistiche().getSpeed() * Gdx.graphics.getDeltaTime());
+        } else if (e.getX() + e.getSize().getWidth() / 2 > path.get(1).getX()) {
+            System.out.println("SINISTRA");
+            e.direzione().x=-1f;
+            e.setX(e.getX() - e.statistiche().getSpeed() * Gdx.graphics.getDeltaTime());
+        }
+
+        if (Math.abs(e.getY() + e.getSize().getHeight() / 2 - path.get(1).getY())<0.1f) {
             
-        } 
- 
-    }
-    
-    private void stampaAzioni(){
-        System.out.println(azioni.get(count).getAzione());
-        System.out.println(count);
-        System.out.println(azioni.size() -1);
+        }else if (e.getY() + e.getSize().getHeight() / 2 < path.get(1).getY()) {
+            System.out.println("SU");
+            e.direzione().y=1f;
+            e.setY(e.getY() + e.statistiche().getSpeed() * Gdx.graphics.getDeltaTime());
+        } else if (e.getY() + e.getSize().getHeight() / 2 > path.get(1).getY()) {
+            System.out.println("GIU");
+            e.direzione().y=-1f;
+            e.setY(e.getY() - e.statistiche().getSpeed() * Gdx.graphics.getDeltaTime());
+        }
     }
 }
