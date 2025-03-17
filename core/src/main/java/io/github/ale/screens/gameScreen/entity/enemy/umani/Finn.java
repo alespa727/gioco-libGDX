@@ -23,10 +23,12 @@ public final class Finn extends Nemico {
     Heuristic<Node> heuristic;
     Array<Vector2> directions;
 
+    Vector2 lastcoordinate = new Vector2();
+
     boolean hasLoadedGraph = false;
 
     float followCooldown = 0f;
-    float follow = .2f;
+    float follow = 0.5f;
 
     IndexedAStarPathFinder<Node> pathFinder;
     DefaultGraphPath<Node> path;
@@ -37,6 +39,7 @@ public final class Finn extends Nemico {
     public Finn(EntityConfig config, Player p) {
         super(config, p);
         directions = new Array<>();
+        lastcoordinate = player().coordinate();
         create();
     }
 
@@ -51,8 +54,13 @@ public final class Finn extends Nemico {
         if (cooldownFollowing>=0) {
             cooldownFollowing-=Gdx.graphics.getDeltaTime();
         }else{
-            cooldownFollowing = follow;
-            calcolaPercorso(player().hitbox().x+player().hitbox().width/2, player().hitbox().y+player().hitbox().height/2);
+            if(player().coordinate().dst(coordinate()) < 5f)
+                cooldownFollowing = follow/5;
+            else cooldownFollowing = follow;
+            if (getMovementManager().count > 1) {
+                getMovementManager().resetCount();
+                calcolaPercorso(player().hitbox().x+player().hitbox().width/2, player().hitbox().y+player().hitbox().height/2);
+            }
         }
         
         getMovementManager().update(path, directions, this);
