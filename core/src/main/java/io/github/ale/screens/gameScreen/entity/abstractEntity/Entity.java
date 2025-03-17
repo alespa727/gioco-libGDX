@@ -36,6 +36,7 @@ public abstract class Entity implements Drawable, Creatable {
     public Entity(EntityConfig config) {
         this.config = config;
         inizializzaEntityGraphics();
+        inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaCoordinate(config.x, config.y);
         inizializzaInfo(config.nome, config.descrizione, config.id);
         getEntityGraphics().setTexture(config.imgpath);
@@ -43,7 +44,6 @@ public abstract class Entity implements Drawable, Creatable {
         inizializzaDirezione(new Vector2(0, -0.5f));
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
-        inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaAnimazione();
     }
 
@@ -127,21 +127,23 @@ public abstract class Entity implements Drawable, Creatable {
     }
 
     public Vector2 coordinate() {
-        return new Vector2(coordinate);
+        return coordinate;
     }
 
     public Vector2 coordinateCentro() {
         return new Vector2(getX() + getSize().getWidth() / 2, getY() + getSize().getHeight() / 2);
     }
 
-    public void setCoordinate(float x, float y) {
-        coordinate.x = x;
-        coordinate.y = y;
+    public void setCentroX(float x){
+        this.coordinate.x = x + getSize().getWidth()/2;
     }
 
-    public void setCoordinateCentro(float x, float y) {
-        coordinate.x = x+size.getWidth()/2;
-        coordinate.y = y+size.getHeight()/2;
+    public void setCentroY(float y){
+        this.coordinate.y = y + getSize().getHeight()/2;
+    }
+
+    public void setCentro(Vector2 punto){
+        coordinate.set(punto.x + getSize().getWidth()/2, punto.y + getSize().getHeight()/2);
     }
 
     @Override
@@ -205,7 +207,7 @@ public abstract class Entity implements Drawable, Creatable {
      * @param y
      */
     public final void inizializzaCoordinate(float x, float y) {
-        coordinate = new Vector2(x, y);
+        coordinate= new Vector2(x-size.getWidth()/4, y-size.getHeight()/4);
     }
 
     /**

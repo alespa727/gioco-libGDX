@@ -15,7 +15,6 @@ public class PlayerMovementManager{
     private boolean collisioneX;
 
     private StatiDiMovimento stato;
-    private String lastDirezione;
 
     private final float sprintSpeedMultiplier = 1.5f;
     private final float baseSpeedMultiplier = 1f;

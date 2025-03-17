@@ -53,8 +53,8 @@ public final class EntityManager {
         EntityConfig e = new EntityConfig();
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
-        e.x = 3f;
-        e.y = 15f;
+        e.x = 0f;
+        e.y = 0f;
         e.imgpath = "Finn.png";
         e.width = 0.65f;
         e.height = 0.4f;
@@ -70,9 +70,7 @@ public final class EntityManager {
 
 
         add(Finn.class, e);
-        e.x = 1f;
-        e.y = 2f;
-        add(Finn.class, e);
+    
     }
 
     public void add(Class<? extends Entity> e, EntityConfig config) {
@@ -135,7 +133,8 @@ public final class EntityManager {
         for (Entity e : entita) {
             e.drawHitbox(renderer);
         }
-        
+        Finn n = (Finn) entita(1);
+        n.drawPath(renderer);
     }
 
     /**

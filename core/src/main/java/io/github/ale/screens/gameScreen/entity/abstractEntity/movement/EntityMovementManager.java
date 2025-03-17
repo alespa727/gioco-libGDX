@@ -1,88 +1,64 @@
 package io.github.ale.screens.gameScreen.entity.abstractEntity.movement;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public class EntityMovementManager {
+    boolean fermo=false;
+    Vector2 direction;
+    public boolean sulNodo;
+    private Node lastNode;
+    private Node node;
+    private static final float REACHED_THRESHOLD = 1/32f; 
 
-    private ArrayList<ComandiAzioni> azioni;
-    private boolean flag=false;
-
-    private int count=0;
-    public EntityMovementManager(){
-        inizializzaListaAzioni();
+    public void setGoal(Node start, Node node) {
+        this.lastNode=start;
+        this.node = node;
+        sulNodo=true;
     }
 
-    private void inizializzaListaAzioni(){
-        azioni = new ArrayList<>();
-    }
-    /**
-     * aggiorna i vari parametri in base al movimento
-     * @param p
-     */
-
-    public void update(Entity entity){
-        movimentoSuLista(entity);
-    }
-
-    public void addAzione(ComandiAzioni[] azione){
-        Collections.addAll(azioni, azione);
-    }
-
-    public void addAzione(ComandiAzioni azione){
-        Collections.addAll(azioni, azione);
-    }
-
-    public void clearAzioni(){
-        azioni.clear();
-        count=0;
-    }
-
-    public void addizioneAzioniCoordinate(){
-        if (count < azioni.size() - 1) {
-            count = azioni.size() -1;
+    public void setFermo(Entity e) {
+        
+        
+        if(node.equals(lastNode) && fermo==false){
+            direction.scl(0.5f);
+            e.direzione().set(direction);
         }
+            
+        //System.out.println(e.direzione());
+        fermo = true;
     }
 
-
-    public void movimentoSuLista(Entity entity){
-
-
-        if (azioni.isEmpty()) {
+    public void update(Entity entity) {
+        if (node == null) {
             return;
         }
-
-        entity.stati().setIsMoving(true);
-
-        addizioneAzioniCoordinate();
-
-        switch (azioni.get(count).getAzione()) {
-            case sposta -> EntityMovement.sposta(entity, azioni.get(count).getX(), azioni.get(count).getY());
-            default -> {
+        if(lastNode!=null){
+            direction = new Vector2(node.x - lastNode.x, node.y - lastNode.y);
+            if (!direction.epsilonEquals(0, 0)) {
+                entity.direzione().set(direction);
             }
         }
-
         
-        if (count==0 && !flag) {
-            stampaAzioni();
-            flag=true;
-        }
+        fermo = false;
+        Node targetNode = node;
+        Vector2 targetPosition = new Vector2(targetNode.getX(), targetNode.getY());
+        moveTowards(entity, targetPosition);
 
-        if (count != azioni.size() - 1) {
-            if (entity.stati().isMoving()==false) {
-                count++;
-                //stampaAzioni();
-            }
-            
-        } 
- 
+        if (entity.coordinateCentro().dst(targetPosition) < REACHED_THRESHOLD) {
+            sulNodo=true;
+            lastNode=node;
+        }else sulNodo=false;
     }
-    
-    private void stampaAzioni(){
-        System.out.println(azioni.get(count).getAzione());
-        System.out.println(count);
-        System.out.println(azioni.size() -1);
+
+    private void moveTowards(Entity entity, Vector2 target) {
+        Vector2 direzione = new Vector2(target).sub(entity.coordinateCentro()).nor(); 
+        float speed = entity.statistiche().getSpeed() * Gdx.graphics.getDeltaTime();
+        Vector2 movement = direzione.scl(speed);
+        entity.setX(entity.getX() + movement.x);
+        entity.setY(entity.getY() + movement.y);
     }
 }

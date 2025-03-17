@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entity.player.lineofsight.LineOfSight;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
 import io.github.ale.screens.gameScreen.maps.Map;
@@ -16,7 +15,6 @@ import io.github.ale.screens.gameScreen.maps.Map;
 public class Player extends Entity {
 
     private PlayerMovementManager movement;
-    private EntityMovementManager entitymovement;
 
     private final float maxDamageTime = 0.273f;
     private float countdownKnockback = 0.273f;
@@ -46,7 +44,6 @@ public class Player extends Entity {
     @Override
     public final void create() {
         movement = new PlayerMovementManager();
-        entitymovement = new EntityMovementManager();
         circle = new Circle(0, 0, 0.5f);
         lastPos = new Vector2();
     }
@@ -167,8 +164,6 @@ public class Player extends Entity {
 
     @Override
     public void updateEntity() {
-        entitymovement.update(this);
-        entitymovement.clearAzioni();
         mantieniNeiLimiti();
 
         hitbox().x = getX() + 0.65f;

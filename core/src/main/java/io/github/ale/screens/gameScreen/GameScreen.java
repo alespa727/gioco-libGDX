@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
         update();
         draw();
 
-        entities.entita(2);
+        entities.entita(1);
     }
 
     /**
@@ -144,12 +144,12 @@ public class GameScreen implements Screen {
         game.renderer.begin(ShapeType.Line);
 
         entities.checkEachCollision(game.renderer);
-        maps.collisions(game.renderer);
+        //maps.collisions(game.renderer);
         entities.hitbox(game.renderer);
-        entities.range(game.renderer);
-
-        game.renderer.end();
+        //entities.range(game.renderer);
+        //Map.getGraph().drawConnections(game.renderer);
         
+        game.renderer.end();
     }
 
     public void drawLineOfSight(){

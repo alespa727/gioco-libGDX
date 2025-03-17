@@ -1,5 +1,6 @@
 package io.github.ale.screens.gameScreen.maps;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,11 +14,12 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.pathfinding.GameGraph;
 
 public class Map {
-
-    GameGraph graph;
-
+    public static boolean isGraphLoaded=false;
+    private static GameGraph graph;
+    
     private final OrthographicCamera camera;
     private TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -46,7 +48,14 @@ public class Map {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
         isLoaded = true;
+        
         graph = new GameGraph(width, height, collisions);
+        isGraphLoaded=true;
+        
+    }
+
+    public static GameGraph getGraph(){
+        return graph;
     }
 
      /**
@@ -55,7 +64,7 @@ public class Map {
 
     public void render(){
         mapRenderer.setView(camera);
-        mapRenderer.render();   
+        mapRenderer.render(); 
     }
 
     /**
@@ -74,13 +83,15 @@ public class Map {
     public void collisions(ShapeRenderer renderer){
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
+                renderer.setColor(Color.BLACK);
+                renderer.rect(i*1f, j*1f, 1f, 1f);
                 if (collisionBoxes[i][j]!=null) {
+                    renderer.setColor(Color.RED);
                     renderer.rect(collisionBoxes[i][j].x, collisionBoxes[i][j].y, collisionBoxes[i][j].width, collisionBoxes[i][j].height);
                     
                 }
             }
         }
-        graph.drawGraphConnections(renderer, graph);
         //renderer.rect(temp.x, temp.y, temp.width, temp.height);
     }
 
@@ -107,13 +118,11 @@ public class Map {
             for (int j = 0; j < height; j++) {
                 Cell tile = collisionLayer.getCell(i, j);
 
-                // Controllo per evitare NullPointerException
                 if (tile != null && tile.getTile() != null && tile.getTile().getProperties().containsKey("solido")) {
                     collisions[i][j] = (Boolean) tile.getTile().getProperties().get("solido");
                 }
                 float size;
                 float posX, posY;
-                // Creazione della collision box (rimosso il controllo inutile)
                 if(collisions[i][j]==true){
                     posX=i;
                     posY=j;

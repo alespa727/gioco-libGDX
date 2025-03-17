@@ -3,24 +3,34 @@ package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.ai.pfa.Heuristic;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.ComandiAzioni;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.awareness.EnemyAwareness;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.screens.gameScreen.entity.player.Player;
-import io.github.ale.screens.gameScreen.enums.Azioni;
 import io.github.ale.screens.gameScreen.maps.Map;
+import io.github.ale.screens.gameScreen.pathfinding.HeuristicDistance;
+import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public abstract class Nemico extends Entity{
-    
     private final Player player;
+       
+    private Node startNode;
+    private Node endNode;
+    Heuristic<Node> heuristic;
+
+    private boolean hasLoadedGraph = false;
+    private IndexedAStarPathFinder<Node> pathFinder;
+    private DefaultGraphPath<Node> path;
+
 
     private final EntityMovementManager movement;
     private final EnemyState stati;
@@ -30,11 +40,6 @@ public abstract class Nemico extends Entity{
     private float areaAttacco;
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    public final float FOLLOWING_COOLDOWN = 0.4f;
-    
-    public float cooldownFollowing=0;
-
-    private boolean flag=false;
 
     public Nemico(EntityConfig config, Player player) {
         super(config);
@@ -42,6 +47,79 @@ public abstract class Nemico extends Entity{
         this.movement = new EntityMovementManager();
         this.stati = new EnemyState();
         this.awareness = new EnemyAwareness();
+    }
+
+    public void renderPath() {
+        // Carica il grafo una volta che è stato caricato
+        if (!hasLoadedGraph && Map.isGraphLoaded) {
+            pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
+            hasLoadedGraph = true;
+            System.out.println("Caricato il grafo!");
+            calcolaPercorso(player().coordinateCentro().x, player().coordinateCentro().y);
+            getMovementManager().setGoal(path.get(0), path.get(1));
+        }
+
+        if (getMovementManager().sulNodo) {
+            calcolaPercorso(player().coordinateCentro().x, player().coordinateCentro().y);
+            if (path.getCount() > 1)
+                getMovementManager().setGoal(path.get(0), path.get(1));
+        }
+
+        // System.out.println(path.getCount());
+        if (path.getCount() > 1 && path.getCount() < 14) {
+            // Aggiorna il movimento del nemico
+            getMovementManager().update(this);
+        } else {
+            getMovementManager().setFermo(this);
+        }
+
+        if (path.getCount() > 10) {
+            direzione().set(0, -0.5f);
+        }
+    }
+
+    public void calcolaPercorso(float x, float y) {
+        path = new DefaultGraphPath<>();
+        startNode = Map.getGraph().getClosestNode(hitbox().x + hitbox().width / 2, hitbox().y + hitbox().height / 2);
+        endNode = Map.getGraph().getClosestNode(x, y);
+
+        heuristic = new HeuristicDistance();
+        boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
+
+        if (success && path.getCount() < 14) {
+            System.out.println("Percorso trovato!");
+        } else {
+            if (path.getCount() == 0 || path.get(path.getCount() - 1) != endNode) {
+                path.add(endNode);
+            }
+            System.out.println("Percorso non trovato");
+        }
+    }
+
+    
+    public void drawPath(ShapeRenderer shapeRenderer) {
+        // Controlla se il percorso è vuoto o nullo
+        if (path == null || path.nodes.isEmpty()) {
+            return; // Nessun percorso da disegnare
+        }
+        // Colore delle linee
+
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.circle(startNode.x + 0.5f, startNode.y + 0.5f, 0.2f, 10);
+        shapeRenderer.circle(endNode.x + 0.5f, endNode.y + 0.5f, 0.2f, 10);
+        shapeRenderer.setColor(Color.RED);
+        Node previousNode = null; // Nodo precedente inizializzato a null
+        for (Node node : path.nodes) {
+            if (previousNode != null) {
+                // Disegna una linea dal nodo precedente al nodo corrente
+                shapeRenderer.line(
+                        previousNode.x + 0.5f, previousNode.y + 0.5f, // Coordinate nodo precedente
+                        node.x + 0.5f, node.y + 0.5f // Coordinate nodo corrente
+                );
+            }
+            previousNode = node; // Aggiorna il nodo precedente
+        }
+
     }
 
     public EnemyState getEnemyStates(){ return stati;}
@@ -65,8 +143,9 @@ public abstract class Nemico extends Entity{
      */
     @Override
     public void updateEntity() {
+        
         float delta = Gdx.graphics.getDeltaTime();
-        inAreaInseguimento();
+        //inAreaInseguimento();
         inAreaAttacco();
         mantieniNeiLimiti();
         gestioneInseguimento(delta);
@@ -100,7 +179,7 @@ public abstract class Nemico extends Entity{
         if (stati.isPursuing() && !stati.searching()) {
             renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getVisione().b.x, awareness.getVisione().b.y, 0.1f);
         }
-        renderer.rect(awareness.getObbiettivoDrawCoord().x - getAwareness().getRange().width/2, awareness.getObbiettivoDrawCoord().y - getAwareness().getRange().height/2, getAwareness().getRange().width, getAwareness().getRange().height);
+        //renderer.rect(awareness.getObbiettivoDrawCoord().x - getAwareness().getRange().width/2, awareness.getObbiettivoDrawCoord().y - getAwareness().getRange().height/2, getAwareness().getRange().width, getAwareness().getRange().height);
     }
 
     /**
@@ -127,40 +206,9 @@ public abstract class Nemico extends Entity{
      * @param delta
      */
     private void gestioneInseguimento(float delta){
-        boolean inseguimento = (stati.isPursuing() && !stati.inRange()) || (stati.searching() && !stati.inRange());
+        boolean inseguimento = true;
         if (inseguimento){
-            movement.update(this);
-            followsPlayer(delta);
-            if (flag) {
-                cooldownFollowing=0;
-                flag=false;
-            }
-        }else{
-            movement.clearAzioni();
-            if (direzione().x==1f || direzione().x==-1f) {
-                direzione().x=direzione().x/2;
-            }
-            if (direzione().y==1f || direzione().y==-1f) {
-                direzione().y=direzione().y/2;
-            }
-        }
-        
-        if (stati.inRange()) {
-            if (Math.abs(player.getX()-getX()) > Math.abs(player.getY()-getY())) {
-                if (player.getX() < getX()) {
-                    direzione().set(-0.5f, 0);
-                }
-                if (player.getX() > getX()) {
-                    direzione().set(0.5f, 0);
-                }
-            }else{   
-                if (player.getY() > getY()) {
-                    direzione().set(0, 0.5f);
-                }
-                if (player.getY() < getY()) {
-                    direzione().set(0, -0.5f);
-                }
-            }
+          
             
         }
 
@@ -175,20 +223,7 @@ public abstract class Nemico extends Entity{
      * @param delta
      */
     private void followsPlayer(float delta){
-        if (cooldownFollowing > 0) {
-            cooldownFollowing -= delta;
-            //System.out.println(cooldownFollowing);
-        }
         
-        if(cooldownFollowing <= 0){
-            if (!stati.inRange()) {
-                ComandiAzioni[] comandi = new ComandiAzioni[1];
-                comandi[0] = new ComandiAzioni(Azioni.sposta, awareness.getObbiettivo().x, awareness.getObbiettivo().y);
-                movement.addAzione(comandi);
-                cooldownFollowing = FOLLOWING_COOLDOWN;
-                
-            }else flag=true;
-        }
     }
 
     /**
@@ -214,45 +249,7 @@ public abstract class Nemico extends Entity{
      * @param p
      */
     private void inAreaInseguimento(){
-        stati.setInAreaInseguimento(awareness.getAreaInseguimento().overlaps(player.circle()));
-        Vector2 lineOfSightPoint = player.los().mutualLineOfSight(this, player, awareness.getAreaInseguimento().radius);
-        boolean mutualLos = lineOfSightPoint!=null;
-        boolean lineCollision = 
-    Map.checkLineCollision(new Vector2(hitbox().x + hitbox().width, hitbox().y), 
-                           new Vector2(player.hitbox().x + player.hitbox().width, player.hitbox().y)) 
-|| Map.checkLineCollision(new Vector2(hitbox().x, hitbox().y), 
-                          new Vector2(player.hitbox().x, player.hitbox().y)) 
-|| Map.checkLineCollision(new Vector2(hitbox().x + hitbox().width, hitbox().y + hitbox().height), 
-                          new Vector2(player.hitbox().x + player.hitbox().width, player.hitbox().y + player.hitbox().height)) 
-|| Map.checkLineCollision(new Vector2(hitbox().x, hitbox().y + hitbox().height), 
-                          new Vector2(player.hitbox().x, player.hitbox().y + player.hitbox().height));
-
-        if (stati.isPursuing() || !stati.inAreaInseguimento()) {
-            if(mutualLos){
-                
-                stati.setSearching(true);
-                awareness.getObbiettivo().set(new Vector2(lineOfSightPoint).sub(1f, 1f));
-                awareness.getObbiettivoDrawCoord().set(new Vector2(lineOfSightPoint));
-            }else{
-                stati.setPursuing(false);
-                movement.clearAzioni();
-                stati.setSearching(false);
-            } 
-        }
         
-        if (stati.inAreaInseguimento() && !lineCollision) {
-            stati.setPursuing(!lineCollision);
-            awareness.setObbiettivoDrawCoord(player.coordinateCentro().x, player.coordinateCentro().y);
-            awareness.setObbiettivo(player.coordinate().x, player.coordinate().y);
-        }
-
-        
-        if (!stati.isPursuing() && !stati.searching()) {
-            stati.setIdle(true);
-        } else {
-            stati.setIdle(false);
-            areaInseguimento = 5.5f;
-        }
     }
 
     
