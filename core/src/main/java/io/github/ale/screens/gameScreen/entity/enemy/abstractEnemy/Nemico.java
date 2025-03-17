@@ -40,6 +40,7 @@ public abstract class Nemico extends Entity {
 
     public Nemico(EntityConfig config, Player player) {
         super(config);
+        path = new DefaultGraphPath<>();
         this.player = player;
         this.movement = new EntityMovementManager();
         this.stati = new EnemyState();
@@ -151,7 +152,7 @@ public abstract class Nemico extends Entity {
     }
 
     public void calcolaPercorso(float x, float y) {
-        path = new DefaultGraphPath<>();
+        path.clear();
         startNode = Map.getGraph().getClosestNode(hitbox().x + hitbox().width / 2, hitbox().y + hitbox().height / 2);
         endNode = Map.getGraph().getClosestNode(x, y);
         heuristic = new HeuristicDistance();
