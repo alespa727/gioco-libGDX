@@ -3,6 +3,9 @@ package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
+import com.badlogic.gdx.ai.pfa.Heuristic;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,9 +16,21 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMov
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.awareness.EnemyAwareness;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.maps.Map;
+import io.github.ale.screens.gameScreen.pathfinding.HeuristicDistance;
+import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public abstract class Nemico extends Entity{
     private final Player player;
+       
+    private Node startNode;
+    private Node endNode;
+    Heuristic<Node> heuristic;
+
+    private boolean hasLoadedGraph = false;
+    private IndexedAStarPathFinder<Node> pathFinder;
+    private DefaultGraphPath<Node> path;
+
 
     private final EntityMovementManager movement;
     private final EnemyState stati;
@@ -25,11 +40,6 @@ public abstract class Nemico extends Entity{
     private float areaAttacco;
     
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
-    public final float FOLLOWING_COOLDOWN = 0.4f;
-    
-    public float cooldownFollowing=0;
-
-    private boolean flag=false;
 
     public Nemico(EntityConfig config, Player player) {
         super(config);
@@ -37,6 +47,79 @@ public abstract class Nemico extends Entity{
         this.movement = new EntityMovementManager();
         this.stati = new EnemyState();
         this.awareness = new EnemyAwareness();
+    }
+
+    public void renderPath() {
+        // Carica il grafo una volta che è stato caricato
+        if (!hasLoadedGraph && Map.isGraphLoaded) {
+            pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
+            hasLoadedGraph = true;
+            System.out.println("Caricato il grafo!");
+            calcolaPercorso(player().coordinateCentro().x, player().coordinateCentro().y);
+            getMovementManager().setGoal(path.get(0), path.get(1));
+        }
+
+        if (getMovementManager().sulNodo) {
+            calcolaPercorso(player().coordinateCentro().x, player().coordinateCentro().y);
+            if (path.getCount() > 1)
+                getMovementManager().setGoal(path.get(0), path.get(1));
+        }
+
+        // System.out.println(path.getCount());
+        if (path.getCount() > 1 && path.getCount() < 14) {
+            // Aggiorna il movimento del nemico
+            getMovementManager().update(this);
+        } else {
+            getMovementManager().setFermo(this);
+        }
+
+        if (path.getCount() > 10) {
+            direzione().set(0, -0.5f);
+        }
+    }
+
+    public void calcolaPercorso(float x, float y) {
+        path = new DefaultGraphPath<>();
+        startNode = Map.getGraph().getClosestNode(hitbox().x + hitbox().width / 2, hitbox().y + hitbox().height / 2);
+        endNode = Map.getGraph().getClosestNode(x, y);
+
+        heuristic = new HeuristicDistance();
+        boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
+
+        if (success && path.getCount() < 14) {
+            System.out.println("Percorso trovato!");
+        } else {
+            if (path.getCount() == 0 || path.get(path.getCount() - 1) != endNode) {
+                path.add(endNode);
+            }
+            System.out.println("Percorso non trovato");
+        }
+    }
+
+    
+    public void drawPath(ShapeRenderer shapeRenderer) {
+        // Controlla se il percorso è vuoto o nullo
+        if (path == null || path.nodes.isEmpty()) {
+            return; // Nessun percorso da disegnare
+        }
+        // Colore delle linee
+
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.circle(startNode.x + 0.5f, startNode.y + 0.5f, 0.2f, 10);
+        shapeRenderer.circle(endNode.x + 0.5f, endNode.y + 0.5f, 0.2f, 10);
+        shapeRenderer.setColor(Color.RED);
+        Node previousNode = null; // Nodo precedente inizializzato a null
+        for (Node node : path.nodes) {
+            if (previousNode != null) {
+                // Disegna una linea dal nodo precedente al nodo corrente
+                shapeRenderer.line(
+                        previousNode.x + 0.5f, previousNode.y + 0.5f, // Coordinate nodo precedente
+                        node.x + 0.5f, node.y + 0.5f // Coordinate nodo corrente
+                );
+            }
+            previousNode = node; // Aggiorna il nodo precedente
+        }
+
     }
 
     public EnemyState getEnemyStates(){ return stati;}

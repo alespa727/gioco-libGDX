@@ -134,6 +134,18 @@ public abstract class Entity implements Drawable, Creatable {
         return new Vector2(getX() + getSize().getWidth() / 2, getY() + getSize().getHeight() / 2);
     }
 
+    public void setCentroX(float x){
+        this.coordinate.x = x + getSize().getWidth()/2;
+    }
+
+    public void setCentroY(float y){
+        this.coordinate.y = y + getSize().getHeight()/2;
+    }
+
+    public void setCentro(Vector2 punto){
+        coordinate.set(punto.x + getSize().getWidth()/2, punto.y + getSize().getHeight()/2);
+    }
+
     @Override
     public final float getY() {
         return coordinate.y;
