@@ -107,7 +107,7 @@ public class PlayerMovementManager{
             case OPPOSTOY -> {
                 addNotMoving(p);
                 
-                aggiornaDirezioneX(p);
+                aggiornaDirezione(p);
                 aggiornaCollisioni(p);
 
                 muoviAsseX(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
@@ -117,7 +117,7 @@ public class PlayerMovementManager{
 
                 addNotMoving(p);
 
-                aggiornaDirezioneY(p);
+                aggiornaDirezione(p);
                 aggiornaCollisioni(p);
 
                 muoviAsseY(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
@@ -127,13 +127,13 @@ public class PlayerMovementManager{
             }
             case ANYKEY -> {
 
-                aggiornaDirezioneY(p);
+                aggiornaDirezione(p);
 
                 aggiornaCollisioni(p);
                 muoviAsseY(p);
 
                 aggiornaStatoCollisione(p);
-                aggiornaDirezioneX(p);
+                aggiornaDirezione(p);
 
                 aggiornaCollisioni(p);
                 muoviAsseX(p);
@@ -149,19 +149,49 @@ public class PlayerMovementManager{
         }
     }
 
-    private void addNotMoving(Entity p){
-        if(p.direzione().x == 1f || p.direzione().x == -1f){
-            p.direzione().x = p.direzione().x/2;
-        }
-        if(p.direzione().y == 1f || p.direzione().y == -1f){
-            p.direzione().y = p.direzione().y/2;
+    private void addNotMoving(Entity p) {
+        float dx = p.direzione().x;
+        float dy = p.direzione().y;
+    
+        if (dx == 1f || dx == -1f) {
+            if (dy == 1f || dy == -1f) {
+                p.direzione().set(0, dy); // Annulla X, mantiene Y
+            } else {
+                p.direzione().set(dx / 2, dy); // Dimezza solo X
+            }
+        } else if (dy == 1f || dy == -1f) {
+            p.direzione().set(dx, dy / 2); // Dimezza solo Y
         }
     }
+    
 
     private void aggiornaCollisioni(Entity p) {
         collisioneY = Map.checkCollisionY(p);
         collisioneX = Map.checkCollisionX(p);
     }
+
+    private void aggiornaDirezione(Entity p) {
+        float dx = 0;
+        float dy = 0;
+        
+        if (w && s || a && d) {
+            return;
+        }
+
+        // Determina il movimento orizzontale
+        if (a) dx = -1;
+        if (d) dx = 1;
+    
+        // Determina il movimento verticale
+        if (w) dy = 1;
+        if (s) dy = -1;
+
+        
+    
+        p.direzione().set(dx, dy);
+    }
+    
+    
 
     private void aggiornaDirezioneY(Entity p) {
         if (w)

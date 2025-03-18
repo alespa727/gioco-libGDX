@@ -47,19 +47,20 @@ public class EntityMovementManager {
         fermo = false;
         Node targetNode = node;
         Vector2 targetPosition = new Vector2(targetNode.getX(), targetNode.getY());
-        moveTowards(entity, targetPosition);
-
-        if (entity.coordinateCentro().dst(targetPosition) < REACHED_THRESHOLD) {
-            sulNodo=true;
-            lastNode=node;
-        }else sulNodo=false;
+        towards(entity, targetPosition);
     }
 
-    private void moveTowards(Entity entity, Vector2 target) {
+    private void towards(Entity entity, Vector2 target) {
         Vector2 direzione = new Vector2(target).sub(entity.coordinateCentro()).nor(); 
         float speed = entity.statistiche().getSpeed() * Gdx.graphics.getDeltaTime();
         Vector2 movement = direzione.scl(speed);
         entity.setX(entity.getX() + movement.x);
         entity.setY(entity.getY() + movement.y);
+        
+        if (entity.coordinateCentro().dst(target) < REACHED_THRESHOLD) {
+            sulNodo=true;
+            lastNode=node;
+        }else sulNodo=false;
     }
 }
+

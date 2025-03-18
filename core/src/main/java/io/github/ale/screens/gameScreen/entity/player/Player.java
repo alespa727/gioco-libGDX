@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
@@ -16,6 +17,13 @@ public class Player extends Entity {
 
     private PlayerMovementManager movement;
 
+    float x=0;
+    float y=0;
+
+    Array<Vector2> direzioni = new Array<>();
+    float salvaDirezione = 0.5f;
+    float countdown=1f;
+
     private final float maxDamageTime = 0.273f;
     private float countdownKnockback = 0.273f;
     private float countdownDamage = 0.273f;
@@ -24,6 +32,7 @@ public class Player extends Entity {
     float dy;
 
     float delta;
+    float angolo;
 
     private Circle circle;
     private Vector2 lastPos;
@@ -63,19 +72,19 @@ public class Player extends Entity {
         renderer.circle(circle.x, circle.y, 5.5f, 40);
     }
 
-    /**
-     * aggiorna le informazioni del player
-     */
+    public Vector2 predizione(Entity e){
+        if (direzioni.size>=3 && e.coordinateCentro().dst(coordinateCentro()) > 3f) {
+            if (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y)) {
 
-    @Override
-    public void render() {
-        delta = Gdx.graphics.getDeltaTime();
-        
-        // knockback(delta);
-        updateEntityType();
-        updateEntity();
+                return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().getSpeed(), direzioni.get(1).y * statistiche().getSpeed());
+            
+            }
+        }
+        return new Vector2(coordinate());
+    }
 
-        checkIfDead();
+    public Vector2 predizioneCentro(Entity e){
+        return predizione(e).add(getSize().getWidth()/2, getSize().getHeight()/2);
     }
 
     /**
@@ -133,37 +142,51 @@ public class Player extends Entity {
         
     }
 
-    public void knockback(float angolo) {
-        /*if (countdownKnockback>0) {
-            ComandiAzioni azione = new ComandiAzioni(Azioni.sposta, firstX+dx, firstY+dy);
-            System.out.println(getX());
-            System.out.println(getY());
-            System.out.println(firstX+dx);
-            System.out.println(firstY+dy);
-            entitymovement.addAzione(azione);
-            entitymovement.update(this);
-            countdownKnockback-=delta;
-        }*/
+    public void knockbackStart(float angolo){
+        dx = (float) Math.cos(Math.toRadians(angolo)) * 1f;
+        dy = (float) Math.sin(Math.toRadians(angolo)) * 1f;
+        countdownKnockback=0.6f;
+        this.angolo=angolo;
+        knockback();
+    }
 
-        dx = (float) Math.cos(Math.toRadians(angolo)) * 0.3F;
-        dy = (float) Math.sin(Math.toRadians(angolo)) * 0.3F;
+    private void knockback() {
+        if (countdownKnockback>=0f) {
+            countdownKnockback-=delta;
+            if(!Map.checkCollisionX(this, 0.4f, angolo)){
+                x = dx * delta;
+                setX(getX() + x); 
+            }
+                
+            if (!Map.checkCollisionY(this, 0.4f, angolo)) {
+                y = dy * delta;
+                setY(getY() + y);
+            }
+                
         
-       System.out.println(angolo);
-        if (!Map.checkCollisionX(this, 0.4f, angolo)) {
-            lastPos.x = getX();
-            setX(getX() + dx); 
-        }
-        
-        if (!Map.checkCollisionY(this, 0.4f, angolo)) {
-            lastPos.y = getY();
-            setY(getY() + dy);
-        }
+            /*System.out.println(angolo);
+            if (!Map.checkCollisionX(this, 0.4f, angolo)) {
+                lastPos.x = getX();
+                setX(getX() + dx*3f); 
+            }
             
+            if (!Map.checkCollisionY(this, 0.4f, angolo)) {
+                lastPos.y = getY();
+                setY(getY() + dy*3f);
+            }
+            System.out.println(dx);
+            System.out.println(dy);*/
+            //coordinate().add(x, y);
+        }else{
+            x = 0;
+            y = 0;
+        }
     }
     
 
     @Override
     public void updateEntity() {
+        delta = Gdx.graphics.getDeltaTime();
         mantieniNeiLimiti();
 
         hitbox().x = getX() + 0.65f;
@@ -190,6 +213,28 @@ public class Player extends Entity {
         circle.x = getX() + getSize().getWidth() / 2;
         circle.y = getY() + getSize().getHeight() / 2;
         movement.update(this);
+
+        if (countdown>0.01f) {
+            countdown-=delta;
+        }else{
+            countdown=salvaDirezione;
+            if (direzioni.size<3) {
+                direzioni.add(new Vector2(direzione()));
+                System.out.println("aggiunta" + direzione());
+            }else{
+                System.out.println(countdown);
+                direzioni.set(2, new Vector2(direzioni.get(1)));
+                direzioni.set(1, new Vector2(direzioni.get(0)));
+                direzioni.set(0, new Vector2(direzione()));
+                System.out.println("1." + direzioni.get(0));
+                System.out.println("2." + direzioni.get(1));
+                System.out.println("3." + direzioni.get(2));
+            }
+        }
+        
+        
+        knockback();
+        checkIfDead();
     }
 
     @Override

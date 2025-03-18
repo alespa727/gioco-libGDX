@@ -13,9 +13,9 @@ public final class Finn extends Nemico {
 
     @Override
     public void updateEntityType() {
-        renderPath(player().coordinateCentro().x, player().coordinateCentro().y);
-        //renderPath(10f, 10f);
+        pursue(player().coordinateCentro().x, player().coordinateCentro().y);
     }
+
 
     
     @Override
@@ -35,7 +35,7 @@ public final class Finn extends Nemico {
 
             System.out.println("Angolo di attacco: " + angolo + "°");
 
-            player().knockback(angolo); // startKnockback(angolo);
+            player().knockbackStart(angolo);// startKnockback(angolo);
             System.out.println(player().statistiche().getHealth());
 
             setAtkCooldown(ATTACK_COOLDOWN);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
@@ -166,6 +167,7 @@ public abstract class Nemico extends Entity {
             }
             System.out.println("Percorso non trovato");
         }
+        
     }
 
     public void drawPath(ShapeRenderer shapeRenderer) {
@@ -191,6 +193,20 @@ public abstract class Nemico extends Entity {
             previousNode = node; // Aggiorna il nodo precedente
         }
 
+    }
+
+    public void pursue(float x, float y){
+        renderPath(x, y);
+    }
+
+    public void evade(float x, float y){
+        float directionX = x - coordinateCentro().x;
+        float directionY = y - coordinateCentro().y;
+
+        // Correctly calculate the opposite direction
+        Vector2 oppositeDirection = new Vector2(-directionX, -directionY);
+
+        renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y);
     }
 
     public EnemyState getEnemyStates() {

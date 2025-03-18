@@ -53,8 +53,8 @@ public final class EntityManager {
         EntityConfig e = new EntityConfig();
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
-        e.x = 0f;
-        e.y = 0f;
+        e.x = 8f;
+        e.y = 8f;
         e.imgpath = "Finn.png";
         e.width = 0.65f;
         e.height = 0.4f;
