@@ -12,12 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.MyGame;
+import io.github.ale.screens.settings.Settings;
 
 public class MainScreen implements Screen{
     private final MyGame game;
     private Skin skin;
     private Stage stage;
     private Table root;
+    private Table table;
     
     public MainScreen(MyGame game) {
         this.game = game;
@@ -31,24 +33,16 @@ public class MainScreen implements Screen{
         root = new Table();
         root.setFillParent(true);
         skin = new Skin(Gdx.files.internal("metal-ui.json"));
+        table = new Table();
         stage.addActor(root);
-    
-        TextButton button1 = new TextButton("Play", skin);
-        button1.addListener(new InputListener(){
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(game.gameScreen);
-                return true;
-	}
-        });
-        root.add(button1).fill();
-
-        Table table = new Table();
         root.add(table);
-
+    
+        bottonePlay();
         
-        TextButton button2 = new TextButton("Settings", skin);
-        table.add(button2);
+        bottoneSettings();
+        
+        
+        
         TextButton button3 = new TextButton("Salvataggi", skin);
         table.add(button3);
         
@@ -66,6 +60,32 @@ public class MainScreen implements Screen{
 	}
         });
         table.setDebug(true);
+    }
+    
+    public void bottonePlay(){
+        TextButton button = new TextButton("Play", skin);
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(game.gameScreen);
+                return true;
+	    }
+        });
+        root.add(button).fill();
+    }
+
+    public void bottoneSettings(){
+        TextButton button = new TextButton("Settings", skin);
+        table.add(button);
+
+        button.addListener(new InputListener(){
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new Settings(game));
+                return true;
+	    }
+        });
+
     }
 
     @Override
