@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
@@ -69,16 +70,16 @@ public final class EntityManager {
         e.imageWidth = 2f;
 
 
-        add(Finn.class, e);
+        addNemico(Finn.class, this, e); 
     
     }
 
-    public void add(Class<? extends Entity> e, EntityConfig config) {
+    public void addNemico(Class<? extends Entity> e, EntityManager manager, EntityConfig config) {
         try {
 
-            Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, Player.class);//Cerca il costruttore 
+            Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Player.class);//Cerca il costruttore 
             config.id=entityidcount;
-            Entity newEntity = c.newInstance(config, player);// Crea una nuova entità
+            Entity newEntity = c.newInstance(config, manager, player);// Crea una nuova entità
             entita.add(newEntity); //aggiunge entità
             entityidcount++;
 
@@ -88,10 +89,10 @@ public final class EntityManager {
     }
     
     public Entity entita(int id){
-        for (Entity e : entita) {
-            if (e.id() == id) {
+        for (int i = 0; i < entita.size; i++) {
+            if (entita.get(i).id() == id) {
                 //System.out.println("Entità trovata!");
-                return e;
+                return entita.get(i);
             }
         }
         System.err.println("Entità non trovata!");
@@ -144,6 +145,16 @@ public final class EntityManager {
         }
     }
 
+    public void drawPath(ShapeRenderer renderer){
+        for (Entity e : entita) {
+            if (e.stati().isAlive()) {
+                if (e instanceof Nemico nemico) {
+                    nemico.drawPath(renderer);
+                }
+            }
+        }
+    }
+
     public Array<Entity> entita(float x, float y, float width, float height){
         Array<Entity> array = new Array<>();
         for (int i = 0; i < entita.size; i++) {
@@ -153,6 +164,26 @@ public final class EntityManager {
         }
 
         return array;
+    }
+
+    public Array<Entity> entita(Rectangle rect){
+        Array<Entity> array = new Array<>();
+        for (int i = 0; i < entita.size; i++) {
+            if (entita.get(i).coordinateCentro().x > rect.x && entita.get(i).coordinateCentro().y > rect.y && entita.get(i).coordinateCentro().x < rect.x + rect.width && entita.get(i).coordinateCentro().y < rect.y + rect.height) {
+                array.add(entita.get(i));
+            }
+        }
+
+        return array;
+    }
+
+    public boolean isentityinrect(int id, float x, float y, float width, float height){
+        boolean stato = false;
+        if (entita(id).coordinateCentro().x > x && entita(id).coordinateCentro().y > y && entita(id).coordinateCentro().x < x + width && entita(id).coordinateCentro().y < y + height) {
+            stato=true;
+        }
+        
+        return stato;
     }
 
     /**

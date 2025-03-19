@@ -40,14 +40,15 @@ public class Map {
         temp = new Rectangle();
         this.camera=camera;
         loadMap(name);
-        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
-        loadCollisionMap();
-        isLoaded = true;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 collisions[i][j]=false;
             }
         }
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+        loadCollisionMap();
+        isLoaded = true;
+       
         graph = new GameGraph(width, height, collisions);
         isGraphLoaded=true;
         

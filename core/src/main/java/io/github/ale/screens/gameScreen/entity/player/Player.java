@@ -20,11 +20,13 @@ public class Player extends Entity {
     Punch punch = new Punch(this);
 
     private PlayerMovementManager movement;
+
     
     float x=0;
     float y=0;
 
     Array<Vector2> direzioni = new Array<>();
+    int count=0;
     float salvaDirezione = 0.5f;
     float countdown=1f;
 
@@ -72,6 +74,10 @@ public class Player extends Entity {
             renderer.setColor(Color.RED);
         }
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
+        renderer.setColor(Color.BLACK);
+        if (punch.hit) {
+            renderer.setColor(Color.RED);
+        }
         renderer.rect(range.x, range.y, range.width, range.height);
         renderer.setColor(Color.BLACK);
     }
@@ -79,11 +85,12 @@ public class Player extends Entity {
     public Vector2 predizione(Entity e){
         if (direzioni.size>=3 && e.coordinateCentro().dst(coordinateCentro()) > 3f) {
             if (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y)) {
-
-                return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().getSpeed(), direzioni.get(1).y * statistiche().getSpeed());
+                
+                return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().getSpeed() * count, direzioni.get(1).y * statistiche().getSpeed() * count);
             
             }
         }
+        count=0;
         return new Vector2(coordinate());
     }
 
@@ -145,7 +152,7 @@ public class Player extends Entity {
     public void knockbackStart(float angolo){
         dx = (float) Math.cos(Math.toRadians(angolo)) * 1f;
         dy = (float) Math.sin(Math.toRadians(angolo)) * 1f;
-        countdownKnockback=0.6f;
+        countdownKnockback=0.2f;
         this.angolo=angolo;
         knockback();
     }
@@ -233,10 +240,14 @@ public class Player extends Entity {
                 direzioni.set(2, new Vector2(direzioni.get(1)));
                 direzioni.set(1, new Vector2(direzioni.get(0)));
                 direzioni.set(0, new Vector2(direzione()));
+                if (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y)){
+                    if(count<2) count++;
+                } else count=0;
                 //System.out.println("1." + direzioni.get(0));
                 //System.out.println("2." + direzioni.get(1));
                 //System.out.println("3." + direzioni.get(2));
             }
+            
         }
         
         

@@ -14,7 +14,7 @@ public class MapManager {
     private final OrthographicCamera camera;
     private final FitViewport viewport;
     private Map currentMap;
-    private int currentMapNum;
+    private static int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
     private final MusicPlayer playlist;
@@ -27,17 +27,16 @@ public class MapManager {
         this.camera=camera;
         this.viewport=viewport;
         this.flag=false;
-        this.currentMapNum=startingMap;
+        MapManager.currentMapNum=startingMap;
         this.ambienteAperto=true;
         this.changeMap();
         this.player.setX(6.5f);
         this.player.setY(5f);
         playlist = new MusicPlayer("mymusic.mp3");
-        playlist.play(0);
-        playlist.setVolume(0.1f);
-        playlist.setLooping(0, true);
         this.currentMap = new Map(camera, this.nome);
     }
+
+    public static int currentmap(){ return currentMapNum; }
 
     public void collisions(ShapeRenderer renderer){ this.currentMap.collisions(renderer);}
     public void render(){ this.currentMap.render();}

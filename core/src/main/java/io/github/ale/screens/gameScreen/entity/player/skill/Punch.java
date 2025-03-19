@@ -12,6 +12,7 @@ public class Punch extends Skill{
     float countdown = 0;
     float cooldown = 0.2f;
     Array<Entity> inRange;
+    public boolean hit=false;
     public Punch(Entity entity){
         this.entity = entity;
         keyH = new KeyHandlerPlayer();
@@ -19,6 +20,7 @@ public class Punch extends Skill{
 
     @Override
     public void attack(){
+        hit=false;
         if(countdown > 0){
                 countdown-=entity.delta;
         }else{
@@ -29,10 +31,13 @@ public class Punch extends Skill{
                 System.out.println(entity.range.x);
                 for(int i=0; i<inRange.size; i++){
                     
-                if(inRange.get(i)!=entity){
-                    inRange.get(i).statistiche().inflictDamage(60, false);
-                } 
-            }
+                    if(inRange.get(i)!=entity){
+                        inRange.get(i).statistiche().inflictDamage(60, false);
+                        if (!hit) {
+                            hit=true;
+                        }
+                    } 
+                }
             }
         }
     }

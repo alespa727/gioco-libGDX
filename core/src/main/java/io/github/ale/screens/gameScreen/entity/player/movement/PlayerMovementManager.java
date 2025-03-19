@@ -192,29 +192,11 @@ public class PlayerMovementManager{
     
         p.direzione().set(dx, dy);
     }
-    
-    
-
-    private void aggiornaDirezioneY(Entity p) {
-        if (w)
-            p.direzione().set(0, 1f);
-        if (s)
-            p.direzione().set(0, -1f);
-    }
-
-    private void aggiornaDirezioneX(Entity p) {
-        if (a)
-            p.direzione().set(-1f, 0);
-        if (d)
-            p.direzione().set(1f, 0);
-
-    }
 
     private void aggiornaStatoCollisione(Entity p) {
-        if (collisioneX)
+        if (collisioneX || collisioneY)
             p.stati().setInCollisione(true);
-        if (collisioneY)
-            p.stati().setInCollisione(true);
+  
     }
 
     private void muoviAsseX(Entity p){

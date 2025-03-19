@@ -16,6 +16,12 @@ public class MusicPlayer {
         playlist.put(path, Gdx.audio.newMusic(Gdx.files.internal(path)));
     }
 
+    public void playfromthestart(){
+        for (int i = 0; i < playlist.size; i++) {
+            if(playlist.get(playlist.getKeyAt(i)).isPlaying()) playlist.get(playlist.getKeyAt(i)).setPosition(0f);
+        }
+    }
+
     public void play(String path){
         playlist.get(path).play();
     }
@@ -28,7 +34,7 @@ public class MusicPlayer {
         playlist.get(path).pause();
     }
 
-    public void stop(String path){
+    public void stop(){
         for (int i = 0; i < playlist.size; i++) {
             playlist.getValueAt(i).pause();
         }

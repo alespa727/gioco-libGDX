@@ -61,7 +61,11 @@ public class GameScreen implements Screen {
             viewport.apply(); // applica cosa si vede
             entities = new EntityManager(game);
             maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
+            maps.getPlaylist().setVolume(0.1f);
+            maps.getPlaylist().setLooping(0, true);
         }
+        maps.getPlaylist().play(0);
+        maps.getPlaylist().playfromthestart(); //opzionale
         entities.player().respawn();
     }
 
@@ -71,7 +75,6 @@ public class GameScreen implements Screen {
         update();
         draw();
 
-        entities.entita(1);
     }
 
     /**
@@ -104,8 +107,9 @@ public class GameScreen implements Screen {
 
         maps.draw();
 
-        drawOggetti();
         drawHitboxes();
+        drawOggetti();
+        
         
 
         entities.player().los().clearPuntiComuni();
@@ -136,6 +140,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
+        maps.getPlaylist().play(0);
+        maps.getPlaylist().setVolume(0.1f);
+        maps.getPlaylist().setLooping(0, true);
     }
 
     /**
@@ -143,14 +150,21 @@ public class GameScreen implements Screen {
      */
     public void drawHitboxes() {
         game.renderer.begin(ShapeType.Line);
-
+        Map.getGraph().drawConnections(game.renderer);
+        game.renderer.end();
+        game.renderer.begin(ShapeType.Filled);
+        Map.getGraph().drawNodes(game.renderer);
+        entities.drawPath(game.renderer);
+        game.renderer.end();
+        game.renderer.begin(ShapeType.Line);
         entities.checkEachCollision(game.renderer);
         //maps.collisions(game.renderer);
         entities.hitbox(game.renderer);
         //entities.range(game.renderer);
-        Map.getGraph().drawConnections(game.renderer);
-
         game.renderer.end();
+
+        
+        
     }
 
     public void drawLineOfSight(){
@@ -175,7 +189,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        maps.getPlaylist().stop();
     }
 
 }

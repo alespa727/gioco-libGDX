@@ -6,9 +6,9 @@ import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
@@ -16,6 +16,7 @@ import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.awareness.Ene
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.maps.Map;
+import io.github.ale.screens.gameScreen.maps.MapManager;
 import io.github.ale.screens.gameScreen.pathfinding.HeuristicDistance;
 import io.github.ale.screens.gameScreen.pathfinding.Node;
 
@@ -24,7 +25,8 @@ public abstract class Nemico extends Entity {
 
     private Node startNode;
     private Node endNode;
-    Heuristic<Node> heuristic;
+    private int map=-1;
+    private Heuristic<Node> heuristic;
 
     private final float maxDamageTime = 0.273f;
     private float countdownDamage = 0.273f;
@@ -42,8 +44,9 @@ public abstract class Nemico extends Entity {
 
     public final float ATTACK_COOLDOWN = 2f; // Cooldown in secondi
 
-    public Nemico(EntityConfig config, Player player) {
+    public Nemico(EntityConfig config, EntityManager manager, Player player) {
         super(config);
+        this.manager = manager;
         path = new DefaultGraphPath<>();
         this.player = player;
         this.movement = new EntityMovementManager();
@@ -54,26 +57,6 @@ public abstract class Nemico extends Entity {
     @Override
     public void drawHitbox(ShapeRenderer renderer) {
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
-        if (stati.searching()) {
-            renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y,
-                    awareness.getObbiettivoDrawCoord().x, awareness.getObbiettivoDrawCoord().y, 0.1f);
-            renderer.rectLine(hitbox().x, hitbox().y, player().hitbox().x, player().hitbox().y, 0.0001f);
-            renderer.rectLine(hitbox().x + hitbox().width, hitbox().y, player().hitbox().x + player().hitbox().width,
-                    player().hitbox().y, 0.0001f);
-            renderer.rectLine(hitbox().x, hitbox().y + hitbox().height, player().hitbox().x,
-                    player().hitbox().y + player().hitbox().height, 0.0001f);
-            renderer.rectLine(hitbox().x + hitbox().width, hitbox().y + hitbox().height,
-                    player().hitbox().x + player().hitbox().width, player().hitbox().y + player().hitbox().height,
-                    0.0001f);
-        }
-        if (stati.isPursuing() && !stati.searching()) {
-            renderer.rectLine(awareness.getVisione().a.x, awareness.getVisione().a.y, awareness.getVisione().b.x,
-                    awareness.getVisione().b.y, 0.1f);
-        }
-        // renderer.rect(awareness.getObbiettivoDrawCoord().x -
-        // getAwareness().getRange().width/2, awareness.getObbiettivoDrawCoord().y -
-        // getAwareness().getRange().height/2, getAwareness().getRange().width,
-        // getAwareness().getRange().height);
     }
 
     /**
@@ -85,7 +68,7 @@ public abstract class Nemico extends Entity {
     @Override
     public void updateEntity() {
 
-        float delta = Gdx.graphics.getDeltaTime();
+        delta = Gdx.graphics.getDeltaTime();
 
         if (statistiche().gotDamaged) {
             countdownDamage -= delta;
@@ -94,10 +77,19 @@ public abstract class Nemico extends Entity {
                 statistiche().gotDamaged = false;
             }
         }
+        if (atkCooldown() >= 0) {
+            setAtkCooldown(atkCooldown() - delta);
+            //System.out.println(atkCooldown());
+        }else{
+            setAtkCooldown(1f);
+            if(manager.isentityinrect(0, awareness.getRange().x, awareness.getRange().y, awareness.getRange().width, awareness.getRange().height)){
+                System.out.println("ATTACCO");
+                attack();
+            } 
+        }
+        
         // inAreaInseguimento();
-        inAreaAttacco();
         mantieniNeiLimiti();
-        gestioneInseguimento(delta);
         adjustHitbox();
 
         awareness.setRange(coordinateCentro().x - areaAttacco / 2, coordinateCentro().y - areaAttacco / 2, areaAttacco,
@@ -108,9 +100,7 @@ public abstract class Nemico extends Entity {
         awareness.setVisione(coordinateCentro().x, coordinateCentro().y, player.coordinateCentro().x,
                 player.coordinateCentro().y);
 
-        if (atkCooldown() > 0) {
-            setAtkCooldown(atkCooldown() - delta);
-        }
+        
 
         if (stati.idle()) {
             wandering();
@@ -130,18 +120,22 @@ public abstract class Nemico extends Entity {
         }
         renderer.rect(awareness.getRange().x, awareness.getRange().y, awareness.getRange().width,
                 awareness.getRange().height);
-        if (stati.isPursuing()) {
-            renderer.setColor(Color.VIOLET);
-        }
-        renderer.circle(awareness.getAreaInseguimento().x, awareness.getAreaInseguimento().y,
-                awareness.getAreaInseguimento().radius, 100);
+        
         renderer.setColor(Color.BLACK);
     }
 
     public void renderPath(float x, float y) {
-        // System.out.println(direzione());
         // Carica il grafo una volta che è stato caricato
+
+        if (hasLoadedGraph && map!=MapManager.currentmap()) {
+            map = MapManager.currentmap();
+            pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
+            hasLoadedGraph = true;
+            System.out.println("Caricato il grafo!");
+        }
+        
         if (!hasLoadedGraph && Map.isGraphLoaded) {
+            map = MapManager.currentmap();
             pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
             hasLoadedGraph = true;
             System.out.println("Caricato il grafo!");
@@ -156,7 +150,7 @@ public abstract class Nemico extends Entity {
         }
 
         // System.out.println(path.getCount());
-        if (path.getCount() > 1 && path.getCount() < 14) {
+        if (path.getCount() > 1 && coordinateCentro().dst(x, y)<20f) {
             // Aggiorna il movimento del nemico
             getMovementManager().update(this);
         } else {
@@ -168,6 +162,7 @@ public abstract class Nemico extends Entity {
         path.clear();
         startNode = Map.getGraph().getClosestNode(hitbox().x + hitbox().width / 2, hitbox().y + hitbox().height / 2);
         endNode = Map.getGraph().getClosestNode(x, y);
+        //System.out.println(Map.getGraph().getNodeCount());
         heuristic = new HeuristicDistance();
 
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
@@ -200,21 +195,20 @@ public abstract class Nemico extends Entity {
         // Colore delle linee
 
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.circle(startNode.x + 0.5f, startNode.y + 0.5f, 0.2f, 10);
-        shapeRenderer.circle(endNode.x + 0.5f, endNode.y + 0.5f, 0.2f, 10);
+        
         shapeRenderer.setColor(Color.RED);
         Node previousNode = null; // Nodo precedente inizializzato a null
         for (Node node : path.nodes) {
             if (previousNode != null) {
                 // Disegna una linea dal nodo precedente al nodo corrente
-                shapeRenderer.line(
-                        previousNode.x + 0.5f, previousNode.y + 0.5f, // Coordinate nodo precedente
-                        node.x + 0.5f, node.y + 0.5f // Coordinate nodo corrente
-                );
+                shapeRenderer.rectLine(previousNode.getX(), previousNode.getY(), node.getX(), node.getY(), 0.1f);
+                shapeRenderer.circle(previousNode.x + 0.5f, previousNode.y + 0.5f, 0.2f, 10);
             }
             previousNode = node; // Aggiorna il nodo precedente
         }
-
+        shapeRenderer.circle(startNode.x + 0.5f, startNode.y + 0.5f, 0.2f, 10);
+        shapeRenderer.circle(endNode.x + 0.5f, endNode.y + 0.5f, 0.2f, 10);
+        shapeRenderer.setColor(Color.BLACK);
     }
 
     public void pursue(float x, float y){
@@ -255,40 +249,11 @@ public abstract class Nemico extends Entity {
     }
 
     /**
-     * 
-     * @param p
-     * @param delta
-     */
-    private void gestioneInseguimento(float delta) {
-        boolean inseguimento = true;
-        if (inseguimento) {
-
-        }
-
-        if (stati.idle()) {
-
-        }
-    }
-
-    /**
      * il nemico attacca
      * 
      * @param p
      */
     public abstract void attack();
-
-    /**
-     * controlla se il player è nel range attacco
-     */
-    private void inAreaAttacco() {
-        Rectangle hitboxPlayer = player.hitbox();
-        if (awareness.getRange().overlaps(hitboxPlayer)) {
-            stati.setInRange(true);
-            attack();
-        } else
-            stati.setInRange(false);
-    }
-
 
     public EnemyAwareness getAwareness() {
         return awareness;
