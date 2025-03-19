@@ -1,11 +1,11 @@
-package io.github.ale.screens.gameScreen.entity.player.movement;
+package io.github.ale.screens.gameScreen.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class KeyHandlerPlayer {
 
-    boolean w, s, a, d, shift;
+    public boolean w, s, a, d, shift, e, f;
 
     public KeyHandlerPlayer() {
 
@@ -16,7 +16,7 @@ public class KeyHandlerPlayer {
      */
 
     public void input() {
-        
+        f = Gdx.input.isKeyPressed(Input.Keys.F);
         w = Gdx.input.isKeyPressed(Input.Keys.W);
         s = Gdx.input.isKeyPressed(Input.Keys.S);
         a = Gdx.input.isKeyPressed(Input.Keys.A);

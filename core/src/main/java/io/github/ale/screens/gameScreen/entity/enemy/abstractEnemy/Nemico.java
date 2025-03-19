@@ -26,6 +26,9 @@ public abstract class Nemico extends Entity {
     private Node endNode;
     Heuristic<Node> heuristic;
 
+    private final float maxDamageTime = 0.273f;
+    private float countdownDamage = 0.273f;
+
     private boolean hasLoadedGraph = false;
     private IndexedAStarPathFinder<Node> pathFinder;
     private DefaultGraphPath<Node> path;
@@ -83,6 +86,14 @@ public abstract class Nemico extends Entity {
     public void updateEntity() {
 
         float delta = Gdx.graphics.getDeltaTime();
+
+        if (statistiche().gotDamaged) {
+            countdownDamage -= delta;
+            if (countdownDamage <= 0) {
+                countdownDamage = maxDamageTime;
+                statistiche().gotDamaged = false;
+            }
+        }
         // inAreaInseguimento();
         inAreaAttacco();
         mantieniNeiLimiti();
@@ -104,6 +115,7 @@ public abstract class Nemico extends Entity {
         if (stati.idle()) {
             wandering();
         }
+        
     }
 
     /**
@@ -160,14 +172,24 @@ public abstract class Nemico extends Entity {
 
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
         if (success && path.getCount() < 14) {
-            System.out.println("Percorso trovato!");
+            //System.out.println("Percorso trovato!");
         } else {
             if (path.getCount() == 0 || path.get(path.getCount() - 1) != endNode) {
                 path.add(endNode);
             }
-            System.out.println("Percorso non trovato");
+            //System.out.println("Percorso non trovato");
         }
         
+    }
+
+    public boolean checkIfDead() {
+        // Logica per controllare se il giocatore è morto
+        if (statistiche().getHealth() <= 0) {
+            this.stati().setIsAlive(false);
+            System.out.println("Il giocatore è morto");
+            System.out.println("Rianimazione..");
+        }
+        return this.stati().isAlive();
     }
 
     public void drawPath(ShapeRenderer shapeRenderer) {
@@ -267,14 +289,6 @@ public abstract class Nemico extends Entity {
             stati.setInRange(false);
     }
 
-    /**
-     * setta l'obbiettivo del nemico
-     * 
-     * @param p
-     */
-    private void inAreaInseguimento() {
-
-    }
 
     public EnemyAwareness getAwareness() {
         return awareness;

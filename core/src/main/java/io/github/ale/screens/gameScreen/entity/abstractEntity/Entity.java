@@ -1,5 +1,6 @@
 package io.github.ale.screens.gameScreen.entity.abstractEntity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Dimensioni;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.EntityInfo;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Hitbox;
@@ -19,6 +21,12 @@ import io.github.ale.screens.gameScreen.interfaces.Drawable;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public abstract class Entity implements Drawable, Creatable {
+
+    public float delta;
+
+    public Rectangle range;
+
+    public EntityManager manager;
 
     private float atkCooldown = 0; // Tempo rimanente prima del prossimo attacco
 
@@ -35,6 +43,7 @@ public abstract class Entity implements Drawable, Creatable {
 
     public Entity(EntityConfig config) {
         this.config = config;
+        delta = Gdx.graphics.getDeltaTime();
         inizializzaEntityGraphics();
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaCoordinate(config.x, config.y);
@@ -54,6 +63,7 @@ public abstract class Entity implements Drawable, Creatable {
     public int id(){ return info.id(); }
 
     public void render() {
+        delta = Gdx.graphics.getDeltaTime();
         updateEntity();
         updateEntityType();
     }

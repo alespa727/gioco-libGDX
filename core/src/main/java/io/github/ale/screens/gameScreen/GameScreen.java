@@ -16,6 +16,7 @@ import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.gui.Gui;
+import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class GameScreen implements Screen {
@@ -105,7 +106,7 @@ public class GameScreen implements Screen {
 
         drawOggetti();
         drawHitboxes();
-        //drawLineOfSight();
+        
 
         entities.player().los().clearPuntiComuni();
         drawGUI();
@@ -147,7 +148,7 @@ public class GameScreen implements Screen {
         //maps.collisions(game.renderer);
         entities.hitbox(game.renderer);
         //entities.range(game.renderer);
-        //Map.getGraph().drawConnections(game.renderer);
+        Map.getGraph().drawConnections(game.renderer);
 
         game.renderer.end();
     }

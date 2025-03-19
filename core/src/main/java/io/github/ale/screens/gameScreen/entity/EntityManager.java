@@ -44,7 +44,7 @@ public final class EntityManager {
         p.imageHeight = 2f;
         p.imageWidth = 2f;
 
-        player = new Player(p);
+        player = new Player(p, this);
 
         entityidcount++;
 
@@ -108,7 +108,10 @@ public final class EntityManager {
         }
 
         for (Entity e : entita) {
-            e.render();
+            if (e.stati().isAlive()) {
+                e.render();
+            }
+  
         }
     }
 
@@ -119,8 +122,9 @@ public final class EntityManager {
     public void draw(float elapsedTime) {
         sort();
         for (Entity e : entita) {
-            e.draw(game.batch, elapsedTime);
-            
+            if (e.stati().isAlive()) {
+                e.draw(game.batch, elapsedTime);
+            }
         }
     }
 
@@ -131,10 +135,24 @@ public final class EntityManager {
     public void hitbox(ShapeRenderer renderer){
         
         for (Entity e : entita) {
-            e.drawHitbox(renderer);
+            if (e.stati().isAlive()) {
+                e.drawHitbox(renderer);
+                if (e instanceof Nemico nemico) {
+                    nemico.drawPath(renderer);
+                }
+            }
         }
-        Finn n = (Finn) entita(1);
-        n.drawPath(renderer);
+    }
+
+    public Array<Entity> entita(float x, float y, float width, float height){
+        Array<Entity> array = new Array<>();
+        for (int i = 0; i < entita.size; i++) {
+            if (entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
+                array.add(entita.get(i));
+            }
+        }
+
+        return array;
     }
 
     /**
@@ -213,5 +231,13 @@ public final class EntityManager {
             }
         }
         return null;
+    }
+
+    public void despawn(){
+        for (int i = 0; i < entita.size; i++) {
+            if (i!=0 && !entita.get(i).stati().isAlive()) {
+            
+            }
+        }
     }
 }

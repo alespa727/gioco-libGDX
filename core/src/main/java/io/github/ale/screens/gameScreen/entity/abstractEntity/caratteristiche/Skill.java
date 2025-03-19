@@ -11,4 +11,6 @@ public abstract class Skill {
     public String getSkillName() {
         return skillName;
     }
+
+    public abstract void attack();
 }

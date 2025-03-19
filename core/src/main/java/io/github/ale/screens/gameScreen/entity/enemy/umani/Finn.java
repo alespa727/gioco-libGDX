@@ -14,6 +14,7 @@ public final class Finn extends Nemico {
     @Override
     public void updateEntityType() {
         pursue(player().predizioneCentro(this).x, player().predizioneCentro(this).y);
+        checkIfDead();
     }
 
 
@@ -33,7 +34,7 @@ public final class Finn extends Nemico {
             float angolo = calcolaAngolo(coordinateCentro().x, coordinateCentro().y, player().coordinateCentro().x,
                     player().coordinateCentro().y);
 
-            System.out.println("Angolo di attacco: " + angolo + "°");
+            //System.out.println("Angolo di attacco: " + angolo + "°");
 
             player().knockbackStart(angolo);// startKnockback(angolo);
             System.out.println(player().statistiche().getHealth());

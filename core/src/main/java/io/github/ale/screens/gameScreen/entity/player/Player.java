@@ -4,19 +4,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.player.lineofsight.LineOfSight;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
+import io.github.ale.screens.gameScreen.entity.player.skill.Punch;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public class Player extends Entity {
+    Punch punch = new Punch(this);
 
     private PlayerMovementManager movement;
-
+    
     float x=0;
     float y=0;
 
@@ -35,14 +39,15 @@ public class Player extends Entity {
     float angolo;
 
     private Circle circle;
-    private Vector2 lastPos;
 
     private static LineOfSight lineOfSight;
     public static boolean loadedLos = false;
 
     // Costruttore
-    public Player(EntityConfig config) {
+    public Player(EntityConfig config, EntityManager manager) {
         super(config);
+        this.manager = manager;
+        range = new Rectangle(0, 0, 2f, 2f);
         create();
     }
 
@@ -54,7 +59,6 @@ public class Player extends Entity {
     public final void create() {
         movement = new PlayerMovementManager();
         circle = new Circle(0, 0, 0.5f);
-        lastPos = new Vector2();
     }
 
     /**
@@ -68,6 +72,7 @@ public class Player extends Entity {
             renderer.setColor(Color.RED);
         }
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
+        renderer.rect(range.x, range.y, range.width, range.height);
         renderer.setColor(Color.BLACK);
     }
 
@@ -137,10 +142,6 @@ public class Player extends Entity {
         return circle;
     }
 
-    public void inverseKnockback(){
-        
-    }
-
     public void knockbackStart(float angolo){
         dx = (float) Math.cos(Math.toRadians(angolo)) * 1f;
         dy = (float) Math.sin(Math.toRadians(angolo)) * 1f;
@@ -185,6 +186,13 @@ public class Player extends Entity {
 
     @Override
     public void updateEntity() {
+        punch.attack();
+        
+        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().getWidth()/2;
+        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().getWidth()/2;
+        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-getSize().getWidth()/2;
+        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-getSize().getWidth()/2;
+
         delta = Gdx.graphics.getDeltaTime();
         mantieniNeiLimiti();
 
@@ -219,15 +227,15 @@ public class Player extends Entity {
             countdown=salvaDirezione;
             if (direzioni.size<3) {
                 direzioni.add(new Vector2(direzione()));
-                System.out.println("aggiunta" + direzione());
+                //System.out.println("aggiunta" + direzione());
             }else{
-                System.out.println(countdown);
+                //System.out.println(countdown);
                 direzioni.set(2, new Vector2(direzioni.get(1)));
                 direzioni.set(1, new Vector2(direzioni.get(0)));
                 direzioni.set(0, new Vector2(direzione()));
-                System.out.println("1." + direzioni.get(0));
-                System.out.println("2." + direzioni.get(1));
-                System.out.println("3." + direzioni.get(2));
+                //System.out.println("1." + direzioni.get(0));
+                //System.out.println("2." + direzioni.get(1));
+                //System.out.println("3." + direzioni.get(2));
             }
         }
         

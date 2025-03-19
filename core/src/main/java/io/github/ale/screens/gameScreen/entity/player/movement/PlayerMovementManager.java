@@ -3,6 +3,7 @@ package io.github.ale.screens.gameScreen.entity.player.movement;
 import com.badlogic.gdx.Gdx;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.player.KeyHandlerPlayer;
 import io.github.ale.screens.gameScreen.enums.StatiDiMovimento;
 import io.github.ale.screens.gameScreen.maps.Map;
 
@@ -159,7 +160,8 @@ public class PlayerMovementManager{
             } else {
                 p.direzione().set(dx / 2, dy); // Dimezza solo X
             }
-        } else if (dy == 1f || dy == -1f) {
+        }
+        if (dy == 1f || dy == -1f) {
             p.direzione().set(dx, dy / 2); // Dimezza solo Y
         }
     }
@@ -179,12 +181,12 @@ public class PlayerMovementManager{
         }
 
         // Determina il movimento orizzontale
-        if (a) dx = -1;
-        if (d) dx = 1;
+        if (a) dx = -1f;
+        if (d) dx = 1f;
     
         // Determina il movimento verticale
-        if (w) dy = 1;
-        if (s) dy = -1;
+        if (w) dy = 1f;
+        if (s) dy = -1f;
 
         
     
