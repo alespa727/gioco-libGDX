@@ -69,7 +69,6 @@ public class Player extends Entity {
         }
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
         renderer.setColor(Color.BLACK);
-        renderer.circle(circle.x, circle.y, 5.5f, 40);
     }
 
     public Vector2 predizione(Entity e){

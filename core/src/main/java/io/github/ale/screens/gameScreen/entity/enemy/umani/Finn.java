@@ -13,7 +13,7 @@ public final class Finn extends Nemico {
 
     @Override
     public void updateEntityType() {
-        pursue(player().coordinateCentro().x, player().coordinateCentro().y);
+        pursue(player().predizioneCentro(this).x, player().predizioneCentro(this).y);
     }
 
 
