@@ -29,6 +29,13 @@ public abstract class Entity implements Drawable, Creatable {
     public EntityManager manager;
 
     private float atkCooldown = 0; // Tempo rimanente prima del prossimo attacco
+    
+    float dx;
+    float dy;
+    float x=0;
+    float y=0;
+    float angolo;
+    private float countdownKnockback = 0.273f;
 
     private final EntityConfig config;
 
@@ -340,5 +347,34 @@ public abstract class Entity implements Drawable, Creatable {
         return angolo;
     }
     
+    
+    public void knockbackStart(float angolo){
+        dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
+        dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
+        countdownKnockback=0.5f;
+        this.angolo=angolo;
+        knockback();
+    }
 
+    protected  void knockback() {
+        delta=Gdx.graphics.getDeltaTime();
+        if (countdownKnockback>=0f) {
+            countdownKnockback-=delta;
+            dx*=0.9;
+            dy*=0.9;
+            if(!Map.checkCollisionX(this, 0.1f, angolo)){
+                x = dx * delta;
+                setX(getX() + x); 
+            }
+                
+            if (!Map.checkCollisionY(this, 0.1f, angolo)) {
+                y = dy * delta;
+                setY(getY() + y);
+            }
+ 
+        }else{
+            x = 0;
+            y = 0;
+        }
+    }
 }

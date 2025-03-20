@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 
 public class KeyHandlerPlayer {
 
-    public boolean w, s, a, d, shift, e, f;
+    public boolean w, s, a, d, shift, e, f, left_click;
 
     public KeyHandlerPlayer() {
 
@@ -16,6 +16,7 @@ public class KeyHandlerPlayer {
      */
 
     public void input() {
+        left_click = Gdx.input.isTouched(Input.Buttons.LEFT);
         f = Gdx.input.isKeyPressed(Input.Keys.F);
         w = Gdx.input.isKeyPressed(Input.Keys.W);
         s = Gdx.input.isKeyPressed(Input.Keys.S);

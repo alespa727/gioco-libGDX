@@ -49,14 +49,21 @@ public class Pathfinder {
         }
 
         // System.out.println(path.getCount());
-        if (path.getCount() > 1 && enemy.coordinateCentro().dst(x, y)<20f) {
+        if (path.getCount() > 2 && enemy.coordinateCentro().dst(x, y)<20f) {
             // Aggiorna il movimento del nemico
             enemy.getMovementManager().update(enemy);
         } else {
             enemy.getMovementManager().setFermo(enemy);
         }
+
+        // System.out.println(path.getCount());
+        if (enemy.coordinateCentro().dst(x, y)<2f) {
+            enemy.getMovementManager().setFermo(enemy);
+            
+        }
     }
 
+    
     public void calcolaPercorso(float x, float y, Nemico enemy) {
         path.clear();
         startNode = Map.getGraph().getClosestNode(enemy.hitbox().x + enemy.hitbox().width / 2, enemy.hitbox().y + enemy.hitbox().height / 2);

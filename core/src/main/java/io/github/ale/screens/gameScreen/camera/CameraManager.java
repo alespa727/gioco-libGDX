@@ -83,6 +83,11 @@ public class CameraManager {
         return punti;
     }
 
+    public static boolean inlimiti(float x, float y) {
+        // Check if x and y are within the frustum's bounds
+        return x > punti[0].x-2 && y > punti[0].y-2 && x < punti[2].x+2 && y < punti[2].y+2;
+    }
+    
     public OrthographicCamera get() {
         return camera;
     }

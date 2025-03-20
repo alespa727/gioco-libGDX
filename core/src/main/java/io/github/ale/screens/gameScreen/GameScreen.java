@@ -46,7 +46,7 @@ public class GameScreen implements Screen {
     public void show() { //METODO CREATE
         System.err.println(loaded);
         if (!loaded) {
-            rect = new Gui();
+            rect = new Gui(this);
             gui = new ShapeRenderer();
             stage = new Stage(new ScreenViewport());
             root = new Table();
@@ -112,7 +112,7 @@ public class GameScreen implements Screen {
     }
 
     public void drawGUI(){
-        rect.draw(entities.player());
+        rect.draw();
         stage.act();
         stage.draw();
     }
@@ -145,7 +145,7 @@ public class GameScreen implements Screen {
      */
     public void drawHitboxes() {
         game.renderer.begin(ShapeType.Line);
-        Map.getGraph().drawConnections(game.renderer);
+        //Map.getGraph().drawConnections(game.renderer);
         game.renderer.end();
         game.renderer.begin(ShapeType.Filled);
         Map.getGraph().drawNodes(game.renderer);
@@ -157,9 +157,6 @@ public class GameScreen implements Screen {
         entities.hitbox(game.renderer);
         entities.range(game.renderer);
         game.renderer.end();
-
-        
-        
     }
 
     /**
@@ -178,5 +175,7 @@ public class GameScreen implements Screen {
     public void hide() {
         maps.getPlaylist().stop();
     }
+
+    public EntityManager entities(){ return entities; }
 
 }

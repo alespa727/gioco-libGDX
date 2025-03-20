@@ -7,11 +7,9 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Sk
 import io.github.ale.screens.gameScreen.entity.player.KeyHandlerPlayer;
 
 public class Punch extends Skill{
-    KeyHandlerPlayer keyH;
-    Entity entity;
-    float countdown = 0;
-    float cooldown = 0.2f;
-    Array<Entity> inRange;
+    private final KeyHandlerPlayer keyH;
+    private final float damage = 20;
+    private Array<Entity> inRange;
     public boolean hit=false;
     public Punch(Entity entity){
         this.entity = entity;
@@ -25,14 +23,15 @@ public class Punch extends Skill{
                 countdown-=entity.delta;
         }else{
             keyH.input();
-            if(keyH.f){
+            if(keyH.left_click){
                 countdown=cooldown;
                 inRange = entity.manager.entita(entity.range.x, entity.range.y, entity.range.width, entity.range.height);
                 System.out.println(entity.range.x);
                 for(int i=0; i<inRange.size; i++){
                     
                     if(inRange.get(i)!=entity){
-                        inRange.get(i).statistiche().inflictDamage(60, false);
+                        inRange.get(i).statistiche().inflictDamage(damage, false);
+                        inRange.get(i).knockbackStart(entity.calcolaAngolo(entity.coordinateCentro().x, entity.coordinateCentro().y, inRange.get(i).coordinateCentro().x, inRange.get(i).coordinateCentro().y));
                         if (!hit) {
                             hit=true;
                         }

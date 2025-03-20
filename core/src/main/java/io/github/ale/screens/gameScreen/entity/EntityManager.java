@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
+import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
@@ -70,14 +71,17 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-
-        addNemico(Finn.class, e); 
+        for (int index = 0; index < 50; index++) {
+            e.y++;
+            addNemico(Finn.class, e); 
+        }
+        
     
     }
 
     public void addNemico(Class<? extends Entity> e, EntityConfig config) {
         try {
-
+            System.err.println("Creata entità! id." + entityidcount);
             Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Player.class);//Cerca il costruttore 
             config.id=entityidcount;
             Entity newEntity = c.newInstance(config, this, player);// Crea una nuova entità
@@ -110,10 +114,9 @@ public final class EntityManager {
         }
 
         for (Entity e : entita) {
-            if (e.stati().isAlive()) {
+            if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) {
                 e.render();
             }
-  
         }
     }
 
@@ -124,14 +127,12 @@ public final class EntityManager {
     public void draw(float elapsedTime) {
         sort();
         for (Entity e : entita) {
-            if (e.stati().isAlive()) {
-                System.out.println(e.direzione());
+            if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) {
                 try{
                     e.draw(game.batch, elapsedTime);
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.direzione());
                 }
-                
             }
         }
     }
@@ -143,29 +144,26 @@ public final class EntityManager {
     public void hitbox(ShapeRenderer renderer){
         
         for (Entity e : entita) {
-            if (e.stati().isAlive()) {
-                e.drawHitbox(renderer);
-                if (e instanceof Nemico nemico) {
-                    nemico.drawPath(renderer);
-                }
-            }
+
+            if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) e.drawHitbox(renderer);
+            
         }
     }
 
     public void drawPath(ShapeRenderer renderer){
         for (Entity e : entita) {
-            if (e.stati().isAlive()) {
-                if (e instanceof Nemico nemico) {
-                    nemico.drawPath(renderer);
-                }
+            
+            if (e instanceof Nemico nemico) {
+                if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) nemico.drawPath(renderer);
             }
+            
         }
     }
 
     public Array<Entity> entita(float x, float y, float width, float height){
         Array<Entity> array = new Array<>();
         for (int i = 0; i < entita.size; i++) {
-            if (entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
+            if (CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
                 array.add(entita.get(i));
             }
         }
@@ -200,7 +198,7 @@ public final class EntityManager {
     public void range(ShapeRenderer renderer){
         
         for (Entity e : entita) {
-            e.drawRange(renderer);
+            if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) e.drawRange(renderer);
         }
         
     }

@@ -35,7 +35,7 @@ public abstract class Nemico extends Entity {
         this.movement = new EntityMovementManager();
         this.stati = new EnemyState();
         this.awareness = new EnemyAwareness();
-        this.range = new Rectangle(0, 0, 2f, 2f);
+        this.range = new Rectangle(0, 0, 1.5f, 1.5f);
         pathfinder = new Pathfinder();
     }
 
@@ -52,11 +52,13 @@ public abstract class Nemico extends Entity {
             setAtkCooldown(atkCooldown() - delta);
             //System.out.println(atkCooldown());
         }else{
-            setAtkCooldown(1f);
+            if (manager.entita(range.x, range.y, range.width, range.height).size>0) {
+                setAtkCooldown(1.3f);
             if(manager.isentityinrect(0, range.x, range.y, range.width, range.height)){
                 System.out.println("ATTACCO");
                 attack();
             } 
+            }
         }
         
     }
@@ -76,6 +78,7 @@ public abstract class Nemico extends Entity {
         cooldown();
         mantieniNeiLimiti();
         adjustHitbox();
+        knockback();
 
         if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().getWidth()/2;
         else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().getWidth()/2;
@@ -155,4 +158,5 @@ public abstract class Nemico extends Entity {
     public void drawHitbox(ShapeRenderer renderer) {
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
     }
+
 }

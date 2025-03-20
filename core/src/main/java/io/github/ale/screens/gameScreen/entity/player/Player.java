@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
 import io.github.ale.screens.gameScreen.entity.player.skill.Punch;
 import io.github.ale.screens.gameScreen.maps.Map;
@@ -105,15 +106,17 @@ public class Player extends Entity {
         return this.stati().isAlive();
     }
 
+    @Override
     public void knockbackStart(float angolo){
         dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
         dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
-        countdownKnockback=0.4f;
+        countdownKnockback=0.5f;
         this.angolo=angolo;
         knockback();
     }
 
-    private void knockback() {
+    @Override
+    protected void knockback() {
         delta=Gdx.graphics.getDeltaTime();
         if (countdownKnockback>=0f) {
             countdownKnockback-=delta;
@@ -199,5 +202,9 @@ public class Player extends Entity {
     @Override
     public void drawRange(ShapeRenderer renderer) {
        
+    }
+
+    public Skill getSkill(){
+        return punch;
     }
 }
