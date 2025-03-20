@@ -106,40 +106,29 @@ public class Player extends Entity {
     }
 
     public void knockbackStart(float angolo){
-        dx = (float) Math.cos(Math.toRadians(angolo)) * 1f;
-        dy = (float) Math.sin(Math.toRadians(angolo)) * 1f;
-        countdownKnockback=0.2f;
+        dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
+        dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
+        countdownKnockback=0.4f;
         this.angolo=angolo;
         knockback();
     }
 
     private void knockback() {
+        delta=Gdx.graphics.getDeltaTime();
         if (countdownKnockback>=0f) {
             countdownKnockback-=delta;
-            if(!Map.checkCollisionX(this, 0.4f, angolo)){
+            dx*=0.9;
+            dy*=0.9;
+            if(!Map.checkCollisionX(this, 0.1f, angolo)){
                 x = dx * delta;
                 setX(getX() + x); 
             }
                 
-            if (!Map.checkCollisionY(this, 0.4f, angolo)) {
+            if (!Map.checkCollisionY(this, 0.1f, angolo)) {
                 y = dy * delta;
                 setY(getY() + y);
             }
-                
-        
-            /*System.out.println(angolo);
-            if (!Map.checkCollisionX(this, 0.4f, angolo)) {
-                lastPos.x = getX();
-                setX(getX() + dx*3f); 
-            }
-            
-            if (!Map.checkCollisionY(this, 0.4f, angolo)) {
-                lastPos.y = getY();
-                setY(getY() + dy*3f);
-            }
-            System.out.println(dx);
-            System.out.println(dy);*/
-            //coordinate().add(x, y);
+ 
         }else{
             x = 0;
             y = 0;

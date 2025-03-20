@@ -125,7 +125,13 @@ public final class EntityManager {
         sort();
         for (Entity e : entita) {
             if (e.stati().isAlive()) {
-                e.draw(game.batch, elapsedTime);
+                System.out.println(e.direzione());
+                try{
+                    e.draw(game.batch, elapsedTime);
+                } catch (Exception ex) {
+                    System.out.println("ERRORE" + e.direzione());
+                }
+                
             }
         }
     }

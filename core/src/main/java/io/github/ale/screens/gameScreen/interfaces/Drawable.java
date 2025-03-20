@@ -25,8 +25,11 @@ public interface Drawable {
         if(statistiche().gotDamaged){
             batch.setColor(1, 0, 0, 0.6f);
         }
+        
         batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().getWidth(),
-               getSize().getHeight());
+            getSize().getHeight());
+        
+        
         batch.setColor(Color.WHITE);
     }
 

@@ -13,6 +13,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMov
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.awareness.EnemyAwareness;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.state.EnemyState;
 import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 
 public abstract class Nemico extends Entity {
     private final Player player;

@@ -106,8 +106,10 @@ public class PlayerMovementManager{
 
         switch (stato) {
             case OPPOSTOY -> {
-                addNotMoving(p);
                 
+                aggiornaDirezione(p);
+                // Determina il movimento verticale
+
                 aggiornaDirezione(p);
                 aggiornaCollisioni(p);
 
@@ -115,9 +117,8 @@ public class PlayerMovementManager{
                 aggiornaStatoCollisione(p);
             }
             case OPPOSTOX -> {
-
-                addNotMoving(p);
-
+                
+                aggiornaDirezione(p);
                 aggiornaDirezione(p);
                 aggiornaCollisioni(p);
 
@@ -127,7 +128,7 @@ public class PlayerMovementManager{
 
             }
             case ANYKEY -> {
-
+                
                 aggiornaDirezione(p);
 
                 aggiornaCollisioni(p);
@@ -164,6 +165,7 @@ public class PlayerMovementManager{
         if (dy == 1f || dy == -1f) {
             p.direzione().set(dx, dy / 2); // Dimezza solo Y
         }
+        
     }
     
 
@@ -187,7 +189,6 @@ public class PlayerMovementManager{
         // Determina il movimento verticale
         if (w) dy = 1f;
         if (s) dy = -1f;
-
         
     
         p.direzione().set(dx, dy);

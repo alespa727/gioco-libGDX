@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy;
+package io.github.ale.screens.gameScreen.pathfinding;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
@@ -6,10 +6,9 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
-import io.github.ale.screens.gameScreen.pathfinding.HeuristicDistance;
-import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public class Pathfinder {
     private Node startNode;
