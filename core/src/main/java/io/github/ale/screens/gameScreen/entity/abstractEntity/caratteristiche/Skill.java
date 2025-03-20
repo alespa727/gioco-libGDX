@@ -18,5 +18,5 @@ public abstract class Skill {
         return skillName;
     }
 
-    public abstract void attack();
+    public abstract void execute();
 }

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.github.ale.screens.gameScreen.GameScreen;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
+import io.github.ale.screens.gameScreen.entity.player.skill.Punch;
 
 public class Gui{
     private GameScreen gamescreen;
@@ -35,7 +37,8 @@ public class Gui{
     }
 
     public void skill(){
-        float cooldown = 1f - gamescreen.entities().player().getSkill().countdown/gamescreen.entities().player().getSkill().cooldown;
+        Skill skill = gamescreen.entities().player().getSkill(Punch.class);
+        float cooldown = 1f - skill.countdown/skill.cooldown;
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-60, 220, -30);
         shapeRenderer.setColor(Color.BLUE);

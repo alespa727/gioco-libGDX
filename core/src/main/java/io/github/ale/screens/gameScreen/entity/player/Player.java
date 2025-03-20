@@ -13,13 +13,14 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
 import io.github.ale.screens.gameScreen.entity.player.skill.Punch;
+import io.github.ale.screens.gameScreen.entity.player.skill.SkillSet;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public class Player extends Entity {
     Punch punch = new Punch(this);
 
     private PlayerMovementManager movement;
-
+    private SkillSet skillset;
     
     float x=0;
     float y=0;
@@ -44,6 +45,8 @@ public class Player extends Entity {
         super(config);
         this.manager = manager;
         range = new Rectangle(0, 0, 2f, 2f);
+        skillset = new SkillSet(this);
+        skillset.add(new Punch(this));
         create();
     }
 
@@ -141,7 +144,7 @@ public class Player extends Entity {
 
     @Override
     public void updateEntity() {
-        punch.attack();
+        skillset.execute(Punch.class);
         
         if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().getWidth()/2;
         else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().getWidth()/2;
@@ -204,7 +207,7 @@ public class Player extends Entity {
        
     }
 
-    public Skill getSkill(){
-        return punch;
+    public Skill getSkill(Class<? extends Skill> skillclass){
+        return skillset.getSkill(skillclass);
     }
 }

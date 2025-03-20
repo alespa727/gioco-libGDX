@@ -17,7 +17,7 @@ public class Punch extends Skill{
     }
 
     @Override
-    public void attack(){
+    public void execute(){
         hit=false;
         if(countdown > 0){
                 countdown-=entity.delta;
