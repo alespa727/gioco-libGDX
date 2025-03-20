@@ -12,42 +12,40 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
-import io.github.ale.screens.gameScreen.entity.player.skill.Punch;
-import io.github.ale.screens.gameScreen.entity.player.skill.SkillSet;
+import io.github.ale.screens.gameScreen.entity.skill.SkillSet;
+import io.github.ale.screens.gameScreen.entity.skill.skillist.Punch;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public class Player extends Entity {
-    Punch punch = new Punch(this);
 
     private PlayerMovementManager movement;
-    private SkillSet skillset;
+    private final SkillSet skillset;
     
-    float x=0;
-    float y=0;
+    private float x=0;
+    private float y=0;
+    private float dx;
+    private float dy;
 
-    Array<Vector2> direzioni = new Array<>();
-    int count=0;
-    float salvaDirezione = 0.5f;
-    float countdown=1f;
+    private final Array<Vector2> direzioni = new Array<>();
+    private int count=0;
+    private final float salvaDirezione = 0.5f;
+    private float countdown=1f;
 
     private final float maxDamageTime = 0.273f;
     private float countdownKnockback = 0.273f;
     private float countdownDamage = 0.273f;
 
-    float dx;
-    float dy;
-
-    float angolo;
+    private float angolo;
 
 
     // Costruttore
     public Player(EntityConfig config, EntityManager manager) {
         super(config);
         this.manager = manager;
-        range = new Rectangle(0, 0, 2f, 2f);
-        skillset = new SkillSet(this);
-        skillset.add(new Punch(this));
-        create();
+        this.range = new Rectangle(0, 0, 2f, 2f);
+        this.skillset = new SkillSet(this);
+        this.skillset.add(new Punch(this, "pugno", "un pugno molto forte!"));
+        this.create();
     }
 
     /**
@@ -56,7 +54,7 @@ public class Player extends Entity {
 
     @Override
     public final void create() {
-        movement = new PlayerMovementManager();
+        this.movement = new PlayerMovementManager();
     }
 
     /**
@@ -71,22 +69,14 @@ public class Player extends Entity {
         }
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
         renderer.setColor(Color.BLACK);
-        if (punch.hit) {
-            renderer.setColor(Color.RED);
-        }
         renderer.rect(range.x, range.y, range.width, range.height);
         renderer.setColor(Color.BLACK);
     }
 
     public Vector2 predizione(Entity e){
-        if (direzioni.size>=3 && e.coordinateCentro().dst(coordinateCentro()) > 3f) {
-            if (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y)) {
-                
-                return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().getSpeed() * count, direzioni.get(1).y * statistiche().getSpeed() * count);
-            
-            }
-        }
-        count=0;
+        if ((direzioni.size>=3 && e.coordinateCentro().dst(coordinateCentro()) > 3f) && (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y))) 
+            return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().getSpeed() * count, direzioni.get(1).y * statistiche().getSpeed() * count);
+        this.count=0;
         return new Vector2(coordinate());
     }
 

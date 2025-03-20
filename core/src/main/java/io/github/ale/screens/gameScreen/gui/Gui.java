@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import io.github.ale.screens.gameScreen.GameScreen;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
-import io.github.ale.screens.gameScreen.entity.player.skill.Punch;
+import io.github.ale.screens.gameScreen.entity.skill.skillist.Punch;
 
 public class Gui{
-    private GameScreen gamescreen;
+    private final GameScreen gamescreen;
     private final ShapeRenderer shapeRenderer;
     @SuppressWarnings("unused")
     private final SpriteBatch batch;

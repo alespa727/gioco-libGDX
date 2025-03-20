@@ -1,6 +1,7 @@
 package io.github.ale.screens.gameScreen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -37,6 +38,7 @@ public class GameScreen implements Screen {
     private float elapsedTime;
 
     private boolean loaded=false;
+    public boolean isPaused=false;
 
     public GameScreen(MyGame game){
         this.game=game;
@@ -58,7 +60,7 @@ public class GameScreen implements Screen {
             camera = new CameraManager();   // Configura la camera
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
-            entities = new EntityManager(game);
+            entities = new EntityManager(this.game);
             maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
             maps.getPlaylist().setVolume(0.1f);
             maps.getPlaylist().setLooping(0, true);
@@ -70,10 +72,16 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-        update();
+        if (!isPaused) {
+            update();
+        }
         draw();
-
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !isPaused) {
+            pause();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && isPaused) {
+            resume();
+        }
     }
 
     /**
@@ -131,10 +139,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
+        maps.getPlaylist().stop();
+        isPaused=true;
     }
 
     @Override
     public void resume() {
+        isPaused=false;
         maps.getPlaylist().play(0);
         maps.getPlaylist().setVolume(0.1f);
         maps.getPlaylist().setLooping(0, true);

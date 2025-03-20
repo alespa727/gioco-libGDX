@@ -20,12 +20,12 @@ import io.github.ale.screens.gameScreen.entity.player.Player;
 public final class EntityManager {
     private final MyGame game;
 
-    private int entityidcount=0;
-
     private final Player player;
+    private final EntityConfig p;
     private final Array<Entity> entita;
 
-    private final EntityConfig p;
+    private int entityidcount=0;
+
 
     public EntityManager(MyGame game) {
         entita = new Array<>();
@@ -272,5 +272,9 @@ public final class EntityManager {
     public void despawn(Entity e){
         entita.removeValue(e, false);
         entita.shrink();
+    }
+
+    public boolean isPaused(){
+        return game.gameScreen.isPaused;
     }
 }
