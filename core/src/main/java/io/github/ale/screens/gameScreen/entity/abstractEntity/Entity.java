@@ -70,7 +70,6 @@ public abstract class Entity implements Drawable, Creatable {
 
     public abstract void updateEntity();
     public abstract void updateEntityType();
-
     public abstract void drawRange(ShapeRenderer renderer);
 
     public void kill() {
@@ -83,6 +82,12 @@ public abstract class Entity implements Drawable, Creatable {
         // this.setX(config.x);
         // this.setY(config.y);
         this.statistiche().gotDamaged = false;
+    }
+
+    
+    public void despawn(){
+        System.out.println("Entità id " + id() + " despawnata");
+        manager.despawn(this);
     }
 
     /**

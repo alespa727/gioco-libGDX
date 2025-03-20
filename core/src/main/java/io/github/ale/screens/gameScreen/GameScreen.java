@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.ale.MyGame;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
-import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.gui.Gui;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
@@ -86,7 +85,6 @@ public class GameScreen implements Screen {
         entities.render();
         camera.update(maps, entities, viewport); // update telecamera
         maps.render(); // update visualizzazione mappa
-
     }
 
     /**
@@ -109,10 +107,7 @@ public class GameScreen implements Screen {
 
         drawHitboxes();
         drawOggetti();
-        
-        
 
-        entities.player().los().clearPuntiComuni();
         drawGUI();
     }
 
@@ -160,19 +155,11 @@ public class GameScreen implements Screen {
         entities.checkEachCollision(game.renderer);
         //maps.collisions(game.renderer);
         entities.hitbox(game.renderer);
-        //entities.range(game.renderer);
+        entities.range(game.renderer);
         game.renderer.end();
 
         
         
-    }
-
-    public void drawLineOfSight(){
-        if (Player.loadedLos) {
-            game.renderer.begin(ShapeType.Filled);
-            entities.player().drawLineOfSight(game.renderer);
-            game.renderer.end();
-        }
     }
 
     /**

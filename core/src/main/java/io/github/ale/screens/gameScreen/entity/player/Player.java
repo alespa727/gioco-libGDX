@@ -3,7 +3,6 @@ package io.github.ale.screens.gameScreen.entity.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.player.lineofsight.LineOfSight;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
 import io.github.ale.screens.gameScreen.entity.player.skill.Punch;
 import io.github.ale.screens.gameScreen.maps.Map;
@@ -37,13 +35,8 @@ public class Player extends Entity {
     float dx;
     float dy;
 
-    float delta;
     float angolo;
 
-    private Circle circle;
-
-    private static LineOfSight lineOfSight;
-    public static boolean loadedLos = false;
 
     // Costruttore
     public Player(EntityConfig config, EntityManager manager) {
@@ -60,7 +53,6 @@ public class Player extends Entity {
     @Override
     public final void create() {
         movement = new PlayerMovementManager();
-        circle = new Circle(0, 0, 0.5f);
     }
 
     /**
@@ -111,42 +103,6 @@ public class Player extends Entity {
             statistiche().regenHealthTo(100);
         }
         return this.stati().isAlive();
-    }
-
-    /**
-     * disegna punti da cui il player è visibile
-     * 
-     * @param renderer
-     */
-    public void drawLineOfSight(ShapeRenderer renderer) {
-        renderer.setColor(Color.BLACK);
-        lineOfSight.draw(renderer);
-        // renderer.circle(circle.x, circle.y, circle.radius, 100);
-        // renderer.circle(circle.x, circle.y, Player.getLineOfSight().getRaggio(),
-        // 100);
-    }
-
-    /**
-     * inizializza l'los solamente se non è mai stato caricato e la mappa è caricata
-     */
-    public void inizializzaLOS() {
-        if (!loadedLos && Map.isLoaded) {
-            lineOfSight = new LineOfSight();
-            loadedLos = true;
-        }
-    }
-
-    /**
-     * returna l'oggetto dei punti da cui il player è visibile
-     * 
-     * @return
-     */
-    public LineOfSight los() {
-        return lineOfSight;
-    }
-
-    public Circle circle() {
-        return circle;
     }
 
     public void knockbackStart(float angolo){
@@ -209,10 +165,15 @@ public class Player extends Entity {
 
     @Override
     public void updateEntityType() {
-        if (loadedLos) {
-            los().update(this);
-        }
+       
+        movement.update(this);
+        cooldown();
+        knockback();
+        checkIfDead();
+    }
 
+    public void cooldown(){
+         
         if (statistiche().gotDamaged) {
             countdownDamage -= delta;
             countdownKnockback -= delta;
@@ -222,12 +183,7 @@ public class Player extends Entity {
                 statistiche().gotDamaged = false;
             }
         }
-
-        inizializzaLOS();
-        circle.x = getX() + getSize().getWidth() / 2;
-        circle.y = getY() + getSize().getHeight() / 2;
-        movement.update(this);
-
+        
         if (countdown>0.01f) {
             countdown-=delta;
         }else{
@@ -249,10 +205,6 @@ public class Player extends Entity {
             }
             
         }
-        
-        
-        knockback();
-        checkIfDead();
     }
 
     @Override

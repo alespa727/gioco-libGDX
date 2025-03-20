@@ -2,6 +2,7 @@ package io.github.ale.screens.gameScreen.entity;
 
 import static java.lang.System.err;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -70,20 +71,20 @@ public final class EntityManager {
         e.imageWidth = 2f;
 
 
-        addNemico(Finn.class, this, e); 
+        addNemico(Finn.class, e); 
     
     }
 
-    public void addNemico(Class<? extends Entity> e, EntityManager manager, EntityConfig config) {
+    public void addNemico(Class<? extends Entity> e, EntityConfig config) {
         try {
 
             Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Player.class);//Cerca il costruttore 
             config.id=entityidcount;
-            Entity newEntity = c.newInstance(config, manager, player);// Crea una nuova entità
+            Entity newEntity = c.newInstance(config, this, player);// Crea una nuova entità
             entita.add(newEntity); //aggiunge entità
             entityidcount++;
 
-        } catch (Exception ex) {
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
             err.println("Errore nel creare l'entità");
         }
     }
@@ -264,11 +265,8 @@ public final class EntityManager {
         return null;
     }
 
-    public void despawn(){
-        for (int i = 0; i < entita.size; i++) {
-            if (i!=0 && !entita.get(i).stati().isAlive()) {
-            
-            }
-        }
+    public void despawn(Entity e){
+        entita.removeValue(e, false);
+        entita.shrink();
     }
 }

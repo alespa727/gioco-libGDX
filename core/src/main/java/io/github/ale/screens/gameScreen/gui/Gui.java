@@ -11,6 +11,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 public class Gui{
     
     private final ShapeRenderer shapeRenderer;
+    @SuppressWarnings("unused")
     private final SpriteBatch batch;
 
     public Gui(){
