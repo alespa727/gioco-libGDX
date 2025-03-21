@@ -11,6 +11,7 @@ import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class Pathfinder {
+    Nemico enemy;
     private Node startNode;
     private Node endNode;
     private int map=-1;
@@ -19,11 +20,12 @@ public class Pathfinder {
     private IndexedAStarPathFinder<Node> pathFinder;
     private final DefaultGraphPath<Node> path;
 
-    public Pathfinder(){
+    public Pathfinder(Nemico enemy){
         this.path = new DefaultGraphPath<>();
+        this.enemy = enemy;
     }
     
-    public void renderPath(float x, float y, Nemico enemy) {
+    public void renderPath(float x, float y) {
         // Carica il grafo una volta che è stato caricato
 
         if (hasLoadedGraph && map!=MapManager.currentmap()) {
@@ -38,33 +40,29 @@ public class Pathfinder {
             pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
             hasLoadedGraph = true;
             System.out.println("Caricato il grafo!");
-            calcolaPercorso(x, y, enemy);
+            calcolaPercorso(x, y);
             enemy.getMovementManager().setGoal(path.get(0), path.get(1));
         }
 
         if (enemy.getMovementManager().sulNodo) {
-            calcolaPercorso(x, y, enemy);
+            calcolaPercorso(x, y);
             if (path.getCount() > 1)
                 enemy.getMovementManager().setGoal(path.get(0), path.get(1));
         }
 
         // System.out.println(path.getCount());
-        if (path.getCount() > 2 && enemy.coordinateCentro().dst(x, y)<20f) {
+        if (path.getCount() > 1 && enemy.coordinateCentro().dst(x, y)<20f) {
             // Aggiorna il movimento del nemico
             enemy.getMovementManager().update(enemy);
         } else {
             enemy.getMovementManager().setFermo(enemy);
         }
 
-        // System.out.println(path.getCount());
-        if (enemy.coordinateCentro().dst(x, y)<2f) {
-            enemy.getMovementManager().setFermo(enemy);
-            
-        }
+       
     }
 
     
-    public void calcolaPercorso(float x, float y, Nemico enemy) {
+    public void calcolaPercorso(float x, float y) {
         path.clear();
         startNode = Map.getGraph().getClosestNode(enemy.hitbox().x + enemy.hitbox().width / 2, enemy.hitbox().y + enemy.hitbox().height / 2);
         endNode = Map.getGraph().getClosestNode(x, y);

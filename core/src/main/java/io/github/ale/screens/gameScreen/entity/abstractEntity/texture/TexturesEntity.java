@@ -47,16 +47,16 @@ public class TexturesEntity {
         animations.put(new Vector2(1f, -1f), new Animation<>(1 / 5f, movingRight));
         animations.put(new Vector2(1f, 1f), new Animation<>(1 / 5f, movingRight));
 
-        animations.put(new Vector2(0, 0.5f), new Animation<>(1 / 2f, up));
-        animations.put(new Vector2(0, -0.5f), new Animation<>(1 / 2f, down));
-        animations.put(new Vector2(-0.5f, 0), new Animation<>(1 / 2f, left));
-        animations.put(new Vector2(0.5f, 0), new Animation<>(1 / 2f, right));
+        animations.put(new Vector2(0, 0.5f), new Animation<>(0.5f, up));
+        animations.put(new Vector2(0, -0.5f), new Animation<>(0.5f, down));
+        animations.put(new Vector2(-0.5f, 0), new Animation<>(0.5f, left));
+        animations.put(new Vector2(0.5f, 0), new Animation<>(0.5f, right));
 
-        animations.put(new Vector2(-0.5f, 0.5f), new Animation<>(1 / 2f, left));
-        animations.put(new Vector2(-0.5f, -0.5f), new Animation<>(1 / 2f, left));
+        animations.put(new Vector2(-0.5f, 0.5f), new Animation<>(0.5f, left));
+        animations.put(new Vector2(-0.5f, -0.5f), new Animation<>(0.5f, left));
 
-        animations.put(new Vector2(0.5f, -0.5f), new Animation<>(1 / 2f, right));
-        animations.put(new Vector2(0.5f, 0.5f), new Animation<>(1 / 2f, right));
+        animations.put(new Vector2(0.5f, -0.5f), new Animation<>(0.5f, right));
+        animations.put(new Vector2(0.5f, 0.5f), new Animation<>(0.5f, right));
         
     }
 
