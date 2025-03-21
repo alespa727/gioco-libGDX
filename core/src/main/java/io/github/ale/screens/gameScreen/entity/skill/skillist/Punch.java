@@ -30,8 +30,7 @@ public class Punch extends Skill{
                 for(int i=0; i<inRange.size; i++){
                     
                     if(inRange.get(i)!=entity){
-                        inRange.get(i).statistiche().inflictDamage(damage, false);
-                        inRange.get(i).knockbackStart(entity.calcolaAngolo(entity.coordinateCentro().x, entity.coordinateCentro().y, inRange.get(i).coordinateCentro().x, inRange.get(i).coordinateCentro().y));
+                        inRange.get(i).hit(entity.calcolaAngolo(entity.coordinateCentro().x, entity.coordinateCentro().y, inRange.get(i).coordinateCentro().x, inRange.get(i).coordinateCentro().y), damage);
                         System.out.println("Pugno a " + inRange.get(i).getClass() + " " + inRange.get(i).id());
                         executed=true;
                         

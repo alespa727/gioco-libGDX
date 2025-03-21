@@ -1,6 +1,7 @@
 package io.github.ale.screens.gameScreen.entity.player.movement;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.player.KeyHandlerPlayer;
@@ -16,12 +17,14 @@ public class PlayerMovementManager{
     private boolean collisioneX;
 
     private StatiDiMovimento stato;
+    private Vector2 last;
 
     private final float sprintSpeedMultiplier = 1.5f;
     private final float baseSpeedMultiplier = 1f;
 
     public PlayerMovementManager() {
         keyH = new KeyHandlerPlayer();
+        last = new Vector2();
     }
 
     /**
@@ -67,9 +70,10 @@ public class PlayerMovementManager{
 
         if (fermo) {
             speed = 0;
-            float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.05f;
+            float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.4f;
             if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino a 0, azzeralo
             p.statistiche().setSpeedBuff(newSpeedBuff);
+            
         }
         
     }
@@ -106,36 +110,40 @@ public class PlayerMovementManager{
 
         switch (stato) {
             case OPPOSTOY -> {
-                
-                aggiornaDirezione(p);
-                // Determina il movimento verticale
+                if (a || d) {
+                    p.direzione().y=0;
+                    aggiornaDirezioneX(p);
+                    aggiornaCollisioni(p);
 
-                aggiornaDirezione(p);
-                aggiornaCollisioni(p);
-
-                muoviAsseX(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
-                aggiornaStatoCollisione(p);
+                    muoviAsseX(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
+                    aggiornaStatoCollisione(p);
+                }else{
+                    addNotMoving(p);
+                } 
             }
             case OPPOSTOX -> {
-                
-                aggiornaDirezione(p);
-                aggiornaDirezione(p);
-                aggiornaCollisioni(p);
+                if (w || s) {
+                    p.direzione().x=0;
+                    aggiornaDirezioneY(p);
+                    aggiornaCollisioni(p);
 
-                muoviAsseY(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
+                    muoviAsseY(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
 
-                aggiornaStatoCollisione(p);
+                    aggiornaStatoCollisione(p);
+                }else{
 
+                    addNotMoving(p);
+                }
             }
             case ANYKEY -> {
                 
-                aggiornaDirezione(p);
+                aggiornaDirezioneY(p);
 
                 aggiornaCollisioni(p);
                 muoviAsseY(p);
 
                 aggiornaStatoCollisione(p);
-                aggiornaDirezione(p);
+                aggiornaDirezioneX(p);
 
                 aggiornaCollisioni(p);
                 muoviAsseX(p);
@@ -152,20 +160,18 @@ public class PlayerMovementManager{
     }
 
     private void addNotMoving(Entity p) {
-        float dx = p.direzione().x;
-        float dy = p.direzione().y;
-    
-        if (dx == 1f || dx == -1f) {
-            if (dy == 1f || dy == -1f) {
-                p.direzione().set(0, dy); // Annulla X, mantiene Y
-            } else {
-                p.direzione().set(dx / 2, dy); // Dimezza solo X
-            }
+
+        if (last.x > 0) {
+            p.direzione().set(0.5f, 0); // Annulla X, mantiene Y
+        }else if(last.x < 0){
+            p.direzione().set(-0.5f, 0); // Annulla X, mantiene Y
         }
-        if (dy == 1f || dy == -1f) {
-            p.direzione().set(dx, dy / 2); // Dimezza solo Y
+        if (last.y > 0) {
+            p.direzione().set(0, 0.5f); // Annulla X, mantiene Y
+        }else if(last.y < 0){
+            p.direzione().set(0, -0.5f); // Annulla X, mantiene Y
         }
-        
+
     }
     
 
@@ -174,24 +180,39 @@ public class PlayerMovementManager{
         collisioneX = Map.checkCollisionX(p);
     }
 
-    private void aggiornaDirezione(Entity p) {
+    private void aggiornaDirezioneX(Entity p) {
         float dx = 0;
-        float dy = 0;
         
-        if (w && s || a && d) {
+        if (a && d) {
             return;
         }
+
+        last = p.direzione();
 
         // Determina il movimento orizzontale
         if (a) dx = -1f;
         if (d) dx = 1f;
+    
+        p.direzione().set(dx, p.direzione().y);
+        //System.out.println(p.direzione());
+    }
+
+    public void aggiornaDirezioneY(Entity p){
+        float dy = 0;
+        
+        if (w && s) {
+            return;
+        }
+
+        last = p.direzione();
     
         // Determina il movimento verticale
         if (w) dy = 1f;
         if (s) dy = -1f;
         
     
-        p.direzione().set(dx, dy);
+        p.direzione().set(p.direzione().x, dy);
+        //System.out.println(p.direzione());
     }
 
     private void aggiornaStatoCollisione(Entity p) {

@@ -188,5 +188,5 @@ public class GameScreen implements Screen {
     }
 
     public EntityManager entities(){ return entities; }
-
+    public MapManager maps(){ return maps; }
 }

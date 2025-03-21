@@ -36,7 +36,7 @@ public abstract class Nemico extends Entity {
         this.stati = new EnemyState();
         this.awareness = new EnemyAwareness();
         this.range = new Rectangle(0, 0, 1.5f, 1.5f);
-        pathfinder = new Pathfinder();
+        pathfinder = new Pathfinder(this);
     }
 
     public void cooldown() {
@@ -117,7 +117,7 @@ public abstract class Nemico extends Entity {
     }
 
     public void pursue(float x, float y) {
-        pathfinder.renderPath(x, y, this);
+        pathfinder.renderPath(x, y);
     }
 
     public void evade(float x, float y) {
@@ -127,8 +127,7 @@ public abstract class Nemico extends Entity {
         // Correctly calculate the opposite direction
         Vector2 oppositeDirection = new Vector2(-directionX, -directionY);
 
-        pathfinder.renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y,
-                this);
+        pathfinder.renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y);
     }
 
     public EnemyState getEnemyStates() {

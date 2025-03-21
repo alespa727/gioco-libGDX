@@ -8,11 +8,11 @@ import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public class EntityMovementManager {
     public boolean fermo;
-    Vector2 direction;
+    private Vector2 direction;
     public boolean sulNodo;
     private Node lastNode;
     private Node node;
-    private static final float REACHED_THRESHOLD = 1/16f; 
+    private final float REACHED_THRESHOLD = 1/16f; 
 
     public void setGoal(Node start, Node node) {
         this.lastNode=start;
@@ -27,10 +27,11 @@ public class EntityMovementManager {
         if(node.equals(lastNode) && fermo==false){
             direction.scl(0.5f);
             e.direzione().set(direction);
+                       
+            //System.out.println(e.direzione());
+            fermo = true;
         }
-            
-        //System.out.println(e.direzione());
-        fermo = true;
+ 
     }
 
     public void update(Entity entity) {

@@ -74,7 +74,7 @@ public class Player extends Entity {
     }
 
     public Vector2 predizione(Entity e){
-        if ((direzioni.size>=3 && e.coordinateCentro().dst(coordinateCentro()) > 3f) && (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y))) 
+        if ((direzioni.size>=3) && (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y))) 
             return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().getSpeed() * count, direzioni.get(1).y * statistiche().getSpeed() * count);
         this.count=0;
         return new Vector2(coordinate());
@@ -100,7 +100,8 @@ public class Player extends Entity {
     }
 
     @Override
-    public void knockbackStart(float angolo){
+    public void hit(float angolo, float damage){
+        statistiche().inflictDamage(damage, true);
         dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
         dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
         countdownKnockback=0.5f;
