@@ -56,6 +56,9 @@ public class EntityMovementManager {
         Vector2 direzione = new Vector2(target).sub(entity.coordinateCentro()).nor(); 
         float speed = entity.statistiche().getSpeed() * Gdx.graphics.getDeltaTime();
         Vector2 movement = direzione.scl(speed);
+        if(!entity.manager.ispathclear(entity, node)){
+            movement.scl(0.5f);
+        }
         entity.setX(entity.getX() + movement.x);
         entity.setY(entity.getY() + movement.y);
         

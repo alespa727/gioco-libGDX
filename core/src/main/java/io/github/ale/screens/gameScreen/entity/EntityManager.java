@@ -17,6 +17,8 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.maps.Map;
+import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public final class EntityManager {
     private final MyGame game;
@@ -274,7 +276,17 @@ public final class EntityManager {
         entita.shrink();
     }
 
+    public boolean ispathclear(Entity e, Node node){
+        for(int j=0; j<entita.size; j++){
+            if(!entita.get(j).equals(e) && Map.getGraph().getClosestNode(entita.get(j).coordinateCentro().x, entita.get(j).coordinateCentro().y).equals(node)){
+                System.out.println("not clear");
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean isPaused(){
         return game.gameScreen.isPaused;
     }
-}
+} 
