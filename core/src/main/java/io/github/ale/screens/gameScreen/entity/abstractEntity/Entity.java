@@ -22,23 +22,8 @@ import io.github.ale.screens.gameScreen.maps.Map;
 
 public abstract class Entity implements Drawable, Creatable {
 
-    public float delta;
-
-    protected Rectangle range;
-
-    public EntityManager manager;
-
-    private float atkCooldown = 0; // Tempo rimanente prima del prossimo attacco
-    
-    float dx;
-    float dy;
-    float x=0;
-    float y=0;
-    float angolo;
-    private float countdownKnockback = 0.273f;
-
+    // Fields
     private final EntityConfig config;
-
     private EntityInfo info;
     private Dimensioni size;
     private EntityState stati;
@@ -48,6 +33,15 @@ public abstract class Entity implements Drawable, Creatable {
     private Hitbox hitbox;
     private EntityGraphics graphics;
 
+    public EntityManager manager;
+    protected Rectangle range;
+
+    private float atkCooldown = 0;
+    private float countdownKnockback = 0.273f;
+    public float delta;
+    private float dx, dy, x = 0, y = 0, angolo;
+
+    // Constructor
     public Entity(EntityConfig config) {
         this.config = config;
         delta = Gdx.graphics.getDeltaTime();
@@ -63,21 +57,17 @@ public abstract class Entity implements Drawable, Creatable {
         inizializzaAnimazione();
     }
 
-    public EntityConfig config() {
-        return this.config;
-    }
+    // Abstract methods
+    public abstract void updateEntity();
+    public abstract void updateEntityType();
+    public abstract void drawRange(ShapeRenderer renderer);
 
-    public int id(){ return info.id(); }
-
+    // Core methods
     public void render() {
         delta = Gdx.graphics.getDeltaTime();
         updateEntity();
         updateEntityType();
     }
-
-    public abstract void updateEntity();
-    public abstract void updateEntityType();
-    public abstract void drawRange(ShapeRenderer renderer);
 
     public void kill() {
         statistiche().inflictDamage(statistiche().getHealth(), stati.immortality());
@@ -86,59 +76,85 @@ public abstract class Entity implements Drawable, Creatable {
 
     public void respawn() {
         stati().setIsAlive(config.isAlive);
-        // this.setX(config.x);
-        // this.setY(config.y);
         this.statistiche().gotDamaged = false;
     }
 
-    
-    public void despawn(){
+    public void despawn() {
         System.out.println("Entità id " + id() + " despawnata");
         manager.despawn(this);
     }
 
-    /**
-     * restituisce nome entità
-     * 
-     * @return
-     */
+    public void collisionientita() {
+        if (manager.entita(hitbox()).size > 0) {
+            for (int i = 0; i < manager.entita(hitbox()).size; i++) {
+                coordinate().set(
+                    getX() - direzione().x * statistiche().getSpeed() * 1.5f * delta,
+                    getY() - direzione().y * statistiche().getSpeed() * 1.5f * delta
+                );
+            }
+        }
+    }
+
+    public void limiti() {
+        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox().width - hitbox().width));
+        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox().height - hitbox().height));
+    }
+
+    public void hit(float angolo, float damage) {
+        statistiche().inflictDamage(damage, false);
+        dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
+        dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
+        countdownKnockback = 0.5f;
+        this.angolo = angolo;
+        knockback();
+    }
+
+    protected void knockback() {
+        delta = Gdx.graphics.getDeltaTime();
+        if (countdownKnockback >= 0f) {
+            countdownKnockback -= delta;
+            dx *= 0.9;
+            dy *= 0.9;
+            if (!Map.checkCollisionX(this, 0.1f, angolo)) {
+                x = dx * delta;
+                setX(getX() + x);
+            }
+            if (!Map.checkCollisionY(this, 0.1f, angolo)) {
+                y = dy * delta;
+                setY(getY() + y);
+            }
+        } else {
+            x = 0;
+            y = 0;
+        }
+    }
+
+    // Getters and setters
+    public EntityConfig config() {
+        return this.config;
+    }
+
+    public int id() {
+        return info.id();
+    }
+
     public String nome() {
         return this.info.getNome();
     }
 
-    /**
-     * restituisce descrizione
-     * 
-     * @return
-     */
     public String descrizione() {
         return this.info.getDescrizione();
     }
 
-    /**
-     * restituisce la direzione
-     * 
-     * @return
-     */
     public Vector2 direzione() {
         return this.direzione.getDirezione();
     }
 
-    /**
-     * restituisce la stats
-     * 
-     * @return
-     */
     @Override
     public Stats statistiche() {
         return this.statistiche;
     }
 
-    /**
-     * restituisce la hitbox
-     * 
-     * @return
-     */
     public Rectangle hitbox() {
         return this.hitbox.getHitbox();
     }
@@ -155,34 +171,26 @@ public abstract class Entity implements Drawable, Creatable {
         return new Vector2(getX() + getSize().getWidth() / 2, getY() + getSize().getHeight() / 2);
     }
 
-    public void setCentroX(float x){
-        this.coordinate.x = x + getSize().getWidth()/2;
-    }
-
-    public void setCentroY(float y){
-        this.coordinate.y = y + getSize().getHeight()/2;
-    }
-
-    public void setCentro(Vector2 punto){
-        coordinate.set(punto.x + getSize().getWidth()/2, punto.y + getSize().getHeight()/2);
+    public void setCentro(Vector2 punto) {
+        coordinate.set(punto.x + getSize().getWidth() / 2, punto.y + getSize().getHeight() / 2);
     }
 
     @Override
-    public final float getY() {
-        return coordinate.y;
-    }
-
-    public void setY(float y) {
-        this.coordinate.y = y;
-    }
-
-    @Override
-    public final float getX() {
+    public float getX() {
         return coordinate.x;
     }
 
     public void setX(float x) {
         this.coordinate.x = x;
+    }
+
+    @Override
+    public float getY() {
+        return coordinate.y;
+    }
+
+    public void setY(float y) {
+        this.coordinate.y = y;
     }
 
     @Override
@@ -194,137 +202,17 @@ public abstract class Entity implements Drawable, Creatable {
         this.size = size;
     }
 
-    @Override
     public Animation<TextureRegion> getAnimazione() {
         return this.graphics.getAnimazione();
     }
 
     @Override
-    public final void setAnimation() {
+    public void setAnimation() {
         this.graphics.setAnimation(this);
     }
 
-    /**
-     * Inizializza textures
-     */
-    public final void inizializzaEntityGraphics() {
-        this.graphics = new EntityGraphics();
-    }
-
-    /**
-     * Inizializza le info dell'entita
-     * 
-     * @param nome
-     * @param descrizione
-     */
-    public final void inizializzaInfo(String nome, String descrizione, int id) {
-        this.info = new EntityInfo(nome, descrizione, id);
-    }
-
-    /**
-     * inizializza le coordinate
-     * 
-     * @param x
-     * @param y
-     */
-    public final void inizializzaCoordinate(float x, float y) {
-        coordinate= new Vector2(x-size.getWidth()/4, y-size.getHeight()/4);
-    }
-
-    /**
-     * inizializza hitbox entità
-     * 
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     */
-    public final void inizializzaHitbox(float x, float y, float width, float height) {
-        hitbox = new Hitbox(x, y, width, height);
-    }
-
-    /**
-     * inizializza direzione entità
-     * 
-     * @param direzione
-     */
-    public final void inizializzaDirezione(Vector2 direzione) {
-        this.direzione = new Direzione();
-        this.direzione.setDirezione(direzione);
-    }
-
-    /**
-     * inizializza stati entità
-     * 
-     * @param isAlive
-     * @param inCollisione
-     * @param isMoving
-     */
-    public final void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving) {
-        stati = new EntityState();
-        stati.setIsAlive(isAlive);
-        stati.setInCollisione(inCollisione);
-        stati.setIsMoving(isMoving);
-        stati.setImmortality(false);
-    }
-
-    /**
-     * inizializza animazione entità
-     */
-    public final void inizializzaAnimazione() {
-        this.graphics.inizializzaAnimazione(this);
-    }
-
-    /**
-     * inizializza Dimensione della texture dell'entità
-     * 
-     * @param size
-     */
-    public final void inizializzaDimensione(Dimensioni size) {
-        this.size = size;
-    }
-
-    /**
-     * inizializza le statistiche basiche dell'entità
-     * 
-     * @param hp
-     * @param speed
-     * @param attackdmg
-     */
-    public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
-        this.statistiche = new Stats(hp, speed, attackdmg);
-    }
-
-    /**
-     * setta la direzione
-     * 
-     * @param direzione
-     */
-    public void setDirezione(Vector2 direzione) {
-        this.direzione.setDirezione(direzione);
-    }
-
-    /**
-     * restituisce la hitbox
-     * 
-     * @return
-     */
-    public void adjustHitbox() {
-        this.hitbox.adjust(this);
-    }
-
-    /**
-     * restituisce oggetto contenente metodi delle texture
-     * 
-     * @return
-     */
-    public final EntityGraphics getEntityGraphics() {
+    private EntityGraphics getEntityGraphics() {
         return graphics;
-    }
-
-    public void mantieniNeiLimiti() {
-        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox().width - hitbox().width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox().height - hitbox().height));
     }
 
     public float atkCooldown() {
@@ -335,49 +223,64 @@ public abstract class Entity implements Drawable, Creatable {
         this.atkCooldown = atkCooldown;
     }
 
+    public void setDirezione(Vector2 direzione) {
+        this.direzione.setDirezione(direzione);
+    }
+
+    public Rectangle range() {
+        return range;
+    }
+
     public float calcolaAngolo(float x1, float y1, float x2, float y2) {
-        float deltaX = x2 - x1; // Change this to calculate delta from (x1, y1) to (x2, y2)
-        float deltaY = y2 - y1; // Change this to calculate delta from (x1, y1) to (y2, y2)
+        float deltaX = x2 - x1;
+        float deltaY = y2 - y1;
         float angle = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
-    
-        if (angle < 0) {
-            angle += 360; // Convert to angle between 0° and 360°
-        }
-        
-        return angle;
-    }
-    
-    
-    public void hit(float angolo, float damage){
-        statistiche().inflictDamage(damage, false);
-        dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
-        dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
-        countdownKnockback=0.5f;
-        this.angolo=angolo;
-        knockback();
+        return angle < 0 ? angle + 360 : angle;
     }
 
-    protected  void knockback() {
-        delta=Gdx.graphics.getDeltaTime();
-        if (countdownKnockback>=0f) {
-            countdownKnockback-=delta;
-            dx*=0.9;
-            dy*=0.9;
-            if(!Map.checkCollisionX(this, 0.1f, angolo)){
-                x = dx * delta;
-                setX(getX() + x); 
-            }
-                
-            if (!Map.checkCollisionY(this, 0.1f, angolo)) {
-                y = dy * delta;
-                setY(getY() + y);
-            }
- 
-        }else{
-            x = 0;
-            y = 0;
-        }
+    // Initialization methods
+    public final void inizializzaEntityGraphics() {
+        this.graphics = new EntityGraphics();
     }
 
-    public Rectangle range(){ return range; }
+    public final void inizializzaInfo(String nome, String descrizione, int id) {
+        this.info = new EntityInfo(nome, descrizione, id);
+    }
+
+    public final void inizializzaCoordinate(float x, float y) {
+        coordinate = new Vector2(x - size.getWidth() / 4, y - size.getHeight() / 4);
+    }
+
+    public final void inizializzaHitbox(float x, float y, float width, float height) {
+        hitbox = new Hitbox(x, y, width, height);
+    }
+
+    public final void inizializzaDirezione(Vector2 direzione) {
+        this.direzione = new Direzione();
+        this.direzione.setDirezione(direzione);
+    }
+
+    public final void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving) {
+        stati = new EntityState();
+        stati.setIsAlive(isAlive);
+        stati.setInCollisione(inCollisione);
+        stati.setIsMoving(isMoving);
+        stati.setImmortality(false);
+    }
+
+    public final void inizializzaAnimazione() {
+        this.graphics.inizializzaAnimazione(this);
+    }
+
+    public final void inizializzaDimensione(Dimensioni size) {
+        this.size = size;
+    }
+
+    public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
+        this.statistiche = new Stats(hp, speed, attackdmg);
+    }
+
+    public void adjustHitbox() {
+        this.hitbox.adjust(this);
+    }
 }

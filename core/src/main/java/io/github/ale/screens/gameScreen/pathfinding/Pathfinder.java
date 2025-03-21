@@ -1,5 +1,6 @@
 package io.github.ale.screens.gameScreen.pathfinding;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
@@ -20,13 +21,26 @@ public class Pathfinder {
     private IndexedAStarPathFinder<Node> pathFinder;
     private final DefaultGraphPath<Node> path;
 
+    private float cooldown=0;
+
     public Pathfinder(Nemico enemy){
         this.path = new DefaultGraphPath<>();
         this.enemy = enemy;
     }
+
+    public void countdown(){
+        if (cooldown>0) {
+            cooldown-=Gdx.graphics.getDeltaTime();
+        }else{
+            cooldown=3f;
+            enemy.movement().sulNodo=true;
+        }
+    }
     
     public void renderPath(float x, float y) {
         // Carica il grafo una volta che è stato caricato
+
+        countdown();
 
         if (hasLoadedGraph && map!=MapManager.currentmap()) {
             map = MapManager.currentmap();
@@ -41,21 +55,21 @@ public class Pathfinder {
             hasLoadedGraph = true;
             System.out.println("Caricato il grafo!");
             calcolaPercorso(x, y);
-            enemy.getMovementManager().setGoal(path.get(0), path.get(1));
+            enemy.movement().setGoal(path.get(0), path.get(1));
         }
 
-        if (enemy.getMovementManager().sulNodo) {
+        if (enemy.movement().sulNodo) {
             calcolaPercorso(x, y);
             if (path.getCount() > 1)
-                enemy.getMovementManager().setGoal(path.get(0), path.get(1));
+                enemy.movement().setGoal(path.get(0), path.get(1));
         }
 
         // System.out.println(path.getCount());
         if (path.getCount() > 1 && enemy.coordinateCentro().dst(x, y)<20f) {
             // Aggiorna il movimento del nemico
-            enemy.getMovementManager().update(enemy);
+            enemy.movement().update(enemy);
         } else {
-            enemy.getMovementManager().setFermo(enemy);
+            enemy.movement().setFermo(enemy);
         }
 
        

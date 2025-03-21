@@ -80,7 +80,7 @@ public final class EntityManager {
     
     }
 
-    public void addNemico(Class<? extends Entity> e, EntityConfig config) {
+    public void addNemico(Class<? extends Nemico> e, EntityConfig config) {
         try {
             System.err.println("Creata entità! id." + entityidcount);
             Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Player.class);//Cerca il costruttore 
@@ -88,7 +88,6 @@ public final class EntityManager {
             Entity newEntity = c.newInstance(config, this, player);// Crea una nuova entità
             entita.add(newEntity); //aggiunge entità
             entityidcount++;
-
         } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
             err.println("Errore nel creare l'entità");
         }

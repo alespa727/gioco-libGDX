@@ -143,7 +143,7 @@ public class Player extends Entity {
         else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-getSize().getWidth()/2;
 
         delta = Gdx.graphics.getDeltaTime();
-        mantieniNeiLimiti();
+        limiti();
 
         hitbox().x = getX() + 0.65f;
         hitbox().y = getY() + 0.55f;
