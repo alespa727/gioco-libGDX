@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
@@ -20,12 +21,12 @@ import io.github.ale.screens.gameScreen.entity.player.Player;
 public final class EntityManager {
     private final MyGame game;
 
-    private int entityidcount=0;
-
     private final Player player;
+    private final EntityConfig p;
     private final Array<Entity> entita;
 
-    private final EntityConfig p;
+    private int entityidcount=0;
+
 
     public EntityManager(MyGame game) {
         entita = new Array<>();
@@ -37,7 +38,7 @@ public final class EntityManager {
         p.imgpath = "Finn.png";
         p.width = 0.65f;
         p.height = 0.4f;
-        p.direzione = "fermoS";
+        p.direzione = new Vector2(0, -0.5f);
         p.isAlive = true;
         p.inCollisione = false;
         p.isMoving = false;
@@ -61,7 +62,7 @@ public final class EntityManager {
         e.imgpath = "Finn.png";
         e.width = 0.65f;
         e.height = 0.4f;
-        e.direzione = "fermoS";
+        e.direzione = new Vector2(0, -0.5f);
         e.isAlive = true;
         e.inCollisione = false;
         e.isMoving = false;
@@ -71,7 +72,7 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        for (int index = 0; index < 50; index++) {
+        for (int index = 0; index < 2; index++) {
             e.y++;
             addNemico(Finn.class, e); 
         }
@@ -272,5 +273,9 @@ public final class EntityManager {
     public void despawn(Entity e){
         entita.removeValue(e, false);
         entita.shrink();
+    }
+
+    public boolean isPaused(){
+        return game.gameScreen.isPaused;
     }
 }

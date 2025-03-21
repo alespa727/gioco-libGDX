@@ -36,10 +36,10 @@ public abstract class Nemico extends Entity {
         this.stati = new EnemyState();
         this.awareness = new EnemyAwareness();
         this.range = new Rectangle(0, 0, 1.5f, 1.5f);
-        pathfinder = new Pathfinder();
+        pathfinder = new Pathfinder(this);
     }
 
-    public void cooldown(){
+    public void cooldown() {
 
         if (statistiche().gotDamaged) {
             countdownDamage -= delta;
@@ -50,19 +50,18 @@ public abstract class Nemico extends Entity {
         }
         if (atkCooldown() >= 0) {
             setAtkCooldown(atkCooldown() - delta);
-            //System.out.println(atkCooldown());
-        }else{
-            if (manager.entita(range.x, range.y, range.width, range.height).size>0) {
+            // System.out.println(atkCooldown());
+        } else {
+            if (manager.entita(range.x, range.y, range.width, range.height).size > 0) {
                 setAtkCooldown(1.3f);
-            if(manager.isentityinrect(0, range.x, range.y, range.width, range.height)){
-                System.out.println("ATTACCO");
-                attack();
-            } 
+                if (manager.isentityinrect(0, range.x, range.y, range.width, range.height)) {
+                    System.out.println("ATTACCO");
+                    attack();
+                }
             }
         }
-        
-    }
 
+    }
 
     /**
      * aggiorna lo stato del nemico
@@ -80,10 +79,14 @@ public abstract class Nemico extends Entity {
         adjustHitbox();
         knockback();
 
-        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().getWidth()/2;
-        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().getWidth()/2;
-        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-getSize().getWidth()/2;
-        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-getSize().getWidth()/2;
+        if (direzione().x > 0)
+            range.x = coordinateCentro().x + (float) Math.ceil(direzione().x) - getSize().getWidth() / 2;
+        else
+            range.x = coordinateCentro().x + (float) Math.floor(direzione().x) - getSize().getWidth() / 2;
+        if (direzione().y > 0)
+            range.y = coordinateCentro().y + (float) Math.ceil(direzione().y) - getSize().getWidth() / 2;
+        else
+            range.y = coordinateCentro().y + (float) Math.floor(direzione().y) - getSize().getWidth() / 2;
 
     }
 
@@ -95,7 +98,7 @@ public abstract class Nemico extends Entity {
     @Override
     public void drawRange(ShapeRenderer renderer) {
         renderer.rect(range.x, range.y, range.width, range.height);
-        
+
         renderer.setColor(Color.BLACK);
     }
 
@@ -113,18 +116,18 @@ public abstract class Nemico extends Entity {
         pathfinder.drawPath(shapeRenderer);
     }
 
-    public void pursue(float x, float y){
-        pathfinder.renderPath(x, y, this);
+    public void pursue(float x, float y) {
+        pathfinder.renderPath(x, y);
     }
 
-    public void evade(float x, float y){
+    public void evade(float x, float y) {
         float directionX = x - coordinateCentro().x;
         float directionY = y - coordinateCentro().y;
 
         // Correctly calculate the opposite direction
         Vector2 oppositeDirection = new Vector2(-directionX, -directionY);
 
-        pathfinder.renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y, this);
+        pathfinder.renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y);
     }
 
     public EnemyState getEnemyStates() {
@@ -153,7 +156,7 @@ public abstract class Nemico extends Entity {
     public void setAwareness(EnemyAwareness awareness) {
         this.awareness = awareness;
     }
-    
+
     @Override
     public void drawHitbox(ShapeRenderer renderer) {
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);

@@ -24,7 +24,7 @@ public abstract class Entity implements Drawable, Creatable {
 
     public float delta;
 
-    public Rectangle range;
+    protected Rectangle range;
 
     public EntityManager manager;
 
@@ -57,7 +57,7 @@ public abstract class Entity implements Drawable, Creatable {
         inizializzaInfo(config.nome, config.descrizione, config.id);
         getEntityGraphics().setTexture(config.imgpath);
         inizializzaHitbox(getX(), getY(), config.width, config.height);
-        inizializzaDirezione(new Vector2(0, 1));
+        inizializzaDirezione(config.direzione);
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         inizializzaAnimazione();
@@ -338,17 +338,18 @@ public abstract class Entity implements Drawable, Creatable {
     public float calcolaAngolo(float x1, float y1, float x2, float y2) {
         float deltaX = x2 - x1; // Change this to calculate delta from (x1, y1) to (x2, y2)
         float deltaY = y2 - y1; // Change this to calculate delta from (x1, y1) to (y2, y2)
-        float angolo = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
+        float angle = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
     
-        if (angolo < 0) {
-            angolo += 360; // Convert to angle between 0° and 360°
+        if (angle < 0) {
+            angle += 360; // Convert to angle between 0° and 360°
         }
         
-        return angolo;
+        return angle;
     }
     
     
-    public void knockbackStart(float angolo){
+    public void hit(float angolo, float damage){
+        statistiche().inflictDamage(damage, false);
         dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
         dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
         countdownKnockback=0.5f;
@@ -377,4 +378,6 @@ public abstract class Entity implements Drawable, Creatable {
             y = 0;
         }
     }
+
+    public Rectangle range(){ return range; }
 }
