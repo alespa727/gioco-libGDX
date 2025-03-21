@@ -279,7 +279,7 @@ public final class EntityManager {
     public boolean ispathclear(Entity e, Node node){
         for(int j=0; j<entita.size; j++){
             if(!entita.get(j).equals(e) && Map.getGraph().getClosestNode(entita.get(j).coordinateCentro().x, entita.get(j).coordinateCentro().y).equals(node)){
-                System.out.println("not clear");
+                //System.out.println("not clear");
                 return false;
             }
         }

@@ -20,11 +20,12 @@ public class Punch extends Skill{
     @Override
     public void execute(){
         executed=false;
+        keyH.input();
         if(countdown > 0){
                 countdown-=entity.delta;
+                if(keyH.r) countdown=cooldown;
         }else{
-            keyH.input();
-            if(keyH.left_click){
+            if(keyH.r){
                 countdown=cooldown;
                 inRange = entity.manager.entita(entity.range().x, entity.range().y, entity.range().width, entity.range().height);
                 for(int i=0; i<inRange.size; i++){
