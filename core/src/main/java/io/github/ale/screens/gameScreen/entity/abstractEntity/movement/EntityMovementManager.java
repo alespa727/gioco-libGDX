@@ -19,6 +19,7 @@ public class EntityMovementManager {
         this.node = node;
         sulNodo=true;
         fermo=false;
+        direction = new Vector2();
     }
 
     public void setFermo(Entity e) {
@@ -41,7 +42,7 @@ public class EntityMovementManager {
         if(lastNode!=null){
             direction = new Vector2(node.x - lastNode.x, node.y - lastNode.y);
             if (!direction.epsilonEquals(0, 0)) {
-                entity.direzione().set(direction);
+                entity.setDirezione(direction);
             }
         }
         
