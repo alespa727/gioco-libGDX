@@ -3,6 +3,7 @@ package io.github.ale.screens.gameScreen.entity.livingEntity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
@@ -12,6 +13,7 @@ import io.github.ale.screens.gameScreen.entity.skill.SkillSet;
 
 public abstract class LivingEntity extends Entity{
     private final SkillSet skillset;
+    protected Rectangle range;
 
     public LivingEntity(EntityConfig config, EntityManager manager) {
         super(config, manager);
@@ -59,6 +61,10 @@ public abstract class LivingEntity extends Entity{
 
     public Skill getSkill(Class<? extends Skill> skillclass){
         return skillset.getSkill(skillclass);
+    }
+    
+    public Rectangle range() {
+        return range;
     }
 
 

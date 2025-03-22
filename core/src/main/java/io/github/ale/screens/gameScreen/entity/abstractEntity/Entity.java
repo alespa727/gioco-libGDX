@@ -34,7 +34,6 @@ public abstract class Entity{
     private EntityGraphics graphics;
 
     public EntityManager manager;
-    protected Rectangle range;
 
     private float atkCooldown = 0;
     public float delta;
@@ -62,7 +61,6 @@ public abstract class Entity{
     public abstract void updateEntity();
     public abstract void updateEntityType();
     public abstract void create();
-    public abstract void drawRange(ShapeRenderer renderer);
     public abstract void drawHitbox(ShapeRenderer renderer);
 
     
@@ -117,14 +115,7 @@ public abstract class Entity{
     }
 
     public void collisionientita() {
-        if (manager.entita(hitbox()).size > 0) {
-            for (int i = 0; i < manager.entita(hitbox()).size; i++) {
-                coordinate().set(
-                    getX() - direzione().x * statistiche().speed() * 1.5f * delta,
-                    getY() - direzione().y * statistiche().speed() * 1.5f * delta
-                );
-            }
-        }
+        //DA FARE
     }
 
     public void limiti() {
@@ -134,7 +125,7 @@ public abstract class Entity{
 
     // Getters and setters
     public EntityConfig config() {
-        return this.config;
+        return new EntityConfig(config);
     }
 
     public int id() {
@@ -223,10 +214,6 @@ public abstract class Entity{
 
     public void setDirezione(Vector2 direzione) {
         this.direzione.setDirezione(direzione);
-    }
-
-    public Rectangle range() {
-        return range;
     }
 
     public float calcolaAngolo(float x1, float y1, float x2, float y2) {

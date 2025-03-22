@@ -1,6 +1,7 @@
 package io.github.ale.screens.gameScreen.entity.combatEntity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
@@ -20,16 +21,17 @@ public abstract class CombatEntity extends LivingEntity{
         super(config, manager);
         attack = new Cooldown(attackcooldown);
         damage.reset();
+        attack.reset(0f);
     }
 
     @Override
     public void updateEntity() {
         delta = Gdx.graphics.getDeltaTime();
         
-        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().width/2;
-        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().width/2;
-        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-getSize().height/2;
-        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-getSize().height/2;
+        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-range.width/2;
+        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-range.width/2;
+        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-range.height/2;
+        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-range.height/2;
 
         cooldown();
         limiti();
@@ -48,6 +50,10 @@ public abstract class CombatEntity extends LivingEntity{
                 attack.reset();
             }
         }
+    }
+
+    public Cooldown getAttackCooldown(){
+        return attack;
     }
 
     public void damagecooldown(){
@@ -94,5 +100,10 @@ public abstract class CombatEntity extends LivingEntity{
         this.isAttacking = isAttacking;
     }
 
+    public void drawRange(ShapeRenderer renderer) {
+        renderer.setColor(1, 0, 0, 0.5f);
+        renderer.rect(range.x, range.y, range.width, range.height);
+        renderer.setColor(1, 1, 1, 1);
+    }
 
 }

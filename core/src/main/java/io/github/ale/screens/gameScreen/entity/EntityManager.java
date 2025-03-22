@@ -14,6 +14,7 @@ import io.github.ale.MyGame;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
@@ -231,7 +232,7 @@ public final class EntityManager {
     public void range(ShapeRenderer renderer){
         
         for (Entity e : entita) {
-            if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) e.drawRange(renderer);
+            if (e instanceof CombatEntity && CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) ((CombatEntity)e).drawRange(renderer);
         }
         
     }
