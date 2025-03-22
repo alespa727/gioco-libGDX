@@ -1,0 +1,31 @@
+package io.github.ale.cooldown;
+
+/**
+ *
+ * @author alesp
+ */
+public class Cooldown {
+    public float time;
+    public float maxTime;
+    public boolean isReady;
+
+    public Cooldown(float maxTime) {
+        this.maxTime = maxTime;
+        this.time = maxTime;
+        this.isReady = true;
+    }
+    
+    public void update(float delta){
+        if(!isReady){
+            time -= delta;
+            if(time <= 0){
+                isReady = true;
+                time = maxTime;
+            }
+        }
+    }   
+
+    public void reset(){
+        isReady = false;
+    }
+}

@@ -16,6 +16,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
+import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.pathfinding.Node;
@@ -84,7 +85,7 @@ public final class EntityManager {
 
     public void addNemico(Class<? extends Nemico> e, EntityConfig config) {
         try {
-            System.err.println("Creata entità! id." + entityidcount);
+            //System.err.println("Creata entità! id." + entityidcount);
             Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Player.class);//Cerca il costruttore 
             config.id=entityidcount;
             Entity newEntity = c.newInstance(config, this, player);// Crea una nuova entità
@@ -167,6 +168,17 @@ public final class EntityManager {
         for (int i = 0; i < entita.size; i++) {
             if (CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
                 array.add(entita.get(i));
+            }
+        }
+
+        return array;
+    }
+
+    public Array<LivingEntity> entitaviventi(float x, float y, float width, float height){
+        Array<LivingEntity> array = new Array<>();
+        for (int i = 0; i < entita.size; i++) {
+            if (entita.get(i) instanceof LivingEntity && CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
+                array.add((LivingEntity) entita.get(i));
             }
         }
 

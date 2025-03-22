@@ -18,10 +18,9 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.graphics.EntityGra
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.Direzione;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
-import io.github.ale.screens.gameScreen.interfaces.Creatable;
 import io.github.ale.screens.gameScreen.maps.Map;
 
-public abstract class Entity implements Creatable {
+public abstract class Entity{
 
     // Fields
     private final EntityConfig config;
@@ -40,12 +39,13 @@ public abstract class Entity implements Creatable {
     private float atkCooldown = 0;
     private float countdownKnockback = 0.273f;
     public float delta;
-    private float dx, dy, x = 0, y = 0, angolo;
+    
 
     // Constructor
-    public Entity(EntityConfig config) {
+    public Entity(EntityConfig config, EntityManager manager) {
         this.config = config;
         delta = Gdx.graphics.getDeltaTime();
+        this.manager = manager;
         inizializzaEntityGraphics();
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaCoordinate(config.x, config.y);
@@ -56,11 +56,13 @@ public abstract class Entity implements Creatable {
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         inizializzaAnimazione();
+        Gdx.app.postRunnable(this::create);
     }
 
     // Abstract methods
     public abstract void updateEntity();
     public abstract void updateEntityType();
+    public abstract void create();
     public abstract void drawRange(ShapeRenderer renderer);
     public abstract void drawHitbox(ShapeRenderer renderer);
 
@@ -129,35 +131,6 @@ public abstract class Entity implements Creatable {
     public void limiti() {
         setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.width() - hitbox().width - hitbox().width));
         setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.height() - hitbox().height - hitbox().height));
-    }
-
-    public void hit(float angolo, float damage) {
-        statistiche().inflictDamage(damage, false);
-        dx = (float) Math.cos(Math.toRadians(angolo)) * 6f;
-        dy = (float) Math.sin(Math.toRadians(angolo)) * 6f;
-        countdownKnockback = 0.5f;
-        this.angolo = angolo;
-        knockback();
-    }
-
-    protected void knockback() {
-        delta = Gdx.graphics.getDeltaTime();
-        if (countdownKnockback >= 0f) {
-            countdownKnockback -= delta;
-            dx *= 0.9;
-            dy *= 0.9;
-            if (!Map.checkCollisionX(this, 0.1f, angolo)) {
-                x = dx * delta;
-                setX(getX() + x);
-            }
-            if (!Map.checkCollisionY(this, 0.1f, angolo)) {
-                y = dy * delta;
-                setY(getY() + y);
-            }
-        } else {
-            x = 0;
-            y = 0;
-        }
     }
 
     // Getters and setters

@@ -1,10 +1,10 @@
 package io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
 
 public abstract class Skill {
     
-    protected Entity entity;
+    protected LivingEntity entity;
     private final String name;
     private final String description;
 
@@ -12,7 +12,8 @@ public abstract class Skill {
     public float cooldown = 0.8f;
     public boolean executed=false;
 
-    public Skill(String name, String description){
+    public Skill(LivingEntity entity, String name, String description){
+        this.entity=entity;
         this.name=name;
         this.description=description;
     }
