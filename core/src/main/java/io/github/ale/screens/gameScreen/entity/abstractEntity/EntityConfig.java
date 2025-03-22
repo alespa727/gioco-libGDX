@@ -10,6 +10,7 @@ public class EntityConfig {
     public Vector2 direzione;
     public String nome, descrizione;
     public boolean isAlive, inCollisione, isMoving;
+    public float offsetX, offsetY;
     public float hp, speed, attackdmg;
     public float imageWidth, imageHeight;
 
@@ -26,6 +27,8 @@ public class EntityConfig {
         this.nome = config.nome;
         this.descrizione = config.descrizione;
         this.isAlive = config.isAlive;
+        this.offsetX = config.offsetX;
+        this.offsetY = config.offsetY;
         this.inCollisione = config.inCollisione;
         this.isMoving = config.isMoving;
         this.hp = config.hp;

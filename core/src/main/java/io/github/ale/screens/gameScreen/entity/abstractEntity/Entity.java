@@ -48,7 +48,7 @@ public abstract class Entity{
         inizializzaCoordinate(config.x, config.y);
         inizializzaInfo(config.nome, config.descrizione, config.id);
         getEntityGraphics().setTexture(config.imgpath);
-        inizializzaHitbox(getX(), getY(), config.width, config.height);
+        inizializzaHitbox(getX(), getY(), config.width, config.height, config.offsetX, config.offsetY);
         inizializzaDirezione(config.direzione);
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
@@ -118,8 +118,8 @@ public abstract class Entity{
     }
 
     public void limiti() {
-        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.width() - hitbox().width - hitbox().width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.height() - hitbox().height - hitbox().height));
+        setX(MathUtils.clamp(getX(), 0 - hitbox().width, Map.width() - hitbox().width - hitbox().width));
+        setY(MathUtils.clamp(getY(), 0 -hitbox().height, Map.height() - hitbox().height - hitbox().height));
     }
 
     // Getters and setters
@@ -160,7 +160,7 @@ public abstract class Entity{
     }
 
     public Vector2 coordinateCentro() {
-        return new Vector2(getX() + getSize().width / 2, getY() + getSize().height / 2);
+        return new Vector2(hitbox().x+hitbox().width/2, hitbox().y+hitbox().height/2);
     }
 
     public void setCentro(Vector2 punto) {
@@ -232,11 +232,11 @@ public abstract class Entity{
     }
 
     public final void inizializzaCoordinate(float x, float y) {
-        coordinate = new Vector2(x - size.width / 4, y - size.height / 4);
+        coordinate = new Vector2(x - size.width/2, y - size.height/2);
     }
 
-    public final void inizializzaHitbox(float x, float y, float width, float height) {
-        hitbox = new Hitbox(x, y, width, height);
+    public final void inizializzaHitbox(float x, float y, float width, float height, float offsetX, float offsetY) {
+        hitbox = new Hitbox(x, y, width, height, offsetX, offsetY);
     }
 
     public final void inizializzaDirezione(Vector2 direzione) {

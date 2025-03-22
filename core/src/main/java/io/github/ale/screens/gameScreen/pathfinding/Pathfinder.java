@@ -78,7 +78,7 @@ public class Pathfinder {
     
     public void calcolaPercorso(float x, float y) {
         path.clear();
-        startNode = Map.getGraph().getClosestNode(enemy.hitbox().x + enemy.hitbox().width / 2, enemy.hitbox().y + enemy.hitbox().height / 2);
+        startNode = Map.getGraph().getClosestNode(enemy.coordinateCentro().x, enemy.coordinateCentro().y);
         endNode = Map.getGraph().getClosestNode(x, y);
         //System.out.println(Map.getGraph().getNodeCount());
         heuristic = new HeuristicDistance();
@@ -102,8 +102,6 @@ public class Pathfinder {
             return; // Nessun percorso da disegnare
         }
         // Colore delle linee
-
-        shapeRenderer.setColor(Color.BLACK);
         
         shapeRenderer.setColor(Color.RED);
         Node previousNode = null; // Nodo precedente inizializzato a null

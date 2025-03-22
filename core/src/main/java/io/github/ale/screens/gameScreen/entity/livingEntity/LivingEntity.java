@@ -37,6 +37,7 @@ public abstract class LivingEntity extends Entity{
         renderer.setColor(Color.BLACK);
         renderer.rect(range.x, range.y, range.width, range.height);
         renderer.setColor(Color.BLACK);
+        renderer.circle(coordinateCentro().x, coordinateCentro().y, 0.3f, 10);
     }
 
     @Override

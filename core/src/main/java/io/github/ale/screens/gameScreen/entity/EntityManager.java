@@ -37,11 +37,13 @@ public final class EntityManager {
         this.game = game;
         p = new EntityConfig();
         p.id = entityidcount;
-        p.x = 5f;
-        p.y = 5f;
+        p.x = 5.5f;
+        p.y = 5.5f;
         p.imgpath = "./entities/Finn.png";
-        p.width = 0.65f;
+        p.width = 0.5f;
         p.height = 0.4f;
+        p.offsetX=0;
+        p.offsetY=-0.25f;
         p.direzione = new Vector2(0, -0.5f);
         p.isAlive = true;
         p.inCollisione = false;
@@ -61,11 +63,13 @@ public final class EntityManager {
         EntityConfig e = new EntityConfig();
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
-        e.x = 8f;
-        e.y = 8f;
+        e.x = 8.5f;
+        e.y = 8.5f;
         e.imgpath = "./entities/Finn.png";
-        e.width = 0.65f;
-        e.height = 0.4f;
+        e.width = 0.5f*3f;
+        e.height = 0.4f*2f;
+        e.offsetX=0;
+        e.offsetY=-0.25f*2f;
         e.direzione = new Vector2(0, -0.5f);
         e.isAlive = true;
         e.inCollisione = false;
@@ -73,8 +77,8 @@ public final class EntityManager {
         e.hp = 100;
         e.speed = 1.5f;
         e.attackdmg = 20;
-        e.imageHeight = 2f;
-        e.imageWidth = 2f;
+        e.imageHeight = 2f*2f;
+        e.imageWidth = 2f*2f;
 
         for (int index = 0; index < 2; index++) {
             e.y++;

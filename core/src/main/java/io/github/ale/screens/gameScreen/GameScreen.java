@@ -112,9 +112,9 @@ public class GameScreen implements Screen {
         game.renderer.setProjectionMatrix(camera.get().combined);
 
         maps.draw();
-
-        drawHitboxes();
         drawOggetti();
+        drawHitboxes();
+        
 
         drawGUI();
     }
