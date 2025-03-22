@@ -37,7 +37,6 @@ public abstract class Entity{
     protected Rectangle range;
 
     private float atkCooldown = 0;
-    private float countdownKnockback = 0.273f;
     public float delta;
     
 

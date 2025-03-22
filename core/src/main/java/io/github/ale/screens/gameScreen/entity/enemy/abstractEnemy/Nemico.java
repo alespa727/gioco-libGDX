@@ -5,25 +5,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 
-public abstract class Nemico extends LivingEntity {
+public abstract class Nemico extends CombatEntity {
     private final Player player;
     private final Pathfinder pathfinder;
 
-    Cooldown damage = new Cooldown(.273f);
-    Cooldown attack = new Cooldown(1f);
-
     private final EntityMovementManager movement;
 
-    public Nemico(EntityConfig config, EntityManager manager, Player player) {
-        super(config, manager);
+    public Nemico(EntityConfig config, EntityManager manager, float attackcooldown, Player player) {
+        super(config, manager, attackcooldown);
         this.player = player;
         this.movement = new EntityMovementManager();
         this.range = new Rectangle(0, 0, 1.5f, 1.5f);
@@ -33,12 +29,7 @@ public abstract class Nemico extends LivingEntity {
     @Override
     public void cooldown() {
         damagecooldown();
-        attack.update(delta);
-        if(attack.isReady){
-            attack();
-            System.out.println("attacco");
-            attack.reset();
-        }
+        attackcooldown();
     }
 
     @Override
@@ -71,6 +62,4 @@ public abstract class Nemico extends LivingEntity {
     protected Player player() {
         return player;
     }
-
-    public abstract void attack();
 }

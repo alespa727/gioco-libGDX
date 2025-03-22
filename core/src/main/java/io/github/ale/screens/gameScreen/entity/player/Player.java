@@ -11,23 +11,21 @@ import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
 import io.github.ale.screens.gameScreen.entity.skill.skillist.Punch;
 
-public class Player extends LivingEntity {
+public class Player extends CombatEntity {
 
     private PlayerMovementManager movement;
 
     private final Array<Vector2> direzioni = new Array<>();
-    private int count=0;
-    private final float salvaDirezione = 0.5f;
-    private float countdown=1f;
-
     private final Cooldown direzione = new Cooldown(0.5f);
+    private int count=0;
+
     // Costruttore
-    public Player(EntityConfig config, EntityManager manager) {
-        super(config, manager);
+    public Player(EntityConfig config, EntityManager manager, float attackcooldown) {
+        super(config, manager, attackcooldown);
         this.range = new Rectangle(0, 0, 2f, 2f);
         skillset().add(new Punch(this, "pugno", "un pugno molto forte!"));
     }
@@ -69,6 +67,7 @@ public class Player extends LivingEntity {
         return this.stati().isAlive();
     }
 
+    @Override
     public void attack(){
         getSkill(Punch.class).execute();
     }
@@ -76,22 +75,14 @@ public class Player extends LivingEntity {
     @Override
     public void updateEntityType() {
         movement.update(this);
+        setIsAttacking(Gdx.input.isKeyPressed(Input.Keys.F));
         checkIfDead();
     }
 
     @Override
     public void cooldown(){
-
-        if (atkCooldown() >= 0) {
-            setAtkCooldown(atkCooldown() - delta);
-        } else {
-            if (Gdx.input.isKeyPressed(Input.Keys.F)){
-                setAtkCooldown(1.3f); 
-                attack();
-            }
-        }
+        attackcooldown();
         damagecooldown();
-        
         salvadirezionecooldown();
     }
 

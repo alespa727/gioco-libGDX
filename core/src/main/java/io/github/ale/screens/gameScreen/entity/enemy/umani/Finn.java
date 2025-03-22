@@ -11,14 +11,15 @@ public final class Finn extends Nemico {
 
     SkillSet skillset;
 
-    public Finn(EntityConfig config, EntityManager manager, Player p) {
-        super(config, manager, p);
+    public Finn(EntityConfig config, EntityManager manager, Float attackcooldown, Player p) {
+        super(config, manager, attackcooldown, p);
         skillset = new SkillSet(p);
         skillset.add(new Punch(this, "pugno", "un pugno molto forte!"));
     }
 
     @Override
     public void updateEntityType() {
+        setIsAttacking(manager.isAnyDifferentEntityInRect(this, range.x, range.y, range.width, range.height));
         pursue(player().predizioneCentro(this).x, player().predizioneCentro(this).y);
         checkIfDead();
     }

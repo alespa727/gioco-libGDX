@@ -51,7 +51,7 @@ public final class EntityManager {
         p.imageHeight = 2f;
         p.imageWidth = 2f;
 
-        player = new Player(p, this);
+        player = new Player(p, this, 1.5f);
 
         entityidcount++;
 
@@ -77,18 +77,18 @@ public final class EntityManager {
 
         for (int index = 0; index < 2; index++) {
             e.y++;
-            addNemico(Finn.class, e); 
+            addNemico(Finn.class, e, 1f); 
         }
         
     
     }
 
-    public void addNemico(Class<? extends Nemico> e, EntityConfig config) {
+    public void addNemico(Class<? extends Nemico> e, EntityConfig config, float attackcooldown) {
         try {
             //System.err.println("Creata entità! id." + entityidcount);
-            Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Player.class);//Cerca il costruttore 
+            Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Float.class, Player.class);//Cerca il costruttore 
             config.id=entityidcount;
-            Entity newEntity = c.newInstance(config, this, player);// Crea una nuova entità
+            Entity newEntity = c.newInstance(config, this, attackcooldown, player);// Crea una nuova entità
             entita.add(newEntity); //aggiunge entità
             entityidcount++;
         } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
@@ -204,6 +204,25 @@ public final class EntityManager {
         
         return stato;
     }
+
+    public boolean isAnyLivingEntityInRect(float x, float y, float width, float height){
+        for (int i = 0; i < entita.size; i++) {
+            if (entita.get(i) instanceof LivingEntity && CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isAnyDifferentEntityInRect(Entity entity, float x, float y, float width, float height){
+        for (int i = 0; i < entita.size; i++) {
+            if (!entita.get(i).getClass().equals(entity.getClass()) && CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * disegna tutti i range delle entità

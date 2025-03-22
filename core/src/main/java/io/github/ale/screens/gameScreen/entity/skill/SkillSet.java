@@ -6,6 +6,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
 
 public class SkillSet {
+    @SuppressWarnings("unused")
     private final Entity entity;
     private final Array<Skill> lista;
 
