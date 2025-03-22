@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.MyGame;
+import io.github.ale.dialogPkg.toplayerDialog.toplayerDialog;
 import io.github.ale.screens.settings.Settings;
 
 public class MainScreen implements Screen{
@@ -36,7 +37,7 @@ public class MainScreen implements Screen{
         table = new Table();
         stage.addActor(root);
         root.add(table);
-    
+        toplayerDialog dialog = new toplayerDialog();
         bottonePlay();
         
         bottoneSettings();
