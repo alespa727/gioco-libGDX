@@ -93,8 +93,10 @@ public class Pathfinder {
         if (heuristic == null) {
             heuristic = new HeuristicDistance();
         }
-    
-        // Perform the pathfinding
+        
+        System.out.println("Start Node Index: " + startNode.getIndex());
+        System.out.println("End Node Index: " + endNode.getIndex());
+        System.out.println("Graph Node Count: " + Map.getGraph().getNodeCount());
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
     
         // Handle the result of the pathfinding

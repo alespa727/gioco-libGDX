@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
-import io.github.ale.screens.gameScreen.maps.Map;
-
 public class GameGraph implements IndexedGraph<Node> {
 
     private final Array<Node> nodes = new Array<>(); // Lista di tutti i nodi
@@ -33,7 +31,6 @@ public class GameGraph implements IndexedGraph<Node> {
         for (int i = 0; i < nodes.size; i++) {
             nodes.get(i).setIndex(i);
         }
-        System.out.println("Grafo generato con " + nodes.size + " nodi." + getNodeCount());
         
     }
 
@@ -46,7 +43,7 @@ public class GameGraph implements IndexedGraph<Node> {
     @Override
     public int getIndex(Node node) {
         // Restituisce un indice unico per ogni nodo
-        return node.y * Map.width() + node.x; // Deve essere basato sulle coordinate x, y
+        return node.getIndex(); // Deve essere basato sulle coordinate x, y
     }
     
 
