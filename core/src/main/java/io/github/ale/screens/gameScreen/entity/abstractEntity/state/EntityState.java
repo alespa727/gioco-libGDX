@@ -1,10 +1,11 @@
 package io.github.ale.screens.gameScreen.entity.abstractEntity.state;
-
-public class EntityState {
+public class EntityState{
     private boolean isAlive;
     private boolean inCollisione;
     private boolean isMoving;
     private boolean immortality;
+
+
 
     public boolean isAlive() {
         return isAlive;
@@ -38,4 +39,5 @@ public class EntityState {
         this.immortality = immortality;
     }
 
+    
 }
