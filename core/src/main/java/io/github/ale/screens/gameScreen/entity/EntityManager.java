@@ -322,6 +322,14 @@ public final class EntityManager {
         return true;
     }
 
+    
+    public float calcolaAngoloAttacco(LivingEntity attaccante, LivingEntity attaccato) {
+        float deltaX = attaccato.coordinateCentro().x - attaccante.coordinateCentro().x;
+        float deltaY = attaccato.coordinateCentro().y - attaccante.coordinateCentro().y;
+        float angle = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
+        return angle < 0 ? angle + 360 : angle;
+    }
+
     public boolean isPaused(){
         return game.gameScreen.isPaused;
     }

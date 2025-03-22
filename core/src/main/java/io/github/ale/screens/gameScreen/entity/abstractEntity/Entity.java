@@ -2,9 +2,7 @@ package io.github.ale.screens.gameScreen.entity.abstractEntity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,7 +14,6 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.En
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Hitbox;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.graphics.EntityGraphics;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.EntityState;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public abstract class Entity{
@@ -26,7 +23,6 @@ public abstract class Entity{
     private EntityInfo info;
     private Dimensioni size;
     private EntityState stati;
-    private Stats statistiche;
     private Vector2 coordinate;
     private Vector2 direzione;
     private Hitbox hitbox;
@@ -47,11 +43,10 @@ public abstract class Entity{
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaCoordinate(config.x, config.y);
         inizializzaInfo(config.nome, config.descrizione, config.id);
-        getEntityGraphics().setTexture(config.imgpath);
+        graphics.setTexture(config.imgpath);
         inizializzaHitbox(getX(), getY(), config.width, config.height, config.offsetX, config.offsetY);
         inizializzaDirezione(config.direzione);
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
-        inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         inizializzaAnimazione();
         Gdx.app.postRunnable(this::create);
     }
@@ -72,14 +67,10 @@ public abstract class Entity{
     public void draw(SpriteBatch batch, float elapsedTime) {
         elapsedTime += Gdx.graphics.getDeltaTime();
 
-        setAnimation();
-        if(statistiche().gotDamaged){
-            batch.setColor(1, 0, 0, 0.6f);
-        }
+        graphics.setAnimation(this);
         
-        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
-        
-        
+        batch.draw(graphics.getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
+    
         batch.setColor(Color.WHITE);
     }
 
@@ -90,25 +81,7 @@ public abstract class Entity{
         updateEntityType();
     }
 
-    public void kill() {
-        statistiche().inflictDamage(statistiche().health(), stati.immortality());
-        stati.setIsAlive(false);
-    }
-    
-    public boolean checkIfDead() {
-        if (statistiche().health() <= 0) {
-            this.stati().setIsAlive(false);
-            despawn();
-        }
-        return this.stati().isAlive();
-    }
-
-    public void respawn() {
-        stati().setIsAlive(config.isAlive);
-        this.statistiche().gotDamaged = false;
-    }
-
-    public void despawn() {
+    public final void despawn() {
         System.out.println("Entità id " + id() + " despawnata");
         manager.despawn(this);
     }
@@ -123,55 +96,47 @@ public abstract class Entity{
     }
 
     // Getters and setters
-    public EntityConfig config() {
+    public final EntityConfig config() {
         return new EntityConfig(config);
     }
 
-    public int id() {
+    public final int id() {
         return info.id();
     }
 
-    public String nome() {
+    public final String nome() {
         return this.info.getNome();
     }
 
-    public String descrizione() {
+    public final String descrizione() {
         return this.info.getDescrizione();
     }
 
-    public Vector2 direzione() {
+    public final Vector2 direzione() {
         return this.direzione;
     }
 
-    public Stats statistiche() {
-        return this.statistiche;
-    }
-
-    public Rectangle hitbox() {
+    public final Rectangle hitbox() {
         return this.hitbox.getHitbox();
     }
 
-    public EntityState stati() {
+    public final EntityState stati() {
         return stati;
     }
 
-    public Vector2 coordinate() {
+    public final Vector2 coordinate() {
         return coordinate;
     }
 
-    public Vector2 coordinateCentro() {
+    public final Vector2 coordinateCentro() {
         return new Vector2(hitbox().x+hitbox().width/2, hitbox().y+hitbox().height/2);
-    }
-
-    public void setCentro(Vector2 punto) {
-        coordinate.set(punto.x + getSize().width / 2, punto.y + getSize().height / 2);
     }
 
     public final float getX() {
         return coordinate.x;
     }
 
-    public void setX(float x) {
+    public final void setX(float x) {
         this.coordinate.x = x;
     }
 
@@ -179,28 +144,16 @@ public abstract class Entity{
         return coordinate.y;
     }
 
-    public void setY(float y) {
+    public final void setY(float y) {
         this.coordinate.y = y;
     }
 
-    public Dimensioni getSize() {
-        return size;
+    public final Dimensioni getSize() {
+        return this.size;
     }
 
-    public void setSize(Dimensioni size) {
-        this.size = size;
-    }
-
-    public Animation<TextureRegion> getAnimazione() {
-        return this.graphics.getAnimazione();
-    }
-
-    public void setAnimation() {
-        this.graphics.setAnimation(this);
-    }
-
-    private EntityGraphics getEntityGraphics() {
-        return graphics;
+    public final EntityGraphics graphics() {
+        return this.graphics;
     }
 
     public float atkCooldown() {
@@ -214,14 +167,7 @@ public abstract class Entity{
     public void setDirezione(Vector2 direzione) {
         this.direzione.set(direzione);
     }
-
-    public float calcolaAngolo(float x1, float y1, float x2, float y2) {
-        float deltaX = x2 - x1;
-        float deltaY = y2 - y1;
-        float angle = (float) Math.toDegrees(Math.atan2(deltaY, deltaX));
-        return angle < 0 ? angle + 360 : angle;
-    }
-
+    
     // Initialization methods
     public final void inizializzaEntityGraphics() {
         this.graphics = new EntityGraphics();
@@ -257,10 +203,6 @@ public abstract class Entity{
 
     public final void inizializzaDimensione(Dimensioni size) {
         this.size = size;
-    }
-
-    public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
-        this.statistiche = new Stats(hp, speed, attackdmg);
     }
 
     public void adjustHitbox() {

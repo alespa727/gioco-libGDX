@@ -2,6 +2,7 @@ package io.github.ale.screens.gameScreen.entity.livingEntity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -9,14 +10,17 @@ import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.entity.skill.SkillSet;
 
 public abstract class LivingEntity extends Entity{
     private final SkillSet skillset;
     protected Rectangle range;
+    private Stats statistiche;
 
     public LivingEntity(EntityConfig config, EntityManager manager) {
         super(config, manager);
+        inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         skillset = new SkillSet(this);
     }
 
@@ -40,6 +44,27 @@ public abstract class LivingEntity extends Entity{
         renderer.circle(coordinateCentro().x, coordinateCentro().y, 0.3f, 10);
     }
 
+    /**
+     * disegna il nemico
+     * 
+     * @param batch
+     * @param elapsedTime
+     */
+    @Override
+    public void draw(SpriteBatch batch, float elapsedTime) {
+        elapsedTime += Gdx.graphics.getDeltaTime();
+
+        graphics().setAnimation(this);
+        if(statistiche().gotDamaged){
+            batch.setColor(1, 0, 0, 0.6f);
+        }
+        
+        batch.draw(graphics().getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
+        
+        
+        batch.setColor(Color.WHITE);
+    }
+
     @Override
     public void updateEntity() {
         delta = Gdx.graphics.getDeltaTime();
@@ -55,6 +80,16 @@ public abstract class LivingEntity extends Entity{
     }
 
     
+    public Stats statistiche() {
+        return this.statistiche;
+    }
+
+    
+    public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
+        this.statistiche = new Stats(hp, speed, attackdmg);
+    }
+
+    
     public final SkillSet skillset() {
         return skillset;
     }
@@ -66,6 +101,25 @@ public abstract class LivingEntity extends Entity{
     
     public Rectangle range() {
         return range;
+    }
+
+    
+    public void kill() {
+        statistiche().inflictDamage(statistiche().health(), stati().immortality());
+        stati().setIsAlive(false);
+    }
+    
+    public boolean checkIfDead() {
+        if (statistiche().health() <= 0) {
+            this.stati().setIsAlive(false);
+            despawn();
+        }
+        return this.stati().isAlive();
+    }
+
+    public void respawn() {
+        stati().setIsAlive(config().isAlive);
+        this.statistiche().gotDamaged = false;
     }
 
 

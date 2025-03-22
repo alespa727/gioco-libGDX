@@ -3,7 +3,7 @@ package io.github.ale.screens.gameScreen.entity.abstractEntity.movement;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public class EntityMovementManager {
@@ -22,7 +22,7 @@ public class EntityMovementManager {
         direction = new Vector2();
     }
 
-    public void setFermo(Entity e) {
+    public void setFermo(LivingEntity e) {
         
         
         if(node.equals(lastNode) && fermo==false){
@@ -35,7 +35,7 @@ public class EntityMovementManager {
  
     }
 
-    public void update(Entity entity) {
+    public void update(LivingEntity entity) {
         if (node == null) {
             return;
         }
@@ -52,7 +52,7 @@ public class EntityMovementManager {
         towards(entity, targetPosition);
     }
 
-    private void towards(Entity entity, Vector2 target) {
+    private void towards(LivingEntity entity, Vector2 target) {
         Vector2 direzione = new Vector2(target).sub(entity.coordinateCentro()).nor(); 
         float speed = entity.statistiche().speed() * Gdx.graphics.getDeltaTime();
         Vector2 movement = direzione.scl(speed);

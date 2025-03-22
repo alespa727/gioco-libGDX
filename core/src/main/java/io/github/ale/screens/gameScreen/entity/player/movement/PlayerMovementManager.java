@@ -3,7 +3,7 @@ package io.github.ale.screens.gameScreen.entity.player.movement;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.entity.player.KeyHandlerPlayer;
 import io.github.ale.screens.gameScreen.enums.StatiDiMovimento;
 import io.github.ale.screens.gameScreen.maps.Map;
@@ -33,7 +33,7 @@ public class PlayerMovementManager{
      * @param p
      */
     
-    public void update(Entity p) {
+    public void update(LivingEntity p) {
         keyH.input();
         speedMultiplier(p);
         movimento(p);
@@ -43,7 +43,7 @@ public class PlayerMovementManager{
      * input sprint
      */
 
-    private void speedMultiplier(Entity p) {
+    private void speedMultiplier(LivingEntity p) {
         
         sprint = keyH.sprint;
 
@@ -83,7 +83,7 @@ public class PlayerMovementManager{
      * 
      * @param p
      */
-    private void movimento(Entity p) {
+    private void movimento(LivingEntity p) {
         elapsedTime = Gdx.graphics.getDeltaTime(); // moltiplicatore del movimento in base al framerate
         
         su = keyH.su;
@@ -159,7 +159,7 @@ public class PlayerMovementManager{
         }
     }
 
-    private void addNotMoving(Entity p) {
+    private void addNotMoving(LivingEntity p) {
 
         if (last.x > 0) {
             p.direzione().set(0.5f, 0); // Annulla X, mantiene Y
@@ -175,12 +175,12 @@ public class PlayerMovementManager{
     }
     
 
-    private void aggiornaCollisioni(Entity p) {
+    private void aggiornaCollisioni(LivingEntity p) {
         collisioneY = Map.checkCollisionY(p);
         collisioneX = Map.checkCollisionX(p);
     }
 
-    private void aggiornaDirezioneX(Entity p) {
+    private void aggiornaDirezioneX(LivingEntity p) {
         float dx = 0;
         
         if (sinistra && destra) {
@@ -197,7 +197,7 @@ public class PlayerMovementManager{
         //System.out.println(p.direzione());
     }
 
-    public void aggiornaDirezioneY(Entity p){
+    public void aggiornaDirezioneY(LivingEntity p){
         float dy = 0;
         
         if (su && giu) {
@@ -215,13 +215,13 @@ public class PlayerMovementManager{
         //System.out.println(p.direzione());
     }
 
-    private void aggiornaStatoCollisione(Entity p) {
+    private void aggiornaStatoCollisione(LivingEntity p) {
         if (collisioneX || collisioneY)
             p.stati().setInCollisione(true);
   
     }
 
-    private void muoviAsseX(Entity p){
+    private void muoviAsseX(LivingEntity p){
         
         if (!collisioneX) {
             float speed = p.statistiche().speed();
@@ -235,7 +235,7 @@ public class PlayerMovementManager{
         }
 
     }
-    private void muoviAsseY(Entity p){
+    private void muoviAsseY(LivingEntity p){
 
         if (!collisioneY) {
             float speed = p.statistiche().speed();
