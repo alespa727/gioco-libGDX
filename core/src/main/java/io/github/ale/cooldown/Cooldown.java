@@ -19,6 +19,7 @@ public class Cooldown {
     public void update(float delta){
         if(!isReady){
             time -= delta;
+            time = Math.max(0, time);
             if(time <= 0){
                 isReady = true;
             }

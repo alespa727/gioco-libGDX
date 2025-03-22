@@ -94,18 +94,18 @@ public class Pathfinder {
             heuristic = new HeuristicDistance();
         }
         
-        System.out.println("Start Node Index: " + startNode.getIndex());
-        System.out.println("End Node Index: " + endNode.getIndex());
-        System.out.println("Graph Node Count: " + Map.getGraph().getNodeCount());
+        //System.out.println("Start Node Index: " + startNode.getIndex());
+        //System.out.println("End Node Index: " + endNode.getIndex());
+        //System.out.println("Graph Node Count: " + Map.getGraph().getNodeCount());
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
     
         // Handle the result of the pathfinding
         if (success) {
             if (path.getCount() < 14) {
-                System.out.println("Percorso trovato con successo!");
+                //System.out.println("Percorso trovato con successo!");
             }
         } else {
-            System.out.println("Percorso non trovato, aggiungo il nodo finale.");
+            //System.out.println("Percorso non trovato, aggiungo il nodo finale.");
             if (path.getCount() == 0 || path.get(path.getCount() - 1) != endNode) {
                 path.add(endNode);
             }
