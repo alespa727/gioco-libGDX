@@ -15,7 +15,6 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Di
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.EntityInfo;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Hitbox;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.graphics.EntityGraphics;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.state.Direzione;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.maps.Map;
@@ -29,7 +28,7 @@ public abstract class Entity{
     private EntityState stati;
     private Stats statistiche;
     private Vector2 coordinate;
-    private Direzione direzione;
+    private Vector2 direzione;
     private Hitbox hitbox;
     private EntityGraphics graphics;
 
@@ -141,7 +140,7 @@ public abstract class Entity{
     }
 
     public Vector2 direzione() {
-        return this.direzione.getDirezione();
+        return this.direzione;
     }
 
     public Stats statistiche() {
@@ -213,7 +212,7 @@ public abstract class Entity{
     }
 
     public void setDirezione(Vector2 direzione) {
-        this.direzione.setDirezione(direzione);
+        this.direzione.set(direzione);
     }
 
     public float calcolaAngolo(float x1, float y1, float x2, float y2) {
@@ -241,8 +240,7 @@ public abstract class Entity{
     }
 
     public final void inizializzaDirezione(Vector2 direzione) {
-        this.direzione = new Direzione();
-        this.direzione.setDirezione(direzione);
+        this.direzione = new Vector2(direzione);
     }
 
     public final void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving) {

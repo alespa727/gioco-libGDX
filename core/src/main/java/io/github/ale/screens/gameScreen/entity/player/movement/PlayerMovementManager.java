@@ -10,7 +10,7 @@ import io.github.ale.screens.gameScreen.maps.Map;
 
 public class PlayerMovementManager{
     private final KeyHandlerPlayer keyH;
-    private boolean w, s, a, d, shift;
+    private boolean su, giu, sinistra, destra, sprint;
     private double elapsedTime;
 
     private boolean collisioneY;
@@ -45,14 +45,14 @@ public class PlayerMovementManager{
 
     private void speedMultiplier(Entity p) {
         
-        shift = keyH.shift;
+        sprint = keyH.sprint;
 
-        boolean diagonale = (w && d) || (w && a) || (s && d) || (s && a);
-        boolean fermo = (!w && !s && !a && !d);
+        boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
+        boolean fermo = (!su && !giu && !sinistra && !destra);
 
         float speed;
 
-        if (shift && !fermo) {
+        if (sprint && !fermo) {
             // System.out.println("SPRINT!");
             if (diagonale) speed = sprintSpeedMultiplier/1.41f;
             else speed = sprintSpeedMultiplier;
@@ -61,7 +61,7 @@ public class PlayerMovementManager{
     
         }
 
-        if (!shift && !fermo) {
+        if (!sprint && !fermo) {
             if (diagonale) speed = baseSpeedMultiplier/1.41f;
             else speed = baseSpeedMultiplier;
             // System.out.println("NIENTE SPRINT");
@@ -71,7 +71,7 @@ public class PlayerMovementManager{
         if (fermo) {
             speed = 0;
             float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.4f;
-            if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino a 0, azzeralo
+            if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino sinistra 0, azzeralo
             p.statistiche().setSpeedBuff(newSpeedBuff);
             
         }
@@ -86,14 +86,14 @@ public class PlayerMovementManager{
     private void movimento(Entity p) {
         elapsedTime = Gdx.graphics.getDeltaTime(); // moltiplicatore del movimento in base al framerate
         
-        w = keyH.w;
-        s = keyH.s;
-        a = keyH.a;
-        d = keyH.d;
+        su = keyH.su;
+        giu = keyH.giu;
+        sinistra = keyH.sinistra;
+        destra = keyH.destra;
         
-        boolean oppostoY = w && s;
-        boolean oppostoX = a && d;
-        boolean anyKey = w || s || a || d;
+        boolean oppostoY = su && giu;
+        boolean oppostoX = sinistra && destra;
+        boolean anyKey = su || sinistra || destra || giu;
         boolean notMoving = !anyKey || (oppostoX && oppostoY);
 
         if (notMoving)
@@ -110,7 +110,7 @@ public class PlayerMovementManager{
 
         switch (stato) {
             case OPPOSTOY -> {
-                if (a || d) {
+                if (sinistra || destra) {
                     p.direzione().y=0;
                     aggiornaDirezioneX(p);
                     aggiornaCollisioni(p);
@@ -122,7 +122,7 @@ public class PlayerMovementManager{
                 } 
             }
             case OPPOSTOX -> {
-                if (w || s) {
+                if (su || giu) {
                     p.direzione().x=0;
                     aggiornaDirezioneY(p);
                     aggiornaCollisioni(p);
@@ -183,15 +183,15 @@ public class PlayerMovementManager{
     private void aggiornaDirezioneX(Entity p) {
         float dx = 0;
         
-        if (a && d) {
+        if (sinistra && destra) {
             return;
         }
 
         last = p.direzione();
 
         // Determina il movimento orizzontale
-        if (a) dx = -1f;
-        if (d) dx = 1f;
+        if (sinistra) dx = -1f;
+        if (destra) dx = 1f;
     
         p.direzione().set(dx, p.direzione().y);
         //System.out.println(p.direzione());
@@ -200,15 +200,15 @@ public class PlayerMovementManager{
     public void aggiornaDirezioneY(Entity p){
         float dy = 0;
         
-        if (w && s) {
+        if (su && giu) {
             return;
         }
 
         last = p.direzione();
     
         // Determina il movimento verticale
-        if (w) dy = 1f;
-        if (s) dy = -1f;
+        if (su) dy = 1f;
+        if (giu) dy = -1f;
         
     
         p.direzione().set(p.direzione().x, dy);
@@ -227,9 +227,9 @@ public class PlayerMovementManager{
             float speed = p.statistiche().speed();
             float x = p.getX();
         
-            if (a)
+            if (sinistra)
                 p.setX(x - speed * (float) elapsedTime);
-            if (d)
+            if (destra)
                 p.setX(x + speed * (float) elapsedTime);
             p.stati().setInCollisione(false);
         }
@@ -241,9 +241,9 @@ public class PlayerMovementManager{
             float speed = p.statistiche().speed();
             float y = p.getY();
 
-            if (s)
+            if (giu)
                 p.setY(y - speed * (float) elapsedTime);
-            if (w)
+            if (su)
                 p.setY(y + speed * (float) elapsedTime);
             p.stati().setInCollisione(false);
         }

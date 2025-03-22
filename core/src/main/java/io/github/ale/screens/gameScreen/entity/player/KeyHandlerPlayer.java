@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input;
 
 public class KeyHandlerPlayer {
 
-    public boolean w, s, a, d, shift, e, f, r, left_click;
+    public boolean su, giu, sinistra, destra, sprint, usa;
 
     public KeyHandlerPlayer() {
 
@@ -16,15 +16,12 @@ public class KeyHandlerPlayer {
      */
 
     public void input() {
-        left_click = Gdx.input.isTouched(Input.Buttons.LEFT);
-        r = Gdx.input.isKeyPressed(Input.Keys.R);
-        f = Gdx.input.isKeyPressed(Input.Keys.F);
-        w = Gdx.input.isKeyPressed(Input.Keys.W);
-        s = Gdx.input.isKeyPressed(Input.Keys.S);
-        a = Gdx.input.isKeyPressed(Input.Keys.A);
-        d = Gdx.input.isKeyPressed(Input.Keys.D);
-        shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
-        
+        su = Gdx.input.isKeyPressed(Input.Keys.W);
+        giu = Gdx.input.isKeyPressed(Input.Keys.S);
+        sinistra = Gdx.input.isKeyPressed(Input.Keys.A);
+        destra = Gdx.input.isKeyPressed(Input.Keys.D);
+        sprint = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT);
+        usa = Gdx.input.isKeyPressed(Input.Keys.E);
     }
 
 }
