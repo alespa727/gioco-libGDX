@@ -2,42 +2,27 @@ package io.github.ale.screens.gameScreen.entity.skill.skillist;
 
 import com.badlogic.gdx.utils.Array;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
-import io.github.ale.screens.gameScreen.entity.player.KeyHandlerPlayer;
+import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
 
-public class Punch extends Skill{
-    private final KeyHandlerPlayer keyH;
+public class Punch extends Skill {
     private final float damage = 20;
-    private Array<Entity> inRange;
+    private Array<LivingEntity> inRange;
 
-    public Punch(Entity entity, String name, String description){
-        super(name, description);
-        this.entity = entity;
-        keyH = new KeyHandlerPlayer();
+    public Punch(LivingEntity entity, String name, String description) {
+        super(entity, name, description);
     }
 
     @Override
-    public void execute(){
-        executed=false;
-        keyH.input();
-        if(countdown > 0){
-                countdown-=entity.delta;
-                if(keyH.r) countdown=cooldown;
-        }else{
-            if(keyH.r){
-                countdown=cooldown;
-                inRange = entity.manager.entita(entity.range().x, entity.range().y, entity.range().width, entity.range().height);
-                for(int i=0; i<inRange.size; i++){
-                    
-                    if(inRange.get(i)!=entity){
-                        inRange.get(i).hit(entity.calcolaAngolo(entity.coordinateCentro().x, entity.coordinateCentro().y, inRange.get(i).coordinateCentro().x, inRange.get(i).coordinateCentro().y), damage);
-                        System.out.println("Pugno a " + inRange.get(i).getClass() + " " + inRange.get(i).id());
-                        executed=true;
-                        
-                    } 
-                }
-            }
+    public void execute() {
+        inRange = entity.manager.entitaviventi(entity.range().x, entity.range().y, entity.range().width,
+                entity.range().height);
+        for (int i = 0; i < inRange.size; i++) {
+            if (!inRange.get(i).getClass().equals(entity.getClass())) {
+                inRange.get(i).hit(entity.calcolaAngolo(entity.coordinateCentro().x, entity.coordinateCentro().y,
+                        inRange.get(i).coordinateCentro().x, inRange.get(i).coordinateCentro().y), damage);
+                System.out.println("Pugno a " + inRange.get(i).getClass() + " " + inRange.get(i).id());
+            } 
         }
     }
 }
