@@ -32,7 +32,7 @@ public class MapManager {
         this.changeMap();
         this.player.setX(6.5f);
         this.player.setY(5f);
-        playlist = new MusicPlayer("./music/mymusic.mp3");
+        playlist = new MusicPlayer("music/mymusic.mp3");
         this.currentMap = new Map(camera, this.nome);
     }
 

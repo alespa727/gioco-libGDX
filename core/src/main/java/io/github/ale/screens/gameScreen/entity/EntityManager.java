@@ -179,10 +179,32 @@ public final class EntityManager {
         return array;
     }
 
+    public Array<Entity> entita(Class<? extends Entity> entityClass, float x, float y, float width, float height){
+        Array<Entity> array = new Array<>();
+        for (int i = 0; i < entita.size; i++) {
+            if (entita.get(i).getClass().equals(entityClass) && CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
+                array.add(entita.get(i));
+            }
+        }
+
+        return array;
+    }
+
     public Array<LivingEntity> entitaviventi(float x, float y, float width, float height){
         Array<LivingEntity> array = new Array<>();
         for (int i = 0; i < entita.size; i++) {
             if (entita.get(i) instanceof LivingEntity && CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > x && entita.get(i).coordinateCentro().y > y && entita.get(i).coordinateCentro().x < x + width && entita.get(i).coordinateCentro().y < y + height) {
+                array.add((LivingEntity) entita.get(i));
+            }
+        }
+
+        return array;
+    }
+
+    public Array<LivingEntity> entitaviventi(Rectangle rect){
+        Array<LivingEntity> array = new Array<>();
+        for (int i = 0; i < entita.size; i++) {
+            if (entita.get(i) instanceof LivingEntity && CameraManager.inlimiti(entita.get(i).coordinateCentro().x, entita.get(i).coordinateCentro().y) && entita.get(i).coordinateCentro().x > rect.x && entita.get(i).coordinateCentro().y > rect.y && entita.get(i).coordinateCentro().x < rect.x + rect.width && entita.get(i).coordinateCentro().y < rect.y + rect.height) {
                 array.add((LivingEntity) entita.get(i));
             }
         }

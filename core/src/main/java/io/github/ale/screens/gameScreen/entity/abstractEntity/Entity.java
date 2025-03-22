@@ -81,7 +81,7 @@ public abstract class Entity{
         updateEntityType();
     }
 
-    public final void despawn() {
+    public void despawn() {
         System.out.println("Entità id " + id() + " despawnata");
         manager.despawn(this);
     }

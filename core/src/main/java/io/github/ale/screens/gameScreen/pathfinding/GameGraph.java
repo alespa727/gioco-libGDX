@@ -202,6 +202,4 @@ public class GameGraph implements IndexedGraph<Node> {
 
         return closestNode; // Restituisce il nodo più vicino
     }
-
-
 }

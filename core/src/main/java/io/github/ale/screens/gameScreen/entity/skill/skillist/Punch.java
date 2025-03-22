@@ -16,8 +16,7 @@ public class Punch extends Skill {
 
     @Override
     public void execute() {
-        inRange = entity.manager.entitaviventi(entity.range().x, entity.range().y, entity.range().width,
-                entity.range().height);
+        inRange = entity.manager.entitaviventi(entity.range());
         for (int i = 0; i < inRange.size; i++) {
             if (!inRange.get(i).getClass().equals(entity.getClass())) {
                 inRange.get(i).hit(entity.manager.calcolaAngoloAttacco(entity, inRange.get(i)), damage);

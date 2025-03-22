@@ -33,6 +33,13 @@ public abstract class Nemico extends CombatEntity {
     }
 
     @Override
+    public void despawn() {
+        pathfinder.dispose();
+        System.out.println("Entità id " + id() + " despawnata");
+        manager.despawn(this);
+    }
+
+    @Override
     public void drawRange(ShapeRenderer renderer) {
         renderer.rect(range.x, range.y, range.width, range.height);
         renderer.setColor(Color.BLACK);

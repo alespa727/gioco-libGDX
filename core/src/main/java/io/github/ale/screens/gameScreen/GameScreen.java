@@ -62,12 +62,10 @@ public class GameScreen implements Screen {
             viewport.apply(); // applica cosa si vede
             entities = new EntityManager(this.game);
             maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
-            maps.getPlaylist().setVolume(0.1f);
-            maps.getPlaylist().setLooping(0, true);
+        }else{
+            maps.getPlaylist().play(0);
+            entities.player().respawn();
         }
-        maps.getPlaylist().play(0);
-        maps.getPlaylist().playfromthestart(); //opzionale
-        entities.player().respawn();
     }
 
     @Override
