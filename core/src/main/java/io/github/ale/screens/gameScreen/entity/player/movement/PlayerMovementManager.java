@@ -224,7 +224,7 @@ public class PlayerMovementManager{
     private void muoviAsseX(Entity p){
         
         if (!collisioneX) {
-            float speed = p.statistiche().getSpeed();
+            float speed = p.statistiche().speed();
             float x = p.getX();
         
             if (a)
@@ -238,7 +238,7 @@ public class PlayerMovementManager{
     private void muoviAsseY(Entity p){
 
         if (!collisioneY) {
-            float speed = p.statistiche().getSpeed();
+            float speed = p.statistiche().speed();
             float y = p.getY();
 
             if (s)

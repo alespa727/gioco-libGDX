@@ -38,8 +38,8 @@ public class LineOfSight {
      * obbligatoriamente da fare senza il metodo create
      */
     public LineOfSight() {
-        mapWidth = Map.getWidth();
-        mapHeight = Map.getHeight();
+        mapWidth = Map.width();
+        mapHeight = Map.height();
         circle = new Circle();
 
         v = new Array<>();
@@ -74,7 +74,7 @@ public class LineOfSight {
      */
     public void update(Entity e) {
 
-        if (mapWidth != Map.getWidth() || mapHeight != Map.getHeight()) {
+        if (mapWidth != Map.width() || mapHeight != Map.height()) {
             create();
         }
 
@@ -107,8 +107,8 @@ public class LineOfSight {
     }
 
     public void create() {
-        mapWidth = Map.getWidth();
-        mapHeight = Map.getHeight();
+        mapWidth = Map.width();
+        mapHeight = Map.height();
 
         centroCerchio = new Vector3[mapWidth][mapHeight];
         lineOfSight = new boolean[mapWidth][mapHeight];
@@ -124,16 +124,16 @@ public class LineOfSight {
     }
 
     private void updatePlayerCircle(Entity e) {
-        playerCircle.x = e.getX() + e.getSize().getWidth() / 2;
-        playerCircle.y = e.getY() + e.getSize().getHeight() / 2;
+        playerCircle.x = e.getX() + e.getSize().width / 2;
+        playerCircle.y = e.getY() + e.getSize().height / 2;
         playerCircle.radius = 0.5f;
     }
 
     private void updateLosValue(Entity e) {
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
-                linea[i][j].b.x = e.getX() + e.getSize().getWidth() / 2;
-                linea[i][j].b.y = e.getY() + e.getSize().getHeight() / 2;
+                linea[i][j].b.x = e.getX() + e.getSize().width / 2;
+                linea[i][j].b.y = e.getY() + e.getSize().height / 2;
                 circle.x = centroCerchio[i][j].x;
                 circle.y = centroCerchio[i][j].y;
                 circle.radius = losRaggio;
@@ -152,7 +152,7 @@ public class LineOfSight {
         
         boolean los;
         Vector2 objective = null;
-        entityPosition.set(e.getX() + e.getSize().getWidth() / 2, e.getY() + e.getSize().getHeight() / 2);
+        entityPosition.set(e.getX() + e.getSize().width / 2, e.getY() + e.getSize().width / 2);
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {
                 if (lineOfSight[i][j]) {
@@ -189,7 +189,7 @@ public class LineOfSight {
     
         boolean los;
         Vector2 objective = null;
-        entityPosition.set(nemico.getX() + nemico.getSize().getWidth() / 2, nemico.getY() + nemico.getSize().getHeight() / 2);
+        entityPosition.set(nemico.getX() + nemico.getSize().width / 2, nemico.getY() + nemico.getSize().height / 2);
     
         for (int i = 0; i < mapWidth; i++) {
             for (int j = 0; j < mapHeight; j++) {

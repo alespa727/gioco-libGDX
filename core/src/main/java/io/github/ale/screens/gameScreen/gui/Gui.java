@@ -33,7 +33,7 @@ public class Gui{
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f, 220, -50);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f+10, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-10, 200*gamescreen.entities().player().statistiche().getHealth()/100, -30);
+        shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f+10, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-10, 200*gamescreen.entities().player().statistiche().health()/100, -30);
     }
 
     public void skill(){

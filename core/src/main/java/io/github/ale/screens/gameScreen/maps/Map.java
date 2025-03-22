@@ -139,10 +139,10 @@ public class Map {
 
 
     
-    public static int getWidth(){
+    public static int width(){
         return width;
     }
-    public static int getHeight(){
+    public static int height(){
         return height;
     }
 

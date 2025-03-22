@@ -1,7 +1,9 @@
 package io.github.ale.screens.gameScreen.entity.abstractEntity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -17,10 +19,9 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.state.Direzione;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.interfaces.Creatable;
-import io.github.ale.screens.gameScreen.interfaces.Drawable;
 import io.github.ale.screens.gameScreen.maps.Map;
 
-public abstract class Entity implements Drawable, Creatable {
+public abstract class Entity implements Creatable {
 
     // Fields
     private final EntityConfig config;
@@ -61,6 +62,28 @@ public abstract class Entity implements Drawable, Creatable {
     public abstract void updateEntity();
     public abstract void updateEntityType();
     public abstract void drawRange(ShapeRenderer renderer);
+    public abstract void drawHitbox(ShapeRenderer renderer);
+
+    
+    /**
+     * disegna il nemico
+     * 
+     * @param batch
+     * @param elapsedTime
+     */
+    public void draw(SpriteBatch batch, float elapsedTime) {
+        elapsedTime += Gdx.graphics.getDeltaTime();
+
+        setAnimation();
+        if(statistiche().gotDamaged){
+            batch.setColor(1, 0, 0, 0.6f);
+        }
+        
+        batch.draw(getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
+        
+        
+        batch.setColor(Color.WHITE);
+    }
 
     // Core methods
     public void render() {
@@ -70,8 +93,16 @@ public abstract class Entity implements Drawable, Creatable {
     }
 
     public void kill() {
-        statistiche().inflictDamage(statistiche().getHealth(), stati.immortality());
+        statistiche().inflictDamage(statistiche().health(), stati.immortality());
         stati.setIsAlive(false);
+    }
+    
+    public boolean checkIfDead() {
+        if (statistiche().health() <= 0) {
+            this.stati().setIsAlive(false);
+            despawn();
+        }
+        return this.stati().isAlive();
     }
 
     public void respawn() {
@@ -88,16 +119,16 @@ public abstract class Entity implements Drawable, Creatable {
         if (manager.entita(hitbox()).size > 0) {
             for (int i = 0; i < manager.entita(hitbox()).size; i++) {
                 coordinate().set(
-                    getX() - direzione().x * statistiche().getSpeed() * 1.5f * delta,
-                    getY() - direzione().y * statistiche().getSpeed() * 1.5f * delta
+                    getX() - direzione().x * statistiche().speed() * 1.5f * delta,
+                    getY() - direzione().y * statistiche().speed() * 1.5f * delta
                 );
             }
         }
     }
 
     public void limiti() {
-        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.getWidth() - hitbox().width - hitbox().width));
-        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.getHeight() - hitbox().height - hitbox().height));
+        setX(MathUtils.clamp(getX(), 0 - 0.65f, Map.width() - hitbox().width - hitbox().width));
+        setY(MathUtils.clamp(getY(), 0 - 0.55f, Map.height() - hitbox().height - hitbox().height));
     }
 
     public void hit(float angolo, float damage) {
@@ -150,7 +181,6 @@ public abstract class Entity implements Drawable, Creatable {
         return this.direzione.getDirezione();
     }
 
-    @Override
     public Stats statistiche() {
         return this.statistiche;
     }
@@ -168,15 +198,14 @@ public abstract class Entity implements Drawable, Creatable {
     }
 
     public Vector2 coordinateCentro() {
-        return new Vector2(getX() + getSize().getWidth() / 2, getY() + getSize().getHeight() / 2);
+        return new Vector2(getX() + getSize().width / 2, getY() + getSize().height / 2);
     }
 
     public void setCentro(Vector2 punto) {
-        coordinate.set(punto.x + getSize().getWidth() / 2, punto.y + getSize().getHeight() / 2);
+        coordinate.set(punto.x + getSize().width / 2, punto.y + getSize().height / 2);
     }
 
-    @Override
-    public float getX() {
+    public final float getX() {
         return coordinate.x;
     }
 
@@ -184,8 +213,7 @@ public abstract class Entity implements Drawable, Creatable {
         this.coordinate.x = x;
     }
 
-    @Override
-    public float getY() {
+    public final float getY() {
         return coordinate.y;
     }
 
@@ -193,7 +221,6 @@ public abstract class Entity implements Drawable, Creatable {
         this.coordinate.y = y;
     }
 
-    @Override
     public Dimensioni getSize() {
         return size;
     }
@@ -206,7 +233,6 @@ public abstract class Entity implements Drawable, Creatable {
         return this.graphics.getAnimazione();
     }
 
-    @Override
     public void setAnimation() {
         this.graphics.setAnimation(this);
     }
@@ -248,7 +274,7 @@ public abstract class Entity implements Drawable, Creatable {
     }
 
     public final void inizializzaCoordinate(float x, float y) {
-        coordinate = new Vector2(x - size.getWidth() / 4, y - size.getHeight() / 4);
+        coordinate = new Vector2(x - size.width / 4, y - size.height / 4);
     }
 
     public final void inizializzaHitbox(float x, float y, float width, float height) {

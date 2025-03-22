@@ -75,22 +75,23 @@ public class Player extends Entity {
 
     public Vector2 predizione(Entity e){
         if ((direzioni.size>=3) && (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y))) 
-            return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().getSpeed() * count, direzioni.get(1).y * statistiche().getSpeed() * count);
+            return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().speed() * count, direzioni.get(1).y * statistiche().speed() * count);
         this.count=0;
         return new Vector2(coordinate());
     }
 
     public Vector2 predizioneCentro(Entity e){
-        return predizione(e).add(getSize().getWidth()/2, getSize().getHeight()/2);
+        return predizione(e).add(getSize().width/2, getSize().height/2);
     }
 
     /**
      * setta le animazioni del player a seconda della direzione
      */
 
+    @Override
     public boolean checkIfDead() {
         // Logica per controllare se il giocatore è morto
-        if (statistiche().getHealth() <= 0) {
+        if (statistiche().health() <= 0) {
             this.stati().setIsAlive(false);
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
@@ -137,10 +138,10 @@ public class Player extends Entity {
     public void updateEntity() {
         skillset.execute(Punch.class);
         
-        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().getWidth()/2;
-        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().getWidth()/2;
-        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-getSize().getWidth()/2;
-        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-getSize().getWidth()/2;
+        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().width/2;
+        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().width/2;
+        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-getSize().height/2;
+        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-getSize().height/2;
 
         delta = Gdx.graphics.getDeltaTime();
         limiti();

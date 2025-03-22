@@ -70,28 +70,20 @@ public abstract class Nemico extends Entity {
         knockback();
 
         if (direzione().x > 0)
-            range.x = coordinateCentro().x + (float) Math.ceil(direzione().x) - getSize().getWidth() / 2;
+            range.x = coordinateCentro().x + (float) Math.ceil(direzione().x) - getSize().width / 2;
         else
-            range.x = coordinateCentro().x + (float) Math.floor(direzione().x) - getSize().getWidth() / 2;
+            range.x = coordinateCentro().x + (float) Math.floor(direzione().x) - getSize().width / 2;
 
         if (direzione().y > 0)
-            range.y = coordinateCentro().y + (float) Math.ceil(direzione().y) - getSize().getWidth() / 2;
+            range.y = coordinateCentro().y + (float) Math.ceil(direzione().y) - getSize().height / 2;
         else
-            range.y = coordinateCentro().y + (float) Math.floor(direzione().y) - getSize().getWidth() / 2;
+            range.y = coordinateCentro().y + (float) Math.floor(direzione().y) - getSize().height / 2;
     }
 
     @Override
     public void drawRange(ShapeRenderer renderer) {
         renderer.rect(range.x, range.y, range.width, range.height);
         renderer.setColor(Color.BLACK);
-    }
-
-    public boolean checkIfDead() {
-        if (statistiche().getHealth() <= 0) {
-            this.stati().setIsAlive(false);
-            despawn();
-        }
-        return this.stati().isAlive();
     }
 
     public void drawPath(ShapeRenderer shapeRenderer) {

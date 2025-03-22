@@ -59,8 +59,8 @@ public class CameraManager {
         float y = camera.viewportHeight / 2;
         if (!maps.getAmbiente()) { // tipo di telecamera
 
-            lerpTo(new Vector2(Map.getWidth() / 2f, entities.player().getY() + 2f / 2));
-            boundaries(new Vector3(x, y, 0), Map.getWidth() - x * 2, Map.getHeight() - y * 2);
+            lerpTo(new Vector2(Map.width() / 2f, entities.player().getY() + 2f / 2));
+            boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
 
             camera.update();
             viewport.apply();
@@ -68,7 +68,7 @@ public class CameraManager {
         } else {
 
             lerpTo(new Vector2(entities.player().getX() + 2f / 2, entities.player().getY() + 2f / 2));
-            boundaries(new Vector3(x, y, 0), Map.getWidth() - x * 2, Map.getHeight() - y * 2);
+            boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
             viewport.apply();
             camera.update();
 

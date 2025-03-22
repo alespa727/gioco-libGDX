@@ -37,7 +37,7 @@ public final class EntityManager {
         p.id = entityidcount;
         p.x = 5f;
         p.y = 5f;
-        p.imgpath = "Finn.png";
+        p.imgpath = "./entities/Finn.png";
         p.width = 0.65f;
         p.height = 0.4f;
         p.direzione = new Vector2(0, -0.5f);
@@ -61,7 +61,7 @@ public final class EntityManager {
         e.descrizione = "Nemico pericoloso";
         e.x = 8f;
         e.y = 8f;
-        e.imgpath = "Finn.png";
+        e.imgpath = "./entities/Finn.png";
         e.width = 0.65f;
         e.height = 0.4f;
         e.direzione = new Vector2(0, -0.5f);

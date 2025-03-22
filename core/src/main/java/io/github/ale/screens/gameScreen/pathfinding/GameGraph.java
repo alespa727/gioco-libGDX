@@ -40,7 +40,7 @@ public class GameGraph implements IndexedGraph<Node> {
     @Override
     public int getIndex(Node node) {
         // Restituisce un indice unico per ogni nodo
-        return node.y * Map.getWidth() + node.x; // Deve essere basato sulle coordinate x, y
+        return node.y * Map.width() + node.x; // Deve essere basato sulle coordinate x, y
     }
     
 
