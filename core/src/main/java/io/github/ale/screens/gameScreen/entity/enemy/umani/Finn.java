@@ -20,7 +20,7 @@ public final class Finn extends Nemico {
     @Override
     public void updateEntityType() {
         setIsAttacking(manager.isAnyDifferentEntityInRect(this, range.x, range.y, range.width, range.height));
-        pursue(player().predizioneCentro(this).x, player().predizioneCentro(this).y);
+        pursue(player().coordinateCentro().x, player().coordinateCentro().y);
         checkIfDead();
     }
     

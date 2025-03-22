@@ -66,10 +66,10 @@ public final class EntityManager {
         e.x = 8.5f;
         e.y = 8.5f;
         e.imgpath = "./entities/Finn.png";
-        e.width = 0.5f*3f;
-        e.height = 0.4f*2f;
+        e.width = 0.5f;
+        e.height = 0.4f;
         e.offsetX=0;
-        e.offsetY=-0.25f*2f;
+        e.offsetY=-0.25f;
         e.direzione = new Vector2(0, -0.5f);
         e.isAlive = true;
         e.inCollisione = false;
@@ -77,8 +77,8 @@ public final class EntityManager {
         e.hp = 100;
         e.speed = 1.5f;
         e.attackdmg = 20;
-        e.imageHeight = 2f*2f;
-        e.imageWidth = 2f*2f;
+        e.imageHeight = 2f;
+        e.imageWidth = 2f;
 
         for (int index = 0; index < 2; index++) {
             e.y++;

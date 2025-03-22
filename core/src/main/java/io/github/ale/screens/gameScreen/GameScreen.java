@@ -156,7 +156,7 @@ public class GameScreen implements Screen {
      */
     public void drawHitboxes() {
         game.renderer.begin(ShapeType.Line);
-        //Map.getGraph().drawConnections(game.renderer);
+        Map.getGraph().drawConnections(game.renderer);
         game.renderer.end();
         game.renderer.begin(ShapeType.Filled);
         Map.getGraph().drawNodes(game.renderer);

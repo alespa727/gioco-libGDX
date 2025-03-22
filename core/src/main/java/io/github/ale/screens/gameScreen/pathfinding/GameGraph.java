@@ -29,6 +29,12 @@ public class GameGraph implements IndexedGraph<Node> {
 
         // Genera il grafo con nodi e connessioni
         generateGraph();
+
+        for (int i = 0; i < nodes.size; i++) {
+            nodes.get(i).setIndex(i);
+        }
+        System.out.println("Grafo generato con " + nodes.size + " nodi." + getNodeCount());
+        
     }
 
     @Override
@@ -162,29 +168,43 @@ public class GameGraph implements IndexedGraph<Node> {
     }
 
 
-    /**
-     * restituisci nodo più vicino
-     * @param x
-     * @param y
-     * @return
+   /**
+     * Restituisce il nodo più vicino alle coordinate fornite.
+     * @param x Coordinata x
+     * @param y Coordinata y
+     * @return Il nodo più vicino o null se nessun nodo è disponibile.
      */
     public Node getClosestNode(float x, float y) {
         Node closestNode = null;
         float closestDistance = Float.MAX_VALUE;
-    
+
+        // Controlla se ci sono nodi nel grafo
+        if (nodes == null || nodes.isEmpty()) {
+            System.err.println("Nessun nodo disponibile nel grafo!");
+            return null;
+        }
+
+        // Trova il nodo più vicino
         for (Node node : nodes) {
             // Calcola la distanza euclidea tra il nodo corrente e le coordinate fornite
-            float distance = (float) Math.sqrt(Math.pow(node.x+0.5f - x, 2) + Math.pow(node.y+0.5f - y, 2));
-    
+            float distance = (float) Math.sqrt(Math.pow(node.x + 0.5f - x, 2) + Math.pow(node.y + 0.5f - y, 2));
+
             // Trova il nodo con la distanza minima
             if (distance < closestDistance) {
                 closestDistance = distance;
                 closestNode = node;
             }
         }
-    
+
+        // Log per debug
+        if (closestNode != null) {
+            //System.out.println("Nodo più vicino: (" + closestNode.x + ", " + closestNode.y + ") con distanza: " + closestDistance);
+        } else {
+            System.err.println("Nessun nodo valido trovato!");
+        }
+
         return closestNode; // Restituisce il nodo più vicino
     }
-    
+
 
 }

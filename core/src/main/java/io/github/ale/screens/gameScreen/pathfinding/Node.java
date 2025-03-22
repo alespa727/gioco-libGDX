@@ -6,12 +6,21 @@ import com.badlogic.gdx.utils.Array;
 public class Node{
     public int x, y;
     public Array<Connection<Node>> connessioni = new Array<>();
-
+    private int index;
+      
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+  
     /**
      * coordinata x del nodo
      * @return
