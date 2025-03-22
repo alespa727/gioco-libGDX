@@ -30,8 +30,6 @@ public class MapManager {
         MapManager.currentMapNum=startingMap;
         this.ambienteAperto=true;
         this.changeMap();
-        this.player.setX(6.5f);
-        this.player.setY(5f);
         playlist = new MusicPlayer("music/mymusic.mp3");
         this.currentMap = new Map(camera, this.nome);
     }
@@ -75,7 +73,7 @@ public class MapManager {
         if (e) {
             if (!flag) {
                 changeMap();
-                this.player.setX(7.5f);
+                this.player.setX(6.5f);
                 this.player.setY(5f);
                 flag=true;
             }

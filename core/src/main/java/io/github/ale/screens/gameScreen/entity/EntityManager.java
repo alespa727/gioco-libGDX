@@ -37,7 +37,7 @@ public final class EntityManager {
         this.game = game;
         p = new EntityConfig();
         p.id = entityidcount;
-        p.x = 5.5f;
+        p.x = 2.5f;
         p.y = 5.5f;
         p.imgpath = "./entities/Finn.png";
         p.width = 0.5f;

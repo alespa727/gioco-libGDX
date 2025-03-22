@@ -26,13 +26,14 @@ public class Pathfinder implements Disposable{
     private IndexedAStarPathFinder<Node> pathFinder;
     private final DefaultGraphPath<Node> path;
 
-    private final Cooldown cooldown = new Cooldown(1f);
+    private final Cooldown cooldown = new Cooldown(2f);
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 
     public Pathfinder(Nemico enemy) {
         this.path = new DefaultGraphPath<>();
         this.enemy = enemy;
+        cooldown.isReady = true;
     }
 
     public void countdown() {
