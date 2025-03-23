@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.state;
+package io.github.ale.screens.gameScreen.entity.abstractEntity.state;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,7 +20,7 @@ public class Direzione {
     public void setLastDirezione(Vector2 direzione){
         direzione.set(0, 0);
     }
-
+    
     public Vector2 getDirezione(){
         return direzione;
     }

@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.texture;
+package io.github.ale.screens.gameScreen.entity.abstractEntity.texture;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -16,7 +16,7 @@ public class TexturesEntity {
     private final TextureRegion[] down; // Frame per la direzione giù fermo
     private final TextureRegion[] left; // Frame per la direzione sinistra fermo
     private final TextureRegion[] right; // Frame per la direzione destra fermo
-
+    
     private final ObjectMap<Vector2, Animation <TextureRegion>> animations;
 
     public TexturesEntity(String path){
@@ -57,7 +57,7 @@ public class TexturesEntity {
 
         animations.put(new Vector2(0.5f, -0.5f), new Animation<>(0.5f, right));
         animations.put(new Vector2(0.5f, 0.5f), new Animation<>(0.5f, right));
-
+        
     }
 
     /**
@@ -65,7 +65,7 @@ public class TexturesEntity {
      * @param entity
      */
     private void salvaAnimazioni(Texture entity){
-
+        
         TextureRegion[][] tmpFrames = TextureRegion.split(entity, 32, 32);
         for (int i = 0; i < 4; i++) {
             // Carica i frame per la direzione su
@@ -79,14 +79,14 @@ public class TexturesEntity {
             movingRight[i] = tmpFrames[4][i];
         }
         for (int i = 0; i < 2; i++) {
-
+            
             up[i]  = tmpFrames[2][i];
             down[i]  = tmpFrames[0][i];
             right[i]  = tmpFrames[1][i];
             left[i]  = new TextureRegion(tmpFrames[1][i]);
             left[i].flip(true, false);
-
-
+            
+            
         }
     }
 

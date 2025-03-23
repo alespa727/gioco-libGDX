@@ -1,9 +1,9 @@
-package io.github.ale.screens.gameScreen.entities.skills;
+package io.github.ale.screens.gameScreen.entity.skill;
 
 import com.badlogic.gdx.utils.Array;
 
-import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.Entity;
-import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.caratteristiche.Skill;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
 
 public class SkillSet {
     @SuppressWarnings("unused")
@@ -31,7 +31,7 @@ public class SkillSet {
         }
         return null;
     }
-
+    
     public void execute(Class<? extends Skill> skillClass){
         getSkill(skillClass).execute();
     }

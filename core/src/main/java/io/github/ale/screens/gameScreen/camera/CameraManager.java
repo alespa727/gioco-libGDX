@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import io.github.ale.screens.gameScreen.entitytypes.EntityManager;
+import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
@@ -48,7 +48,7 @@ public class CameraManager {
         }
         camera.position.set(position);
     }
-
+    
     /***
      * aggiorna cosa la telecamera deve seguire/modalità della telecamera
      */
@@ -78,7 +78,7 @@ public class CameraManager {
         }
         //System.out.println();
     }
-
+    
     public static Vector3[] limiti(){
         return punti;
     }
@@ -87,7 +87,7 @@ public class CameraManager {
         // Check if x and y are within the frustum's bounds
         return x > punti[0].x-2 && y > punti[0].y-2 && x < punti[2].x+2 && y < punti[2].y+2;
     }
-
+    
     public OrthographicCamera get() {
         return camera;
     }

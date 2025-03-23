@@ -1,10 +1,10 @@
-package io.github.ale.screens.gameScreen.entities.player.movement;
+package io.github.ale.screens.gameScreen.entity.player.movement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entitytypes.livingEntity.LivingEntity;
-import io.github.ale.screens.gameScreen.entities.player.KeyHandlerPlayer;
+import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entity.player.KeyHandlerPlayer;
 import io.github.ale.screens.gameScreen.enums.StatiDiMovimento;
 import io.github.ale.screens.gameScreen.maps.Map;
 

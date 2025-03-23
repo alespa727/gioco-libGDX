@@ -13,13 +13,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.camera.CameraManager;
-import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.pathfinding.GameGraph;
 
 public class Map {
     public static boolean isGraphLoaded=false;
     private static GameGraph graph;
-
+    
     private final OrthographicCamera camera;
     private TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -48,10 +48,10 @@ public class Map {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
         isLoaded = true;
-
+       
         graph = new GameGraph(width, height, collisions);
         isGraphLoaded=true;
-
+        
     }
 
     public static GameGraph getGraph(){
@@ -64,7 +64,7 @@ public class Map {
 
     public void render(){
         mapRenderer.setView(camera);
-        mapRenderer.render();
+        mapRenderer.render(); 
     }
 
     /**
@@ -88,7 +88,7 @@ public class Map {
                 if (collisionBoxes[i][j]!=null) {
                     renderer.setColor(Color.RED);
                     renderer.rect(collisionBoxes[i][j].x, collisionBoxes[i][j].y, collisionBoxes[i][j].width, collisionBoxes[i][j].height);
-
+                    
                 }
             }
         }
@@ -107,7 +107,7 @@ public class Map {
         height=(Integer) map.getProperties().get("height");
         collisions = new boolean[width][height];
         collisionBoxes = new Rectangle[width][height];
-
+        
     }
 
         /**
@@ -138,7 +138,7 @@ public class Map {
     }
 
 
-
+    
     public static int width(){
         return width;
     }
@@ -146,8 +146,8 @@ public class Map {
         return height;
     }
 
-
-
+    
+    
     public static boolean checkLineCollision(Vector2 p1, Vector2 p2){
         //int controlli=0;
         int minTileX = Math.max(0, (int) (CameraManager.limiti()[0].x-2f));
@@ -187,7 +187,7 @@ public class Map {
                 }
             }
         }
-
+        
         return false;
     }
 

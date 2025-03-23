@@ -1,14 +1,14 @@
-package io.github.ale.screens.gameScreen.entitytypes.abstractEnemy;
+package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entitytypes.EntityManager;
-import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entitytypes.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entities.player.Player;
+import io.github.ale.screens.gameScreen.entity.EntityManager;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
+import io.github.ale.screens.gameScreen.entity.player.Player;
 
 public abstract class Nemico extends CombatEntity {
 
