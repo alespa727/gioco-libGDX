@@ -39,7 +39,7 @@ public class Pathfinder implements Disposable{
     public void countdown() {
         cooldown.update(Gdx.graphics.getDeltaTime());
         if (cooldown.isReady) {
-            entity.movement().sulNodo = true;
+            entity.movement().searchingfornext = true;
             cooldown.reset();
         }
     }
@@ -51,14 +51,8 @@ public class Pathfinder implements Disposable{
 
     public void renderPathAsincrono(float x, float y){
         Gdx.app.postRunnable(() -> {
-            if (hasLoadedGraph && map != MapManager.currentmap()) {
-                map = MapManager.currentmap();
-                pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
-                hasLoadedGraph = true;
-                System.out.println("Caricato il grafo!");
-            }
-    
-            if (!hasLoadedGraph && Map.isGraphLoaded) {
+            //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
+            if (Map.isGraphLoaded && map != MapManager.currentmap()) {
                 map = MapManager.currentmap();
                 pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
                 hasLoadedGraph = true;
@@ -67,55 +61,36 @@ public class Pathfinder implements Disposable{
                 entity.movement().setGoal(path.get(0), path.get(1));
             }
     
-            if (entity.movement().sulNodo) {
-    
+            //CALCOLO DEL PERCORSO
+            if (entity.movement().searchingfornext) {
                 calcolaPercorso(x, y);
-    
-                if (path.getCount() > 1)
-                entity.movement().setGoal(path.get(0), path.get(1));
+                if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
             }
-    
-            // System.out.println(path.getCount());
-            if (path.getCount() > 1 && entity.coordinateCentro().dst(x, y) < 20f) {
-                // Aggiorna il movimento del nemico
-                entity.movement().update(entity);
-            } else {
-                entity.movement().setFermo(entity);
-            }
-    
         });
     }
 
     public void calcolaPercorso(float x, float y) {
         path.clear();
     
-        // Get the closest nodes for the start and end positions
+        //setta il nodo di inizio e fine
         startNode = Map.getGraph().getClosestNode(entity.coordinateCentro().x, entity.coordinateCentro().y);
         endNode = Map.getGraph().getClosestNode(x, y);
     
-        // Validate the nodes
+        //nodi validi?
         if (startNode == null || endNode == null) {
             System.err.println("Start or end node is null!");
             return;
         }
     
-        // Initialize the heuristic if not already done
+        //INIZIALIZZA CALCOLO DISTANZA
         if (heuristic == null) {
             heuristic = new HeuristicDistance();
         }
-        
-        //System.out.println("Start Node Index: " + startNode.getIndex());
-        //System.out.println("End Node Index: " + endNode.getIndex());
-        //System.out.println("Graph Node Count: " + Map.getGraph().getNodeCount());
+
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
     
-        // Handle the result of the pathfinding
-        if (success) {
-            if (path.getCount() < 14) {
-                //System.out.println("Percorso trovato con successo!");
-            }
-        } else {
-            //System.out.println("Percorso non trovato, aggiungo il nodo finale.");
+        //aggiunta nodo finale se non si trova un percorso
+        if (!success) {
             if (path.getCount() == 0 || path.get(path.getCount() - 1) != endNode) {
                 path.add(endNode);
             }
@@ -139,6 +114,18 @@ public class Pathfinder implements Disposable{
         shapeRenderer.circle(startNode.x + 0.5f, startNode.y + 0.5f, 0.2f, 10);
         shapeRenderer.circle(endNode.x + 0.5f, endNode.y + 0.5f, 0.2f, 10);
         shapeRenderer.setColor(Color.BLACK);
+    }
+
+    public void debug(){
+                
+        System.out.println("Start Node Index: " + startNode.getIndex());
+        System.out.println("End Node Index: " + endNode.getIndex());
+        System.out.println("Graph Node Count: " + Map.getGraph().getNodeCount());
+        
+    }
+
+    public void clear(){
+        path.clear();
     }
 
     @Override

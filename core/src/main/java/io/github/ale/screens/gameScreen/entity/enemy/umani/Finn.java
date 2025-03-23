@@ -3,7 +3,7 @@ package io.github.ale.screens.gameScreen.entity.enemy.umani;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
-import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.states.States;
+import io.github.ale.screens.gameScreen.entity.livingEntity.states.States;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 import io.github.ale.screens.gameScreen.entity.skill.skillist.Punch;
 

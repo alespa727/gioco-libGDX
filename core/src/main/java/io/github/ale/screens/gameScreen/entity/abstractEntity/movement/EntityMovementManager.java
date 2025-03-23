@@ -9,7 +9,7 @@ import io.github.ale.screens.gameScreen.pathfinding.Node;
 public class EntityMovementManager {
     public boolean fermo;
     private Vector2 direction;
-    public boolean sulNodo;
+    public boolean searchingfornext;
     private Node lastNode;
     private Node node;
     private final float REACHED_THRESHOLD = 1/16f; 
@@ -17,20 +17,19 @@ public class EntityMovementManager {
     public void setGoal(Node start, Node node) {
         this.lastNode=start;
         this.node = node;
-        sulNodo=true;
+        searchingfornext=true;
         fermo=false;
         direction = new Vector2();
     }
 
     public void setFermo(LivingEntity e) {
         
-        
         if(node.equals(lastNode) && fermo==false){
             direction.scl(0.5f);
             e.direzione().set(direction);
                        
             //System.out.println(e.direzione());
-            fermo = true;
+            searchingfornext = true;
         }
  
     }
@@ -63,9 +62,9 @@ public class EntityMovementManager {
         entity.setY(entity.getY() + movement.y);
         
         if (entity.coordinateCentro().dst(target) < REACHED_THRESHOLD) {
-            sulNodo=true;
+            searchingfornext=true;
             lastNode=node;
-        }else sulNodo=false;
+        }else searchingfornext=false;
     }
 }
 

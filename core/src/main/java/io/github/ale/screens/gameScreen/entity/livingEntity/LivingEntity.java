@@ -14,7 +14,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
-import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.states.States;
+import io.github.ale.screens.gameScreen.entity.livingEntity.states.States;
 import io.github.ale.screens.gameScreen.entity.skill.SkillSet;
 import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 

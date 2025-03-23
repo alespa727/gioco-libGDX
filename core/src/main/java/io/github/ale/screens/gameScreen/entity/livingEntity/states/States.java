@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.states;
+package io.github.ale.screens.gameScreen.entity.livingEntity.states;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
@@ -40,7 +40,7 @@ public enum States implements State<LivingEntity> {
 
         @Override
         public void enter(LivingEntity entity) {
-            System.out.println("Chasing");
+            System.out.println(entity.nome()+ " id."+entity.id()+" in Pursuing");
         }
 
         @Override
@@ -50,11 +50,14 @@ public enum States implements State<LivingEntity> {
             }
             entity.pathfinder.renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
             entity.checkIfDead();
+                        
+            //AGGIORNAMENTO MOVEMENT
+            entity.movement().update(entity);
         }
 
         @Override
         public void exit(LivingEntity entity) {
-            
+            entity.pathfinder.clear();
         }
 
         @Override

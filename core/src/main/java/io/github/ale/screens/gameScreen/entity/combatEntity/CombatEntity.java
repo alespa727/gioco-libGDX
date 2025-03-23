@@ -16,6 +16,7 @@ public abstract class CombatEntity extends LivingEntity{
     private final Cooldown damage = new Cooldown(.273f);
     private final Cooldown attack;
     private boolean isAttacking = false;
+    
 
     public CombatEntity(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager);
