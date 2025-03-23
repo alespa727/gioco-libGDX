@@ -171,4 +171,12 @@ public class Settings implements Screen {
             skin = null;
         }
     }
+
+    public void setBottoni(TextButton[] bottoni) {
+        this.bottoni = bottoni;
+    }
+
+    public TextButton[] getBottoni() {
+        return bottoni;
+    }
 }
