@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity;
 
 import com.badlogic.gdx.math.Vector2;
 

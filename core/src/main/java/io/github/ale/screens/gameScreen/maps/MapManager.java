@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.music.MusicPlayer;
-import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.entities.player.Player;
 
 public class MapManager {
     private final Player player;
@@ -40,11 +40,11 @@ public class MapManager {
     public void render(){ this.currentMap.render();}
     public void draw(){ this.currentMap.draw(); }
 
-    private void changeMap(){  
-    
+    private void changeMap(){
+
         System.out.println("Mappa: "+currentMapNum);
         switch (currentMapNum) {
-            case 1 -> { nome = "map3"; 
+            case 1 -> { nome = "map3";
             ambienteAperto=true;
             viewport.setWorldSize(20f, 20f*9/16f);
             }
@@ -63,9 +63,9 @@ public class MapManager {
         currentMap = new Map(camera, nome);
         viewport.apply();
     }
-    
-    /** 
-     * controlla per eventuale cambio mappa 
+
+    /**
+     * controlla per eventuale cambio mappa
     */
     public void checkInput(){
         boolean e = Gdx.input.isKeyPressed(Input.Keys.E);

@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -8,12 +8,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entity.EntityManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Dimensioni;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.EntityInfo;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Hitbox;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.graphics.EntityGraphics;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.state.EntityState;
+import io.github.ale.screens.gameScreen.entitytypes.EntityManager;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.caratteristiche.Dimensioni;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.caratteristiche.EntityInfo;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.caratteristiche.Hitbox;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.graphics.EntityGraphics;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public abstract class Entity{
@@ -32,7 +32,7 @@ public abstract class Entity{
 
     private float atkCooldown = 0;
     public float delta;
-    
+
 
     // Constructor
     public Entity(EntityConfig config, EntityManager manager) {
@@ -57,10 +57,10 @@ public abstract class Entity{
     public abstract void create();
     public abstract void drawHitbox(ShapeRenderer renderer);
 
-    
+
     /**
      * disegna il nemico
-     * 
+     *
      * @param batch
      * @param elapsedTime
      */
@@ -68,9 +68,9 @@ public abstract class Entity{
         elapsedTime += Gdx.graphics.getDeltaTime();
 
         graphics.setAnimation(this);
-        
+
         batch.draw(graphics.getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
-    
+
         batch.setColor(Color.WHITE);
     }
 
@@ -167,7 +167,7 @@ public abstract class Entity{
     public void setDirezione(Vector2 direzione) {
         this.direzione.set(direzione);
     }
-    
+
     // Initialization methods
     public final void inizializzaEntityGraphics() {
         this.graphics = new EntityGraphics();

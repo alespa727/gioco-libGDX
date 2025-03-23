@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.caratteristiche;
 
 public class Dimensioni {
     public final float width;

@@ -1,10 +1,10 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity.graphics;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.graphics;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.texture.TexturesEntity;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.texture.TexturesEntity;
 
 public class EntityGraphics {
     private TexturesEntity texture;
@@ -27,7 +27,7 @@ public class EntityGraphics {
              animation = texture.setAnimazione(entity.direzione());
          }
     }
- 
+
      public void inizializzaAnimazione(Entity entity) {
          animation = getTexture().setAnimazione(entity.direzione());
      }

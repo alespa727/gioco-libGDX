@@ -1,12 +1,12 @@
-package io.github.ale.screens.gameScreen.entity.combatEntity;
+package io.github.ale.screens.gameScreen.entitytypes.combatEntity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.gameScreen.entity.EntityManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entitytypes.EntityManager;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entitytypes.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public abstract class CombatEntity extends LivingEntity{
@@ -16,7 +16,7 @@ public abstract class CombatEntity extends LivingEntity{
     private final Cooldown damage = new Cooldown(.273f);
     private final Cooldown attack;
     private boolean isAttacking = false;
-    
+
 
     public CombatEntity(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager);
@@ -28,7 +28,7 @@ public abstract class CombatEntity extends LivingEntity{
     @Override
     public void updateEntity() {
         delta = Gdx.graphics.getDeltaTime();
-        
+
         if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-range.width/2;
         else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-range.width/2;
         if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-range.height/2;
@@ -66,7 +66,7 @@ public abstract class CombatEntity extends LivingEntity{
             }
         }
     }
-    
+
     @Override
     public void hit(float angolo, float damage) {
         statistiche().inflictDamage(damage, false);

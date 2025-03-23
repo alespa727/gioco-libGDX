@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entitytypes.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
@@ -43,7 +43,7 @@ public class Pathfinder implements Disposable{
             cooldown.reset();
         }
     }
-    
+
     public void renderPath(float x, float y) {
         countdown();
         executor.submit(() -> renderPathAsincrono(x, y));
@@ -60,7 +60,7 @@ public class Pathfinder implements Disposable{
                 calcolaPercorso(x, y);
                 entity.movement().setGoal(path.get(0), path.get(1));
             }
-    
+
             //CALCOLO DEL PERCORSO
             if (entity.movement().searchingfornext) {
                 calcolaPercorso(x, y);
@@ -71,24 +71,24 @@ public class Pathfinder implements Disposable{
 
     public void calcolaPercorso(float x, float y) {
         path.clear();
-    
+
         //setta il nodo di inizio e fine
         startNode = Map.getGraph().getClosestNode(entity.coordinateCentro().x, entity.coordinateCentro().y);
         endNode = Map.getGraph().getClosestNode(x, y);
-    
+
         //nodi validi?
         if (startNode == null || endNode == null) {
             System.err.println("Start or end node is null!");
             return;
         }
-    
+
         //INIZIALIZZA CALCOLO DISTANZA
         if (heuristic == null) {
             heuristic = new HeuristicDistance();
         }
 
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
-    
+
         //aggiunta nodo finale se non si trova un percorso
         if (!success) {
             if (path.getCount() == 0 || path.get(path.getCount() - 1) != endNode) {
@@ -99,11 +99,11 @@ public class Pathfinder implements Disposable{
 
     public void drawPath(ShapeRenderer shapeRenderer) {
         if (path == null || path.nodes.isEmpty()) {
-            return; 
+            return;
         }
 
         shapeRenderer.setColor(Color.RED);
-        Node previousNode = null; 
+        Node previousNode = null;
         for (Node node : path.nodes) {
             if (previousNode != null) {
                 shapeRenderer.rectLine(previousNode.getX(), previousNode.getY(), node.getX(), node.getY(), 0.1f);
@@ -117,11 +117,11 @@ public class Pathfinder implements Disposable{
     }
 
     public void debug(){
-                
+
         System.out.println("Start Node Index: " + startNode.getIndex());
         System.out.println("End Node Index: " + endNode.getIndex());
         System.out.println("Graph Node Count: " + Map.getGraph().getNodeCount());
-        
+
     }
 
     public void clear(){

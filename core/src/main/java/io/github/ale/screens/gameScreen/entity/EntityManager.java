@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity;
+package io.github.ale.screens.gameScreen.entitytypes;
 
 import static java.lang.System.err;
 import java.lang.reflect.Constructor;
@@ -12,13 +12,13 @@ import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
-import io.github.ale.screens.gameScreen.entity.enemy.umani.Finn;
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
-import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entitytypes.combatEntity.CombatEntity;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEnemy.Nemico;
+import io.github.ale.screens.gameScreen.entities.umani.Finn;
+import io.github.ale.screens.gameScreen.entitytypes.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entities.player.Player;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.pathfinding.Node;
 
@@ -82,16 +82,16 @@ public final class EntityManager {
 
         for (int index = 0; index < 2; index++) {
             e.y++;
-            addNemico(Finn.class, e, 1f); 
+            addNemico(Finn.class, e, 1f);
         }
-        
-    
+
+
     }
 
     public void addNemico(Class<? extends Nemico> e, EntityConfig config, float attackcooldown) {
         try {
             //System.err.println("Creata entità! id." + entityidcount);
-            Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Float.class, Player.class);//Cerca il costruttore 
+            Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Float.class, Player.class);//Cerca il costruttore
             config.id=entityidcount;
             Entity newEntity = c.newInstance(config, this, attackcooldown, player);// Crea una nuova entità
             entita.add(newEntity); //aggiunge entità
@@ -100,7 +100,7 @@ public final class EntityManager {
             err.println("Errore nel creare l'entità");
         }
     }
-    
+
     public Entity entita(int id){
         for (int i = 0; i < entita.size; i++) {
             if (entita.get(i).id() == id) {
@@ -111,8 +111,8 @@ public final class EntityManager {
         System.err.println("Entità non trovata!");
         return null;
     }
-    
-    
+
+
     /**
      * renderizza tutte le entità
      */
@@ -150,21 +150,21 @@ public final class EntityManager {
      * @param renderer
      */
     public void hitbox(ShapeRenderer renderer){
-        
+
         for (Entity e : entita) {
 
             if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) e.drawHitbox(renderer);
-            
+
         }
     }
 
     public void drawPath(ShapeRenderer renderer){
         for (Entity e : entita) {
-            
+
             if (e instanceof Nemico nemico) {
                 if (CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) nemico.drawPath(renderer);
             }
-            
+
         }
     }
 
@@ -228,7 +228,7 @@ public final class EntityManager {
         if (entita(id).coordinateCentro().x > x && entita(id).coordinateCentro().y > y && entita(id).coordinateCentro().x < x + width && entita(id).coordinateCentro().y < y + height) {
             stato=true;
         }
-        
+
         return stato;
     }
 
@@ -256,11 +256,11 @@ public final class EntityManager {
      * @param renderer
      */
     public void range(ShapeRenderer renderer){
-        
+
         for (Entity e : entita) {
             if (e instanceof CombatEntity && CameraManager.inlimiti(e.coordinateCentro().x, e.coordinateCentro().y)) ((CombatEntity)e).drawRange(renderer);
         }
-        
+
     }
 
     /**
@@ -276,7 +276,7 @@ public final class EntityManager {
         }
     }
 
-    
+
 
     /**
      * inverte la posizione di due entità nella lista
@@ -344,7 +344,7 @@ public final class EntityManager {
         return true;
     }
 
-    
+
     public float calcolaAngoloAttacco(LivingEntity attaccante, LivingEntity attaccato) {
         float deltaX = attaccato.coordinateCentro().x - attaccante.coordinateCentro().x;
         float deltaY = attaccato.coordinateCentro().y - attaccante.coordinateCentro().y;
@@ -355,4 +355,4 @@ public final class EntityManager {
     public boolean isPaused(){
         return game.gameScreen.isPaused;
     }
-} 
+}

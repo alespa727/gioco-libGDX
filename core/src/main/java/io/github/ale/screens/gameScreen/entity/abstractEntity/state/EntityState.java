@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity.state;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.state;
 public class EntityState{
     private boolean isAlive;
     private boolean inCollisione;
@@ -39,5 +39,5 @@ public class EntityState{
         this.immortality = immortality;
     }
 
-    
+
 }
