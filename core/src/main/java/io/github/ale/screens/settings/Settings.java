@@ -26,15 +26,15 @@ public class Settings implements Screen {
     // I pulsanti sono static final int
 
     private static int[] pulsanti = new int[]{ // Tasti dei pulsanti
-        Input.Keys.W,
-        Input.Keys.A,
-        Input.Keys.S,
-        Input.Keys.D,
-        Input.Keys.SHIFT_LEFT,
-        Input.Keys.E,
-        Input.Keys.F,
-        Input.Keys.SPACE,
-        Input.Keys.ESCAPE
+        Input.Keys.W, // 0
+        Input.Keys.A, // 1
+        Input.Keys.S, // 2
+        Input.Keys.D, // 3
+        Input.Keys.SHIFT_LEFT, // 4
+        Input.Keys.E, // 5
+        Input.Keys.F, // 6
+        Input.Keys.SPACE, // 7
+        Input.Keys.ESCAPE // 8
     };
     final String[] comandi = new String[]{ // Array descrizione tasti
         "Su",
