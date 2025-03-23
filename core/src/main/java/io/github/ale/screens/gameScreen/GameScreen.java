@@ -18,6 +18,7 @@ import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.gui.Gui;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
+import io.github.ale.screens.settings.Settings;
 
 public class GameScreen implements Screen {
 
@@ -112,7 +113,7 @@ public class GameScreen implements Screen {
         maps.draw();
         drawOggetti();
         drawHitboxes();
-        
+
 
         drawGUI();
     }

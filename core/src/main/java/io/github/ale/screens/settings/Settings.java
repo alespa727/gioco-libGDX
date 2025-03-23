@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.MyGame;
@@ -25,6 +24,31 @@ public class Settings implements Screen {
     private Table table;
 
     private TextButton bottoni[];
+
+    // I pulsanti sono static final int
+
+    private static int[] pulsanti = new int[]{
+        Input.Keys.W,
+        Input.Keys.A,
+        Input.Keys.S,
+        Input.Keys.D,
+        Input.Keys.SHIFT_LEFT,
+        Input.Keys.E,
+        Input.Keys.F,
+        Input.Keys.SPACE,
+        Input.Keys.ESCAPE
+    };
+    final String[] comandi = new String[]{
+        "avanti (NORD)",
+        "sinistra (OVEST)",
+        "sotto (SUD)",
+        "destra (EST)",
+        "dash (corri)",
+        "cambio mappa",
+        "attacco",
+        "pausa",
+        "play"
+    };
 
     public Settings(MyGame game) {
         this.game = game;
@@ -46,31 +70,6 @@ public class Settings implements Screen {
         table.add(label);
         table.row();
 
-        final String[] comandi = new String[]{
-            "avanti (NORD)",
-            "sinistra (OVEST)",
-            "sotto (SUD)",
-            "destra (EST)",
-            "dash (corri)",
-            "cambio mappa",
-            "attacco",
-            "pausa",
-            "play"
-        };
-
-        // I pulsanti sono static final int
-        final int[] pulsanti = new int[]{
-            Input.Keys.W,
-            Input.Keys.A,
-            Input.Keys.S,
-            Input.Keys.D,
-            Input.Keys.SHIFT_LEFT,
-            Input.Keys.E,
-            Input.Keys.F,
-            Input.Keys.SPACE,
-            Input.Keys.ESCAPE
-        };
-
         bottoni = new TextButton[comandi.length];
 
         Table t = new Table();
@@ -89,6 +88,7 @@ public class Settings implements Screen {
                         public boolean keyDown(int keycode) {
                             Gdx.input.setInputProcessor(stage);
                             bottoni[ii].setText(Input.Keys.toString(keycode));
+                            pulsanti[ii] = keycode;
                             return true;
                         }
                     });
@@ -172,11 +172,11 @@ public class Settings implements Screen {
         }
     }
 
-    public void setBottoni(TextButton[] bottoni) {
-        this.bottoni = bottoni;
+    public static int[] getPulsanti() {
+        return pulsanti;
     }
 
-    public TextButton[] getBottoni() {
-        return bottoni;
+    public static void setPulsanti(int[] pulsanti) {
+        Settings.pulsanti = pulsanti;
     }
 }

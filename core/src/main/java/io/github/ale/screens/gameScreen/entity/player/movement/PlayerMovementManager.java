@@ -29,12 +29,12 @@ public class PlayerMovementManager{
 
     /**
      * aggiorna i vari parametri in base agli input
-     * 
+     *
      * @param p
      */
-    
+
     public void update(LivingEntity p) {
-        keyH.input();
+        keyH.inputmodificato();
         speedMultiplier(p);
         movimento(p);
     }
@@ -44,7 +44,7 @@ public class PlayerMovementManager{
      */
 
     private void speedMultiplier(LivingEntity p) {
-        
+
         sprint = keyH.sprint;
 
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
@@ -56,9 +56,9 @@ public class PlayerMovementManager{
             // System.out.println("SPRINT!");
             if (diagonale) speed = sprintSpeedMultiplier/1.41f;
             else speed = sprintSpeedMultiplier;
-            
+
             p.statistiche().setSpeedBuff(p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) *0.1f);
-    
+
         }
 
         if (!sprint && !fermo) {
@@ -73,24 +73,24 @@ public class PlayerMovementManager{
             float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.4f;
             if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino sinistra 0, azzeralo
             p.statistiche().setSpeedBuff(newSpeedBuff);
-            
+
         }
-        
+
     }
 
     /**
      * gestisce il movimento in base agli input
-     * 
+     *
      * @param p
      */
     private void movimento(LivingEntity p) {
         elapsedTime = Gdx.graphics.getDeltaTime(); // moltiplicatore del movimento in base al framerate
-        
+
         su = keyH.su;
         giu = keyH.giu;
         sinistra = keyH.sinistra;
         destra = keyH.destra;
-        
+
         boolean oppostoY = su && giu;
         boolean oppostoX = sinistra && destra;
         boolean anyKey = su || sinistra || destra || giu;
@@ -119,7 +119,7 @@ public class PlayerMovementManager{
                     aggiornaStatoCollisione(p);
                 }else{
                     addNotMoving(p);
-                } 
+                }
             }
             case OPPOSTOX -> {
                 if (su || giu) {
@@ -136,7 +136,7 @@ public class PlayerMovementManager{
                 }
             }
             case ANYKEY -> {
-                
+
                 aggiornaDirezioneY(p);
 
                 aggiornaCollisioni(p);
@@ -147,7 +147,7 @@ public class PlayerMovementManager{
 
                 aggiornaCollisioni(p);
                 muoviAsseX(p);
-                
+
                 aggiornaStatoCollisione(p);
 
             }
@@ -173,7 +173,7 @@ public class PlayerMovementManager{
         }
 
     }
-    
+
 
     private void aggiornaCollisioni(LivingEntity p) {
         collisioneY = Map.checkCollisionY(p);
@@ -182,7 +182,7 @@ public class PlayerMovementManager{
 
     private void aggiornaDirezioneX(LivingEntity p) {
         float dx = 0;
-        
+
         if (sinistra && destra) {
             return;
         }
@@ -192,25 +192,25 @@ public class PlayerMovementManager{
         // Determina il movimento orizzontale
         if (sinistra) dx = -1f;
         if (destra) dx = 1f;
-    
+
         p.direzione().set(dx, p.direzione().y);
         //System.out.println(p.direzione());
     }
 
     public void aggiornaDirezioneY(LivingEntity p){
         float dy = 0;
-        
+
         if (su && giu) {
             return;
         }
 
         last = p.direzione();
-    
+
         // Determina il movimento verticale
         if (su) dy = 1f;
         if (giu) dy = -1f;
-        
-    
+
+
         p.direzione().set(p.direzione().x, dy);
         //System.out.println(p.direzione());
     }
@@ -218,15 +218,15 @@ public class PlayerMovementManager{
     private void aggiornaStatoCollisione(LivingEntity p) {
         if (collisioneX || collisioneY)
             p.stati().setInCollisione(true);
-  
+
     }
 
     private void muoviAsseX(LivingEntity p){
-        
+
         if (!collisioneX) {
             float speed = p.statistiche().speed();
             float x = p.getX();
-        
+
             if (sinistra)
                 p.setX(x - speed * (float) elapsedTime);
             if (destra)

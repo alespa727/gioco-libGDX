@@ -14,6 +14,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
 import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
 import io.github.ale.screens.gameScreen.entity.skill.skillist.Punch;
+import io.github.ale.screens.settings.Settings;
 
 public class Player extends CombatEntity {
 
@@ -41,7 +42,7 @@ public class Player extends CombatEntity {
     }
 
     public Vector2 predizione(Entity e){
-        if ((direzioni.size>=3) && (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y))) 
+        if ((direzioni.size>=3) && (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y)))
             return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().speed() * count, direzioni.get(1).y * statistiche().speed() * count);
         this.count=0;
         return new Vector2(coordinate());
@@ -75,7 +76,7 @@ public class Player extends CombatEntity {
     @Override
     public void updateEntityType() {
         movement.update(this);
-        setIsAttacking(Gdx.input.isKeyPressed(Input.Keys.F));
+        setIsAttacking(Gdx.input.isKeyPressed(Settings.getPulsanti()[6]));
         checkIfDead();
     }
 
@@ -105,7 +106,7 @@ public class Player extends CombatEntity {
 
     @Override
     public void drawRange(ShapeRenderer renderer) {
-       
+
     }
 
 }

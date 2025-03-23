@@ -14,21 +14,24 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.ale.MyGame;
 import io.github.ale.screens.settings.Settings;
 
-public class MainScreen implements Screen{
+public class MainScreen implements Screen {
     private final MyGame game;
     private Skin skin;
     private Stage stage;
     private Table root;
     private Table table;
-    
-    public MainScreen(MyGame game) {
+
+    private final Settings settings;
+
+    public MainScreen(MyGame game, Settings settings) {
         this.game = game;
+        this.settings = settings;
     }
 
     @Override
     public void show() { //come un costruttore praticamente
         stage = new Stage(new ScreenViewport());
-              
+
         Gdx.input.setInputProcessor(stage);
         root = new Table();
         root.setFillParent(true);
@@ -38,52 +41,51 @@ public class MainScreen implements Screen{
         root.add(table);
         //toplayerDialog dialog = new toplayerDialog(); //tolto momwnaneamente
         bottonePlay();
-        
+
         bottoneSettings();
-        
-        
-        
+
+
         TextButton button3 = new TextButton("Salvataggi", skin);
         table.add(button3);
-        
+
         table.row();
 
         TextButton button4 = new TextButton("Crediti", skin);
         table.add(button4);
         TextButton button5 = new TextButton("Exit", skin);
         table.add(button5);
-        button5.addListener(new InputListener(){
+        button5.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();
                 return true;
-	}
+            }
         });
         table.setDebug(true);
     }
-    
-    public void bottonePlay(){
+
+    public void bottonePlay() {
         TextButton button = new TextButton("Play", skin);
-        button.addListener(new InputListener(){
+        button.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(game.gameScreen);
                 return true;
-	    }
+            }
         });
         root.add(button).fill();
     }
 
-    public void bottoneSettings(){
+    public void bottoneSettings() {
         TextButton button = new TextButton("Settings", skin);
         table.add(button);
 
-        button.addListener(new InputListener(){
+        button.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new Settings(game));
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(settings);
                 return true;
-	    }
+            }
         });
 
     }
@@ -109,12 +111,12 @@ public class MainScreen implements Screen{
 
     @Override
     public void pause() {
-        
+
     }
 
     @Override
     public void resume() {
-     
+
     }
 
     @Override

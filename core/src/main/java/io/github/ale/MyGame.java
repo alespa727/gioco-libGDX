@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.ale.screens.defeatScreen.DefeatScreen;
 import io.github.ale.screens.gameScreen.GameScreen;
 import io.github.ale.screens.mainScreen.MainScreen;
+import io.github.ale.screens.settings.Settings;
 
 public class MyGame extends com.badlogic.gdx.Game{
 
@@ -14,7 +15,7 @@ public class MyGame extends com.badlogic.gdx.Game{
 
     public GameScreen gameScreen = new GameScreen(this);
     public DefeatScreen gameOver = new DefeatScreen(this);
-    public MainScreen mainScreen = new MainScreen(this);
+    public MainScreen mainScreen = new MainScreen(this, new Settings(this));
     @Override
     public void create() {
         batch = new SpriteBatch(); // praticamente la cosa per disegnare
@@ -28,6 +29,6 @@ public class MyGame extends com.badlogic.gdx.Game{
         renderer.dispose();
     }
 
-    
+
 
 }
