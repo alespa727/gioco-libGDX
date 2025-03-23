@@ -2,9 +2,12 @@ package io.github.ale.screens.gameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -17,6 +20,7 @@ import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.gui.Gui;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
+import io.github.ale.screens.pauseScreen.PauseScreen;
 import io.github.ale.screens.settings.Settings;
 
 public class GameScreen implements Screen {
@@ -46,25 +50,25 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() { //METODO CREATE
-        System.err.println(loaded);
         if (!loaded) {
+            System.out.println("GameScreen loaded");
             rect = new Gui(this);
             gui = new ShapeRenderer();
             stage = new Stage(new ScreenViewport());
             root = new Table();
             root.setFillParent(true);
             stage.addActor(root);
-
-            loaded = true;
-
             camera = new CameraManager();   // Configura la camera
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
             entities = new EntityManager(this.game);
             maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
+
+            loaded = true;
         } else {
             maps.getPlaylist().play(0);
-            entities.player().respawn();
+            if (!entities.player().stati().isAlive())
+                entities.player().respawn();
         }
     }
 
@@ -72,13 +76,11 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         if (!isPaused) {
             update();
+            draw();
         }
-        draw();
         if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]) && !isPaused) {
-            pause();
-        }
-        if (Gdx.input.isKeyPressed(Settings.getPulsanti()[8]) && isPaused) {
-            resume();
+            isPaused = true;
+            game.setScreen(new PauseScreen(game, this));
         }
     }
 
@@ -89,7 +91,7 @@ public class GameScreen implements Screen {
         // aggiorna ogni cosa nel gioco
         maps.checkInput(); // update mappa, in caso di input
         entities.render();
-        camera.update(maps, entities, viewport); // update telecamera
+        updateCamera();
         maps.render(); // update visualizzazione mappa
     }
 
@@ -97,23 +99,16 @@ public class GameScreen implements Screen {
      * disegna tutto il necessario
      */
 
-    private void draw() {
+    public void draw() {
         elapsedTime += Gdx.graphics.getDeltaTime();
         // pulisce lo schermo
 
         ScreenUtils.clear(Color.BLACK);
 
-        // non l'ho capito bene neanche io ma funziona con la videocamera
-
-        viewport.apply();
-        game.batch.setProjectionMatrix(camera.get().combined);
-        game.renderer.setProjectionMatrix(camera.get().combined);
-
         maps.draw();
-        drawOggetti();
+
         drawHitboxes();
-
-
+        drawOggetti();
         drawGUI();
     }
 
@@ -125,7 +120,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        viewport.update(width, height, false);
     }
 
     @Override
@@ -139,6 +134,11 @@ public class GameScreen implements Screen {
     public void pause() {
         maps.getPlaylist().stop();
         isPaused = true;
+
+        // Synchronize the camera with the player before pausing
+        Vector2 playerPosition = entities.player().coordinateCentro();
+        camera.get().position.set(playerPosition.x, playerPosition.y, 0);
+        camera.get().update();
     }
 
     @Override
@@ -153,19 +153,11 @@ public class GameScreen implements Screen {
      * disegna hitbox
      */
     public void drawHitboxes() {
-        game.renderer.begin(ShapeType.Line);
+
         Map.getGraph().drawConnections(game.renderer);
-        game.renderer.end();
-        game.renderer.begin(ShapeType.Filled);
+
         Map.getGraph().drawNodes(game.renderer);
-        entities.drawPath(game.renderer);
-        game.renderer.end();
-        game.renderer.begin(ShapeType.Line);
-        entities.checkEachCollision(game.renderer);
-        //maps.collisions(game.renderer);
-        entities.hitbox(game.renderer);
-        entities.range(game.renderer);
-        game.renderer.end();
+        entities.drawDebug(elapsedTime);
     }
 
     /**
@@ -173,11 +165,7 @@ public class GameScreen implements Screen {
      */
 
     public void drawOggetti() {
-        game.batch.begin();
-
         entities.draw(elapsedTime);
-
-        game.batch.end();
     }
 
     @Override
@@ -191,5 +179,13 @@ public class GameScreen implements Screen {
 
     public MapManager maps() {
         return maps;
+    }
+
+    public void updateCamera(){
+        camera.update(maps, entities, viewport); // update telecamera
+        viewport.apply();
+        game.batch.setProjectionMatrix(camera.get().combined);
+        game.renderer.setProjectionMatrix(camera.get().combined);
+
     }
 }

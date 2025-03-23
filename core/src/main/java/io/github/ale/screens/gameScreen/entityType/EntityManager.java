@@ -107,7 +107,7 @@ public final class EntityManager {
                 return entity.get(i);
             }
         }
-        System.err.println("Entità non trovata!");
+        err.println("Entità non trovata!");
         return null;
     }
 
@@ -132,6 +132,17 @@ public final class EntityManager {
      * @param elapsedTime delta time
      */
     public void draw(float elapsedTime) {
+        drawEntity(elapsedTime);
+    }
+
+    public void drawDebug(float elapsedTime){
+        drawHitbox();
+        drawRange();
+        drawPath();
+    }
+
+    public void drawEntity(float elapsedTime){
+        game.batch.begin();
         sort();
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
@@ -142,29 +153,34 @@ public final class EntityManager {
                 }
             }
         }
+        game.batch.end();
     }
 
     /**
      * disegna tutte le hitbox delle entità
      * @param renderer (disegnatore)
      */
-    public void hitbox(ShapeRenderer renderer){
-
+    public void drawHitbox(){
+        game.renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Entity e : entity) {
-
-            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) e.drawHitbox(renderer);
+            if (e.stati().inCollisione()) game.renderer.setColor(Color.RED);
+            else game.renderer.setColor(Color.BLACK);
+            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) e.drawHitbox(game.renderer);
 
         }
+        game.renderer.end();
     }
 
-    public void drawPath(ShapeRenderer renderer){
+    public void drawPath(){
+        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entity) {
 
             if (e instanceof Enemy enemy) {
-                if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) enemy.drawPath(renderer);
+                if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) enemy.drawPath(game.renderer);
             }
 
         }
+        game.renderer.end();
     }
 
     public Array<Entity> entita(float x, float y, float width, float height){
@@ -249,28 +265,13 @@ public final class EntityManager {
      * disegna tutti i range delle entità
      * @param renderer
      */
-    public void range(ShapeRenderer renderer){
-
+    public void drawRange(){
+        game.renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Entity e : entity) {
-            if (e instanceof CombatEntity && CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) ((CombatEntity)e).drawRange(renderer);
+            if (e instanceof CombatEntity && CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) ((CombatEntity)e).drawRange(game.renderer);
         }
-
+        game.renderer.end();
     }
-
-    /**
-     * controlla se ci sono collisioni
-     * @param renderer
-     */
-    public void checkEachCollision(ShapeRenderer renderer){
-        for (Entity e : entity) {
-            if (e.stati().inCollisione()) {
-                renderer.setColor(Color.RED);
-                return;
-            } else renderer.setColor(Color.BLACK);
-        }
-    }
-
-
 
     /**
      * inverte la posizione di due entità nella lista

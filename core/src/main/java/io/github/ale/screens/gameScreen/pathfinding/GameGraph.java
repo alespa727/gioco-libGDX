@@ -31,7 +31,7 @@ public class GameGraph implements IndexedGraph<Node> {
         for (int i = 0; i < nodes.size; i++) {
             nodes.get(i).setIndex(i);
         }
-        
+
     }
 
     @Override
@@ -45,7 +45,7 @@ public class GameGraph implements IndexedGraph<Node> {
         // Restituisce un indice unico per ogni nodo
         return node.getIndex(); // Deve essere basato sulle coordinate x, y
     }
-    
+
 
 
 
@@ -88,25 +88,25 @@ public class GameGraph implements IndexedGraph<Node> {
             { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },   // Direzioni x/y
             { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 } // Diagonali
         };
-    
+
         for (int[] dir : directions) {
             int nx = x + dir[0];
             int ny = y + dir[1];
-    
+
             // Verifica che il nodo vicino sia valido e attraversabile
             if (nx >= 0 && nx < width && ny >= 0 && ny < height && grid[nx][ny] != null) {
-                if (Math.abs(dir[0]) + Math.abs(dir[1]) == 2) { 
+                if (Math.abs(dir[0]) + Math.abs(dir[1]) == 2) {
                     int checkX = x + dir[0];
                     int checkY = y; // Direzione orizzontale
                     int checkX2 = x;
                     int checkY2 = y + dir[1]; // Direzione verticale
-    
+
                     // salta direzione diagonale se le altre direzioni sono occupate
                     if (grid[checkX][checkY] == null || grid[checkX2][checkY2] == null) {
                         continue;
                     }
                 }
-    
+
                 // Calcola il costo della connessione
                 float cost = (dir[0] == 0 || dir[1] == 0) ? 1.0f : 1.4f; // se una delle due coordinate sono uguali a zero allora il costo sarà 1 se no 1.41
                 node.addConnection(grid[nx][ny], cost); // Aggiungi la connessione
@@ -119,6 +119,7 @@ public class GameGraph implements IndexedGraph<Node> {
      * @param shapeRenderer
      */
     public void drawNodes(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLUE); // Colore dei nodi
 
         for (Node node : nodes) {
@@ -126,7 +127,7 @@ public class GameGraph implements IndexedGraph<Node> {
             shapeRenderer.circle(node.x + 0.5f, node.y + 0.5f, 0.2f, 10); // Raggio 0.2 per nodi
         }
 
-        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.end();
     }
 
     /**
@@ -134,18 +135,19 @@ public class GameGraph implements IndexedGraph<Node> {
      * @param shapeRenderer
      */
     public void drawConnections(ShapeRenderer shapeRenderer) {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.BLACK); // Colore delle linee di connessione
-    
+
         for (Node node : nodes) {
             for (Connection<Node> connection : node.connessioni) {
                 Node toNode = connection.getToNode();
-    
+
                 // Disegna una linea tra il nodo corrente e il nodo connesso
                 shapeRenderer.line(node.x + 0.5f, node.y + 0.5f, toNode.x + 0.5f, toNode.y + 0.5f);
             }
         }
-    
-        shapeRenderer.setColor(Color.BLACK);
+
+        shapeRenderer.end();
     }
 
     /**

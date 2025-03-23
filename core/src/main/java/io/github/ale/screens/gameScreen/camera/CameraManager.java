@@ -57,22 +57,13 @@ public class CameraManager {
 
         float x = camera.viewportWidth / 2;
         float y = camera.viewportHeight / 2;
-        if (!maps.getAmbiente()) { // tipo di telecamera
 
-            smoothTransitionTo(new Vector2(Map.width() / 2f, entities.player().getY() + 2f / 2));
-            boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
+        smoothTransitionTo(new Vector2(entities.player().coordinateCentro().x, entities.player().coordinateCentro().y));
+        boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
+        viewport.apply();
+        camera.update();
 
-            camera.update();
-            viewport.apply();
 
-        } else {
-
-            smoothTransitionTo(new Vector2(entities.player().getX() + 2f / 2, entities.player().getY() + 2f / 2));
-            boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
-            viewport.apply();
-            camera.update();
-
-        }
         for (int i = 0; i < 4; i++) {
             frustumCorners[i] = new Vector3(camera.frustum.planePoints[i]);
         }
@@ -91,5 +82,11 @@ public class CameraManager {
     public OrthographicCamera get() {
         return camera;
     }
+
+    public void setPositionToTarget(Vector2 coords) {
+        camera.position.set(coords.x, coords.y, 0);
+        camera.update();
+    }
+
 }
 //player.getWorldX() + 2f / 2
