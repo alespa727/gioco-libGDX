@@ -12,12 +12,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.Nemico;
+import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class Pathfinder implements Disposable{
-    Nemico enemy;
+    LivingEntity entity;
     private Node startNode;
     private Node endNode;
     private volatile int map = -1;
@@ -30,16 +30,16 @@ public class Pathfinder implements Disposable{
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 
-    public Pathfinder(Nemico enemy) {
+    public Pathfinder(LivingEntity entity) {
         this.path = new DefaultGraphPath<>();
-        this.enemy = enemy;
+        this.entity = entity;
         cooldown.isReady = true;
     }
 
     public void countdown() {
         cooldown.update(Gdx.graphics.getDeltaTime());
         if (cooldown.isReady) {
-            enemy.movement().sulNodo = true;
+            entity.movement().sulNodo = true;
             cooldown.reset();
         }
     }
@@ -64,23 +64,23 @@ public class Pathfinder implements Disposable{
                 hasLoadedGraph = true;
                 System.out.println("Caricato il grafo!");
                 calcolaPercorso(x, y);
-                enemy.movement().setGoal(path.get(0), path.get(1));
+                entity.movement().setGoal(path.get(0), path.get(1));
             }
     
-            if (enemy.movement().sulNodo) {
+            if (entity.movement().sulNodo) {
     
                 calcolaPercorso(x, y);
     
                 if (path.getCount() > 1)
-                    enemy.movement().setGoal(path.get(0), path.get(1));
+                entity.movement().setGoal(path.get(0), path.get(1));
             }
     
             // System.out.println(path.getCount());
-            if (path.getCount() > 1 && enemy.coordinateCentro().dst(x, y) < 20f) {
+            if (path.getCount() > 1 && entity.coordinateCentro().dst(x, y) < 20f) {
                 // Aggiorna il movimento del nemico
-                enemy.movement().update(enemy);
+                entity.movement().update(entity);
             } else {
-                enemy.movement().setFermo(enemy);
+                entity.movement().setFermo(entity);
             }
     
         });
@@ -90,7 +90,7 @@ public class Pathfinder implements Disposable{
         path.clear();
     
         // Get the closest nodes for the start and end positions
-        startNode = Map.getGraph().getClosestNode(enemy.coordinateCentro().x, enemy.coordinateCentro().y);
+        startNode = Map.getGraph().getClosestNode(entity.coordinateCentro().x, entity.coordinateCentro().y);
         endNode = Map.getGraph().getClosestNode(x, y);
     
         // Validate the nodes
