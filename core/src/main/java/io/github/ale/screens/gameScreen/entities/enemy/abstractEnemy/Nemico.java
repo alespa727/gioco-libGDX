@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy;
+package io.github.ale.screens.gameScreen.entities.enemy.abstractEnemy;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entity.player.Player;
+import io.github.ale.screens.gameScreen.entities.player.Player;
 
 public abstract class Nemico extends CombatEntity {
 
-    public Nemico(EntityConfig config, EntityManager manager, float attackcooldown, Player player) {
+    public Nemico(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager, attackcooldown);
         this.range = new Rectangle(0, 0, 1.5f, 1.5f);
     }

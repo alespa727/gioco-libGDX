@@ -1,10 +1,10 @@
-package io.github.ale.screens.gameScreen.entity.player.movement;
+package io.github.ale.screens.gameScreen.entities.player.movement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
-import io.github.ale.screens.gameScreen.entity.player.KeyHandlerPlayer;
+import io.github.ale.screens.gameScreen.entities.player.KeyHandlerPlayer;
 import io.github.ale.screens.gameScreen.enums.StatiDiMovimento;
 import io.github.ale.screens.gameScreen.maps.Map;
 
@@ -19,9 +19,6 @@ public class PlayerMovementManager{
     private StatiDiMovimento stato;
     private Vector2 last;
 
-    private final float sprintSpeedMultiplier = 1.5f;
-    private final float baseSpeedMultiplier = 1f;
-
     public PlayerMovementManager() {
         keyH = new KeyHandlerPlayer();
         last = new Vector2();
@@ -30,7 +27,7 @@ public class PlayerMovementManager{
     /**
      * aggiorna i vari parametri in base agli input
      *
-     * @param p
+     * @param p player
      */
 
     public void update(LivingEntity p) {
@@ -44,6 +41,9 @@ public class PlayerMovementManager{
      */
 
     private void speedMultiplier(LivingEntity p) {
+
+        final float sprintSpeedMultiplier = 1.5f;
+        final float baseSpeedMultiplier = 1f;
 
         sprint = keyH.sprint;
 
@@ -81,7 +81,7 @@ public class PlayerMovementManager{
     /**
      * gestisce il movimento in base agli input
      *
-     * @param p
+     * @param p player
      */
     private void movimento(LivingEntity p) {
         elapsedTime = Gdx.graphics.getDeltaTime(); // moltiplicatore del movimento in base al framerate
@@ -105,7 +105,7 @@ public class PlayerMovementManager{
         else if (oppostoX)
             stato = StatiDiMovimento.OPPOSTOX;
 
-        else if (anyKey)
+        else
             stato = StatiDiMovimento.ANYKEY;
 
         switch (stato) {

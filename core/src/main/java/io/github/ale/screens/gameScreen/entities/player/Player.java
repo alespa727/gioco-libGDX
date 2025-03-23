@@ -1,7 +1,6 @@
-package io.github.ale.screens.gameScreen.entity.player;
+package io.github.ale.screens.gameScreen.entities.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -12,8 +11,8 @@ import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
-import io.github.ale.screens.gameScreen.entity.skill.skillist.Punch;
+import io.github.ale.screens.gameScreen.entities.player.movement.PlayerMovementManager;
+import io.github.ale.screens.gameScreen.entities.skill.skillist.Punch;
 import io.github.ale.screens.settings.Settings;
 
 public class Player extends CombatEntity {
@@ -28,7 +27,7 @@ public class Player extends CombatEntity {
     public Player(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager, attackcooldown);
         this.range = new Rectangle(0, 0, 2f, 2f);
-        skillset().add(new Punch(this, "pugno", "un pugno molto forte!"));
+        skillset().add(new Punch(this, "pugno", "un pugno molto forte!", 20));
     }
 
     /**
@@ -57,7 +56,7 @@ public class Player extends CombatEntity {
      */
 
     @Override
-    public boolean checkIfDead() {
+    public void checkIfDead() {
         // Logica per controllare se il giocatore è morto
         if (statistiche().health() <= 0) {
             this.stati().setIsAlive(false);
@@ -65,7 +64,6 @@ public class Player extends CombatEntity {
             System.out.println("Rianimazione..");
             statistiche().regenHealthTo(100);
         }
-        return this.stati().isAlive();
     }
 
     @Override

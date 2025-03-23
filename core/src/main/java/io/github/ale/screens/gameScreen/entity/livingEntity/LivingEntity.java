@@ -15,7 +15,7 @@ import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Sk
 import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.entity.livingEntity.states.States;
-import io.github.ale.screens.gameScreen.entity.skill.SkillSet;
+import io.github.ale.screens.gameScreen.entities.skill.SkillSet;
 import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 
 public abstract class LivingEntity extends Entity{
@@ -24,30 +24,28 @@ public abstract class LivingEntity extends Entity{
     private Stats statistiche;
     public final Pathfinder pathfinder;
     public DefaultStateMachine<LivingEntity, States> statemachine;
-    
+
     private final EntityMovementManager movement;
 
     public LivingEntity(EntityConfig config, EntityManager manager) {
         super(config, manager);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
-        skillset = new SkillSet(this);
+        skillset = new SkillSet();
         movement = new EntityMovementManager();
         statemachine = new DefaultStateMachine<>(this);
         this.pathfinder = new Pathfinder(this);
     }
 
-    
+
     public EntityMovementManager movement() {
         return movement;
     }
 
     public abstract void cooldown();
     public abstract void hit(float angle, float damage);
-    
+
     /**
      * disegna l'hitbox del player
-     * 
-     * @param renderer
      */
     @Override
     public void drawHitbox(ShapeRenderer renderer) {
@@ -62,10 +60,7 @@ public abstract class LivingEntity extends Entity{
     }
 
     /**
-     * disegna il nemico
-     * 
-     * @param batch
-     * @param elapsedTime
+     * disegna l'entità
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
@@ -75,17 +70,17 @@ public abstract class LivingEntity extends Entity{
         if(statistiche().gotDamaged){
             batch.setColor(1, 0, 0, 0.6f);
         }
-        
+
         batch.draw(graphics().getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
-        
-        
+
+
         batch.setColor(Color.WHITE);
     }
 
     @Override
     public void updateEntity() {
         delta = Gdx.graphics.getDeltaTime();
-        
+
         if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().width/2;
         else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().width/2;
         if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-getSize().height/2;
@@ -96,17 +91,17 @@ public abstract class LivingEntity extends Entity{
         adjustHitbox();
     }
 
-    
+
     public Stats statistiche() {
         return this.statistiche;
     }
 
-    
+
     public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
         this.statistiche = new Stats(hp, speed, attackdmg);
     }
 
-    
+
     public final SkillSet skillset() {
         return skillset;
     }
@@ -115,23 +110,22 @@ public abstract class LivingEntity extends Entity{
     public Skill getSkill(Class<? extends Skill> skillclass){
         return skillset.getSkill(skillclass);
     }
-    
+
     public Rectangle range() {
         return range;
     }
 
-    
+
     public void kill() {
         statistiche().inflictDamage(statistiche().health(), stati().immortality());
         stati().setIsAlive(false);
     }
-    
-    public boolean checkIfDead() {
+
+    public void checkIfDead() {
         if (statistiche().health() <= 0) {
             this.stati().setIsAlive(false);
             despawn();
         }
-        return this.stati().isAlive();
     }
 
     public void respawn() {

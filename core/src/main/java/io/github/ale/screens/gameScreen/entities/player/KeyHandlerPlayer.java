@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.player;
+package io.github.ale.screens.gameScreen.entities.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
