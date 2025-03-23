@@ -1,9 +1,9 @@
-package io.github.ale.screens.gameScreen.entity.livingEntity.states;
+package io.github.ale.screens.gameScreen.entitytypes.livingEntity.states;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entitytypes.livingEntity.LivingEntity;
 
 public enum States implements State<LivingEntity> {
     IDLE {
@@ -27,7 +27,7 @@ public enum States implements State<LivingEntity> {
 
         @Override
         public void exit(LivingEntity entity) {
-            
+
         }
 
         @Override
@@ -50,7 +50,7 @@ public enum States implements State<LivingEntity> {
             }
             entity.pathfinder.renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
             entity.checkIfDead();
-                        
+
             //AGGIORNAMENTO MOVEMENT
             entity.movement().update(entity);
         }

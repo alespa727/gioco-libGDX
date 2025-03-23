@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity.stats;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.stats;
 
 public class Health {
     private float hp;

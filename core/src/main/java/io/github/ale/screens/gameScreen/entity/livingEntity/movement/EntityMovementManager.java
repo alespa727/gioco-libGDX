@@ -1,9 +1,9 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity.movement;
+package io.github.ale.screens.gameScreen.entity.livingEntity.movement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entitytypes.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public class EntityMovementManager {
@@ -12,7 +12,7 @@ public class EntityMovementManager {
     public boolean searchingfornext;
     private Node lastNode;
     private Node node;
-    private final float REACHED_THRESHOLD = 1/16f; 
+    private final float REACHED_THRESHOLD = 1/16f;
 
     public void setGoal(Node start, Node node) {
         this.lastNode=start;
@@ -23,15 +23,15 @@ public class EntityMovementManager {
     }
 
     public void setFermo(LivingEntity e) {
-        
+
         if(node.equals(lastNode) && fermo==false){
             direction.scl(0.5f);
             e.direzione().set(direction);
-                       
+
             //System.out.println(e.direzione());
             searchingfornext = true;
         }
- 
+
     }
 
     public void update(LivingEntity entity) {
@@ -44,7 +44,7 @@ public class EntityMovementManager {
                 entity.setDirezione(direction);
             }
         }
-        
+
         fermo = false;
         Node targetNode = node;
         Vector2 targetPosition = new Vector2(targetNode.getX(), targetNode.getY());
@@ -52,7 +52,7 @@ public class EntityMovementManager {
     }
 
     private void towards(LivingEntity entity, Vector2 target) {
-        Vector2 direzione = new Vector2(target).sub(entity.coordinateCentro()).nor(); 
+        Vector2 direzione = new Vector2(target).sub(entity.coordinateCentro()).nor();
         float speed = entity.statistiche().speed() * Gdx.graphics.getDeltaTime();
         Vector2 movement = direzione.scl(speed);
         /*if(!entity.manager.ispathclear(entity, node)){
@@ -60,7 +60,7 @@ public class EntityMovementManager {
         }*/
         entity.setX(entity.getX() + movement.x);
         entity.setY(entity.getY() + movement.y);
-        
+
         if (entity.coordinateCentro().dst(target) < REACHED_THRESHOLD) {
             searchingfornext=true;
             lastNode=node;

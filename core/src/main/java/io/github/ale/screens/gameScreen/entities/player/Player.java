@@ -1,19 +1,18 @@
-package io.github.ale.screens.gameScreen.entity.player;
+package io.github.ale.screens.gameScreen.entities.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.gameScreen.entity.EntityManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entity.player.movement.PlayerMovementManager;
-import io.github.ale.screens.gameScreen.entity.skill.skillist.Punch;
+import io.github.ale.screens.gameScreen.entitytypes.EntityManager;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entitytypes.combatEntity.CombatEntity;
+import io.github.ale.screens.gameScreen.entities.player.movement.PlayerMovementManager;
+import io.github.ale.screens.gameScreen.entities.skills.skillist.Punch;
 import io.github.ale.screens.settings.Settings;
 
 public class Player extends CombatEntity {

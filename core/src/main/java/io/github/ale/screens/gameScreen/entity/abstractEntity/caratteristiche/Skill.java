@@ -1,9 +1,9 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.caratteristiche;
 
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entitytypes.livingEntity.LivingEntity;
 
 public abstract class Skill {
-    
+
     protected LivingEntity entity;
     private final String name;
     private final String description;

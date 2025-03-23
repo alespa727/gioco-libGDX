@@ -1,9 +1,9 @@
-package io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche;
+package io.github.ale.screens.gameScreen.entitytypes.abstractEntity.caratteristiche;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entitytypes.abstractEntity.Entity;
 
 public class Hitbox {
     private Rectangle hitbox;
@@ -26,5 +26,5 @@ public class Hitbox {
         this.hitbox.x = e.getX()+e.getSize().width/2-this.hitbox.width/2 + offset.x;
         this.hitbox.y = e.getY()+e.getSize().height/2-this.hitbox.height/2 + offset.y;
     }
-    
+
 }
