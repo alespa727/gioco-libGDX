@@ -18,7 +18,7 @@ public class MapManager {
     private String nome;
     private boolean ambienteAperto;
     private final MusicPlayer playlist;
-    private final int totalMaps=2;
+    private final int totalMaps;
 
     boolean flag;
 
@@ -32,6 +32,7 @@ public class MapManager {
         this.changeMap();
         playlist = new MusicPlayer("music/mymusic.mp3");
         this.currentMap = new Map(camera, this.nome);
+        totalMaps = 2;
     }
 
     public static int currentmap(){ return currentMapNum; }

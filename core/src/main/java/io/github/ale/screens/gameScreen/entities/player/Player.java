@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.gameScreen.entity.EntityManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
 import io.github.ale.screens.gameScreen.entities.player.movement.PlayerMovementManager;
 import io.github.ale.screens.gameScreen.entities.skill.skillist.Punch;
 import io.github.ale.screens.settings.Settings;
@@ -19,7 +19,7 @@ public class Player extends CombatEntity {
 
     private PlayerMovementManager movement;
 
-    private final Array<Vector2> direzioni = new Array<>();
+    private final Array<Vector2> recentDirections = new Array<>();
     private final Cooldown direzione = new Cooldown(0.5f);
     private int count=0;
 
@@ -41,8 +41,8 @@ public class Player extends CombatEntity {
     }
 
     public Vector2 predizione(Entity e){
-        if ((direzioni.size>=3) && (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y)))
-            return new Vector2(coordinate()).add(direzioni.get(1).x * statistiche().speed() * count, direzioni.get(1).y * statistiche().speed() * count);
+        if ((recentDirections.size>=3) && (recentDirections.get(0).epsilonEquals(recentDirections.get(1).x, recentDirections.get(1).y)))
+            return new Vector2(coordinate()).add(recentDirections.get(1).x * statistiche().speed() * count, recentDirections.get(1).y * statistiche().speed() * count);
         this.count=0;
         return new Vector2(coordinate());
     }
@@ -89,13 +89,13 @@ public class Player extends CombatEntity {
         direzione.update(delta);
         if(direzione.isReady){
             direzione.reset();
-            if (direzioni.size<3) {
-                direzioni.add(new Vector2(direzione()));
+            if (recentDirections.size<3) {
+                recentDirections.add(new Vector2(direzione()));
             }else{
-                direzioni.set(2, new Vector2(direzioni.get(1)));
-                direzioni.set(1, new Vector2(direzioni.get(0)));
-                direzioni.set(0, new Vector2(direzione()));
-                if (direzioni.get(0).epsilonEquals(direzioni.get(1).x, direzioni.get(1).y)){
+                recentDirections.set(2, new Vector2(recentDirections.get(1)));
+                recentDirections.set(1, new Vector2(recentDirections.get(0)));
+                recentDirections.set(0, new Vector2(direzione()));
+                if (recentDirections.get(0).epsilonEquals(recentDirections.get(1).x, recentDirections.get(1).y)){
                     if(count<2) count++;
                 } else count=0;
             }

@@ -2,25 +2,25 @@ package io.github.ale.screens.gameScreen.entities.skill;
 
 import com.badlogic.gdx.utils.Array;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.Skill;
 
 public class SkillSet {
-    private final Array<Skill> lista;
+    private final Array<Skill> skillList;
 
     public SkillSet(){
-        lista = new Array<>();
+        skillList = new Array<>();
     }
 
     public void add(Skill skill){
-        lista.add(skill);
+        skillList.add(skill);
     }
 
     public void remove(Skill skill){
-        lista.removeValue(skill, false);
+        skillList.removeValue(skill, false);
     }
 
     public Skill getSkill(Class<? extends Skill> skillClass) {
-        for (Skill skill : lista) {
+        for (Skill skill : skillList) {
             if (skill.getClass().equals(skillClass)) {
                 return skill;
             }

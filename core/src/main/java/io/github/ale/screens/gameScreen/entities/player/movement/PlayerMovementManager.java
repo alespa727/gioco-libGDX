@@ -3,18 +3,21 @@ package io.github.ale.screens.gameScreen.entities.player.movement;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.entities.player.KeyHandlerPlayer;
-import io.github.ale.screens.gameScreen.enums.StatiDiMovimento;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.movement.StatiDiMovimento;
 import io.github.ale.screens.gameScreen.maps.Map;
 
 public class PlayerMovementManager{
     private final KeyHandlerPlayer keyH;
-    private boolean su, giu, sinistra, destra, sprint;
+    private boolean su;
+    private boolean giu;
+    private boolean sinistra;
+    private boolean destra;
     private double elapsedTime;
 
-    private boolean collisioneY;
-    private boolean collisioneX;
+    private boolean isCollidingVertically;
+    private boolean isCollidingHorizontally;
 
     private StatiDiMovimento stato;
     private Vector2 last;
@@ -31,7 +34,7 @@ public class PlayerMovementManager{
      */
 
     public void update(LivingEntity p) {
-        keyH.inputmodificato();
+        keyH.input();
         speedMultiplier(p);
         movimento(p);
     }
@@ -45,7 +48,7 @@ public class PlayerMovementManager{
         final float sprintSpeedMultiplier = 1.5f;
         final float baseSpeedMultiplier = 1f;
 
-        sprint = keyH.sprint;
+        boolean sprint = keyH.sprint;
 
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
         boolean fermo = (!su && !giu && !sinistra && !destra);
@@ -176,8 +179,8 @@ public class PlayerMovementManager{
 
 
     private void aggiornaCollisioni(LivingEntity p) {
-        collisioneY = Map.checkCollisionY(p);
-        collisioneX = Map.checkCollisionX(p);
+        isCollidingVertically = Map.checkCollisionY(p);
+        isCollidingHorizontally = Map.checkCollisionX(p);
     }
 
     private void aggiornaDirezioneX(LivingEntity p) {
@@ -216,14 +219,14 @@ public class PlayerMovementManager{
     }
 
     private void aggiornaStatoCollisione(LivingEntity p) {
-        if (collisioneX || collisioneY)
+        if (isCollidingHorizontally || isCollidingVertically)
             p.stati().setInCollisione(true);
 
     }
 
     private void muoviAsseX(LivingEntity p){
 
-        if (!collisioneX) {
+        if (!isCollidingHorizontally) {
             float speed = p.statistiche().speed();
             float x = p.getX();
 
@@ -237,7 +240,7 @@ public class PlayerMovementManager{
     }
     private void muoviAsseY(LivingEntity p){
 
-        if (!collisioneY) {
+        if (!isCollidingVertically) {
             float speed = p.statistiche().speed();
             float y = p.getY();
 

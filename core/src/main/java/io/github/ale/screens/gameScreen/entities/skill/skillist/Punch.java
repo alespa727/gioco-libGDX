@@ -2,9 +2,9 @@ package io.github.ale.screens.gameScreen.entities.skill.skillist;
 
 import com.badlogic.gdx.utils.Array;
 
-import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
-import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entity.livingEntity.LivingEntity;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.Skill;
+import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
+import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 
 public class Punch extends Skill {
     private final float damage;
@@ -19,7 +19,7 @@ public class Punch extends Skill {
         inRange = entity.manager.entitaviventi(entity.range());
         for (int i = 0; i < inRange.size; i++) {
             if (!inRange.get(i).getClass().equals(entity.getClass())) {
-                inRange.get(i).hit(entity.manager.calcolaAngoloAttacco(entity, inRange.get(i)), damage);
+                inRange.get(i).hit(entity.manager.getAngleToTarget(entity, inRange.get(i)), damage);
                 System.out.println("Pugno a " + inRange.get(i).getClass() + " " + inRange.get(i).id());
             }
         }

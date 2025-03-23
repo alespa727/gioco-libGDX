@@ -5,13 +5,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import io.github.ale.screens.gameScreen.entity.EntityManager;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class CameraManager {
     private final OrthographicCamera camera;
-    private static Vector3[] punti;
+    private static Vector3[] frustumCorners;
     /**
      * inizializza la telecamera
      */
@@ -19,13 +19,13 @@ public class CameraManager {
     public CameraManager(){
         camera = new OrthographicCamera(); // telecamera
         camera.update(); // aggiornamento camera
-        punti  = new Vector3[4];
+        frustumCorners = new Vector3[4];
         for (int i = 0; i < 4; i++) {
-            punti[i] = new Vector3(camera.frustum.planePoints[i]);
+            frustumCorners[i] = new Vector3(camera.frustum.planePoints[i]);
         }
     }
 
-    public void lerpTo(Vector2 coords){
+    public void smoothTransitionTo(Vector2 coords){
         Vector3 position = new Vector3();
         position.x = camera.position.x + (coords.x - camera.position.x) * .1f;
         position.y = camera.position.y + (coords.y - camera.position.y) * .1f;
@@ -48,7 +48,7 @@ public class CameraManager {
         }
         camera.position.set(position);
     }
-    
+
     /***
      * aggiorna cosa la telecamera deve seguire/modalità della telecamera
      */
@@ -59,7 +59,7 @@ public class CameraManager {
         float y = camera.viewportHeight / 2;
         if (!maps.getAmbiente()) { // tipo di telecamera
 
-            lerpTo(new Vector2(Map.width() / 2f, entities.player().getY() + 2f / 2));
+            smoothTransitionTo(new Vector2(Map.width() / 2f, entities.player().getY() + 2f / 2));
             boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
 
             camera.update();
@@ -67,27 +67,27 @@ public class CameraManager {
 
         } else {
 
-            lerpTo(new Vector2(entities.player().getX() + 2f / 2, entities.player().getY() + 2f / 2));
+            smoothTransitionTo(new Vector2(entities.player().getX() + 2f / 2, entities.player().getY() + 2f / 2));
             boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
             viewport.apply();
             camera.update();
 
         }
         for (int i = 0; i < 4; i++) {
-            punti[i] = new Vector3(camera.frustum.planePoints[i]);
+            frustumCorners[i] = new Vector3(camera.frustum.planePoints[i]);
         }
         //System.out.println();
     }
-    
-    public static Vector3[] limiti(){
-        return punti;
+
+    public static Vector3[] getFrustumCorners(){
+        return frustumCorners;
     }
 
-    public static boolean inlimiti(float x, float y) {
+    public static boolean isWithinFrustumBounds(float x, float y) {
         // Check if x and y are within the frustum's bounds
-        return x > punti[0].x-2 && y > punti[0].y-2 && x < punti[2].x+2 && y < punti[2].y+2;
+        return x > frustumCorners[0].x-2 && y > frustumCorners[0].y-2 && x < frustumCorners[2].x+2 && y < frustumCorners[2].y+2;
     }
-    
+
     public OrthographicCamera get() {
         return camera;
     }

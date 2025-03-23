@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.gameScreen.entity.EntityManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entities.player.Player;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
+import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
 
 public abstract class Nemico extends CombatEntity {
 
@@ -27,7 +26,7 @@ public abstract class Nemico extends CombatEntity {
     public void despawn() {
         pathfinder.dispose();
         System.out.println("Entità id " + id() + " despawnata");
-        manager.despawn(this);
+        manager.removeEntity(this);
     }
 
     @Override

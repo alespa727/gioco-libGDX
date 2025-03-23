@@ -1,7 +1,6 @@
 package io.github.ale.screens.gameScreen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.MyGame;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
-import io.github.ale.screens.gameScreen.entity.EntityManager;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.gui.Gui;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;

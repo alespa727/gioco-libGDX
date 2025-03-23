@@ -13,13 +13,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.camera.CameraManager;
-import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.pathfinding.GameGraph;
 
 public class Map {
     public static boolean isGraphLoaded=false;
     private static GameGraph graph;
-    
+
     private final OrthographicCamera camera;
     private TiledMap map;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -28,8 +28,8 @@ public class Map {
 
     private TiledMapTileLayer collisionLayer;
 
-    private static boolean collisions[][];
-    private static Rectangle collisionBoxes [][];
+    private static boolean[][] collisions;
+    private static Rectangle[][] collisionBoxes;
 
     private static int width;
     private static int height;
@@ -48,10 +48,10 @@ public class Map {
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
         loadCollisionMap();
         isLoaded = true;
-       
+
         graph = new GameGraph(width, height, collisions);
         isGraphLoaded=true;
-        
+
     }
 
     public static GameGraph getGraph(){
@@ -64,12 +64,11 @@ public class Map {
 
     public void render(){
         mapRenderer.setView(camera);
-        mapRenderer.render(); 
+        mapRenderer.render();
     }
 
     /**
      * disegna la mappa in generale
-     * @param camera
      */
     public void draw(){
         mapRenderer.setView(camera);
@@ -88,7 +87,7 @@ public class Map {
                 if (collisionBoxes[i][j]!=null) {
                     renderer.setColor(Color.RED);
                     renderer.rect(collisionBoxes[i][j].x, collisionBoxes[i][j].y, collisionBoxes[i][j].width, collisionBoxes[i][j].height);
-                    
+
                 }
             }
         }
@@ -107,7 +106,7 @@ public class Map {
         height=(Integer) map.getProperties().get("height");
         collisions = new boolean[width][height];
         collisionBoxes = new Rectangle[width][height];
-        
+
     }
 
         /**
@@ -138,7 +137,7 @@ public class Map {
     }
 
 
-    
+
     public static int width(){
         return width;
     }
@@ -146,14 +145,14 @@ public class Map {
         return height;
     }
 
-    
-    
+
+
     public static boolean checkLineCollision(Vector2 p1, Vector2 p2){
         //int controlli=0;
-        int minTileX = Math.max(0, (int) (CameraManager.limiti()[0].x-2f));
-        int maxTileX = Math.min(width - 1, (int) (CameraManager.limiti()[2].x+2f));
-        int minTileY = Math.max(0, (int) (CameraManager.limiti()[0].y-2f));
-        int maxTileY = Math.min(height - 1, (int) (CameraManager.limiti()[2].y+2f));
+        int minTileX = Math.max(0, (int) (CameraManager.getFrustumCorners()[0].x-2f));
+        int maxTileX = Math.min(width - 1, (int) (CameraManager.getFrustumCorners()[2].x+2f));
+        int minTileY = Math.max(0, (int) (CameraManager.getFrustumCorners()[0].y-2f));
+        int maxTileY = Math.min(height - 1, (int) (CameraManager.getFrustumCorners()[2].y+2f));
         /*System.out.print(CameraManager.limiti()[0].x);
         System.out.print(" "+CameraManager.limiti()[0].y);
         System.out.print(" "+CameraManager.limiti()[2].x);
@@ -172,10 +171,10 @@ public class Map {
 
     public static boolean checkRectangleCollision(float x, float y, float width, float height){
         temp.set(x, y, width, height);
-        int minTileX = Math.max(0, (int) (CameraManager.limiti()[0].x-2f));
-        int maxTileX = Math.min(Map.width - 1, (int) (CameraManager.limiti()[2].x+2f));
-        int minTileY = Math.max(0, (int) (CameraManager.limiti()[0].y-2f));
-        int maxTileY = Math.min(Map.height - 1, (int) (CameraManager.limiti()[2].y+2f));
+        int minTileX = Math.max(0, (int) (CameraManager.getFrustumCorners()[0].x-2f));
+        int maxTileX = Math.min(Map.width - 1, (int) (CameraManager.getFrustumCorners()[2].x+2f));
+        int minTileY = Math.max(0, (int) (CameraManager.getFrustumCorners()[0].y-2f));
+        int maxTileY = Math.min(Map.height - 1, (int) (CameraManager.getFrustumCorners()[2].y+2f));
         /*System.out.print(CameraManager.limiti()[0].x);
         System.out.print(" "+CameraManager.limiti()[0].y);
         System.out.print(" "+CameraManager.limiti()[2].x);
@@ -187,13 +186,12 @@ public class Map {
                 }
             }
         }
-        
+
         return false;
     }
 
     /**
      * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
-     * @param direzione
      * @return
      */
     public static boolean checkCollisionX(Entity entity){
@@ -226,8 +224,7 @@ public class Map {
 
     /**
      * controlla collisioni sull'asse delle x, ritorna se il personaggio è in collisione
-     * @param direzione
-     * @return
+     * @return collisione in asse x
      */
     public static boolean checkCollisionX(Entity entity, float offset, float angolo){
         //int count=0;
@@ -259,8 +256,7 @@ public class Map {
 
     /**
      * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
-     * @param direzione
-     * @return
+     * @return collisione asse y
      */
     public static boolean checkCollisionY(Entity entity){
         //int count=0;
@@ -293,8 +289,7 @@ public class Map {
 
     /**
      * controlla collisioni sull'asse delle y, ritorna se il personaggio è in collisione
-     * @param direzione
-     * @return
+     * @return colllisione asse y
      */
     public static boolean checkCollisionY(Entity entity, float offset, float angolo){
         //int count=0;
