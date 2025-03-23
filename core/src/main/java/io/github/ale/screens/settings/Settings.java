@@ -23,11 +23,9 @@ public class Settings implements Screen {
     private Table root;
     private Table table;
 
-    private TextButton bottoni[];
-
     // I pulsanti sono static final int
 
-    private static int[] pulsanti = new int[]{
+    private static int[] pulsanti = new int[]{ // Tasti dei pulsanti
         Input.Keys.W,
         Input.Keys.A,
         Input.Keys.S,
@@ -38,7 +36,7 @@ public class Settings implements Screen {
         Input.Keys.SPACE,
         Input.Keys.ESCAPE
     };
-    final String[] comandi = new String[]{
+    final String[] comandi = new String[]{ // Array descrizione tasti
         "Su",
         "Sinistra",
         "Giu",
@@ -50,6 +48,8 @@ public class Settings implements Screen {
         "play"
     };
 
+    private TextButton bottoni[] = new TextButton[comandi.length]; // Bottoni per cambiare
+
     public Settings(MyGame game) {
         this.game = game;
     }
@@ -57,76 +57,22 @@ public class Settings implements Screen {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(stage); // Setto il processore di input
 
-        root = new Table();
+        root = new Table(); // Creo la tabella che conterra' quella principale
         root.setFillParent(true);
-        skin = new Skin(Gdx.files.internal("metal-ui.json"));
-        table = new Table();
-        table.setDebug(true);
-        table.setSize(500, 500);
+        skin = new Skin(Gdx.files.internal("metal-ui.json")); // Creo la skin che conterra' i dati
+        table = new Table(); // Creo una tabella principale
+        table.setSize(500, 500); // Assegno la dimensione che avra'
+        //table.setDebug(true); // per vedere come e' fatta la tabella
 
+        creaTitolo(table); // Creo il titolo per la tabella principale
 
-        Label label = new Label("Comandi", skin);
-        label.setTouchable(null); // Rende il testo non editabile
-        table.add(label);
-        label.setAlignment(5);
-        table.row();
+        creaTabellaPulsanti(table); // Creo una tabella che conterra' i pulsanti per quella principale
 
-        bottoni = new TextButton[comandi.length];
+        creaBackButton(table); // Creo il bottone per tornare alla pagina principale
 
-        Table t = new Table();
-        for (int i = 0; i < comandi.length; i++) {
-            Label label1 = new Label(comandi[i], skin);
-            label1.setTouchable(null);
-            final int ii = i;
-
-            bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), skin);
-            bottoni[i].addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Gdx.input.setInputProcessor(new InputAdapter() {
-                        @Override
-                        public boolean keyDown(int keycode) {
-                            Gdx.input.setInputProcessor(stage);
-                            bottoni[ii].setText(Input.Keys.toString(keycode));
-                            pulsanti[ii] = keycode;
-                            return true;
-                        }
-                    });
-                }
-            });
-            t.add(label1).expand().fill().pad(5);
-            t.add(bottoni[i]).expand().fill().pad(5);;
-            t.row();
-            t.setDebug(true);
-        }
-
-        table.add(t);
-
-        table.row(); // Va a capo per la riga successiva
-
-        /*
-        System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB");
-        System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB");
-         */
-
-        // Add some UI elements
-        TextButton backButton = new TextButton("Back", skin);
-        backButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.mainScreen);
-            }
-        });
-
-        /*
-        System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB");
-        System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB");
-         */
-
-        table.add(backButton);
-        root.add(table);
+        root.add(table); // Aggiungo alla tabella quella principale
         stage.addActor(root);
     }
 
@@ -173,6 +119,73 @@ public class Settings implements Screen {
             skin.dispose();
             skin = null;
         }
+    }
+
+    // Mostra i valori della memoria heap usati in byte
+    public void mostraCalcoloHeap() {
+        // Calcola la memoria Heap in byte
+        System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal java
+        System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal dispositivo
+    }
+
+    private Label creaLabel(String testo) {
+        Label label = new Label(testo, skin); // Lable che conterra' il testo
+        label.setTouchable(null); // Rende il testo non editabile
+        return label;
+    }
+
+    // Metodo per creare il titolo
+    private void creaTitolo(Table table) {
+        Label label = creaLabel("Comandi");
+        table.add(label); // Aggiungo alla tabella la leble col testo
+        label.setAlignment(5); // Setto il suo allineamento
+        table.row(); // Vado a capo
+    }
+
+    // Metodo per creare la tabella dei pulsanti
+    private void creaTabellaPulsanti(Table table) {
+        Table t = new Table(); // Creo una tabella che conterra' i comandi
+        for (int i = 0; i < comandi.length; i++) { // Vado a creare tutti i comandi esistenti di base
+            Label label = creaLabel(comandi[i]); // Creo la label che conterra' i dati del comando
+
+            final int ii = i; // faccio una variabile int final per la classe anonima
+
+            bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), skin); // Creo un bottone
+            bottoni[i].addListener(new ClickListener() { // Aggiungo il listener al bottone
+                @Override
+                public void clicked(InputEvent event, float x, float y) { // Appena clicco il bottone
+                    Gdx.input.setInputProcessor(new InputAdapter() { // Aspetto
+                        @Override
+                        public boolean keyDown(int keycode) { // Appena clicco un tasto della tastiera
+                            Gdx.input.setInputProcessor(stage); // Do un nuovo processore di input
+                            bottoni[ii].setText(Input.Keys.toString(keycode)); // Cambio il nome del bottone premuto col tasto cliccato
+                            pulsanti[ii] = keycode; // Modifico l'array che contiene i comandi col nuovo tasto cliccato
+                            return true; // Esco
+                        }
+                    });
+                }
+            });
+
+            t.add(label).expand().fill().pad(5); // Aggiungo alla tabella la label col testo + setto una dimensione fissa che deve avere
+            t.add(bottoni[i]).expand().fill().pad(5); // Aggiungo alla tabella il bottone col suo listener + setto una dimensione fissa che deve avere
+            t.row(); // Vado a capo
+            //t.setDebug(true); per vedere come e' fatta la tabella
+        }
+
+        table.add(t); // Aggiungo la tabella dei comandi a quella principale
+        table.row(); // Vado a capo
+    }
+
+    private void creaBackButton(Table table){
+        TextButton back = new TextButton("Back", skin); // Creo un bottone
+        back.addListener(new ClickListener() { // Aggiungo un listener al bottone per il click
+            @Override
+            public void clicked(InputEvent event, float x, float y) { // Quando c'è il click del bottone
+                game.setScreen(game.mainScreen); // Modifico quello che si vede (Serve per ritornare alla pagina principale)
+            }
+        });
+
+        table.add(back); // LO aggiungo alla tabella
     }
 
     public static int[] getPulsanti() {
