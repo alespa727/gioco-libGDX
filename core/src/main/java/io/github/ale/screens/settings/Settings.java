@@ -1,20 +1,19 @@
 package io.github.ale.screens.settings;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import java.awt.GridLayout;
 
 import io.github.ale.MyGame;
 
@@ -24,6 +23,8 @@ public class Settings implements Screen {
     private Stage stage;
     private Table root;
     private Table table;
+
+    private TextButton bottoni[];
 
     public Settings(MyGame game) {
         this.game = game;
@@ -57,26 +58,44 @@ public class Settings implements Screen {
             "play"
         };
 
-        final String[] pulsanti = new String[]{
-            "W",
-            "A",
-            "S",
-            "D",
-            "Maiuscolo (SHIFT)",
-            "E",
-            "R",
-            "SPACE",
-            "esc"
+        // I pulsanti sono static final int
+        final int[] pulsanti = new int[]{
+            Input.Keys.W,
+            Input.Keys.A,
+            Input.Keys.S,
+            Input.Keys.D,
+            Input.Keys.SHIFT_LEFT,
+            Input.Keys.E,
+            Input.Keys.F,
+            Input.Keys.SPACE,
+            Input.Keys.ESCAPE
         };
+
+        bottoni = new TextButton[comandi.length];
 
         Table t = new Table();
         for (int i = 0; i < comandi.length; i++) {
             Label label1 = new Label("          " + comandi[i] + "          ", skin);
             label1.setTouchable(null);
-            Label label2 = new Label("          " + pulsanti[i] + "          ", skin);
-            label2.setTouchable(null);
+
+            final int ii = i;
+
+            bottoni[i] = new TextButton("          " + Input.Keys.toString(pulsanti[i]) + "          ", skin);
+            bottoni[i].addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.input.setInputProcessor(new InputAdapter() {
+                        @Override
+                        public boolean keyDown(int keycode) {
+                            Gdx.input.setInputProcessor(stage);
+                            bottoni[ii].setText(Input.Keys.toString(keycode));
+                            return true;
+                        }
+                    });
+                }
+            });
             t.add(label1);
-            t.add(label2);
+            t.add(bottoni[i]);
             t.row();
         }
 
@@ -151,5 +170,13 @@ public class Settings implements Screen {
             skin.dispose();
             skin = null;
         }
+    }
+
+    public void setBottoni(TextButton[] bottoni) {
+        this.bottoni = bottoni;
+    }
+
+    public TextButton[] getBottoni() {
+        return bottoni;
     }
 }
