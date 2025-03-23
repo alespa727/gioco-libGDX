@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entityType.abstractEntity.movement;
+package io.github.ale.screens.gameScreen.entityType.livingEntity.movement;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +12,7 @@ public class EntityMovementManager {
     public boolean searchingfornext;
     private Node lastNode;
     private Node node;
-    private final float REACHED_THRESHOLD = 1/16f;
+    private final float REACHED_THRESHOLD = 1f/16f;
 
     public void setGoal(Node start, Node node) {
         this.lastNode=start;
@@ -22,23 +22,17 @@ public class EntityMovementManager {
         direction = new Vector2();
     }
 
-    public void setFermo(LivingEntity e) {
-
-        if(node.equals(lastNode) && fermo==false){
-            direction.scl(0.5f);
-            e.direzione().set(direction);
-
-            //System.out.println(e.direzione());
-            searchingfornext = true;
-        }
-
+    public void clear(){
+        lastNode=node;
+        node=null;
+        searchingfornext=true;
     }
 
     public void update(LivingEntity entity) {
         if (node == null) {
             return;
         }
-        if(lastNode!=null){
+        if(lastNode != null){
             direction = new Vector2(node.x - lastNode.x, node.y - lastNode.y);
             if (!direction.epsilonEquals(0, 0)) {
                 entity.setDirezione(direction);
@@ -52,19 +46,20 @@ public class EntityMovementManager {
     }
 
     private void towards(LivingEntity entity, Vector2 target) {
-        Vector2 direzione = new Vector2(target).sub(entity.coordinateCentro()).nor();
+        Vector2 movementDirection = new Vector2(target).sub(entity.coordinateCentro()).nor();
         float speed = entity.statistiche().speed() * Gdx.graphics.getDeltaTime();
-        Vector2 movement = direzione.scl(speed);
-        /*if(!entity.manager.ispathclear(entity, node)){
-            movement.scl(0.75f);
-        }*/
+        Vector2 movement = movementDirection.scl(speed);
+        if(!entity.manager.ispathclear(entity, node)){
+            movement.scl(0.7f);
+        }
         entity.setX(entity.getX() + movement.x);
         entity.setY(entity.getY() + movement.y);
 
         if (entity.coordinateCentro().dst(target) < REACHED_THRESHOLD) {
-            searchingfornext=true;
-            lastNode=node;
-        }else searchingfornext=false;
+            searchingfornext = true;
+            lastNode = node; // Safely mark the current node as reached
+        }
+
     }
 }
 

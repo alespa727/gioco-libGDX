@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entityType.abstractEntity.movement;
+package io.github.ale.screens.gameScreen.entityType.livingEntity.movement;
 
 public enum StatiDiMovimento {
     W,

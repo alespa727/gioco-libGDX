@@ -41,6 +41,7 @@ public enum States implements State<LivingEntity> {
         @Override
         public void enter(LivingEntity entity) {
             System.out.println(entity.nome()+ " id."+entity.id()+" in Pursuing");
+
         }
 
         @Override
@@ -48,7 +49,7 @@ public enum States implements State<LivingEntity> {
             if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) < 1.5f) {
                 entity.statemachine().changeState(States.IDLE);
             }
-            entity.pathfinder.renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
+            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
             entity.checkIfDead();
 
             //AGGIORNAMENTO MOVEMENT
@@ -57,7 +58,8 @@ public enum States implements State<LivingEntity> {
 
         @Override
         public void exit(LivingEntity entity) {
-            entity.pathfinder.clear();
+            entity.pathfinder().clear();
+            entity.movement().clear();
         }
 
         @Override

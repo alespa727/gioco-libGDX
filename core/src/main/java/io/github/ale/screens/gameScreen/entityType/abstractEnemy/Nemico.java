@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entities.enemy.abstractEnemy;
+package io.github.ale.screens.gameScreen.entityType.abstractEnemy;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -22,11 +22,8 @@ public abstract class Nemico extends CombatEntity {
         attackcooldown();
     }
 
-    @Override
     public void despawn() {
-        pathfinder.dispose();
-        System.out.println("Entità id " + id() + " despawnata");
-        manager.removeEntity(this);
+        super.despawn();
     }
 
     @Override
@@ -35,16 +32,12 @@ public abstract class Nemico extends CombatEntity {
         renderer.setColor(Color.BLACK);
     }
 
-    public void drawPath(ShapeRenderer shapeRenderer) {
-        pathfinder.drawPath(shapeRenderer);
-    }
-
     public void evade(float x, float y) {
         float directionX = x - coordinateCentro().x;
         float directionY = y - coordinateCentro().y;
 
         Vector2 oppositeDirection = new Vector2(-directionX, -directionY);
 
-        pathfinder.renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y);
+        pathfinder().renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y);
     }
 }

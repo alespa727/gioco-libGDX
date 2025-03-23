@@ -2,7 +2,7 @@ package io.github.ale.screens.gameScreen.entities.enemy.umani;
 
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entities.enemy.abstractEnemy.Nemico;
+import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.states.States;
 import io.github.ale.screens.gameScreen.entities.skill.skillist.Punch;
 
@@ -10,6 +10,7 @@ public final class Finn extends Nemico {
 
     public Finn(EntityConfig config, EntityManager manager, Float attackcooldown) {
         super(config, manager, attackcooldown);
+        range().setSize(1.5f, 1.5f);
     }
 
     @Override

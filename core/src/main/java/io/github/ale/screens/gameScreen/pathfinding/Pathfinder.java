@@ -17,7 +17,7 @@ import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class Pathfinder implements Disposable{
-    LivingEntity entity;
+    private LivingEntity entity;
     private Node startNode;
     private Node endNode;
     private volatile int map = -1;
@@ -46,10 +46,10 @@ public class Pathfinder implements Disposable{
 
     public void renderPath(float x, float y) {
         countdown();
-        executor.submit(() -> renderPathAsincrono(x, y));
+        executor.submit(() -> calculatePathTo(x, y));
     }
 
-    public void renderPathAsincrono(float x, float y){
+    public void calculatePathTo(float x, float y){
         Gdx.app.postRunnable(() -> {
             //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
             if (Map.isGraphLoaded && map != MapManager.currentmap()) {
@@ -57,19 +57,19 @@ public class Pathfinder implements Disposable{
                 pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
                 hasLoadedGraph = true;
                 System.out.println("Caricato il grafo!");
-                calcolaPercorso(x, y);
+                search(x, y);
                 entity.movement().setGoal(path.get(0), path.get(1));
             }
 
             //CALCOLO DEL PERCORSO
             if (entity.movement().searchingfornext) {
-                calcolaPercorso(x, y);
+                search(x, y);
                 if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
             }
         });
     }
 
-    public void calcolaPercorso(float x, float y) {
+    public void search(float x, float y) {
         path.clear();
 
         //setta il nodo di inizio e fine
@@ -98,7 +98,7 @@ public class Pathfinder implements Disposable{
     }
 
     public void drawPath(ShapeRenderer shapeRenderer) {
-        if (path == null || path.nodes.isEmpty()) {
+        if (path.nodes.isEmpty()) {
             return;
         }
 
@@ -126,6 +126,7 @@ public class Pathfinder implements Disposable{
 
     public void clear(){
         path.clear();
+        cooldown.reset(0f);
     }
 
     @Override

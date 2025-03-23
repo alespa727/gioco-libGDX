@@ -26,7 +26,7 @@ public class Player extends CombatEntity {
     // Costruttore
     public Player(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager, attackcooldown);
-        this.range = new Rectangle(0, 0, 2f, 2f);
+        range().setSize(2f, 2f);
         skillset().add(new Punch(this, "pugno", "un pugno molto forte!", 20));
     }
 

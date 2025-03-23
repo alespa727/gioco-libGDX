@@ -12,7 +12,7 @@ import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.Skill;
-import io.github.ale.screens.gameScreen.entityType.abstractEntity.movement.EntityMovementManager;
+import io.github.ale.screens.gameScreen.entityType.livingEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.states.States;
 import io.github.ale.screens.gameScreen.entities.skill.SkillSet;
@@ -21,8 +21,9 @@ import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 public abstract class LivingEntity extends Entity{
     private final SkillSet skillset;
     protected Rectangle range;
+
     private Stats statistiche;
-    public final Pathfinder pathfinder;
+    private final Pathfinder pathfinder;
     public DefaultStateMachine<LivingEntity, States> statemachine;
 
     private final EntityMovementManager movement;
@@ -32,9 +33,17 @@ public abstract class LivingEntity extends Entity{
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         skillset = new SkillSet();
         movement = new EntityMovementManager();
+        range = new Rectangle(0, 0, 0, 0);
         statemachine = new DefaultStateMachine<>(this);
         this.pathfinder = new Pathfinder(this);
     }
+
+    public void despawn(){
+        super.despawn();
+        pathfinder.dispose();
+    }
+
+    public Pathfinder pathfinder(){return pathfinder;}
 
 
     public EntityMovementManager movement() {
@@ -134,4 +143,8 @@ public abstract class LivingEntity extends Entity{
     }
 
     public StateMachine<LivingEntity, States> statemachine(){return statemachine;}
+
+    public void drawPath(ShapeRenderer shapeRenderer) {
+        pathfinder.drawPath(shapeRenderer);
+    }
 }

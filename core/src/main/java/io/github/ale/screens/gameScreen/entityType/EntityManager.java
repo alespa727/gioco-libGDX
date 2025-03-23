@@ -15,7 +15,7 @@ import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entities.enemy.abstractEnemy.Nemico;
+import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Nemico;
 import io.github.ale.screens.gameScreen.entities.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.entities.player.Player;
