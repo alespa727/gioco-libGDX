@@ -1,6 +1,8 @@
 package io.github.ale.screens.gameScreen.entity.livingEntity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -10,18 +12,31 @@ import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.caratteristiche.Skill;
+import io.github.ale.screens.gameScreen.entity.abstractEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.stats.Stats;
+import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.states.States;
 import io.github.ale.screens.gameScreen.entity.skill.SkillSet;
+import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 
 public abstract class LivingEntity extends Entity{
     private final SkillSet skillset;
     protected Rectangle range;
     private Stats statistiche;
+    public final Pathfinder pathfinder;
+    
+    private final EntityMovementManager movement;
 
     public LivingEntity(EntityConfig config, EntityManager manager) {
         super(config, manager);
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         skillset = new SkillSet(this);
+        movement = new EntityMovementManager();
+        this.pathfinder = new Pathfinder(this);
+    }
+
+    
+    public EntityMovementManager movement() {
+        return movement;
     }
 
     public abstract void cooldown();
@@ -121,6 +136,4 @@ public abstract class LivingEntity extends Entity{
         stati().setIsAlive(config().isAlive);
         this.statistiche().gotDamaged = false;
     }
-
-
 }

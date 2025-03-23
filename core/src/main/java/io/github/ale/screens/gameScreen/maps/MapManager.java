@@ -73,8 +73,6 @@ public class MapManager {
         if (e) {
             if (!flag) {
                 changeMap();
-                this.player.setX(6.5f);
-                this.player.setY(5f);
                 flag=true;
             }
         }
