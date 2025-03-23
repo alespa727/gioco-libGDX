@@ -39,13 +39,13 @@ public class Settings implements Screen {
         Input.Keys.ESCAPE
     };
     final String[] comandi = new String[]{
-        "avanti (NORD)",
-        "sinistra (OVEST)",
-        "sotto (SUD)",
-        "destra (EST)",
-        "dash (corri)",
-        "cambio mappa",
-        "attacco",
+        "Su",
+        "Sinistra",
+        "Giu",
+        "Destra",
+        "Sprint",
+        "Interagisci",
+        "Attacca",
         "pausa",
         "play"
     };
@@ -63,23 +63,25 @@ public class Settings implements Screen {
         root.setFillParent(true);
         skin = new Skin(Gdx.files.internal("metal-ui.json"));
         table = new Table();
+        table.setDebug(true);
+        table.setSize(500, 500);
 
 
         Label label = new Label("Comandi", skin);
         label.setTouchable(null); // Rende il testo non editabile
         table.add(label);
+        label.setAlignment(5);
         table.row();
 
         bottoni = new TextButton[comandi.length];
 
         Table t = new Table();
         for (int i = 0; i < comandi.length; i++) {
-            Label label1 = new Label("          " + comandi[i] + "          ", skin);
+            Label label1 = new Label(comandi[i], skin);
             label1.setTouchable(null);
-
             final int ii = i;
 
-            bottoni[i] = new TextButton("          " + Input.Keys.toString(pulsanti[i]) + "          ", skin);
+            bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), skin);
             bottoni[i].addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -94,9 +96,10 @@ public class Settings implements Screen {
                     });
                 }
             });
-            t.add(label1);
-            t.add(bottoni[i]);
+            t.add(label1).expand().fill().pad(5);
+            t.add(bottoni[i]).expand().fill().pad(5);;
             t.row();
+            t.setDebug(true);
         }
 
         table.add(t);
