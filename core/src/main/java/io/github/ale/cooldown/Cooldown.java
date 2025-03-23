@@ -15,7 +15,7 @@ public class Cooldown {
         this.time = maxTime;
         this.isReady = true;
     }
-    
+
     public void update(float delta){
         if(!isReady){
             time -= delta;
@@ -24,7 +24,7 @@ public class Cooldown {
                 isReady = true;
             }
         }
-    }   
+    }
 
     public void reset(){
         isReady = false;
@@ -39,4 +39,5 @@ public class Cooldown {
     public float getTimer(){
         return time;
     }
+    public float getMaxTime(){return maxTime;}
 }

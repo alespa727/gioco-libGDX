@@ -3,6 +3,7 @@ package io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
+import io.github.ale.screens.gameScreen.maps.Map;
 
 public enum EnemyStates implements State<Enemy> {
     ATTACKING {
@@ -48,6 +49,7 @@ public enum EnemyStates implements State<Enemy> {
             if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) < 1.5f) {
                 entity.statemachine().changeState(EnemyStates.ATTACKING);
             }
+
             entity.setIsAttacking(entity.manager.isAnyDifferentEntityInRect(entity, entity.range().x, entity.range().y, entity.range().width, entity.range().height));
             entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
             entity.checkIfDead();
@@ -60,7 +62,6 @@ public enum EnemyStates implements State<Enemy> {
         @Override
         public void exit(Enemy entity) {
             entity.pathfinder().clear();
-            entity.movement().clear();
         }
 
         @Override

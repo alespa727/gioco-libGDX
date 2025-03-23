@@ -19,8 +19,6 @@ import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 import io.github.ale.screens.gameScreen.entities.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.entities.player.Player;
-import io.github.ale.screens.gameScreen.maps.Map;
-import io.github.ale.screens.gameScreen.pathfinding.Node;
 
 public final class EntityManager {
     private final MyGame game;
@@ -120,6 +118,8 @@ public final class EntityManager {
             game.setScreen(game.gameOver);
         }
 
+        collisions();
+
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
                 e.render();
@@ -127,15 +127,22 @@ public final class EntityManager {
         }
     }
 
+    public void collisions(){
+
+    }
+
     /**
      * disegna tutte le entità in ordine (verticale)
      * @param elapsedTime delta time
      */
     public void draw(float elapsedTime) {
+
+        drawDebug();
         drawEntity(elapsedTime);
+
     }
 
-    public void drawDebug(float elapsedTime){
+    public void drawDebug(){
         drawHitbox();
         drawRange();
         drawPath();
@@ -158,7 +165,6 @@ public final class EntityManager {
 
     /**
      * disegna tutte le hitbox delle entità
-     * @param renderer (disegnatore)
      */
     public void drawHitbox(){
         game.renderer.begin(ShapeRenderer.ShapeType.Line);
@@ -263,7 +269,6 @@ public final class EntityManager {
 
     /**
      * disegna tutti i range delle entità
-     * @param renderer
      */
     public void drawRange(){
         game.renderer.begin(ShapeRenderer.ShapeType.Line);
@@ -328,17 +333,6 @@ public final class EntityManager {
         entity.removeValue(e, false);
         entity.shrink();
     }
-
-    public boolean ispathclear(Entity e, Node node){
-        for(int j = 0; j< entity.size; j++){
-            if(!entity.get(j).equals(e) && Map.getGraph().getClosestNode(entity.get(j).coordinateCentro().x, entity.get(j).coordinateCentro().y).equals(node)){
-                //System.out.println("not clear");
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     public float getAngleToTarget(LivingEntity attaccante, LivingEntity attaccato) {
         float deltaX = attaccato.coordinateCentro().x - attaccante.coordinateCentro().x;

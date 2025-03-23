@@ -2,11 +2,8 @@ package io.github.ale.screens.gameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -87,7 +84,7 @@ public class GameScreen implements Screen {
     /**
      * aggiorna tutto il necessario
      */
-    private void update() {
+    public void update() {
         // aggiorna ogni cosa nel gioco
         maps.checkInput(); // update mappa, in caso di input
         entities.render();
@@ -107,7 +104,7 @@ public class GameScreen implements Screen {
 
         maps.draw();
 
-        drawHitboxes();
+        //drawHitboxes();
         drawOggetti();
         drawGUI();
     }
@@ -152,12 +149,11 @@ public class GameScreen implements Screen {
     /**
      * disegna hitbox
      */
+    @SuppressWarnings("unused")
     public void drawHitboxes() {
-
         Map.getGraph().drawConnections(game.renderer);
-
         Map.getGraph().drawNodes(game.renderer);
-        entities.drawDebug(elapsedTime);
+        entities.drawDebug();
     }
 
     /**
@@ -177,6 +173,7 @@ public class GameScreen implements Screen {
         return entities;
     }
 
+    @SuppressWarnings("unused")
     public MapManager maps() {
         return maps;
     }

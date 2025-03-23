@@ -59,7 +59,6 @@ public enum NpcStates implements State<NonCombatEntity> {
         @Override
         public void exit(NonCombatEntity entity) {
             entity.pathfinder().clear();
-            entity.movement().clear();
         }
 
         @Override

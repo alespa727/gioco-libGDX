@@ -24,8 +24,8 @@ public class Pathfinder implements Disposable{
     private Heuristic<Node> heuristic;
     private volatile boolean hasLoadedGraph = false;
     private IndexedAStarPathFinder<Node> pathFinder;
-    private final DefaultGraphPath<Node> path;
-
+    private final DefaultGraphPath<Node> path;;
+    private int random;
     private final Cooldown cooldown = new Cooldown(2f);
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -34,6 +34,7 @@ public class Pathfinder implements Disposable{
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
         cooldown.isReady = true;
+        random = (int) (Math.random() * 8);
     }
 
     public void countdown() {
@@ -41,6 +42,8 @@ public class Pathfinder implements Disposable{
         if (cooldown.isReady) {
             entity.movement().searchingfornext = true;
             cooldown.reset();
+        }else{
+            entity.movement().searchingfornext = false;
         }
     }
 
@@ -63,15 +66,16 @@ public class Pathfinder implements Disposable{
 
             //CALCOLO DEL PERCORSO
             if (entity.movement().searchingfornext) {
+                System.out.println("Calcolo del percorso!");
                 search(x, y);
                 if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
             }
         });
     }
 
+
     public void search(float x, float y) {
         path.clear();
-
         //setta il nodo di inizio e fine
         startNode = Map.getGraph().getClosestNode(entity.coordinateCentro().x, entity.coordinateCentro().y);
         endNode = Map.getGraph().getClosestNode(x, y);

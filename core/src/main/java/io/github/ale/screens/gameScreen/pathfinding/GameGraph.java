@@ -4,6 +4,8 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class GameGraph implements IndexedGraph<Node> {
@@ -203,5 +205,13 @@ public class GameGraph implements IndexedGraph<Node> {
         }
 
         return closestNode; // Restituisce il nodo più vicino
+    }
+
+    public Node getRandomNode(float x, float y){
+        return getClosestNode(x, y).getConnections().get(MathUtils.random(0, getClosestNode(x, y).getConnections().size-1)).getToNode();
+    }
+
+    public Node getRandomNode(Node node, Vector2 direction){
+        return node.getConnections().get(MathUtils.random(0, node.getConnections().size-1)).getToNode();
     }
 }

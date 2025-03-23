@@ -83,10 +83,6 @@ public abstract class Entity{
         manager.removeEntity(this);
     }
 
-    public void collisionientita() {
-        //DA FARE
-    }
-
     public void limiti() {
         setX(MathUtils.clamp(getX(), 0 - hitbox().width, Map.width() - hitbox().width - hitbox().width));
         setY(MathUtils.clamp(getY(), 0 -hitbox().height, Map.height() - hitbox().height - hitbox().height));

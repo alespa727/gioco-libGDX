@@ -22,10 +22,12 @@ public class EntityMovementManager {
         direction = new Vector2();
     }
 
-    public void clear(){
-        lastNode=node;
-        node=null;
-        searchingfornext=true;
+    public Node getGoal(){
+        return node;
+    }
+
+    public Node getLastNode(){
+        return lastNode;
     }
 
     public void update(LivingEntity entity) {
@@ -49,9 +51,6 @@ public class EntityMovementManager {
         Vector2 movementDirection = new Vector2(target).sub(entity.coordinateCentro()).nor();
         float speed = entity.statistiche().speed() * Gdx.graphics.getDeltaTime();
         Vector2 movement = movementDirection.scl(speed);
-        if(!entity.manager.ispathclear(entity, node)){
-            movement.scl(0.7f);
-        }
         entity.setX(entity.getX() + movement.x);
         entity.setY(entity.getY() + movement.y);
 
