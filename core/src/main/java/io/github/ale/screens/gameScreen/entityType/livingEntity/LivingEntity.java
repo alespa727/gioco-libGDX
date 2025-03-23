@@ -1,8 +1,6 @@
 package io.github.ale.screens.gameScreen.entityType.livingEntity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,7 +12,6 @@ import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.Skill;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.stats.Stats;
-import io.github.ale.screens.gameScreen.entityType.livingEntity.states.States;
 import io.github.ale.screens.gameScreen.entities.skill.SkillSet;
 import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 
@@ -24,8 +21,6 @@ public abstract class LivingEntity extends Entity{
 
     private Stats statistiche;
     private final Pathfinder pathfinder;
-    public DefaultStateMachine<LivingEntity, States> statemachine;
-
     private final EntityMovementManager movement;
 
     public LivingEntity(EntityConfig config, EntityManager manager) {
@@ -34,7 +29,6 @@ public abstract class LivingEntity extends Entity{
         skillset = new SkillSet();
         movement = new EntityMovementManager();
         range = new Rectangle(0, 0, 0, 0);
-        statemachine = new DefaultStateMachine<>(this);
         this.pathfinder = new Pathfinder(this);
     }
 
@@ -141,8 +135,6 @@ public abstract class LivingEntity extends Entity{
         stati().setIsAlive(config().isAlive);
         this.statistiche().gotDamaged = false;
     }
-
-    public StateMachine<LivingEntity, States> statemachine(){return statemachine;}
 
     public void drawPath(ShapeRenderer shapeRenderer) {
         pathfinder.drawPath(shapeRenderer);

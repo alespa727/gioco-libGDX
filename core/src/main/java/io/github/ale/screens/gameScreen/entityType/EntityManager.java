@@ -15,7 +15,7 @@ import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Nemico;
+import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 import io.github.ale.screens.gameScreen.entities.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.entities.player.Player;
@@ -87,7 +87,7 @@ public final class EntityManager {
 
     }
 
-    public void addNemico(Class<? extends Nemico> e, EntityConfig config, float attackcooldown) {
+    public void addNemico(Class<? extends Enemy> e, EntityConfig config, float attackcooldown) {
         try {
             //System.err.println("Creata entità! id." + entityidcount);
             Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Float.class);//Cerca il costruttore
@@ -160,8 +160,8 @@ public final class EntityManager {
     public void drawPath(ShapeRenderer renderer){
         for (Entity e : entity) {
 
-            if (e instanceof Nemico nemico) {
-                if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) nemico.drawPath(renderer);
+            if (e instanceof Enemy enemy) {
+                if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) enemy.drawPath(renderer);
             }
 
         }
@@ -306,16 +306,16 @@ public final class EntityManager {
      * restituisce il nemico con indice @param index (senza contare le altre entità)
      * @return
      */
-    public Nemico nemico(int index){
-        Nemico nemico;
+    public Enemy nemico(int index){
+        Enemy enemy;
         int count=0;
         for (Entity e : entity) {
-            if (!(e instanceof Nemico)) {
+            if (!(e instanceof Enemy)) {
                 //System.out.println("non un nemico");
             } else {
                 if (index>=count) {
-                    nemico = (Nemico) e;
-                    return nemico;
+                    enemy = (Enemy) e;
+                    return enemy;
                 }
                 count++;
             }

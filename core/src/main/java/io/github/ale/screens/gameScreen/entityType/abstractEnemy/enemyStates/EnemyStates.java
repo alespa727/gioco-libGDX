@@ -1,19 +1,18 @@
-package io.github.ale.screens.gameScreen.entityType.livingEntity.states;
+package io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 
-import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
-
-public enum States implements State<LivingEntity> {
+public enum EnemyStates implements State<Enemy> {
     IDLE {
         @Override
-        public void enter(LivingEntity entity) {
+        public void enter(Enemy entity) {
             System.out.println(entity.nome()+ " id."+entity.id()+" in Idle");
         }
 
         @Override
-        public void update(LivingEntity entity) {
+        public void update(Enemy entity) {
             if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
                 entity.direzione().scl(0.5f, 1f);
             }
@@ -21,17 +20,17 @@ public enum States implements State<LivingEntity> {
                 entity.direzione().scl(1f, 0.5f);
             }
             if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) > 1.5f) {
-                entity.statemachine().changeState(States.PURSUE);
+                entity.statemachine().changeState(EnemyStates.PURSUE);
             }
         }
 
         @Override
-        public void exit(LivingEntity entity) {
+        public void exit(Enemy entity) {
 
         }
 
         @Override
-        public boolean onMessage(LivingEntity entity, Telegram telegram) {
+        public boolean onMessage(Enemy entity, Telegram telegram) {
             return false;
         }
     },
@@ -39,16 +38,17 @@ public enum States implements State<LivingEntity> {
     PURSUE {
 
         @Override
-        public void enter(LivingEntity entity) {
+        public void enter(Enemy entity) {
             System.out.println(entity.nome()+ " id."+entity.id()+" in Pursuing");
 
         }
 
         @Override
-        public void update(LivingEntity entity) {
+        public void update(Enemy entity) {
             if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) < 1.5f) {
-                entity.statemachine().changeState(States.IDLE);
+                entity.statemachine().changeState(EnemyStates.IDLE);
             }
+            entity.setIsAttacking(entity.manager.isAnyDifferentEntityInRect(entity, entity.range().x, entity.range().y, entity.range().width, entity.range().height));
             entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
             entity.checkIfDead();
 
@@ -57,16 +57,14 @@ public enum States implements State<LivingEntity> {
         }
 
         @Override
-        public void exit(LivingEntity entity) {
+        public void exit(Enemy entity) {
             entity.pathfinder().clear();
             entity.movement().clear();
         }
 
         @Override
-        public boolean onMessage(LivingEntity entity, Telegram telegram) {
+        public boolean onMessage(Enemy entity, Telegram telegram) {
             return false;
         }
     };
-
-
 }

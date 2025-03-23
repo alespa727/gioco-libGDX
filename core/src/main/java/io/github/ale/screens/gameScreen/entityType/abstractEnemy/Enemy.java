@@ -1,19 +1,24 @@
 package io.github.ale.screens.gameScreen.entityType.abstractEnemy;
 
+import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
+import io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates.EnemyStates;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
 
-public abstract class Nemico extends CombatEntity {
+public abstract class Enemy extends CombatEntity {
 
-    public Nemico(EntityConfig config, EntityManager manager, float attackcooldown) {
+    public DefaultStateMachine<Enemy, EnemyStates> statemachine;
+
+    public Enemy(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager, attackcooldown);
         this.range = new Rectangle(0, 0, 1.5f, 1.5f);
+        statemachine = new DefaultStateMachine<>(this);
     }
 
     @Override
@@ -25,6 +30,8 @@ public abstract class Nemico extends CombatEntity {
     public void despawn() {
         super.despawn();
     }
+
+    public DefaultStateMachine<Enemy, EnemyStates> statemachine(){ return statemachine;}
 
     @Override
     public void drawRange(ShapeRenderer renderer) {
