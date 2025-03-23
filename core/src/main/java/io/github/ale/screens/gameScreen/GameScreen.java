@@ -38,11 +38,11 @@ public class GameScreen implements Screen {
 
     private float elapsedTime;
 
-    private boolean loaded=false;
-    public boolean isPaused=false;
+    private boolean loaded = false;
+    public boolean isPaused = false;
 
-    public GameScreen(MyGame game){
-        this.game=game;
+    public GameScreen(MyGame game) {
+        this.game = game;
     }
 
     @Override
@@ -56,14 +56,14 @@ public class GameScreen implements Screen {
             root.setFillParent(true);
             stage.addActor(root);
 
-            loaded=true;
+            loaded = true;
 
             camera = new CameraManager();   // Configura la camera
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
             entities = new EntityManager(this.game);
             maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
-        }else{
+        } else {
             maps.getPlaylist().play(0);
             entities.player().respawn();
         }
@@ -75,10 +75,10 @@ public class GameScreen implements Screen {
             update();
         }
         draw();
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && !isPaused) {
+        if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]) && !isPaused) {
             pause();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && isPaused) {
+        if (Gdx.input.isKeyPressed(Settings.getPulsanti()[8]) && isPaused) {
             resume();
         }
     }
@@ -118,7 +118,7 @@ public class GameScreen implements Screen {
         drawGUI();
     }
 
-    public void drawGUI(){
+    public void drawGUI() {
         rect.draw();
         stage.act();
         stage.draw();
@@ -139,12 +139,12 @@ public class GameScreen implements Screen {
     @Override
     public void pause() {
         maps.getPlaylist().stop();
-        isPaused=true;
+        isPaused = true;
     }
 
     @Override
     public void resume() {
-        isPaused=false;
+        isPaused = false;
         maps.getPlaylist().play(0);
         maps.getPlaylist().setVolume(0.1f);
         maps.getPlaylist().setLooping(0, true);
@@ -186,6 +186,11 @@ public class GameScreen implements Screen {
         maps.getPlaylist().stop();
     }
 
-    public EntityManager entities(){ return entities; }
-    public MapManager maps(){ return maps; }
+    public EntityManager entities() {
+        return entities;
+    }
+
+    public MapManager maps() {
+        return maps;
+    }
 }
