@@ -2,7 +2,7 @@ package io.github.ale.screens.gameScreen.entity.livingEntity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -23,6 +23,7 @@ public abstract class LivingEntity extends Entity{
     protected Rectangle range;
     private Stats statistiche;
     public final Pathfinder pathfinder;
+    public DefaultStateMachine<LivingEntity, States> statemachine;
     
     private final EntityMovementManager movement;
 
@@ -31,6 +32,7 @@ public abstract class LivingEntity extends Entity{
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         skillset = new SkillSet(this);
         movement = new EntityMovementManager();
+        statemachine = new DefaultStateMachine<>(this);
         this.pathfinder = new Pathfinder(this);
     }
 
@@ -136,4 +138,6 @@ public abstract class LivingEntity extends Entity{
         stati().setIsAlive(config().isAlive);
         this.statistiche().gotDamaged = false;
     }
+
+    public StateMachine<LivingEntity, States> statemachine(){return statemachine;}
 }

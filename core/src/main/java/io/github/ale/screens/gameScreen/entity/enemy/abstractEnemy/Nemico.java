@@ -1,6 +1,5 @@
 package io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy;
 
-import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,17 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.ale.screens.gameScreen.entity.EntityManager;
 import io.github.ale.screens.gameScreen.entity.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entity.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entity.enemy.abstractEnemy.states.States;
 import io.github.ale.screens.gameScreen.entity.player.Player;
 
 public abstract class Nemico extends CombatEntity {
-    private final Player player;
-    public DefaultStateMachine<Nemico, States> statemachine;
 
     public Nemico(EntityConfig config, EntityManager manager, float attackcooldown, Player player) {
         super(config, manager, attackcooldown);
-        this.player = player;
-        statemachine = new DefaultStateMachine<>(this);
         this.range = new Rectangle(0, 0, 1.5f, 1.5f);
     }
 
@@ -54,9 +48,4 @@ public abstract class Nemico extends CombatEntity {
 
         pathfinder.renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y);
     }
-
-    protected Player player() {
-        return player;
-    }
-
 }
