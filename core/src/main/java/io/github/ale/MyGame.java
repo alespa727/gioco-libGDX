@@ -15,7 +15,7 @@ public class MyGame extends com.badlogic.gdx.Game{
 
     public GameScreen gameScreen = new GameScreen(this);
     public DefeatScreen gameOver = new DefeatScreen(this);
-    public MainScreen mainScreen = new MainScreen(this, new Settings(this));
+    public MainScreen mainScreen = new MainScreen(this);
     @Override
     public void create() {
         batch = new SpriteBatch(); // praticamente la cosa per disegnare

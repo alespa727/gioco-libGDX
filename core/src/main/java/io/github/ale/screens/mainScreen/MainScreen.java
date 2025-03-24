@@ -2,7 +2,6 @@ package io.github.ale.screens.mainScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -22,11 +21,8 @@ public class MainScreen implements Screen {
     private Table root;
     private Table table;
 
-    private final Settings settings;
-
-    public MainScreen(MyGame game, Settings settings) {
+    public MainScreen(MyGame game) {
         this.game = game;
-        this.settings = settings;
     }
 
     @Override
@@ -84,7 +80,7 @@ public class MainScreen implements Screen {
         button.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(settings);
+                game.setScreen(new Settings(game));
                 return true;
             }
         });
