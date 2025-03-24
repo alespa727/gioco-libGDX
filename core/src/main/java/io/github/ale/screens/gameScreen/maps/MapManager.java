@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.music.MusicPlayer;
-import io.github.ale.screens.gameScreen.entities.player.Player;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
 
 public class MapManager {
-    private final Player player;
+    @SuppressWarnings("unused")
+    private final EntityManager manager;
     private final OrthographicCamera camera;
     private final FitViewport viewport;
     private Map currentMap;
@@ -19,11 +20,12 @@ public class MapManager {
     private boolean ambienteAperto;
     private final MusicPlayer playlist;
     private final int totalMaps;
+    
 
     boolean flag;
 
-    public MapManager(OrthographicCamera camera, FitViewport viewport, Player player, int startingMap){
-        this.player=player;
+    public MapManager(OrthographicCamera camera, FitViewport viewport, EntityManager manager, int startingMap){
+        this.manager=manager;
         this.camera=camera;
         this.viewport=viewport;
         this.flag=false;

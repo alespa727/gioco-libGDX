@@ -2,8 +2,8 @@ package io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
-import io.github.ale.screens.gameScreen.maps.Map;
 
 public enum EnemyStates implements State<Enemy> {
     ATTACKING {

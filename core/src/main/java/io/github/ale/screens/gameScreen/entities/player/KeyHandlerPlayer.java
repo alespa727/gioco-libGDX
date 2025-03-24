@@ -1,7 +1,6 @@
 package io.github.ale.screens.gameScreen.entities.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 
 import io.github.ale.screens.settings.Settings;
 

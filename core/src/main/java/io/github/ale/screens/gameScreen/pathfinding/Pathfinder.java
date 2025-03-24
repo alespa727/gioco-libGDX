@@ -17,15 +17,13 @@ import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class Pathfinder implements Disposable{
-    private LivingEntity entity;
+    private final LivingEntity entity;
     private Node startNode;
     private Node endNode;
     private volatile int map = -1;
     private Heuristic<Node> heuristic;
-    private volatile boolean hasLoadedGraph = false;
     private IndexedAStarPathFinder<Node> pathFinder;
-    private final DefaultGraphPath<Node> path;;
-    private int random;
+    private final DefaultGraphPath<Node> path;
     private final Cooldown cooldown = new Cooldown(2f);
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -34,7 +32,6 @@ public class Pathfinder implements Disposable{
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
         cooldown.isReady = true;
-        random = (int) (Math.random() * 8);
     }
 
     public void countdown() {
@@ -58,7 +55,6 @@ public class Pathfinder implements Disposable{
             if (Map.isGraphLoaded && map != MapManager.currentmap()) {
                 map = MapManager.currentmap();
                 pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
-                hasLoadedGraph = true;
                 System.out.println("Caricato il grafo!");
                 search(x, y);
                 entity.movement().setGoal(path.get(0), path.get(1));

@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
             entities = new EntityManager(this.game);
-            maps = new MapManager(camera.get(), viewport, entities.player(), 1); // map manager
+            maps = new MapManager(camera.get(), viewport, entities, 1); // map manager
 
             loaded = true;
         } else {
@@ -149,7 +149,6 @@ public class GameScreen implements Screen {
     /**
      * disegna hitbox
      */
-    @SuppressWarnings("unused")
     public void drawHitboxes() {
         Map.getGraph().drawConnections(game.renderer);
         Map.getGraph().drawNodes(game.renderer);
@@ -173,7 +172,6 @@ public class GameScreen implements Screen {
         return entities;
     }
 
-    @SuppressWarnings("unused")
     public MapManager maps() {
         return maps;
     }
