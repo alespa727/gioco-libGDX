@@ -13,7 +13,6 @@ public class MyGame extends com.badlogic.gdx.Game{
     public ShapeRenderer renderer;
 
     public GameScreen gameScreen = new GameScreen(this);
-    public DefeatScreen gameOver = new DefeatScreen(this);
     public MainScreen mainScreen = new MainScreen(this);
     @Override
     public void create() {

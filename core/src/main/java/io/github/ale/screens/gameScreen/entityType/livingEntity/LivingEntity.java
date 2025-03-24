@@ -4,12 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.Skill;
+import io.github.ale.screens.gameScreen.entities.skill.Skill;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.entities.skill.SkillSet;
@@ -17,7 +16,6 @@ import io.github.ale.screens.gameScreen.pathfinding.Pathfinder;
 
 public abstract class LivingEntity extends Entity{
     private final SkillSet skillset;
-    protected Rectangle range;
 
     private Stats statistiche;
     private final Pathfinder pathfinder;
@@ -28,7 +26,6 @@ public abstract class LivingEntity extends Entity{
         inizializzaStatistiche(config.hp, config.speed, config.attackdmg);
         skillset = new SkillSet();
         movement = new EntityMovementManager();
-        range = new Rectangle(0, 0, 0, 0);
         this.pathfinder = new Pathfinder(this);
     }
 
@@ -57,7 +54,6 @@ public abstract class LivingEntity extends Entity{
         }
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
         renderer.setColor(Color.BLACK);
-        renderer.rect(range.x, range.y, range.width, range.height);
         renderer.setColor(Color.BLACK);
         renderer.circle(coordinateCentro().x, coordinateCentro().y, 0.3f, 10);
     }
@@ -83,12 +79,6 @@ public abstract class LivingEntity extends Entity{
     @Override
     public void updateEntity() {
         delta = Gdx.graphics.getDeltaTime();
-
-        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-getSize().width/2;
-        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-getSize().width/2;
-        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-getSize().height/2;
-        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-getSize().height/2;
-
         cooldown();
         limiti();
         adjustHitbox();
@@ -113,11 +103,6 @@ public abstract class LivingEntity extends Entity{
     public Skill getSkill(Class<? extends Skill> skillclass){
         return skillset.getSkill(skillclass);
     }
-
-    public Rectangle range() {
-        return range;
-    }
-
 
     public void kill() {
         statistiche().inflictDamage(statistiche().health(), stati().immortality());

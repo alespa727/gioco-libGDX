@@ -3,10 +3,13 @@ package io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 
+import com.badlogic.gdx.math.Vector2;
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 
 public enum EnemyStates implements State<Enemy> {
     ATTACKING {
+        Vector2 playerDirection;
+
         @Override
         public void enter(Enemy entity) {
             System.out.println(entity.nome()+ " id."+entity.id()+" is Attacking");
@@ -14,6 +17,10 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
+            playerDirection = entity.manager.player().coordinateCentro().sub(entity.coordinateCentro()).nor();
+            playerDirection.set(roundToOneDecimal(playerDirection.x), roundToOneDecimal(playerDirection.y));
+            entity.direzione().set(playerDirection);
+            entity.movement().reset();
             if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
                 entity.direzione().scl(0.5f, 1f);
             }
@@ -34,6 +41,12 @@ public enum EnemyStates implements State<Enemy> {
         public boolean onMessage(Enemy entity, Telegram telegram) {
             return false;
         }
+
+
+        private float roundToOneDecimal(float value) {
+            return Math.round(value) / 1f;
+        }
+
     },
 
     PURSUE {

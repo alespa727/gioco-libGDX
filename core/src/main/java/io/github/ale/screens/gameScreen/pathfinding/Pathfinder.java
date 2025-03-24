@@ -36,12 +36,7 @@ public class Pathfinder implements Disposable{
 
     public void countdown() {
         cooldown.update(Gdx.graphics.getDeltaTime());
-        if (cooldown.isReady) {
-            entity.movement().searchingfornext = true;
-            cooldown.reset();
-        }else{
-            entity.movement().searchingfornext = false;
-        }
+
     }
 
     public void renderPath(float x, float y) {

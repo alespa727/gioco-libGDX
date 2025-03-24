@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
+import io.github.ale.screens.defeatScreen.DefeatScreen;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entities.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entities.player.Player;
@@ -115,7 +116,7 @@ public final class EntityManager {
      */
     public void render() {
         if (!player.stati().isAlive()) {
-            game.setScreen(game.gameOver);
+            game.setScreen(new DefeatScreen(game));
         }
 
         collisions();
@@ -228,22 +229,22 @@ public final class EntityManager {
         return array;
     }
 
-    public Array<LivingEntity> entitaviventi(float x, float y, float width, float height){
-        Array<LivingEntity> array = new Array<>();
+    public Array<CombatEntity> combatEntity(float x, float y, float width, float height){
+        Array<CombatEntity> array = new Array<>();
         for (int i = 0; i < entity.size; i++) {
-            if (entity.get(i) instanceof LivingEntity && CameraManager.isWithinFrustumBounds(entity.get(i).coordinateCentro().x, entity.get(i).coordinateCentro().y) && entity.get(i).coordinateCentro().x > x && entity.get(i).coordinateCentro().y > y && entity.get(i).coordinateCentro().x < x + width && entity.get(i).coordinateCentro().y < y + height) {
-                array.add((LivingEntity) entity.get(i));
+            if (entity.get(i) instanceof CombatEntity && CameraManager.isWithinFrustumBounds(entity.get(i).coordinateCentro().x, entity.get(i).coordinateCentro().y) && entity.get(i).coordinateCentro().x > x && entity.get(i).coordinateCentro().y > y && entity.get(i).coordinateCentro().x < x + width && entity.get(i).coordinateCentro().y < y + height) {
+                array.add((CombatEntity) entity.get(i));
             }
         }
 
         return array;
     }
 
-    public Array<LivingEntity> entitaviventi(Rectangle rect){
-        Array<LivingEntity> array = new Array<>();
+    public Array<CombatEntity> combatEntity(Rectangle rect){
+        Array<CombatEntity> array = new Array<>();
         for (int i = 0; i < entity.size; i++) {
-            if (entity.get(i) instanceof LivingEntity && CameraManager.isWithinFrustumBounds(entity.get(i).coordinateCentro().x, entity.get(i).coordinateCentro().y) && entity.get(i).coordinateCentro().x > rect.x && entity.get(i).coordinateCentro().y > rect.y && entity.get(i).coordinateCentro().x < rect.x + rect.width && entity.get(i).coordinateCentro().y < rect.y + rect.height) {
-                array.add((LivingEntity) entity.get(i));
+            if (entity.get(i) instanceof CombatEntity && CameraManager.isWithinFrustumBounds(entity.get(i).coordinateCentro().x, entity.get(i).coordinateCentro().y) && entity.get(i).coordinateCentro().x > rect.x && entity.get(i).coordinateCentro().y > rect.y && entity.get(i).coordinateCentro().x < rect.x + rect.width && entity.get(i).coordinateCentro().y < rect.y + rect.height) {
+                array.add((CombatEntity) entity.get(i));
             }
         }
 

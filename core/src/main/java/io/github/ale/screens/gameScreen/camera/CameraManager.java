@@ -53,13 +53,13 @@ public class CameraManager {
      * aggiorna cosa la telecamera deve seguire/modalità della telecamera
      */
 
-    public void update(MapManager maps, EntityManager entities, FitViewport viewport) {
+    public void update(MapManager maps, EntityManager entities, FitViewport viewport, boolean boundaries) {
 
         float x = camera.viewportWidth / 2;
         float y = camera.viewportHeight / 2;
 
         smoothTransitionTo(new Vector2(entities.player().coordinateCentro().x, entities.player().coordinateCentro().y));
-        boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
+        if(boundaries) boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
         viewport.apply();
         camera.update();
 

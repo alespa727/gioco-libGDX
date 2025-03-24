@@ -88,7 +88,7 @@ public class GameScreen implements Screen {
         // aggiorna ogni cosa nel gioco
         maps.checkInput(); // update mappa, in caso di input
         entities.render();
-        updateCamera();
+        updateCamera(true);
         maps.render(); // update visualizzazione mappa
     }
 
@@ -176,11 +176,14 @@ public class GameScreen implements Screen {
         return maps;
     }
 
-    public void updateCamera(){
-        camera.update(maps, entities, viewport); // update telecamera
+    public void updateCamera(boolean boundaries){
+        camera.update(maps, entities, viewport, boundaries); // update telecamera
         viewport.apply();
         game.batch.setProjectionMatrix(camera.get().combined);
         game.renderer.setProjectionMatrix(camera.get().combined);
+    }
 
+    public CameraManager camera(){
+        return camera;
     }
 }

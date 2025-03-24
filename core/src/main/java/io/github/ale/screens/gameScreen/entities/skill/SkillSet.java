@@ -2,8 +2,6 @@ package io.github.ale.screens.gameScreen.entities.skill;
 
 import com.badlogic.gdx.utils.Array;
 
-import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.Skill;
-
 public class SkillSet {
     private final Array<Skill> skillList;
 

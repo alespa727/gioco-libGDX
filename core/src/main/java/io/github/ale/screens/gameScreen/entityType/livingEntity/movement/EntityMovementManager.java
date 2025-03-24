@@ -22,6 +22,12 @@ public class EntityMovementManager {
         direction = new Vector2();
     }
 
+    public void reset(){
+        searchingfornext=true;
+        lastNode=node;
+        node=null;
+    }
+
     public Node getGoal(){
         return node;
     }
@@ -57,7 +63,7 @@ public class EntityMovementManager {
         if (entity.coordinateCentro().dst(target) < REACHED_THRESHOLD) {
             searchingfornext = true;
             lastNode = node; // Safely mark the current node as reached
-        }
+        }else searchingfornext=false;
 
     }
 }
