@@ -1,5 +1,6 @@
 package io.github.ale.screens.gameScreen.maps;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.ale.screens.gameScreen.GameScreen;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
@@ -60,21 +62,14 @@ public class Map {
     public static GameGraph getGraph(){
         return graph;
     }
-
-     /**
-     * aggiorna la vista per disegnare la mappa
-     */
-
-    public void render(float delta){
-        mapRenderer.setView(camera);
-    }
-
     /**
      * disegna la mappa in generale
      */
-    public void draw(float delta){
+    public void draw(){
+
         mapRenderer.setView(camera);
         mapRenderer.render();
+
     }
 
     /**

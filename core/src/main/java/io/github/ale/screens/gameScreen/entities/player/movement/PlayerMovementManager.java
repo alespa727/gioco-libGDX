@@ -14,7 +14,6 @@ public class PlayerMovementManager{
     private boolean giu;
     private boolean sinistra;
     private boolean destra;
-    private double elapsedTime;
 
     private boolean isCollidingVertically;
     private boolean isCollidingHorizontally;
@@ -36,7 +35,7 @@ public class PlayerMovementManager{
     public void update(LivingEntity p) {
         keyH.input();
         speedMultiplier(p);
-        movimento(p);
+        movimento(p, p.delta);
     }
 
     /**
@@ -86,9 +85,7 @@ public class PlayerMovementManager{
      *
      * @param p player
      */
-    private void movimento(LivingEntity p) {
-        elapsedTime = Gdx.graphics.getDeltaTime(); // moltiplicatore del movimento in base al framerate
-
+    private void movimento(LivingEntity p, float delta) {
         su = keyH.su;
         giu = keyH.giu;
         sinistra = keyH.sinistra;
@@ -118,7 +115,7 @@ public class PlayerMovementManager{
                     aggiornaDirezioneX(p);
                     aggiornaCollisioni(p);
 
-                    muoviAsseX(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
+                    muoviAsseX(p, delta); //MUOVE IL PLAYER SE PREME ALTRI TASTI
                     aggiornaStatoCollisione(p);
                 }else{
                     addNotMoving(p);
@@ -130,7 +127,7 @@ public class PlayerMovementManager{
                     aggiornaDirezioneY(p);
                     aggiornaCollisioni(p);
 
-                    muoviAsseY(p); //MUOVE IL PLAYER SE PREME ALTRI TASTI
+                    muoviAsseY(p, delta); //MUOVE IL PLAYER SE PREME ALTRI TASTI
 
                     aggiornaStatoCollisione(p);
                 }else{
@@ -143,13 +140,13 @@ public class PlayerMovementManager{
                 aggiornaDirezioneY(p);
 
                 aggiornaCollisioni(p);
-                muoviAsseY(p);
+                muoviAsseY(p, delta);
 
                 aggiornaStatoCollisione(p);
                 aggiornaDirezioneX(p);
 
                 aggiornaCollisioni(p);
-                muoviAsseX(p);
+                muoviAsseX(p, delta);
 
                 aggiornaStatoCollisione(p);
 
@@ -224,30 +221,30 @@ public class PlayerMovementManager{
 
     }
 
-    private void muoviAsseX(LivingEntity p){
+    private void muoviAsseX(LivingEntity p, float delta){
 
         if (!isCollidingHorizontally) {
             float speed = p.statistiche().speed();
             float x = p.getX();
 
             if (sinistra)
-                p.setX(x - speed * (float) elapsedTime);
+                p.setX(x - speed * (float) delta);
             if (destra)
-                p.setX(x + speed * (float) elapsedTime);
+                p.setX(x + speed * (float) delta);
             p.stati().setInCollisione(false);
         }
 
     }
-    private void muoviAsseY(LivingEntity p){
+    private void muoviAsseY(LivingEntity p, float delta){
 
         if (!isCollidingVertically) {
             float speed = p.statistiche().speed();
             float y = p.getY();
 
             if (giu)
-                p.setY(y - speed * (float) elapsedTime);
+                p.setY(y - speed * (float) delta);
             if (su)
-                p.setY(y + speed * (float) elapsedTime);
+                p.setY(y + speed * (float) delta);
             p.stati().setInCollisione(false);
         }
 

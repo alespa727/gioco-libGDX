@@ -36,13 +36,13 @@ public class Pathfinder implements Disposable{
 
     public DefaultGraphPath<Node> getPath() {return path;}
 
-    public void countdown() {
-        cooldown.update(Gdx.graphics.getDeltaTime());
+    public void countdown(float delta) {
+        cooldown.update(delta);
 
     }
 
-    public void renderPath(float x, float y) {
-        countdown();
+    public void renderPath(float x, float y, float delta) {
+        countdown(delta);
         executor.submit(() -> calculatePathTo(x, y));
     }
 

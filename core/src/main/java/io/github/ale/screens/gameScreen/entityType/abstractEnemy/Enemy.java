@@ -45,6 +45,6 @@ public abstract class Enemy extends CombatEntity {
 
         Vector2 oppositeDirection = new Vector2(-directionX, -directionY);
 
-        pathfinder().renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y);
+        pathfinder().renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y, delta);
     }
 }

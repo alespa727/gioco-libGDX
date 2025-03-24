@@ -49,11 +49,11 @@ public enum NpcStates implements State<NonCombatEntity> {
             if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) < 1.5f) {
                 entity.statemachine().changeState(NpcStates.IDLE);
             }
-            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
+            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
             entity.checkIfDead();
 
             //AGGIORNAMENTO MOVEMENT
-            entity.movement().update(entity);
+            entity.movement().update(entity, entity.delta);
         }
 
         @Override

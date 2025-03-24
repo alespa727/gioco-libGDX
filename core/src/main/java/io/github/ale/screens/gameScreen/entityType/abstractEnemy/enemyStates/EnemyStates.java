@@ -65,14 +65,14 @@ public enum EnemyStates implements State<Enemy> {
             }
 
             entity.setIsAttacking(entity.manager.isAnyDifferentEntityInRect(entity, entity.range().x, entity.range().y, entity.range().width, entity.range().height));
-            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
+            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
             if(entity.pathfinder().getPath().getCount()>10){
                 entity.statemachine.changeState(PATROLLING);
             }
             entity.checkIfDead();
 
             //AGGIORNAMENTO MOVEMENT
-            entity.movement().update(entity);
+            entity.movement().update(entity, entity.delta);
 
         }
 

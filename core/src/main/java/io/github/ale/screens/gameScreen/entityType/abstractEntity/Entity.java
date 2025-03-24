@@ -21,6 +21,7 @@ import io.github.ale.screens.gameScreen.pathfinding.NodeConnection;
 public abstract class Entity{
 
     // Fields
+    public float delta;
     private final EntityConfig config;
     private Node node;
     private EntityInfo info;
@@ -79,6 +80,7 @@ public abstract class Entity{
 
     // Core methods
     public void render(float delta) {
+        this.delta = delta;
         updateNode();
         updateEntity(delta);
         updateEntityType(delta);

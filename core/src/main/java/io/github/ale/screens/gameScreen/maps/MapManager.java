@@ -40,8 +40,7 @@ public class MapManager {
     public static int currentmap(){ return currentMapNum; }
 
     public void collisions(ShapeRenderer renderer){ this.currentMap.collisions(renderer);}
-    public void render(float delta){ this.currentMap.render(delta);}
-    public void draw(float delta){ this.currentMap.draw(delta); }
+    public void draw(){this.currentMap.draw();}
 
     private void changeMap(){
 

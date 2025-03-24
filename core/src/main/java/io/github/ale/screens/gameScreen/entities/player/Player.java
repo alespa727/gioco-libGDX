@@ -26,6 +26,7 @@ public class Player extends CombatEntity {
     public Player(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager, attackcooldown);
         range = new Rectangle(0, 0, 2.5f, 2.5f);
+        this.movement = new PlayerMovementManager();
         skillset().add(new Melee(this, "pugno", "un pugno molto forte!", 20));
     }
 
@@ -36,7 +37,7 @@ public class Player extends CombatEntity {
     @Override
     public final void create() {
         System.out.println("Player creato");
-        this.movement = new PlayerMovementManager();
+
     }
 
     public Vector2 predizione(Entity e){

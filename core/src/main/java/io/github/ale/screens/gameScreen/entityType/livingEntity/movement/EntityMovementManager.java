@@ -36,7 +36,7 @@ public class EntityMovementManager {
         return lastNode;
     }
 
-    public void update(LivingEntity entity) {
+    public void update(LivingEntity entity, float delta) {
         if (node == null) {
             return;
         }
@@ -50,12 +50,12 @@ public class EntityMovementManager {
         fermo = false;
         Node targetNode = node;
         Vector2 targetPosition = new Vector2(targetNode.getX(), targetNode.getY());
-        towards(entity, targetPosition);
+        towards(entity, targetPosition, delta);
     }
 
-    private void towards(LivingEntity entity, Vector2 target) {
+    private void towards(LivingEntity entity, Vector2 target, float delta) {
         Vector2 movementDirection = new Vector2(target).sub(entity.coordinateCentro()).nor();
-        float speed = entity.statistiche().speed() * Gdx.graphics.getDeltaTime();
+        float speed = entity.statistiche().speed() * delta;
         Vector2 movement = movementDirection.scl(speed);
         entity.setX(entity.getX() + movement.x);
         entity.setY(entity.getY() + movement.y);

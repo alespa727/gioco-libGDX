@@ -1,8 +1,12 @@
 package io.github.ale.screens.gameScreen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.ai.fsm.StateMachine;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,20 +34,24 @@ public class GameScreen implements Screen {
     private EntityManager entities;
     private CameraManager camera;
     private MapManager maps;
+
     private FitViewport viewport;
     private Gui rect;
 
     private float elapsedTime;
-
     private boolean loaded = false;
     public boolean isPaused = false;
 
+    // Aggiungi la variabile accumulator
     private static final float STEP = 1 / 60f; // Durata fissa per logica (60Hz)
     private float accumulator = 0f;
 
+    private DefaultStateMachine<GameScreen, GameStates> statemachine;
 
     public GameScreen(MyGame game) {
         this.game = game;
+        statemachine = new DefaultStateMachine<>(this);
+        statemachine.changeState(GameStates.PLAYING);
     }
 
     @Override
@@ -60,7 +68,6 @@ public class GameScreen implements Screen {
             viewport.apply(); // applica cosa si vede
             entities = new EntityManager(this.game);
             maps = new MapManager(camera.get(), viewport, entities, 1); // map manager
-
             loaded = true;
         } else {
             maps.getPlaylist().play(0);
@@ -71,46 +78,46 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.graphics.setForegroundFPS(240);
-
+        // Pulizia dello schermo
+        ScreenUtils.clear(0, 0, 0, 1);
+        statemachine.update();
         if (!isPaused) {
+            accumulator += delta;
 
-            update(delta);
-            draw(delta);
-
+            // Aggiorna il gioco finché necessario
+            while (accumulator >= STEP) {
+                update(STEP);
+                accumulator -= STEP;
+            }
         }
+
+        // Disegna il gioco
+        draw(delta);
+
+        // Pausa
         if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]) && !isPaused) {
             isPaused = true;
             game.setScreen(new PauseScreen(game, this));
         }
     }
 
+
+
     /**
-     * aggiorna tutto il necessario
+     * Aggiorna tutto il necessario
      */
     public void update(float delta) {
-
-            maps.checkInput(); // update mappa, in caso di input
-            entities.render(delta);
-            updateCamera(true);
-            maps.render(delta); // update visualizzazione mappa
+        elapsedTime += delta; // Incrementa il tempo totale qui
+        maps.checkInput(); // Gestisci input per la mappa
+        entities.render(delta); // Aggiorna entità
+        updateCamera(true); // Aggiorna telecamera
     }
-
-
 
     /**
      * disegna tutto il necessario
      */
-
     public void draw(float delta) {
-        elapsedTime += Gdx.graphics.getDeltaTime();
-        // pulisce lo schermo
-
-        ScreenUtils.clear(Color.BLACK);
-
-        maps.draw(delta);
-
-        //drawHitboxes();
+        maps.draw();
         drawOggetti(delta);
         drawGUI(delta);
     }
@@ -130,6 +137,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         game.batch.dispose();
         game.renderer.dispose();
+        stage.dispose();
         maps.getPlaylist().empty();
     }
 
@@ -137,11 +145,6 @@ public class GameScreen implements Screen {
     public void pause() {
         maps.getPlaylist().stop();
         isPaused = true;
-
-        // Synchronize the camera with the player before pausing
-        Vector2 playerPosition = entities.player().coordinateCentro();
-        camera.get().position.set(playerPosition.x, playerPosition.y, 0);
-        camera.get().update();
     }
 
     @Override
@@ -164,7 +167,6 @@ public class GameScreen implements Screen {
     /**
      * disegna immagini in generale
      */
-
     public void drawOggetti(float delta) {
         entities.draw(elapsedTime);
     }
@@ -182,14 +184,23 @@ public class GameScreen implements Screen {
         return maps;
     }
 
-    public void updateCamera(boolean boundaries){
-        camera.update(maps, entities, viewport, boundaries); // update telecamera
+    public void updateCamera(boolean boundaries) {
+        // Aggiorna la posizione della camera con le entità o altri elementi
+        camera.update(maps, entities, viewport, boundaries);
+
+        // Applica il viewport (sincronizzazione con la scena)
         viewport.apply();
+
+        // Imposta la matrice di proiezione per il batch (sprite) e renderer (tilemap)
         game.batch.setProjectionMatrix(camera.get().combined);
         game.renderer.setProjectionMatrix(camera.get().combined);
+
     }
+
 
     public CameraManager camera(){
         return camera;
     }
+
+    public DefaultStateMachine<GameScreen, GameStates> stateMachine(){return statemachine;}
 }
