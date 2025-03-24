@@ -12,13 +12,13 @@ import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
+import io.github.ale.screens.gameScreen.entities.enemy.umani.Finn;
+import io.github.ale.screens.gameScreen.entities.player.Player;
+import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
-import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
-import io.github.ale.screens.gameScreen.entities.enemy.umani.Finn;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
-import io.github.ale.screens.gameScreen.entities.player.Player;
 
 public final class EntityManager {
     private final MyGame game;
@@ -157,6 +157,23 @@ public final class EntityManager {
                     e.draw(game.batch, elapsedTime);
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.direzione());
+                }
+            }
+        }
+        game.batch.end();
+    }
+
+    public void drawEntity(int id, float elapsedTime){
+        game.batch.begin();
+        sort();
+        for (Entity e : entity) {
+            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y) && e.id()==id) {
+                try{
+                    e.draw(game.batch, elapsedTime);
+                    break;
+                } catch (Exception ex) {
+                    System.out.println("ERRORE" + e.direzione());
+                    break;
                 }
             }
         }

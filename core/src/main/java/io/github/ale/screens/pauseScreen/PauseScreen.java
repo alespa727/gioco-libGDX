@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.utils.ScreenUtils;
+
 import io.github.ale.MyGame;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.gameScreen.GameScreen;
-import io.github.ale.screens.settings.Settings;
 
 public class PauseScreen implements Screen{
     MyGame game;
@@ -37,11 +36,13 @@ public class PauseScreen implements Screen{
     public void render(float delta) {
         input();
         drawBackground(delta);
+        gameScreen.updateCamera();
     }
 
     public void drawBackground(float delta){
         if (resumeRequest) {
             resume.update(delta);
+
             gameScreen.update();
             gameScreen.draw();
 
@@ -63,11 +64,11 @@ public class PauseScreen implements Screen{
             return;
         }
 
-        gameScreen.entities().draw(delta);
+        gameScreen.entities().drawEntity(0, delta);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        float alpha = Interpolation.bounceOut.apply(0.1f, 0.5f, 0.5f); // Static alpha for non-resumeRequest state
+        float alpha = Interpolation.bounceOut.apply(0.0f, 0.5f, 0.2f); // Static alpha for non-resumeRequest state
         game.renderer.begin(ShapeRenderer.ShapeType.Filled);
         game.renderer.setColor(new Color(0, 0, 0, alpha));
         game.renderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
