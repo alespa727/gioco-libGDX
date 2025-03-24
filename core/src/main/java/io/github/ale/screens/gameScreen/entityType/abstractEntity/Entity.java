@@ -34,13 +34,10 @@ public abstract class Entity{
     public EntityManager manager;
 
     private float atkCooldown = 0;
-    public float delta;
-
 
     // Constructor
     public Entity(EntityConfig config, EntityManager manager) {
         this.config = config;
-        delta = Gdx.graphics.getDeltaTime();
         this.manager = manager;
         inizializzaEntityGraphics();
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
@@ -55,8 +52,8 @@ public abstract class Entity{
     }
 
     // Abstract methods
-    public abstract void updateEntity();
-    public abstract void updateEntityType();
+    public abstract void updateEntity(float delta);
+    public abstract void updateEntityType(float delta);
     public abstract void create();
     public abstract void drawHitbox(ShapeRenderer renderer);
 
@@ -65,8 +62,6 @@ public abstract class Entity{
      * disegna il nemico
      */
     public void draw(SpriteBatch batch, float elapsedTime) {
-        elapsedTime += Gdx.graphics.getDeltaTime();
-
         graphics.setAnimation(this);
 
         batch.draw(graphics.getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
@@ -83,11 +78,10 @@ public abstract class Entity{
     }
 
     // Core methods
-    public void render() {
-        delta = Gdx.graphics.getDeltaTime();
+    public void render(float delta) {
         updateNode();
-        updateEntity();
-        updateEntityType();
+        updateEntity(delta);
+        updateEntityType(delta);
     }
 
     public void despawn() {

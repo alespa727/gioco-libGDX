@@ -79,12 +79,29 @@ public final class EntityManager {
 
         for (int index = 0; index < 2; index++) {
             e.y++;
-            createEnemy(Finn.class, e, 1f);
+            createEnemy(Finn.class, e, 4f);
         }
     }
 
     public Array<Entity> entities(){
         return entity;
+    }
+
+    /**
+     * renderizza tutte le entità
+     */
+    public void render(float delta) {
+        if (!player.stati().isAlive()) {
+            game.setScreen(new DefeatScreen(game));
+        }
+
+        collisions();
+
+        for (Entity e : entity) {
+            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
+                e.render(delta);
+            }
+        }
     }
 
     public void createEnemy(Class<? extends Enemy> e, EntityConfig config, float attackcooldown) {
@@ -111,22 +128,7 @@ public final class EntityManager {
         return null;
     }
 
-    /**
-     * renderizza tutte le entità
-     */
-    public void render() {
-        if (!player.stati().isAlive()) {
-            game.setScreen(new DefeatScreen(game));
-        }
 
-        collisions();
-
-        for (Entity e : entity) {
-            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
-                e.render();
-            }
-        }
-    }
 
     public void collisions(){
 

@@ -14,7 +14,7 @@ public final class Finn extends Enemy {
     }
 
     @Override
-    public void updateEntityType() {
+    public void updateEntityType(float delta) {
         statemachine.update();
     }
 

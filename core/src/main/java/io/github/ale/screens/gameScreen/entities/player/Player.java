@@ -71,20 +71,20 @@ public class Player extends CombatEntity {
     }
 
     @Override
-    public void updateEntityType() {
+    public void updateEntityType(float delta) {
         movement.update(this);
         setIsAttacking(Gdx.input.isKeyPressed(Settings.getPulsanti()[6]));
         checkIfDead();
     }
 
     @Override
-    public void cooldown(){
-        attackcooldown();
-        damagecooldown();
-        salvadirezionecooldown();
+    public void cooldown(float delta){
+        attackcooldown(delta);
+        damagecooldown(delta);
+        salvadirezionecooldown(delta);
     }
 
-    public void salvadirezionecooldown(){
+    public void salvadirezionecooldown(float delta){
         direzione.update(delta);
         if(direzione.isReady){
             direzione.reset();

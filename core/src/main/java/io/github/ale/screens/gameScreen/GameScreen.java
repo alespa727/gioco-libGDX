@@ -38,6 +38,10 @@ public class GameScreen implements Screen {
     private boolean loaded = false;
     public boolean isPaused = false;
 
+    private static final float STEP = 1 / 60f; // Durata fissa per logica (60Hz)
+    private float accumulator = 0f;
+
+
     public GameScreen(MyGame game) {
         this.game = game;
     }
@@ -67,9 +71,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.graphics.setForegroundFPS(240);
+
         if (!isPaused) {
-            update();
-            draw();
+
+            update(STEP);
+            draw(STEP);
+
         }
         if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]) && !isPaused) {
             isPaused = true;
@@ -80,32 +88,34 @@ public class GameScreen implements Screen {
     /**
      * aggiorna tutto il necessario
      */
-    public void update() {
-        // aggiorna ogni cosa nel gioco
-        maps.checkInput(); // update mappa, in caso di input
-        entities.render();
-        updateCamera(true);
-        maps.render(); // update visualizzazione mappa
+    public void update(float delta) {
+
+            maps.checkInput(); // update mappa, in caso di input
+            entities.render(delta);
+            updateCamera(true);
+            maps.render(delta); // update visualizzazione mappa
     }
+
+
 
     /**
      * disegna tutto il necessario
      */
 
-    public void draw() {
+    public void draw(float delta) {
         elapsedTime += Gdx.graphics.getDeltaTime();
         // pulisce lo schermo
 
         ScreenUtils.clear(Color.BLACK);
 
-        maps.draw();
+        maps.draw(delta);
 
         //drawHitboxes();
-        drawOggetti();
-        drawGUI();
+        drawOggetti(delta);
+        drawGUI(delta);
     }
 
-    public void drawGUI() {
+    public void drawGUI(float delta){
         rect.draw();
         stage.act();
         stage.draw();
@@ -145,7 +155,7 @@ public class GameScreen implements Screen {
     /**
      * disegna hitbox
      */
-    public void drawHitboxes() {
+    public void drawHitboxes(float delta) {
         Map.getGraph().drawConnections(game.renderer);
         Map.getGraph().drawNodes(game.renderer);
         entities.drawDebug();
@@ -155,7 +165,7 @@ public class GameScreen implements Screen {
      * disegna immagini in generale
      */
 
-    public void drawOggetti() {
+    public void drawOggetti(float delta) {
         entities.draw(elapsedTime);
     }
 

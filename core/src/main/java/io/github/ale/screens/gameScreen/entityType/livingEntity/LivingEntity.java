@@ -41,7 +41,7 @@ public abstract class LivingEntity extends Entity{
         return movement;
     }
 
-    public abstract void cooldown();
+    public abstract void cooldown(float delta);
     public abstract void hit(float angle, float damage);
 
     /**
@@ -54,7 +54,6 @@ public abstract class LivingEntity extends Entity{
         }
         renderer.rect(hitbox().x, hitbox().y, hitbox().width, hitbox().height);
         renderer.setColor(Color.BLACK);
-        renderer.setColor(Color.BLACK);
         renderer.circle(coordinateCentro().x, coordinateCentro().y, 0.3f, 10);
     }
 
@@ -63,8 +62,6 @@ public abstract class LivingEntity extends Entity{
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        elapsedTime += Gdx.graphics.getDeltaTime();
-
         graphics().setAnimation(this);
         if(statistiche().gotDamaged){
             batch.setColor(1, 0, 0, 0.6f);
@@ -72,14 +69,12 @@ public abstract class LivingEntity extends Entity{
 
         batch.draw(graphics().getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
 
-
         batch.setColor(Color.WHITE);
     }
 
     @Override
-    public void updateEntity() {
-        delta = Gdx.graphics.getDeltaTime();
-        cooldown();
+    public void updateEntity(float delta) {
+        cooldown(delta);
         limiti();
         adjustHitbox();
     }

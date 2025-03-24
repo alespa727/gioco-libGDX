@@ -65,15 +65,14 @@ public class Map {
      * aggiorna la vista per disegnare la mappa
      */
 
-    public void render(){
+    public void render(float delta){
         mapRenderer.setView(camera);
-        mapRenderer.render();
     }
 
     /**
      * disegna la mappa in generale
      */
-    public void draw(){
+    public void draw(float delta){
         mapRenderer.setView(camera);
         mapRenderer.render();
     }

@@ -10,7 +10,7 @@ import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.maps.Map;
 
-public abstract class CombatEntity extends LivingEntity{
+public abstract class CombatEntity extends LivingEntity {
 
     private float dx, dy, x = 0, y = 0, angolo;
     private final Cooldown knockback = new Cooldown(1f);
@@ -18,7 +18,6 @@ public abstract class CombatEntity extends LivingEntity{
     private final Cooldown attack;
     protected Rectangle range;
     private boolean isAttacking = false;
-
 
     public CombatEntity(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager);
@@ -29,25 +28,31 @@ public abstract class CombatEntity extends LivingEntity{
     }
 
     @Override
-    public void updateEntity() {
-        delta = Gdx.graphics.getDeltaTime();
+    public void updateEntity(float delta) {
+        super.updateEntity(delta);
 
-        if(direzione().x > 0)range.x = coordinateCentro().x+ (float) Math.ceil(direzione().x)-range.width/2;
-        else range.x = coordinateCentro().x+ (float) Math.floor(direzione().x)-range.width/2;
-        if(direzione().y > 0) range.y = coordinateCentro().y+ (float) Math.ceil(direzione().y)-range.height/2;
-        else range.y = coordinateCentro().y+ (float) Math.floor(direzione().y)-range.height/2;
+        // Adjust the range based on direction
+        if (direzione().x > 0) {
+            range.x = coordinateCentro().x + (float) Math.ceil(direzione().x) - range.width / 2;
+        } else {
+            range.x = coordinateCentro().x + (float) Math.floor(direzione().x) - range.width / 2;
+        }
 
-        cooldown();
-        limiti();
-        adjustHitbox();
-        knockback();
+        if (direzione().y > 0) {
+            range.y = coordinateCentro().y + (float) Math.ceil(direzione().y) - range.height / 2;
+        } else {
+            range.y = coordinateCentro().y + (float) Math.floor(direzione().y) - range.height / 2;
+        }
+
+        // Apply knockback
+        knockback(delta);
     }
 
     public abstract void attack();
 
-    public void attackcooldown(){
+    public void attackcooldown(float delta) {
         attack.update(delta);
-        if(attack.isReady){
+        if (attack.isReady) {
             if (isAttacking) {
                 System.err.println("ATTACCO!");
                 attack();
@@ -56,18 +61,18 @@ public abstract class CombatEntity extends LivingEntity{
         }
     }
 
-    public Rectangle range(){
+    public Rectangle range() {
         return range;
     }
 
-    public Cooldown getAttackCooldown(){
+    public Cooldown getAttackCooldown() {
         return attack;
     }
 
-    public void damagecooldown(){
-        if(statistiche().gotDamaged){
-            damage.update(Gdx.graphics.getDeltaTime());
-            if(damage.isReady){
+    public void damagecooldown(float delta) {
+        if (statistiche().gotDamaged) {
+            damage.update(delta);
+            if (damage.isReady) {
                 statistiche().gotDamaged = false;
                 damage.reset();
             }
@@ -77,25 +82,28 @@ public abstract class CombatEntity extends LivingEntity{
     @Override
     public void hit(float angolo, float damage) {
         statistiche().inflictDamage(damage, false);
-        dx = (float) Math.cos(Math.toRadians(angolo)) * 5f;
-        dy = (float) Math.sin(Math.toRadians(angolo)) * 5f;
+        dx = (float) Math.cos(Math.toRadians(angolo));
+        dy = (float) Math.sin(Math.toRadians(angolo));
         knockback.reset();
         this.angolo = angolo;
-        knockback();
     }
 
-    protected void knockback() {
-        delta = Gdx.graphics.getDeltaTime();
+    protected void knockback(float delta) {
+        float knockbackSpeed = 5f;
+
         if (!knockback.isReady) {
             knockback.update(delta);
             dx *= 0.975f;
             dy *= 0.975f;
+
+            // Check for collisions and apply knockback force
             if (!Map.checkCollisionX(this, 0.1f, angolo)) {
-                x = dx * delta;
+                x = dx * knockbackSpeed * delta;
                 setX(getX() + x);
             }
+
             if (!Map.checkCollisionY(this, 0.1f, angolo)) {
-                y = dy * delta;
+                y = dy * knockbackSpeed * delta;
                 setY(getY() + y);
             }
         } else {
@@ -109,9 +117,7 @@ public abstract class CombatEntity extends LivingEntity{
     }
 
     public void drawRange(ShapeRenderer renderer) {
-        renderer.setColor(0, 0, 0, 0.5f);
-        renderer.rect(range.x, range.y, range.width, range.height);
-        renderer.setColor(1, 1, 1, 1);
+        renderer.setColor(0, 0, 0, 0.5f);  // Set color for range rectangle
+        renderer.rect(range.x, range.y, range.width, range.height);  // Draw range
     }
-
 }
