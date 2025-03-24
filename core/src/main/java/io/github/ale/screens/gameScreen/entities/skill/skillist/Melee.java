@@ -13,8 +13,13 @@ public class Melee extends CombatSkill {
         this.damage=damage;
     }
 
+    public void draw() {
+
+    }
+
     @Override
     public void execute() {
+        draw();
         inRange = entity.manager.combatEntity(entity.range());
         System.out.println(inRange.size);
         for (int i = 0; i < inRange.size; i++) {
