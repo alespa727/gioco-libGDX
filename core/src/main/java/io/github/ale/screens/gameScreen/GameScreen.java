@@ -75,8 +75,8 @@ public class GameScreen implements Screen {
 
         if (!isPaused) {
 
-            update(STEP);
-            draw(STEP);
+            update(delta);
+            draw(delta);
 
         }
         if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]) && !isPaused) {
