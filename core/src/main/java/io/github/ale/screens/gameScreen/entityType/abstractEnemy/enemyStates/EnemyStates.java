@@ -17,10 +17,6 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-            playerDirection = entity.manager.player().coordinateCentro().sub(entity.coordinateCentro()).nor();
-            playerDirection.set(roundToOne(playerDirection.x), roundToOne(playerDirection.y));
-            entity.direzione().set(playerDirection);
-            System.out.println(entity.direzione());
             entity.movement().reset();
             if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
                 entity.direzione().scl(0.5f, 1f);

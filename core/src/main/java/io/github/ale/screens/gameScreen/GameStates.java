@@ -13,12 +13,11 @@ public enum GameStates implements State<GameScreen> {
     PLAYING {
         @Override
         public void enter(GameScreen screen) {
-
+            System.out.println("GameScreen.PLAYING");
         }
 
         @Override
         public void update(GameScreen screen) {
-            System.out.println("GameScreen.PLAYING");
             if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]))
                 screen.stateMachine().changeState(GameStates.PAUSED);
         }

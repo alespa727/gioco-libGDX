@@ -13,7 +13,7 @@ import io.github.ale.screens.gameScreen.maps.Map;
 public abstract class CombatEntity extends LivingEntity {
 
     private float dx, dy, x = 0, y = 0, angolo;
-    private final Cooldown knockback = new Cooldown(1f);
+    private final Cooldown knockback = new Cooldown(0.3f);
     private final Cooldown damage = new Cooldown(.273f);
     private final Cooldown attack;
     protected Rectangle range;
@@ -89,12 +89,12 @@ public abstract class CombatEntity extends LivingEntity {
     }
 
     protected void knockback(float delta) {
-        float knockbackSpeed = 5f;
+        float knockbackSpeed = 4f;
 
         if (!knockback.isReady) {
             knockback.update(delta);
-            dx *= 0.975f;
-            dy *= 0.975f;
+            dx *= 0.95f;
+            dy *= 0.95f;
 
             // Check for collisions and apply knockback force
             if (!Map.checkCollisionX(this, 0.1f, angolo)) {
