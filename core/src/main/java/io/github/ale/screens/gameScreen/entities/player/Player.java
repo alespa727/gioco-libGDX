@@ -1,7 +1,6 @@
 package io.github.ale.screens.gameScreen.entities.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -12,7 +11,7 @@ import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
 import io.github.ale.screens.gameScreen.entities.player.movement.PlayerMovementManager;
-import io.github.ale.screens.gameScreen.entities.skill.skillist.Punch;
+import io.github.ale.screens.gameScreen.entities.skill.skillist.Melee;
 import io.github.ale.screens.settings.Settings;
 
 public class Player extends CombatEntity {
@@ -27,7 +26,7 @@ public class Player extends CombatEntity {
     public Player(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager, attackcooldown);
         range = new Rectangle(0, 0, 2.5f, 2.5f);
-        skillset().add(new Punch(this, "pugno", "un pugno molto forte!", 20));
+        skillset().add(new Melee(this, "pugno", "un pugno molto forte!", 20));
     }
 
     /**
@@ -68,7 +67,7 @@ public class Player extends CombatEntity {
 
     @Override
     public void attack(){
-        getSkill(Punch.class).execute();
+        getSkill(Melee.class).execute();
     }
 
     @Override

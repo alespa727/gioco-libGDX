@@ -6,12 +6,10 @@ public class NodeConnection implements Connection<Node> {
     private final Node fromNode;
     private final Node toNode;
     private final float cost;
+    public boolean isOccupied = false;
 
     /**
      * conessione fra nodi
-     * @param fromNode
-     * @param toNode
-     * @param cost
      */
     public NodeConnection(Node fromNode, Node toNode, float cost) {
         this.fromNode = fromNode;
@@ -36,4 +34,5 @@ public class NodeConnection implements Connection<Node> {
     public Node getToNode() {
         return toNode;
     }
+
 }

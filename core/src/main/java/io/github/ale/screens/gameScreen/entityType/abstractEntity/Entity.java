@@ -15,11 +15,14 @@ import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristich
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.graphics.EntityGraphics;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.maps.Map;
+import io.github.ale.screens.gameScreen.pathfinding.Node;
+import io.github.ale.screens.gameScreen.pathfinding.NodeConnection;
 
 public abstract class Entity{
 
     // Fields
     private final EntityConfig config;
+    private Node node;
     private EntityInfo info;
     private Dimensioni size;
     private EntityState stati;
@@ -71,9 +74,18 @@ public abstract class Entity{
         batch.setColor(Color.WHITE);
     }
 
+    public void updateNode(){
+        node = Map.getGraph().getClosestNode(coordinateCentro().x, coordinateCentro().y);
+    }
+
+    public Node getNode(){
+        return node;
+    }
+
     // Core methods
     public void render() {
         delta = Gdx.graphics.getDeltaTime();
+        updateNode();
         updateEntity();
         updateEntityType();
     }

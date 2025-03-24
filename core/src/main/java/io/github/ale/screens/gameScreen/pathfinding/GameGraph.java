@@ -7,18 +7,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
+import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 
 public class GameGraph implements IndexedGraph<Node> {
 
     private final Array<Node> nodes = new Array<>(); // Lista di tutti i nodi
     private final int width, height; // Dimensioni della griglia
     private final boolean[][] walkable; // Celle attraversabili
+    private final EntityManager manager;
 
     // Costruttore
-    public GameGraph(int width, int height, boolean[][] collisions) {
+    public GameGraph(int width, int height, boolean[][] collisions, EntityManager manager) {
         this.width = width;
         this.height = height;
         this.walkable = new boolean[width][height];
+        this.manager = manager;
 
         //trasformo le posizioni con collisioni a quelle camminabili
         for (int x = 0; x < width; x++) {
@@ -39,17 +43,14 @@ public class GameGraph implements IndexedGraph<Node> {
     @Override
     public Array<Connection<Node>> getConnections(Node fromNode) {
         // Restituisce tutte le connessioni di un nodo
-        return fromNode.connessioni; // Assumi che "connessioni" sia un Array di Connection<Node> nel nodo
+        return fromNode.connessioni;
     }
 
     @Override
     public int getIndex(Node node) {
         // Restituisce un indice unico per ogni nodo
-        return node.getIndex(); // Deve essere basato sulle coordinate x, y
+        return node.getIndex();
     }
-
-
-
 
     @Override
     public int getNodeCount() {
@@ -69,7 +70,7 @@ public class GameGraph implements IndexedGraph<Node> {
                 if (walkable[x][y]) { // Solo celle attraversabili
                     Node node = new Node(x, y);
                     grid[x][y] = node;
-                    nodes.add(node); // Aggiungi alla lista dei nodi
+                    nodes.add(node);
                 }
             }
         }

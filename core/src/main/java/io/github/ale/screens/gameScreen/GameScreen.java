@@ -31,9 +31,6 @@ public class GameScreen implements Screen {
     private CameraManager camera;
     private MapManager maps;
     private FitViewport viewport;
-
-    @SuppressWarnings("unused")
-    private ShapeRenderer gui;
     private Gui rect;
 
     private float elapsedTime;
@@ -50,7 +47,6 @@ public class GameScreen implements Screen {
         if (!loaded) {
             System.out.println("GameScreen loaded");
             rect = new Gui(this);
-            gui = new ShapeRenderer();
             stage = new Stage(new ScreenViewport());
             root = new Table();
             root.setFillParent(true);

@@ -29,7 +29,6 @@ public final class EntityManager {
 
     private int nextEntityId =0;
 
-
     public EntityManager(MyGame game) {
         entity = new Array<>();
         this.game = game;
@@ -80,13 +79,15 @@ public final class EntityManager {
 
         for (int index = 0; index < 2; index++) {
             e.y++;
-            addNemico(Finn.class, e, 1f);
+            createEnemy(Finn.class, e, 1f);
         }
-
-
     }
 
-    public void addNemico(Class<? extends Enemy> e, EntityConfig config, float attackcooldown) {
+    public Array<Entity> entities(){
+        return entity;
+    }
+
+    public void createEnemy(Class<? extends Enemy> e, EntityConfig config, float attackcooldown) {
         try {
             //System.err.println("Creata entità! id." + entityidcount);
             Constructor<? extends Entity> c = e.getConstructor(EntityConfig.class, EntityManager.class, Float.class);//Cerca il costruttore
@@ -109,7 +110,6 @@ public final class EntityManager {
         err.println("Entità non trovata!");
         return null;
     }
-
 
     /**
      * renderizza tutte le entità

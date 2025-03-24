@@ -20,7 +20,7 @@ public class MapManager {
     private boolean ambienteAperto;
     private final MusicPlayer playlist;
     private final int totalMaps;
-    
+
 
     boolean flag;
 
@@ -33,7 +33,7 @@ public class MapManager {
         this.ambienteAperto=true;
         this.changeMap();
         playlist = new MusicPlayer("music/mymusic.mp3");
-        this.currentMap = new Map(camera, this.nome);
+        this.currentMap = new Map(camera, this.nome, manager);
         totalMaps = 2;
     }
 
@@ -63,7 +63,7 @@ public class MapManager {
         }
         currentMapNum++;
         currentMap = null;
-        currentMap = new Map(camera, nome);
+        currentMap = new Map(camera, nome, manager);
         viewport.apply();
     }
 

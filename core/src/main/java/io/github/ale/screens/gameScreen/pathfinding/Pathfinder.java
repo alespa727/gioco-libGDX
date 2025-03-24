@@ -34,6 +34,8 @@ public class Pathfinder implements Disposable{
         cooldown.isReady = true;
     }
 
+    public DefaultGraphPath<Node> getPath() {return path;}
+
     public void countdown() {
         cooldown.update(Gdx.graphics.getDeltaTime());
 

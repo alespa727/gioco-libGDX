@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.camera.CameraManager;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.pathfinding.GameGraph;
 
@@ -35,9 +36,11 @@ public class Map {
     private static int height;
 
     public static boolean isLoaded=false;
+    private EntityManager manager;
 
-    public Map(OrthographicCamera camera, String name){
+    public Map(OrthographicCamera camera, String name, EntityManager manager){
         temp = new Rectangle();
+        this.manager=manager;
         this.camera=camera;
         loadMap(name);
         for (int i = 0; i < width; i++) {
@@ -49,7 +52,7 @@ public class Map {
         loadCollisionMap();
         isLoaded = true;
 
-        graph = new GameGraph(width, height, collisions);
+        graph = new GameGraph(width, height, collisions, manager);
         isGraphLoaded=true;
 
     }

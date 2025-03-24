@@ -4,7 +4,7 @@ import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates.EnemyStates;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
-import io.github.ale.screens.gameScreen.entities.skill.skillist.Punch;
+import io.github.ale.screens.gameScreen.entities.skill.skillist.Melee;
 
 public final class Finn extends Enemy {
 
@@ -22,12 +22,12 @@ public final class Finn extends Enemy {
     public void create() {
         System.out.println("Finn n."+id()+" creato");
         statemachine.changeState(EnemyStates.PURSUE);
-        skillset().add(new Punch(this, "pugno", "un pugno molto forte!", 20));
+        skillset().add(new Melee(this, "pugno", "un pugno molto forte!", 20));
     }
 
     @Override
     public void attack() {
-        skillset().execute(Punch.class);
+        skillset().execute(Melee.class);
     }
 
 }

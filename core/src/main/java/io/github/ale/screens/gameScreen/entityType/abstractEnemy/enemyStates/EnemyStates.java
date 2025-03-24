@@ -18,8 +18,9 @@ public enum EnemyStates implements State<Enemy> {
         @Override
         public void update(Enemy entity) {
             playerDirection = entity.manager.player().coordinateCentro().sub(entity.coordinateCentro()).nor();
-            playerDirection.set(roundToOneDecimal(playerDirection.x), roundToOneDecimal(playerDirection.y));
+            playerDirection.set(roundToOne(playerDirection.x), roundToOne(playerDirection.y));
             entity.direzione().set(playerDirection);
+            System.out.println(entity.direzione());
             entity.movement().reset();
             if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
                 entity.direzione().scl(0.5f, 1f);
@@ -43,8 +44,8 @@ public enum EnemyStates implements State<Enemy> {
         }
 
 
-        private float roundToOneDecimal(float value) {
-            return Math.round(value) / 1f;
+        private float roundToOne(float value) {
+            return value >= 0 ? 1 : -1;
         }
 
     },
@@ -65,6 +66,9 @@ public enum EnemyStates implements State<Enemy> {
 
             entity.setIsAttacking(entity.manager.isAnyDifferentEntityInRect(entity, entity.range().x, entity.range().y, entity.range().width, entity.range().height));
             entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y);
+            if(entity.pathfinder().getPath().getCount()>10){
+                entity.statemachine.changeState(PATROLLING);
+            }
             entity.checkIfDead();
 
             //AGGIORNAMENTO MOVEMENT
@@ -86,12 +90,17 @@ public enum EnemyStates implements State<Enemy> {
     PATROLLING{
         @Override
         public void enter(Enemy entity) {
-
+            System.out.println(entity.nome()+ " id."+entity.id()+" in Patrolling");
         }
 
         @Override
         public void update(Enemy entity) {
-
+            if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
+                entity.direzione().scl(0.5f, 1f);
+            }
+            if(entity.direzione().y == 1f || entity.direzione().y == -1f){
+                entity.direzione().scl(1f, 0.5f);
+            }
         }
 
         @Override

@@ -5,10 +5,10 @@ import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.gameScreen.entities.skill.CombatSkill;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
 
-public class Punch extends CombatSkill {
+public class Melee extends CombatSkill {
     private final float damage;
     Array<CombatEntity> inRange;
-    public Punch(CombatEntity entity, String name, String description, float damage) {
+    public Melee(CombatEntity entity, String name, String description, float damage) {
         super(entity, name, description);
         this.damage=damage;
     }
