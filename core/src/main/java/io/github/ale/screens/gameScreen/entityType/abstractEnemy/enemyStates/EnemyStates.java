@@ -3,28 +3,29 @@ package io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 
 public enum EnemyStates implements State<Enemy> {
     ATTACKING {
-        Vector2 playerDirection;
-
         @Override
         public void enter(Enemy entity) {
-            System.out.println(entity.nome()+ " id."+entity.id()+" is Attacking");
+            //System.out.println(entity.nome()+ " id."+entity.id()+" is Attacking");
         }
 
         @Override
         public void update(Enemy entity) {
+            entity.setIsAttacking(true);
             entity.movement().reset();
-            if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
+            if (entity.direzione().x !=0f && (entity.direzione().x == 1f || entity.direzione().x == -1f)){
                 entity.direzione().scl(0.5f, 1f);
             }
-            if(entity.direzione().y == 1f || entity.direzione().y == -1f){
+            if(entity.direzione().y !=0f && (entity.direzione().y == 1f || entity.direzione().y == -1f)){
                 entity.direzione().scl(1f, 0.5f);
             }
-            if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) > 1.5f) {
+            if (!entity.manager.player().hitbox().overlaps(entity.range())) {
                 entity.statemachine().changeState(EnemyStates.PURSUE);
             }
         }
@@ -56,11 +57,10 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-            if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) < 1.5f) {
+            if (entity.manager.player().hitbox().overlaps(entity.range())) {
                 entity.statemachine().changeState(EnemyStates.ATTACKING);
             }
 
-            entity.setIsAttacking(entity.manager.isAnyDifferentEntityInRect(entity, entity.range().x, entity.range().y, entity.range().width, entity.range().height));
             entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
             if(entity.pathfinder().getPath().getCount()>10){
                 entity.statemachine.changeState(PATROLLING);
@@ -97,6 +97,14 @@ public enum EnemyStates implements State<Enemy> {
             if(entity.direzione().y == 1f || entity.direzione().y == -1f){
                 entity.direzione().scl(1f, 0.5f);
             }
+            float randomx=entity.coordinateCentro().x;
+            float randomy=entity.coordinateCentro().y;
+            if(entity.isPatrolling()){
+
+            }
+            entity.pathfinder().renderPath(randomx, randomy, entity.delta);
+            entity.movement().update(entity, entity.delta);
+
         }
 
         @Override

@@ -80,8 +80,8 @@ public class Player extends CombatEntity {
 
     @Override
     public void cooldown(float delta){
-        attackcooldown(delta);
-        damagecooldown(delta);
+        attackCooldown(delta);
+        damageCooldown(delta);
         salvadirezionecooldown(delta);
     }
 

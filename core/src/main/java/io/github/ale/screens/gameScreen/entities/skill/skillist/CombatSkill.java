@@ -1,4 +1,4 @@
-package io.github.ale.screens.gameScreen.entities.skill;
+package io.github.ale.screens.gameScreen.entities.skill.skillist;
 
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
 

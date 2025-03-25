@@ -1,6 +1,5 @@
 package io.github.ale.screens.gameScreen.entityType.combatEntity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import com.badlogic.gdx.math.Rectangle;
@@ -13,9 +12,11 @@ import io.github.ale.screens.gameScreen.maps.Map;
 public abstract class CombatEntity extends LivingEntity {
 
     private float dx, dy, x = 0, y = 0, angolo;
-    private final Cooldown knockback = new Cooldown(0.3f);
+    private final Cooldown knockback = new Cooldown(0.5f);
     private final Cooldown damage = new Cooldown(.273f);
     private final Cooldown attack;
+    private final Cooldown patrolling = new Cooldown(5f);
+    private boolean isPatrolling = false;
     protected Rectangle range;
     private boolean isAttacking = false;
 
@@ -45,20 +46,33 @@ public abstract class CombatEntity extends LivingEntity {
         }
 
         // Apply knockback
-        knockback(delta);
+        knockbackUpdate(delta);
     }
 
     public abstract void attack();
 
-    public void attackcooldown(float delta) {
+    public void attackCooldown(float delta) {
         attack.update(delta);
         if (attack.isReady) {
             if (isAttacking) {
-                System.err.println("ATTACCO!");
                 attack();
-                attack.reset();
             }
         }
+    }
+
+    public void patrollingCooldown(float delta) {
+        patrolling.update(delta);
+        if (patrolling.isReady) {
+            patrolling.reset();
+            isPatrolling=true;
+        }else{
+            isPatrolling=false;
+        }
+
+    }
+
+    public boolean isPatrolling() {
+        return isPatrolling;
     }
 
     public Rectangle range() {
@@ -69,7 +83,7 @@ public abstract class CombatEntity extends LivingEntity {
         return attack;
     }
 
-    public void damagecooldown(float delta) {
+    public void damageCooldown(float delta) {
         if (statistiche().gotDamaged) {
             damage.update(delta);
             if (damage.isReady) {
@@ -88,7 +102,7 @@ public abstract class CombatEntity extends LivingEntity {
         this.angolo = angolo;
     }
 
-    protected void knockback(float delta) {
+    protected void knockbackUpdate(float delta) {
         float knockbackSpeed = 4f;
 
         if (!knockback.isReady) {

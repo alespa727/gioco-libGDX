@@ -46,6 +46,11 @@ public class Pathfinder implements Disposable{
         executor.submit(() -> calculatePathTo(x, y));
     }
 
+    public void renderPath(Node node, float delta) {
+        countdown(delta);
+        executor.submit(() -> calculatePathTo(node.getX(), node.getY()));
+    }
+
     public void calculatePathTo(float x, float y){
         Gdx.app.postRunnable(() -> {
             //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
@@ -59,7 +64,7 @@ public class Pathfinder implements Disposable{
 
             //CALCOLO DEL PERCORSO
             if (entity.movement().searchingfornext) {
-                System.out.println("Calcolo del percorso!");
+                //System.out.println("Calcolo del percorso!");
                 search(x, y);
                 if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
             }

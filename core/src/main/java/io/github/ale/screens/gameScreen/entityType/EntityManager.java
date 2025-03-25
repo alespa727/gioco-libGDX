@@ -79,7 +79,7 @@ public final class EntityManager {
 
         for (int index = 0; index < 2; index++) {
             e.y++;
-            createEnemy(Finn.class, e, 4f);
+            createEnemy(Finn.class, e, 1.9f);
         }
     }
 
@@ -94,9 +94,6 @@ public final class EntityManager {
         if (!player.stati().isAlive()) {
             game.setScreen(new DefeatScreen(game));
         }
-
-        collisions();
-
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
                 e.render(delta);
@@ -245,7 +242,8 @@ public final class EntityManager {
     public Array<CombatEntity> combatEntity(Rectangle rect){
         Array<CombatEntity> array = new Array<>();
         for (int i = 0; i < entity.size; i++) {
-            if (entity.get(i) instanceof CombatEntity && CameraManager.isWithinFrustumBounds(entity.get(i).coordinateCentro().x, entity.get(i).coordinateCentro().y) && entity.get(i).coordinateCentro().x > rect.x && entity.get(i).coordinateCentro().y > rect.y && entity.get(i).coordinateCentro().x < rect.x + rect.width && entity.get(i).coordinateCentro().y < rect.y + rect.height) {
+            if (entity.get(i) instanceof CombatEntity && CameraManager.isWithinFrustumBounds(entity.get(i).coordinateCentro().x, entity.get(i).coordinateCentro().y)
+                && entity.get(i).hitbox().overlaps(rect)) {
                 array.add((CombatEntity) entity.get(i));
             }
         }

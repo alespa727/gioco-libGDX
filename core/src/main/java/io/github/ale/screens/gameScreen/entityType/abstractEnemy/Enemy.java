@@ -23,8 +23,9 @@ public abstract class Enemy extends CombatEntity {
 
     @Override
     public void cooldown(float delta) {
-        damagecooldown(delta);
-        attackcooldown(delta);
+        damageCooldown(delta);
+        attackCooldown(delta);
+        patrollingCooldown(delta);
     }
 
     public void despawn() {

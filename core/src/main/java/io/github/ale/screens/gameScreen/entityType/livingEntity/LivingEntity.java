@@ -1,6 +1,5 @@
 package io.github.ale.screens.gameScreen.entityType.livingEntity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
-import io.github.ale.screens.gameScreen.entities.skill.Skill;
+import io.github.ale.screens.gameScreen.entities.skill.skillist.Skill;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.movement.EntityMovementManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.stats.Stats;
 import io.github.ale.screens.gameScreen.entities.skill.SkillSet;
@@ -29,20 +28,56 @@ public abstract class LivingEntity extends Entity{
         this.pathfinder = new Pathfinder(this);
     }
 
+
+    public abstract void cooldown(float delta);
+    public abstract void hit(float angle, float damage);
+
+
+    public void respawn() {
+        stati().setIsAlive(config().isAlive);
+        this.statistiche().gotDamaged = false;
+    }
+
     public void despawn(){
         super.despawn();
         pathfinder.dispose();
     }
 
-    public Pathfinder pathfinder(){return pathfinder;}
-
-
+    public Pathfinder pathfinder(){
+        return pathfinder;
+    }
     public EntityMovementManager movement() {
         return movement;
     }
+    public Stats statistiche() {
+        return this.statistiche;
+    }
+    public final SkillSet skillset() {
+        return skillset;
+    }
+    public Skill getSkill(Class<? extends Skill> skillclass){
+        return skillset.getSkill(skillclass);
+    }
 
-    public abstract void cooldown(float delta);
-    public abstract void hit(float angle, float damage);
+    @Override
+    public void updateEntity(float delta) {
+        cooldown(delta);
+        limiti();
+        adjustHitbox();
+    }
+
+    /**
+     * disegna l'entità
+     */
+    @Override
+    public void draw(SpriteBatch batch, float elapsedTime) {
+        graphics().setAnimation(this);
+        if(statistiche().gotDamaged){
+            batch.setColor(1, 0, 0, 0.6f);
+        }
+        batch.draw(graphics().getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
+        batch.setColor(Color.WHITE);
+    }
 
     /**
      * disegna l'hitbox del player
@@ -57,46 +92,8 @@ public abstract class LivingEntity extends Entity{
         renderer.circle(coordinateCentro().x, coordinateCentro().y, 0.3f, 10);
     }
 
-    /**
-     * disegna l'entità
-     */
-    @Override
-    public void draw(SpriteBatch batch, float elapsedTime) {
-        graphics().setAnimation(this);
-        if(statistiche().gotDamaged){
-            batch.setColor(1, 0, 0, 0.6f);
-        }
-
-        batch.draw(graphics().getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
-
-        batch.setColor(Color.WHITE);
-    }
-
-    @Override
-    public void updateEntity(float delta) {
-        cooldown(delta);
-        limiti();
-        adjustHitbox();
-    }
-
-
-    public Stats statistiche() {
-        return this.statistiche;
-    }
-
-
     public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
         this.statistiche = new Stats(hp, speed, attackdmg);
-    }
-
-
-    public final SkillSet skillset() {
-        return skillset;
-    }
-
-
-    public Skill getSkill(Class<? extends Skill> skillclass){
-        return skillset.getSkill(skillclass);
     }
 
     public void kill() {
@@ -111,10 +108,6 @@ public abstract class LivingEntity extends Entity{
         }
     }
 
-    public void respawn() {
-        stati().setIsAlive(config().isAlive);
-        this.statistiche().gotDamaged = false;
-    }
 
     public void drawPath(ShapeRenderer shapeRenderer) {
         pathfinder.drawPath(shapeRenderer);
