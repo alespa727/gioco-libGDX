@@ -16,36 +16,41 @@ import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeatScreen.DefeatScreen;
 import io.github.ale.screens.gameScreen.GameScreen;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
-import io.github.ale.screens.gameScreen.maps.Map;
 
 public class PauseScreen implements Screen{
     MyGame game;
     GameScreen gameScreen;
 
     boolean resumeRequest;
+    boolean pauseRequest;
+    Cooldown pause;
     Cooldown resume;
 
-    int frames;
+    float alpha;
 
-    Vector2 lastCenter;
+    Vector3[] corners;
 
     public PauseScreen(MyGame game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
-        lastCenter = CameraManager.getCenter();
     }
 
     @Override
     public void show() {
-        frames=Gdx.graphics.getFramesPerSecond();
         Gdx.graphics.setForegroundFPS(60);
         System.out.println("PauseScreen loaded");
         resumeRequest = false;
-        resume = new Cooldown(0.5f);
+        pauseRequest = true;
+        resume = new Cooldown(0.3f);
+        pause = new Cooldown(2f);
+        pause.reset();
+        resume.reset();
+        gameScreen.entities().player().statistiche().gotDamaged=false;
     }
 
     @Override
     public void render(float delta) {
+        corners=CameraManager.getFrustumCorners();
         input();
         drawBackground(delta);
     }
@@ -56,17 +61,21 @@ public class PauseScreen implements Screen{
             return;
         }
 
-        if (resumeRequest) {
-            drawGame(delta);
+        if (pauseRequest) {
+            transitionIn(delta);
             return;
         }
 
-        drawPausedGame(delta);
+        if (resumeRequest) {
+            transitionOut(delta);
+            return;
+        }
+
+        drawPauseMenu(delta);
     }
 
-    public void drawGame(float delta){
+    public void transitionOut(float delta){
         resume.update(delta);
-
         ScreenUtils.clear(0, 0, 0, 1);
         gameScreen.update(delta, true);
         gameScreen.draw(delta);
@@ -86,34 +95,75 @@ public class PauseScreen implements Screen{
         if (resume.isReady) {
             resumeRequest = false;
             gameScreen.resume();
-            Gdx.graphics.setForegroundFPS(frames);
+            Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
             game.setScreen(gameScreen);
         }
     }
 
-    public void drawPausedGame(float delta){
+    float x=0;
+    float y=0;
 
-        gameScreen.updateCamera(false);
+    public void drawPauseMenu(float delta) {
+        ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero pieno
+
+
+        // Disegna l'entità sopra il rettangolo
         gameScreen.entities().drawEntity(0, delta);
-        gameScreen.entities().player().statistiche().gotDamaged=false;
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        float alpha = Interpolation.bounceOut.apply(0.0f, 0.5f, 0.2f); // Static alpha for non-resumeRequest state
+
+
+        // Disegna il rettangolo trasparente (background semi-opaco)
         game.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.renderer.setColor(new Color(0, 0, 0, alpha));
-        game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.renderer.setColor(new Color(0, 0, 0, alpha)); // Trasparenza 50%
+        game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y,
+            Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.renderer.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
+        game.renderer.setColor(Color.RED); // Trasparenza 50%
+        x+=1f*delta;
+        y+=1f*delta;
+        game.renderer.rect(corners[0].x+x, corners[0].y+y, 1f, 1f);
+        game.renderer.end();
+
+    }
+
+
+
+    public void transitionIn(float delta){
+        pause.update(delta);
+        gameScreen.updateCamera(false);
+        gameScreen.entities().drawEntity(0, delta);
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        float alpha = Interpolation.fade.apply(0.0f, 0.4f, 0.8f);
+        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
+        game.renderer.setColor(new Color(0, 0, 0, alpha));
+
+        game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        game.renderer.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+        if (pause.isReady) {
+            pauseRequest = false;
+            this.alpha = alpha;
+            System.out.println("Pause request is ready");
+        }
+
     }
 
     public void input(){
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !resumeRequest) {
-            resume.reset();
             resumeRequest = true;
-
         }
     }
 
