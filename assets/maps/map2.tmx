@@ -4,7 +4,7 @@
   <properties>
    <property name="solido" type="bool" value="true"/>
   </properties>
-  <image source="./stonebrick.png" width="32" height="32"/>
+  <image source="stonebrick.png" width="32" height="32"/>
   <tile id="0">
    <properties>
     <property name="solido" type="bool" value="true"/>
@@ -12,11 +12,11 @@
   </tile>
  </tileset>
  <tileset firstgid="2" name="bricks" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="./bricks.png" width="32" height="32"/>
+  <image source="bricks.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="3" source="./grass.tsx"/>
+ <tileset firstgid="3" source="grass.tsx"/>
  <tileset firstgid="13" name="TilesetFloor" tilewidth="32" tileheight="32" tilecount="165" columns="11">
-  <image source="./TilesetFloor.png" width="352" height="480"/>
+  <image source="TilesetFloor.png" width="352" height="480"/>
  </tileset>
  <layer id="1" name="map2" width="15" height="30">
   <data encoding="csv">

@@ -28,6 +28,35 @@ public abstract class CombatEntity extends LivingEntity {
         attack.reset(0f);
     }
 
+
+    public abstract void attack();
+
+    public Rectangle range() {
+        return range;
+    }
+
+    public boolean isPatrolling() {
+        return isPatrolling;
+    }
+
+    public Cooldown getAttackCooldown() {
+        return attack;
+    }
+
+    public void setIsAttacking(boolean isAttacking) {
+        this.isAttacking = isAttacking;
+    }
+
+
+    @Override
+    public void hit(float angolo, float damage) {
+        statistiche().inflictDamage(damage, false);
+        dx = (float) Math.cos(Math.toRadians(angolo));
+        dy = (float) Math.sin(Math.toRadians(angolo));
+        knockback.reset();
+        this.angolo = angolo;
+    }
+
     @Override
     public void updateEntity(float delta) {
         super.updateEntity(delta);
@@ -49,8 +78,6 @@ public abstract class CombatEntity extends LivingEntity {
         knockbackUpdate(delta);
     }
 
-    public abstract void attack();
-
     public void attackCooldown(float delta) {
         attack.update(delta);
         if (attack.isReady) {
@@ -71,18 +98,6 @@ public abstract class CombatEntity extends LivingEntity {
 
     }
 
-    public boolean isPatrolling() {
-        return isPatrolling;
-    }
-
-    public Rectangle range() {
-        return range;
-    }
-
-    public Cooldown getAttackCooldown() {
-        return attack;
-    }
-
     public void damageCooldown(float delta) {
         if (statistiche().gotDamaged) {
             damage.update(delta);
@@ -91,15 +106,6 @@ public abstract class CombatEntity extends LivingEntity {
                 damage.reset();
             }
         }
-    }
-
-    @Override
-    public void hit(float angolo, float damage) {
-        statistiche().inflictDamage(damage, false);
-        dx = (float) Math.cos(Math.toRadians(angolo));
-        dy = (float) Math.sin(Math.toRadians(angolo));
-        knockback.reset();
-        this.angolo = angolo;
     }
 
     protected void knockbackUpdate(float delta) {
@@ -124,10 +130,6 @@ public abstract class CombatEntity extends LivingEntity {
             x = 0;
             y = 0;
         }
-    }
-
-    public void setIsAttacking(boolean isAttacking) {
-        this.isAttacking = isAttacking;
     }
 
     public void drawRange(ShapeRenderer renderer) {

@@ -18,11 +18,6 @@ public abstract class NonCombatEntity extends LivingEntity {
     public DefaultStateMachine<NonCombatEntity, NpcStates> statemachine(){ return stateMachine;}
 
     @Override
-    public void updateEntityType(float delta) {
-
-    }
-
-    @Override
     public void create() {
 
     }

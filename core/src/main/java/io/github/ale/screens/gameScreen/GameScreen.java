@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
     public void draw(float delta) {
         mapManager.draw();
         drawOggetti(delta);
-        //drawHitboxes(delta);
+        drawHitboxes(delta);
         drawGUI(delta);
     }
 
@@ -164,8 +164,8 @@ public class GameScreen implements Screen {
      * disegna hitbox
      */
     public void drawHitboxes(float delta) {
-        Map.getGraph().drawConnections(game.renderer);
-        Map.getGraph().drawNodes(game.renderer);
+        //Map.getGraph().drawConnections(game.renderer);
+        //Map.getGraph().drawNodes(game.renderer);
         entities.drawDebug();
     }
 

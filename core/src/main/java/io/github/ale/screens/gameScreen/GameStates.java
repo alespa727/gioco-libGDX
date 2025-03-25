@@ -35,7 +35,7 @@ public enum GameStates implements State<GameScreen> {
     PAUSED {
         @Override
         public void enter(GameScreen screen) {
-            System.out.println("GameScreen.PLAYING");
+            System.out.println("GameScreen.PAUSED");
         }
 
         @Override

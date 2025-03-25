@@ -21,23 +21,12 @@ public abstract class Enemy extends CombatEntity {
         statemachine = new DefaultStateMachine<>(this);
     }
 
-    @Override
-    public void cooldown(float delta) {
-        damageCooldown(delta);
-        attackCooldown(delta);
-        patrollingCooldown(delta);
-    }
-
-    public void despawn() {
-        super.despawn();
-    }
-
     public DefaultStateMachine<Enemy, EnemyStates> statemachine(){ return statemachine;}
 
+
     @Override
-    public void drawRange(ShapeRenderer renderer) {
-        renderer.rect(range.x, range.y, range.width, range.height);
-        renderer.setColor(Color.BLACK);
+    public void updateEntityType(float delta) {
+        statemachine.update();
     }
 
     public void evade(float x, float y) {
@@ -47,5 +36,12 @@ public abstract class Enemy extends CombatEntity {
         Vector2 oppositeDirection = new Vector2(-directionX, -directionY);
 
         pathfinder().renderPath(coordinateCentro().x + oppositeDirection.x, coordinateCentro().y + oppositeDirection.y, delta);
+    }
+
+    @Override
+    public void cooldown(float delta) {
+        damageCooldown(delta);
+        attackCooldown(delta);
+        patrollingCooldown(delta);
     }
 }

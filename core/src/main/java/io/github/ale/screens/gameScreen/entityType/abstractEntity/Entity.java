@@ -82,6 +82,7 @@ public abstract class Entity{
     public void render(float delta) {
         this.delta = delta;
         updateNode();
+        hitbox.adjust(this);
         updateEntity(delta);
         updateEntityType(delta);
     }
@@ -206,7 +207,5 @@ public abstract class Entity{
         this.size = size;
     }
 
-    public void adjustHitbox() {
-        this.hitbox.adjust(this);
-    }
+    public Hitbox getHitboxObj() {return hitbox;}
 }

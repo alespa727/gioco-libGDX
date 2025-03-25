@@ -30,10 +30,16 @@ public class Player extends CombatEntity {
         skillset().add(new Melee(this, "pugno", "un pugno molto forte!", 20));
     }
 
+
+    @Override
+    public void attack(){
+        getSkill(Melee.class).execute();
+    }
+
+
     /**
      * inizializzazione player
      */
-
     @Override
     public final void create() {
         System.out.println("Player creato");
@@ -64,11 +70,6 @@ public class Player extends CombatEntity {
             System.out.println("Rianimazione..");
             statistiche().regenHealthTo(100);
         }
-    }
-
-    @Override
-    public void attack(){
-        getSkill(Melee.class).execute();
     }
 
     @Override

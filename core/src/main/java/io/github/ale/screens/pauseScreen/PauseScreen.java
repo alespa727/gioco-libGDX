@@ -42,7 +42,7 @@ public class PauseScreen implements Screen{
         resumeRequest = false;
         pauseRequest = true;
         resume = new Cooldown(0.3f);
-        pause = new Cooldown(2f);
+        pause = new Cooldown(0.7f);
         pause.reset();
         resume.reset();
         gameScreen.entities().player().statistiche().gotDamaged=false;
@@ -72,6 +72,7 @@ public class PauseScreen implements Screen{
         }
 
         drawPauseMenu(delta);
+
     }
 
     public void transitionOut(float delta){

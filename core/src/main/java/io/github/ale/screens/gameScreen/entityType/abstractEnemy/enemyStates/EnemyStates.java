@@ -5,7 +5,6 @@ import com.badlogic.gdx.ai.msg.Telegram;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 
 public enum EnemyStates implements State<Enemy> {
@@ -17,6 +16,7 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
+            entity.direzione().set(calculateVector(entity.coordinateCentro(), entity.manager.player().coordinateCentro()));
             entity.setIsAttacking(true);
             entity.movement().reset();
             if (entity.direzione().x !=0f && (entity.direzione().x == 1f || entity.direzione().x == -1f)){
@@ -45,6 +45,19 @@ public enum EnemyStates implements State<Enemy> {
             return value >= 0 ? 1 : -1;
         }
 
+        public Vector2 calculateVector(Vector2 from, Vector2 to) {
+            // Differenza tra i due punti
+            float deltaX = to.x - from.x;
+            float deltaY = to.y - from.y;
+
+            // Calcola l'angolo in radianti
+            float angleRadians = MathUtils.atan2(deltaY, deltaX);
+
+            // Calcola il vettore unitario
+
+            return new Vector2(Math.round(MathUtils.cos(angleRadians)), Math.round(MathUtils.sin(angleRadians)));
+        }
+
     },
 
     PURSUE {
@@ -57,7 +70,7 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-            if (entity.manager.player().hitbox().overlaps(entity.range())) {
+            if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) < 1.5f) {
                 entity.statemachine().changeState(EnemyStates.ATTACKING);
             }
 

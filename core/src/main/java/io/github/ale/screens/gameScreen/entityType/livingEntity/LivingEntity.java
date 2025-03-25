@@ -28,20 +28,12 @@ public abstract class LivingEntity extends Entity{
         this.pathfinder = new Pathfinder(this);
     }
 
+    public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
+        this.statistiche = new Stats(hp, speed, attackdmg);
+    }
 
     public abstract void cooldown(float delta);
     public abstract void hit(float angle, float damage);
-
-
-    public void respawn() {
-        stati().setIsAlive(config().isAlive);
-        this.statistiche().gotDamaged = false;
-    }
-
-    public void despawn(){
-        super.despawn();
-        pathfinder.dispose();
-    }
 
     public Pathfinder pathfinder(){
         return pathfinder;
@@ -58,17 +50,38 @@ public abstract class LivingEntity extends Entity{
     public Skill getSkill(Class<? extends Skill> skillclass){
         return skillset.getSkill(skillclass);
     }
+    public void drawPath(ShapeRenderer shapeRenderer) {
+        pathfinder.drawPath(shapeRenderer);
+    }
+
+    public void kill() {
+        statistiche().inflictDamage(statistiche().health(), stati().immortality());
+        stati().setIsAlive(false);
+    }
+
+    public void respawn() {
+        stati().setIsAlive(config().isAlive);
+        this.statistiche().gotDamaged = false;
+    }
+
+    public void despawn(){
+        super.despawn();
+        pathfinder.dispose();
+    }
 
     @Override
     public void updateEntity(float delta) {
         cooldown(delta);
         limiti();
-        adjustHitbox();
     }
 
-    /**
-     * disegna l'entità
-     */
+    public void checkIfDead() {
+        if (statistiche().health() <= 0) {
+            this.stati().setIsAlive(false);
+            despawn();
+        }
+    }
+
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
         graphics().setAnimation(this);
@@ -92,24 +105,4 @@ public abstract class LivingEntity extends Entity{
         renderer.circle(coordinateCentro().x, coordinateCentro().y, 0.3f, 10);
     }
 
-    public final void inizializzaStatistiche(float hp, float speed, float attackdmg) {
-        this.statistiche = new Stats(hp, speed, attackdmg);
-    }
-
-    public void kill() {
-        statistiche().inflictDamage(statistiche().health(), stati().immortality());
-        stati().setIsAlive(false);
-    }
-
-    public void checkIfDead() {
-        if (statistiche().health() <= 0) {
-            this.stati().setIsAlive(false);
-            despawn();
-        }
-    }
-
-
-    public void drawPath(ShapeRenderer shapeRenderer) {
-        pathfinder.drawPath(shapeRenderer);
-    }
 }
