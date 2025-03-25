@@ -121,13 +121,6 @@ public class Settings implements Screen {
         }
     }
 
-    // Mostra i valori della memoria heap usati in byte
-    public void mostraCalcoloHeap() {
-        // Calcola la memoria Heap in byte
-        System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal java
-        System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal dispositivo
-    }
-
     private Label creaLabel(String testo) {
         Label label = new Label(testo, skin); // Lable che conterra' il testo
         label.setTouchable(null); // Rende il testo non editabile

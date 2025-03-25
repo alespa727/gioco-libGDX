@@ -20,7 +20,6 @@ public class Melee extends CombatSkill {
     public void execute() {
         draw();
         inRange = entity.manager.combatEntity(entity.range());
-        System.out.println(inRange.size);
         for (int i = 0; i < inRange.size; i++) {
             entity.getAttackCooldown().reset();
             if (!inRange.get(i).getClass().equals(entity.getClass())) {

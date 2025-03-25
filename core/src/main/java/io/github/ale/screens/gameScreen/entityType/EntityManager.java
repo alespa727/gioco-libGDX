@@ -94,6 +94,7 @@ public final class EntityManager {
         if (!player.stati().isAlive()) {
             game.setScreen(new DefeatScreen(game));
         }
+
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
                 e.render(delta);

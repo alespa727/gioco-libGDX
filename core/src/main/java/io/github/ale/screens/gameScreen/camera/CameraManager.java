@@ -59,7 +59,7 @@ public class CameraManager {
         float y = camera.viewportHeight / 2;
 
         smoothTransitionTo(new Vector2(entities.player().coordinateCentro().x, entities.player().coordinateCentro().y));
-        if(boundaries) boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
+        if (boundaries) boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
         viewport.apply();
         camera.update();
 
@@ -88,5 +88,7 @@ public class CameraManager {
         camera.update();
     }
 
+    public float getViewportWidth() {return camera.viewportWidth;}
+    public float getViewportHeight() {return camera.viewportHeight;}
 }
 //player.getWorldX() + 2f / 2

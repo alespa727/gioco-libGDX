@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.ale.MyGame;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeatScreen.DefeatScreen;
 import io.github.ale.screens.gameScreen.GameScreen;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
+import io.github.ale.screens.gameScreen.maps.Map;
 
 public class PauseScreen implements Screen{
     MyGame game;
@@ -56,8 +60,10 @@ public class PauseScreen implements Screen{
 
     public void drawGame(float delta){
         resume.update(delta);
-        gameScreen.updateCamera(true);
-        gameScreen.update(delta);
+
+        ScreenUtils.clear(0, 0, 0, 1);
+
+        gameScreen.update(delta, true);
         gameScreen.draw(delta);
 
         Gdx.gl.glEnable(GL20.GL_BLEND);

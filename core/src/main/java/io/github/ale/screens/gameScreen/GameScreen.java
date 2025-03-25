@@ -74,6 +74,7 @@ public class GameScreen implements Screen {
             if (!entities.player().stati().isAlive())
                 entities.player().respawn();
         }
+        isPaused=false;
     }
 
     @Override
@@ -86,7 +87,7 @@ public class GameScreen implements Screen {
 
             // Aggiorna il gioco finché necessario
             while (accumulator >= STEP) {
-                update(STEP);
+                update(STEP, true);
                 accumulator -= STEP;
             }
         }
@@ -102,15 +103,23 @@ public class GameScreen implements Screen {
     }
 
 
+    // Mostra i valori della memoria heap usati in byte
+    public void mostraCalcoloHeap() {
+        // Calcola la memoria Heap in byte
+        System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal java
+        System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal dispositivo
+    }
+
+
 
     /**
      * Aggiorna tutto il necessario
      */
-    public void update(float delta) {
+    public void update(float delta, boolean boundaries) {
         elapsedTime += delta; // Incrementa il tempo totale qui
         maps.checkInput(); // Gestisci input per la mappa
         entities.render(delta); // Aggiorna entità
-        updateCamera(true); // Aggiorna telecamera
+        updateCamera(boundaries); // Aggiorna telecamera
     }
 
     /**
@@ -119,6 +128,7 @@ public class GameScreen implements Screen {
     public void draw(float delta) {
         maps.draw();
         drawOggetti(delta);
+        drawHitboxes(delta);
         drawGUI(delta);
     }
 

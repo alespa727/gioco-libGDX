@@ -35,12 +35,12 @@ public enum GameStates implements State<GameScreen> {
     PAUSED {
         @Override
         public void enter(GameScreen screen) {
-
+            System.out.println("GameScreen.PLAYING");
         }
 
         @Override
         public void update(GameScreen screen) {
-            if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
+            if (!screen.isPaused)
                 screen.stateMachine().changeState(GameStates.PLAYING);
         }
 
