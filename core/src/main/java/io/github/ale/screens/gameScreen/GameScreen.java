@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
     private CameraManager camera;
     private MapManager maps;
 
-    private FitViewport viewport;
+    public FitViewport viewport;
     private Gui rect;
 
     private float elapsedTime;
@@ -80,6 +80,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // Pulizia dello schermo
+        Gdx.graphics.setForegroundFPS(60);
         ScreenUtils.clear(0, 0, 0, 1);
         statemachine.update();
         if (!isPaused) {

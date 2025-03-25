@@ -10,7 +10,7 @@ import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
 
 public class CameraManager {
-    private final OrthographicCamera camera;
+    private static OrthographicCamera camera;
     private static Vector3[] frustumCorners;
     /**
      * inizializza la telecamera
@@ -73,6 +73,7 @@ public class CameraManager {
     public static Vector3[] getFrustumCorners(){
         return frustumCorners;
     }
+    public static Vector2 getCenter(){ return new Vector2(frustumCorners[0].x+camera.viewportWidth/2, frustumCorners[0].y+camera.viewportHeight/2);}
 
     public static boolean isWithinFrustumBounds(float x, float y) {
         // Check if x and y are within the frustum's bounds

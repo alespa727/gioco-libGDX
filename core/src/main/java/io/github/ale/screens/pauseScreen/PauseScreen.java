@@ -25,14 +25,17 @@ public class PauseScreen implements Screen{
     boolean resumeRequest;
     Cooldown resume;
 
+    Vector2 lastCenter;
 
     public PauseScreen(MyGame game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
+        lastCenter = CameraManager.getCenter();
     }
 
     @Override
     public void show() {
+        Gdx.graphics.setForegroundFPS(120);
         System.out.println("PauseScreen loaded");
         resumeRequest = false;
         resume = new Cooldown(0.5f);
@@ -62,7 +65,6 @@ public class PauseScreen implements Screen{
         resume.update(delta);
 
         ScreenUtils.clear(0, 0, 0, 1);
-
         gameScreen.update(delta, true);
         gameScreen.draw(delta);
 
@@ -76,6 +78,8 @@ public class PauseScreen implements Screen{
         game.renderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.renderer.end();
 
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
         if (resume.isReady) {
             resumeRequest = false;
             gameScreen.resume();
@@ -84,9 +88,11 @@ public class PauseScreen implements Screen{
     }
 
     public void drawPausedGame(float delta){
+
         gameScreen.updateCamera(false);
         gameScreen.entities().drawEntity(0, delta);
         gameScreen.entities().player().statistiche().gotDamaged=false;
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -95,12 +101,16 @@ public class PauseScreen implements Screen{
         game.renderer.setColor(new Color(0, 0, 0, alpha));
         game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.renderer.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
     }
 
     public void input(){
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && !resumeRequest) {
             resume.reset();
             resumeRequest = true;
+
         }
     }
 
