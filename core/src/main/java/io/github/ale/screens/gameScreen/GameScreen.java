@@ -1,14 +1,8 @@
 package io.github.ale.screens.gameScreen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.ai.fsm.StateMachine;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -33,7 +27,7 @@ public class GameScreen implements Screen {
 
     private EntityManager entities;
     private CameraManager camera;
-    private MapManager maps;
+    private MapManager mapManager;
 
     public FitViewport viewport;
     private Gui rect;
@@ -67,10 +61,10 @@ public class GameScreen implements Screen {
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
             entities = new EntityManager(this.game);
-            maps = new MapManager(camera.get(), viewport, entities, 1); // map manager
+            mapManager = new MapManager(camera.get(), viewport, entities, 1); // map manager
             loaded = true;
         } else {
-            maps.getPlaylist().play(0);
+            mapManager.getPlaylist().play(0);
             if (!entities.player().stati().isAlive())
                 entities.player().respawn();
         }
@@ -79,8 +73,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
         // Pulizia dello schermo
-        Gdx.graphics.setForegroundFPS(60);
         ScreenUtils.clear(0, 0, 0, 1);
         statemachine.update();
         if (!isPaused) {
@@ -118,7 +112,7 @@ public class GameScreen implements Screen {
      */
     public void update(float delta, boolean boundaries) {
         elapsedTime += delta; // Incrementa il tempo totale qui
-        maps.checkInput(); // Gestisci input per la mappa
+        mapManager.checkInput(); // Gestisci input per la mappa
         entities.render(delta); // Aggiorna entità
         updateCamera(boundaries); // Aggiorna telecamera
     }
@@ -127,9 +121,9 @@ public class GameScreen implements Screen {
      * disegna tutto il necessario
      */
     public void draw(float delta) {
-        maps.draw();
+        mapManager.draw();
         drawOggetti(delta);
-        drawHitboxes(delta);
+        //drawHitboxes(delta);
         drawGUI(delta);
     }
 
@@ -149,21 +143,21 @@ public class GameScreen implements Screen {
         game.batch.dispose();
         game.renderer.dispose();
         stage.dispose();
-        maps.getPlaylist().empty();
+        mapManager.getPlaylist().empty();
     }
 
     @Override
     public void pause() {
-        maps.getPlaylist().stop();
+        mapManager.getPlaylist().stop();
         isPaused = true;
     }
 
     @Override
     public void resume() {
         isPaused = false;
-        maps.getPlaylist().play(0);
-        maps.getPlaylist().setVolume(0.1f);
-        maps.getPlaylist().setLooping(0, true);
+        mapManager.getPlaylist().play(0);
+        mapManager.getPlaylist().setVolume(0.1f);
+        mapManager.getPlaylist().setLooping(0, true);
     }
 
     /**
@@ -184,7 +178,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        maps.getPlaylist().stop();
+        mapManager.getPlaylist().stop();
     }
 
     public EntityManager entities() {
@@ -192,12 +186,12 @@ public class GameScreen implements Screen {
     }
 
     public MapManager maps() {
-        return maps;
+        return mapManager;
     }
 
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della camera con le entità o altri elementi
-        camera.update(maps, entities, viewport, boundaries);
+        camera.update(mapManager, entities, viewport, boundaries);
 
         // Applica il viewport (sincronizzazione con la scena)
         viewport.apply();

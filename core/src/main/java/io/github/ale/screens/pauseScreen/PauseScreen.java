@@ -25,6 +25,8 @@ public class PauseScreen implements Screen{
     boolean resumeRequest;
     Cooldown resume;
 
+    int frames;
+
     Vector2 lastCenter;
 
     public PauseScreen(MyGame game, GameScreen gameScreen) {
@@ -35,7 +37,8 @@ public class PauseScreen implements Screen{
 
     @Override
     public void show() {
-        Gdx.graphics.setForegroundFPS(120);
+        frames=Gdx.graphics.getFramesPerSecond();
+        Gdx.graphics.setForegroundFPS(60);
         System.out.println("PauseScreen loaded");
         resumeRequest = false;
         resume = new Cooldown(0.5f);
@@ -83,6 +86,7 @@ public class PauseScreen implements Screen{
         if (resume.isReady) {
             resumeRequest = false;
             gameScreen.resume();
+            Gdx.graphics.setForegroundFPS(frames);
             game.setScreen(gameScreen);
         }
     }
@@ -103,7 +107,6 @@ public class PauseScreen implements Screen{
         game.renderer.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
-
     }
 
     public void input(){
