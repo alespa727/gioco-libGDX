@@ -11,7 +11,12 @@ import io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates.Ene
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
 
+import java.awt.*;
+
 public abstract class Enemy extends CombatEntity {
+
+    public float viewDistance;
+    public float pursueMaxDistance;
 
     public DefaultStateMachine<Enemy, EnemyStates> statemachine;
 
@@ -19,10 +24,11 @@ public abstract class Enemy extends CombatEntity {
         super(config, manager, attackcooldown);
         this.range = new Rectangle(0, 0, 1.5f, 1.5f);
         statemachine = new DefaultStateMachine<>(this);
+        viewDistance = 9f;
+        pursueMaxDistance = 13f;
     }
 
     public DefaultStateMachine<Enemy, EnemyStates> statemachine(){ return statemachine;}
-
 
     @Override
     public void updateEntityType(float delta) {

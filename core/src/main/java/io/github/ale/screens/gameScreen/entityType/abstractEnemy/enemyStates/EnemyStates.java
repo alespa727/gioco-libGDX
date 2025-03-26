@@ -3,11 +3,16 @@ package io.github.ale.screens.gameScreen.entityType.abstractEnemy.enemyStates;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import io.github.ale.screens.gameScreen.entities.player.Player;
+import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
+import io.github.ale.screens.gameScreen.maps.Map;
 
 public enum EnemyStates implements State<Enemy> {
+
     ATTACKING {
         @Override
         public void enter(Enemy entity) {
@@ -75,7 +80,7 @@ public enum EnemyStates implements State<Enemy> {
             }
 
             entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
-            if(entity.pathfinder().getPath().getCount()>100){
+            if(entity.pathfinder().getPath().getCount()> entity.pursueMaxDistance){
                 entity.statemachine.changeState(PATROLLING);
             }
             entity.checkIfDead();
@@ -97,6 +102,7 @@ public enum EnemyStates implements State<Enemy> {
     },
 
     PATROLLING{
+
         @Override
         public void enter(Enemy entity) {
             System.out.println(entity.nome()+ " id."+entity.id()+" in Patrolling");
@@ -104,30 +110,39 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-            if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
-                entity.direzione().scl(0.5f, 1f);
-            }
-            if(entity.direzione().y == 1f || entity.direzione().y == -1f){
-                entity.direzione().scl(1f, 0.5f);
-            }
-            float randomx=entity.coordinateCentro().x;
-            float randomy=entity.coordinateCentro().y;
-            if(entity.isPatrolling()){
+            Player player = entity.manager.player();
 
-            }
-            entity.pathfinder().renderPath(randomx, randomy, entity.delta);
-            entity.movement().update(entity, entity.delta);
+            entity.movement().reset();
 
+            Vector2 direction = entity.direzione();
+
+            if (direction.x == 1f || direction.x == -1f) {
+                direction.scl(0.5f, 1f);
+            }
+            if(direction.y == 1f || direction.y == -1f){
+                direction.scl(1f, 0.5f);
+            }
+
+
+            entity.pathfinder().renderPath(player.coordinateCentro().x, player.coordinateCentro().y, entity.delta);
+
+            if(entity.pathfinder().getPath().getCount()<entity.viewDistance && !Map.checkLineCollision(entity.coordinateCentro(), player.coordinateCentro())){
+                entity.statemachine.changeState(PURSUE);
+            }else{
+                entity.pathfinder().clear();
+                entity.movement().reset();
+                entity.movement().update(entity, entity.delta);
+            }
         }
 
         @Override
         public void exit(Enemy entity) {
-
         }
 
         @Override
         public boolean onMessage(Enemy entity, Telegram telegram) {
             return false;
         }
+
     }
 }

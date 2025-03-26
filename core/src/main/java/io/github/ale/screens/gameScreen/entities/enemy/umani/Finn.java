@@ -11,6 +11,8 @@ public final class Finn extends Enemy {
     public Finn(EntityConfig config, EntityManager manager, Float attackcooldown) {
         super(config, manager, attackcooldown);
         range().setSize(1f, 1f);
+        viewDistance = 11f;
+        pursueMaxDistance = 12f;
     }
 
     @Override
