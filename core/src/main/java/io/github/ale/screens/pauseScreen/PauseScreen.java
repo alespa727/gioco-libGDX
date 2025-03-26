@@ -10,15 +10,13 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.ale.MyGame;
@@ -40,6 +38,7 @@ public class PauseScreen implements Screen{
     Cooldown pause;
     Cooldown resume;
 
+    TextButton MainMenu;
     FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
     FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     BitmapFont font;
@@ -62,7 +61,6 @@ public class PauseScreen implements Screen{
         root.setFillParent(true);
         table = new Table();
         table.setSize(stage.getWidth(), stage.getHeight());
-        table.setDebug(true);
         stage.addActor(root);
         root.add(table).pad(20).bottom().fill().expand();
 
@@ -72,22 +70,33 @@ public class PauseScreen implements Screen{
         font = generator.generateFont(parameter); // font size 12 pixels
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
-        TextButton label = new TextButton("Torna al menu principale", buttonStyle);
-        label.addListener(new InputListener() {
+        buttonStyle.fontColor = Color.LIGHT_GRAY;
+        MainMenu = new TextButton("Menu principale", buttonStyle);
+        MainMenu.getColor().a = 0;
+        MainMenu.addAction(Actions.fadeIn(0.3f, Interpolation.linear));
+        MainMenu.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(game.mainScreen);
-                return true;
+            }
+
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                MainMenu.getColor().a = 0.7f;
+            }
+
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                MainMenu.getColor().a = 1f;
             }
         });
-        label.setDebug(true);
-        TextButton label2 = new TextButton("CIAOOOO", buttonStyle);
-        label2.setDebug(true);
-        table.setDebug(true);
-        root.setDebug(true);
-        table1.add(label).fill().expand().row();
-        table.add().fill().expand().row();
-        table1.add(label2).fill().expand().row();
+
+
+        table1.add().fill().expand().row();
+        table1.add().fill().expand().row();
+        table1.add().fill().expand().row();
+        table1.add().fill().expand().row();
+        table1.add(MainMenu).expand().row();
+
+
         table.add(table1).pad(20).fill().expand();
         Gdx.graphics.setForegroundFPS(60);
 
@@ -99,6 +108,8 @@ public class PauseScreen implements Screen{
         pause.reset();
         resume.reset();
         gameScreen.entities().player().statistiche().gotDamaged=false;
+
+        stage.setDebugAll(true);
     }
 
     @Override
@@ -158,7 +169,7 @@ public class PauseScreen implements Screen{
     float y=0;
 
     public void drawPauseMenu(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero pieno
+        ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
 
 
         // Disegna l'entità sopra il rettangolo
@@ -167,23 +178,14 @@ public class PauseScreen implements Screen{
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-
-
         // Disegna il rettangolo trasparente (background semi-opaco)
         game.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.renderer.setColor(new Color(0, 0, 0, alpha)); // Trasparenza 50%
+        game.renderer.setColor(Color.BLACK.cpy().mul(alpha)); // Trasparenza
         game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y,
             Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.renderer.end();
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
-
-        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.renderer.setColor(Color.RED); // Trasparenza 50%
-        x+=1f*delta;
-        y+=1f*delta;
-        game.renderer.rect(corners[0].x+x, corners[0].y+y, 1f, 1f);
-        game.renderer.end();
 
         stage.act();
         stage.draw();
@@ -201,7 +203,7 @@ public class PauseScreen implements Screen{
 
         float alpha = Interpolation.fade.apply(0.0f, 0.4f, 0.8f);
         game.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.renderer.setColor(new Color(0, 0, 0, alpha));
+        game.renderer.setColor(Color.BLACK.cpy().mul(alpha));
 
         game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -214,6 +216,9 @@ public class PauseScreen implements Screen{
             this.alpha = alpha;
             System.out.println("Pause request is ready");
         }
+
+        stage.act();
+        stage.draw();
 
     }
 

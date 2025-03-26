@@ -22,6 +22,7 @@ import io.github.ale.screens.gameScreen.entityType.abstractEnemy.Enemy;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.EntityConfig;
 import io.github.ale.screens.gameScreen.entityType.combatEntity.CombatEntity;
+import io.github.ale.screens.gameScreen.entityType.entityFactories.EnemyFactory;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 
 public final class EntityManager {
@@ -92,13 +93,18 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-            for (int index = 0; index < 1000; index++) { //Oltre le mille inizia a perdere colpi
-                e.id = nextEntityId;
-                e.y++;
-                entity.add(new Finn(e, this, 1.5f));
-                nextEntityId++;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Array<Entity> array = new Array<>();
+                for (int index = 0; index < 1; index++) { //Oltre le mille inizia a perdere colpi
+                    e.id = nextEntityId;
+                    array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 1.5f));
+                    nextEntityId++;
+                }
+                Gdx.app.postRunnable(() -> entity.addAll(array));
             }
-
+        }).start();
 
     }
 

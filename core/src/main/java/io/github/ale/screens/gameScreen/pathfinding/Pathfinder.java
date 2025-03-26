@@ -51,7 +51,7 @@ public class Pathfinder implements Disposable{
                 map = MapManager.currentmap();
                 pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
                 search(x, y);
-                if(path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
+                if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
             }
 
             //CALCOLO DEL PERCORSO

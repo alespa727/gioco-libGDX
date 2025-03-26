@@ -20,7 +20,9 @@ import io.github.ale.screens.settings.Settings;
 
 public class GameScreen implements Screen {
 
-    private final MyGame game;
+    public final MyGame game;
+
+    public float delta;
 
     private Stage stage;
     private Table root;
@@ -33,19 +35,21 @@ public class GameScreen implements Screen {
     private Gui rect;
 
     private float elapsedTime;
-    private boolean loaded = false;
+    public boolean loaded = false;
     public boolean isPaused = false;
 
-    // Aggiungi la variabile accumulator
-    private static final float STEP = 1 / 60f; // Durata fissa per logica (60Hz)
-    private float accumulator = 0f;
 
-    private DefaultStateMachine<GameScreen, GameStates> statemachine;
+
+    // Aggiungi la variabile accumulator
+    public static final float STEP = 1 / 60f; // Durata fissa per logica (60Hz)
+    public float accumulator = 0f;
+
+    private DefaultStateMachine<GameScreen, GameStates> gameState;
 
     public GameScreen(MyGame game) {
         this.game = game;
-        statemachine = new DefaultStateMachine<>(this);
-        statemachine.changeState(GameStates.PLAYING);
+        gameState = new DefaultStateMachine<>(this);
+        gameState.changeState(GameStates.PLAYING);
     }
 
     @Override
@@ -73,28 +77,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        this.delta = delta;
         //System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
+        //System.out.println(Gdx.app.getJavaHeap()/1000000 + "MB");
+
         // Pulizia dello schermo
         ScreenUtils.clear(0, 0, 0, 1);
-        statemachine.update();
-        if (!isPaused) {
-            accumulator += delta;
+        gameState.update();
 
-            // Aggiorna il gioco finché necessario
-            while (accumulator >= STEP) {
-                update(STEP, true);
-                accumulator -= STEP;
-            }
-        }
-
-        // Disegna il gioco
-        draw(delta);
-
-        // Pausa
-        if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]) && !isPaused) {
-            isPaused = true;
-            game.setScreen(new PauseScreen(game, this));
-        }
     }
 
 
@@ -207,5 +197,5 @@ public class GameScreen implements Screen {
         return camera;
     }
 
-    public DefaultStateMachine<GameScreen, GameStates> stateMachine(){return statemachine;}
+    public DefaultStateMachine<GameScreen, GameStates> gameState(){return gameState;}
 }

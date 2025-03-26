@@ -75,7 +75,7 @@ public enum EnemyStates implements State<Enemy> {
             }
 
             entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
-            if(entity.pathfinder().getPath().getCount()>10){
+            if(entity.pathfinder().getPath().getCount()>100){
                 entity.statemachine.changeState(PATROLLING);
             }
             entity.checkIfDead();
