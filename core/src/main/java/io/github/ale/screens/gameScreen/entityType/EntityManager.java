@@ -3,7 +3,9 @@ package io.github.ale.screens.gameScreen.entityType;
 import static java.lang.System.err;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Comparator;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -29,7 +31,19 @@ public final class EntityManager {
 
     private int nextEntityId =0;
 
+    public final Comparator<Entity> comparator;
+
     public EntityManager(MyGame game) {
+
+        comparator = new Comparator<Entity>() {
+
+            @Override
+            public int compare(Entity o1, Entity o2) {
+                return Float.compare(o1.coordinateCentro().y, o2.coordinateCentro().y);
+            }
+
+        };
+
         entity = new Array<>();
         this.game = game;
         EntityConfig p = new EntityConfig();
@@ -77,15 +91,16 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        for (int index = 0; index < 2; index++) {
-            e.y++;
-            createEnemy(Finn.class, e, 1.9f);
-        }
+            for (int index = 0; index < 1000; index++) { //Oltre le mille inizia a perdere colpi
+                createEnemy(Finn.class, e, 1.9f);
+            }
+
+
     }
 
     public void draw(float elapsedTime){
         game.batch.begin();
-        sort();
+        entity.sort(comparator);
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
                 try{
@@ -124,7 +139,12 @@ public final class EntityManager {
 
     public void drawEntity(int id, float elapsedTime){
         game.batch.begin();
-        sort();
+        entity.sort(new Comparator<Entity>() {
+            @Override
+            public int compare(Entity o1, Entity o2) {
+                return Float.compare(o1.coordinateCentro().y, o2.coordinateCentro().y);
+            }
+        });
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y) && e.id()==id) {
                 try{

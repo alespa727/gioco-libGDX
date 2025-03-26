@@ -5,12 +5,22 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.ale.MyGame;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeatScreen.DefeatScreen;
@@ -21,10 +31,18 @@ public class PauseScreen implements Screen{
     MyGame game;
     GameScreen gameScreen;
 
+    private Stage stage;
+    private Table root;
+    private Table table;
+
     boolean resumeRequest;
     boolean pauseRequest;
     Cooldown pause;
     Cooldown resume;
+
+    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    BitmapFont font;
 
     float alpha;
 
@@ -37,7 +55,42 @@ public class PauseScreen implements Screen{
 
     @Override
     public void show() {
+        stage = new Stage(new ScreenViewport());
+
+        Gdx.input.setInputProcessor(stage);
+        root = new Table();
+        root.setFillParent(true);
+        table = new Table();
+        table.setSize(stage.getWidth(), stage.getHeight());
+        table.setDebug(true);
+        stage.addActor(root);
+        root.add(table).pad(20).bottom().fill().expand();
+
+        Table table1 = new Table();
+
+        parameter.size = 50;
+        font = generator.generateFont(parameter); // font size 12 pixels
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = font;
+        TextButton label = new TextButton("Torna al menu principale", buttonStyle);
+        label.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(game.mainScreen);
+                return true;
+            }
+        });
+        label.setDebug(true);
+        TextButton label2 = new TextButton("CIAOOOO", buttonStyle);
+        label2.setDebug(true);
+        table.setDebug(true);
+        root.setDebug(true);
+        table1.add(label).fill().expand().row();
+        table.add().fill().expand().row();
+        table1.add(label2).fill().expand().row();
+        table.add(table1).pad(20).fill().expand();
         Gdx.graphics.setForegroundFPS(60);
+
         System.out.println("PauseScreen loaded");
         resumeRequest = false;
         pauseRequest = true;
@@ -132,6 +185,8 @@ public class PauseScreen implements Screen{
         game.renderer.rect(corners[0].x+x, corners[0].y+y, 1f, 1f);
         game.renderer.end();
 
+        stage.act();
+        stage.draw();
     }
 
 
@@ -170,7 +225,9 @@ public class PauseScreen implements Screen{
 
     @Override
     public void resize(int width, int height) {
-
+        if (stage != null) {
+            stage.getViewport().update(width, height, true);
+        }
     }
 
     @Override

@@ -187,7 +187,7 @@ public class GameGraph implements IndexedGraph<Node> {
         }
 
         // Trova il nodo più vicino
-        for (Node node : nodes) {
+        /*for (Node node : nodes) {
             // Calcola la distanza euclidea tra il nodo corrente e le coordinate fornite
             float distance = (float) Math.sqrt(Math.pow(node.x + 0.5f - x, 2) + Math.pow(node.y + 0.5f - y, 2));
 
@@ -196,7 +196,11 @@ public class GameGraph implements IndexedGraph<Node> {
                 closestDistance = distance;
                 closestNode = node;
             }
-        }
+        }*/
+
+        int xRounded = MathUtils.floor(x);
+        int yRounded = MathUtils.floor(y);
+        closestNode = getNodeAt(xRounded, yRounded);
 
         // Log per debug
         if (closestNode != null) {

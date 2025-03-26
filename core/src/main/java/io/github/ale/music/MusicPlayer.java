@@ -17,22 +17,18 @@ public class MusicPlayer {
 
     private void initializePlaylist(String path) {
         new Thread(() -> {
-            Gdx.app.postRunnable(() -> {
                 add(path);
                 System.out.println("Canzone caricata!");
                 playlist.get(path).setLooping(true);
                 playlist.get(path).setVolume(0.5f);
                 playlist.get(path).play();
-            });
         }).start();
     }
 
     public void addAsincrono(String path) {
         new Thread(() -> {
-            Gdx.app.postRunnable(() -> {
-                add(path);
-                System.out.println("Canzone caricata!");
-            });
+            add(path);
+            System.out.println("Canzone caricata!");
         }).start();
     }
 

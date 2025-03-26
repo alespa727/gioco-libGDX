@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
+        //System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
         // Pulizia dello schermo
         ScreenUtils.clear(0, 0, 0, 1);
         statemachine.update();
@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
     public void draw(float delta) {
         mapManager.draw();
         drawOggetti(delta);
-        drawHitboxes(delta);
+        //drawHitboxes(delta);
         drawGUI(delta);
     }
 

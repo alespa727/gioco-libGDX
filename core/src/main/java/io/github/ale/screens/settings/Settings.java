@@ -64,7 +64,7 @@ public class Settings implements Screen {
         skin = new Skin(Gdx.files.internal("metal-ui.json")); // Creo la skin che conterra' i dati
         table = new Table(); // Creo una tabella principale
         table.setSize(500, 500); // Assegno la dimensione che avra'
-        //table.setDebug(true); // per vedere come e' fatta la tabella
+        table.setDebug(true); // per vedere come e' fatta la tabella
 
         creaTitolo(table); // Creo il titolo per la tabella principale
 

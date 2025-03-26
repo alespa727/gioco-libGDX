@@ -25,8 +25,6 @@ public class Pathfinder implements Disposable{
     private IndexedAStarPathFinder<Node> pathFinder;
     private final DefaultGraphPath<Node> path;
     private final Cooldown cooldown = new Cooldown(2f);
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
 
     public Pathfinder(LivingEntity entity) {
         this.path = new DefaultGraphPath<>();
@@ -43,16 +41,11 @@ public class Pathfinder implements Disposable{
 
     public void renderPath(float x, float y, float delta) {
         countdown(delta);
-        executor.submit(() -> calculatePathTo(x, y));
-    }
-
-    public void renderPath(Node node, float delta) {
-        countdown(delta);
-        executor.submit(() -> calculatePathTo(node.getX(), node.getY()));
+        //executor.submit(() -> calculatePathTo(x, y));
+        calculatePathTo(x, y);
     }
 
     public void calculatePathTo(float x, float y){
-        Gdx.app.postRunnable(() -> {
             //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
             if (Map.isGraphLoaded && map != MapManager.currentmap()) {
                 map = MapManager.currentmap();
@@ -64,15 +57,14 @@ public class Pathfinder implements Disposable{
 
             //CALCOLO DEL PERCORSO
             if (entity.movement().searchingfornext) {
-                //System.out.println("Calcolo del percorso!");
                 search(x, y);
                 if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
             }
-        });
     }
 
 
     public void search(float x, float y) {
+        System.out.println("Calcolo del percorso!");
         path.clear();
         //setta il nodo di inizio e fine
         startNode = Map.getGraph().getClosestNode(entity.coordinateCentro().x, entity.coordinateCentro().y);
@@ -133,6 +125,6 @@ public class Pathfinder implements Disposable{
 
     @Override
     public void dispose() {
-        executor.shutdown();
+
     }
 }

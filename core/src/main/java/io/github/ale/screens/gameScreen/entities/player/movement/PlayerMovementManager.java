@@ -72,7 +72,7 @@ public class PlayerMovementManager{
 
         if (fermo) {
             speed = 0;
-            float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.4f;
+            float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.7f;
             if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino sinistra 0, azzeralo
             p.statistiche().setSpeedBuff(newSpeedBuff);
 
