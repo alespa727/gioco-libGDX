@@ -26,6 +26,7 @@ public abstract class CombatEntity extends LivingEntity {
         damage.reset();
         range = new Rectangle();
         attack.reset(0f);
+        stati().setImmortality(false);
     }
 
 
@@ -50,7 +51,7 @@ public abstract class CombatEntity extends LivingEntity {
 
     @Override
     public void hit(float angolo, float damage) {
-        statistiche().inflictDamage(damage, false);
+        statistiche().inflictDamage(damage, stati().immortality());
         dx = (float) Math.cos(Math.toRadians(angolo));
         dy = (float) Math.sin(Math.toRadians(angolo));
         knockback.reset();

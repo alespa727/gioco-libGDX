@@ -7,6 +7,7 @@ import java.util.Comparator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -39,7 +40,7 @@ public final class EntityManager {
 
             @Override
             public int compare(Entity o1, Entity o2) {
-                return Float.compare(o1.coordinateCentro().y, o2.coordinateCentro().y);
+                return Float.compare(o2.coordinateCentro().y, o1.coordinateCentro().y);
             }
 
         };
@@ -50,7 +51,7 @@ public final class EntityManager {
         p.id = nextEntityId;
         p.x = 8.5f;
         p.y = 5.5f;
-        p.imgpath = "entities/Finn.png";
+        p.img = new Texture("entities/Finn.png");
         p.width = 0.5f;
         p.height = 0.4f;
         p.offsetX=0;
@@ -76,7 +77,7 @@ public final class EntityManager {
         e.descrizione = "Nemico pericoloso";
         e.x = 8.5f;
         e.y = 8.5f;
-        e.imgpath = "entities/Finn.png";
+        e.img = new Texture("entities/Finn.png");
         e.width = 0.5f;
         e.height = 0.4f;
         e.offsetX=0;
@@ -92,7 +93,10 @@ public final class EntityManager {
         e.imageWidth = 2f;
 
             for (int index = 0; index < 1000; index++) { //Oltre le mille inizia a perdere colpi
-                createEnemy(Finn.class, e, 1.9f);
+                e.id = nextEntityId;
+                e.y++;
+                entity.add(new Finn(e, this, 1.5f));
+                nextEntityId++;
             }
 
 
@@ -121,7 +125,8 @@ public final class EntityManager {
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
                 e.render(delta);
-            }
+                e.setRendered(true);
+            }else e.setRendered(false);
         }
     }
 
@@ -224,9 +229,10 @@ public final class EntityManager {
     public Array<CombatEntity> combatEntity(Rectangle rect){
         Array<CombatEntity> array = new Array<>();
         for (int i = 0; i < entity.size; i++) {
-            if (entity.get(i) instanceof CombatEntity && CameraManager.isWithinFrustumBounds(entity.get(i).coordinateCentro().x, entity.get(i).coordinateCentro().y)
-                && entity.get(i).hitbox().overlaps(rect)) {
-                array.add((CombatEntity) entity.get(i));
+            Entity e = entity.get(i);
+            if(!e.isRendered() || !(entity.get(i) instanceof CombatEntity)) continue;
+            if (e.hitbox().overlaps(rect)) {
+                array.add((CombatEntity) e);
             }
         }
         return array;

@@ -50,9 +50,8 @@ public class Pathfinder implements Disposable{
             if (Map.isGraphLoaded && map != MapManager.currentmap()) {
                 map = MapManager.currentmap();
                 pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
-                System.out.println("Caricato il grafo!");
                 search(x, y);
-                entity.movement().setGoal(path.get(0), path.get(1));
+                if(path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
             }
 
             //CALCOLO DEL PERCORSO
@@ -64,7 +63,7 @@ public class Pathfinder implements Disposable{
 
 
     public void search(float x, float y) {
-        System.out.println("Calcolo del percorso!");
+        //System.out.println("Calcolo del percorso!");
         path.clear();
         //setta il nodo di inizio e fine
         startNode = Map.getGraph().getClosestNode(entity.coordinateCentro().x, entity.coordinateCentro().y);

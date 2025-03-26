@@ -1,5 +1,6 @@
 package io.github.ale.screens.gameScreen.entityType.abstractEntity.graphics;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -14,8 +15,8 @@ public class EntityGraphics {
         return texture;
     }
 
-    public void setTexture(String path){
-        texture = new TexturesEntity(path);
+    public void setTexture(Texture img){
+        texture = new TexturesEntity(img);
     }
 
     /**

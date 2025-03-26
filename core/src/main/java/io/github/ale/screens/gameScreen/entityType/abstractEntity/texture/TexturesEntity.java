@@ -19,8 +19,8 @@ public class TexturesEntity {
 
     private final ObjectMap<Vector2, Animation <TextureRegion>> animations;
 
-    public TexturesEntity(String path){
-        entity = new Texture(path);
+    public TexturesEntity(Texture img){
+        entity = img;
         animations = new ObjectMap<>();
 
         // Assegna i frame per le diverse direzioni, creare una classe che puo contenere le texture

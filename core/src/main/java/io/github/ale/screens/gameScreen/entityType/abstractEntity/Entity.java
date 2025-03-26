@@ -22,6 +22,9 @@ public abstract class Entity{
 
     // Fields
     public float delta;
+
+    private boolean isRendered;
+
     private final EntityConfig config;
     private Node node;
     private EntityInfo info;
@@ -44,7 +47,7 @@ public abstract class Entity{
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaCoordinate(config.x, config.y);
         inizializzaInfo(config.nome, config.descrizione, config.id);
-        graphics.setTexture(config.imgpath);
+        graphics.setTexture(config.img);
         inizializzaHitbox(getX(), getY(), config.width, config.height, config.offsetX, config.offsetY);
         inizializzaDirezione(config.direzione);
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
@@ -58,6 +61,14 @@ public abstract class Entity{
     public abstract void create();
     public abstract void drawHitbox(ShapeRenderer renderer);
 
+
+    public void setRendered(boolean rendered) {
+        isRendered = rendered;
+    }
+
+    public boolean isRendered() {
+        return isRendered;
+    }
 
     /**
      * disegna il nemico
@@ -131,7 +142,7 @@ public abstract class Entity{
     }
 
     public final Vector2 coordinateCentro() {
-        return new Vector2(hitbox().x+hitbox().width/2, hitbox().y+hitbox().height/2);
+        return new Vector2( hitbox().x+hitbox().width/2, hitbox().y+hitbox().height/2);
     }
 
     public final float getX() {

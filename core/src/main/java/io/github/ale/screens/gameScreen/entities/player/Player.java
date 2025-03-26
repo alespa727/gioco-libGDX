@@ -28,6 +28,7 @@ public class Player extends CombatEntity {
         range = new Rectangle(0, 0, 2.5f, 2.5f);
         this.movement = new PlayerMovementManager();
         skillset().add(new Melee(this, "pugno", "un pugno molto forte!", 20));
+        stati().setImmortality(true);
     }
 
 

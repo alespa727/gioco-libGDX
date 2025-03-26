@@ -77,7 +77,7 @@ public class CameraManager {
 
     public static boolean isWithinFrustumBounds(float x, float y) {
         // Check if x and y are within the frustum's bounds
-        return x > frustumCorners[0].x-2 && y > frustumCorners[0].y-2 && x < frustumCorners[2].x+2 && y < frustumCorners[2].y+2;
+        return x > frustumCorners[0].x-2f && y > frustumCorners[0].y-2f && x < frustumCorners[2].x+2f && y < frustumCorners[2].y+2f;
     }
 
     public OrthographicCamera get() {

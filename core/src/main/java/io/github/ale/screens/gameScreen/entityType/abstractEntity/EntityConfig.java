@@ -1,11 +1,12 @@
 package io.github.ale.screens.gameScreen.entityType.abstractEntity;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class EntityConfig {
     public int id;
     public float x, y;
-    public String imgpath;
+    public Texture img;
     public float width, height;
     public Vector2 direzione;
     public String nome, descrizione;
@@ -20,7 +21,7 @@ public class EntityConfig {
         this.id = config.id;
         this.x = config.x;
         this.y = config.y;
-        this.imgpath = config.imgpath;
+        this.img = config.img;
         this.width = config.width;
         this.height = config.height;
         this.direzione = config.direzione;
