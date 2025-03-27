@@ -29,10 +29,9 @@ public abstract class CombatEntity extends LivingEntity {
         stati().setImmortality(false);
     }
 
-
     public abstract void attack();
 
-    public Rectangle range() {
+    public final Rectangle range() {
         return range;
     }
 

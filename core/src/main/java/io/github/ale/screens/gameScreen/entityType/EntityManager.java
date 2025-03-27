@@ -97,7 +97,7 @@ public final class EntityManager {
             @Override
             public void run() {
                 Array<Entity> array = new Array<>();
-                for (int index = 0; index < 1; index++) { //Oltre le mille inizia a perdere colpi
+                for (int index = 0; index < 10000; index++) { //Oltre le mille inizia a perdere colpi
                     e.id = nextEntityId;
                     array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 1.5f));
                     nextEntityId++;
@@ -232,16 +232,23 @@ public final class EntityManager {
         return entity;
     }
 
-    public Array<CombatEntity> combatEntity(Rectangle rect){
+    public Array<CombatEntity> combatEntity(CombatEntity entity1){
         Array<CombatEntity> array = new Array<>();
         for (int i = 0; i < entity.size; i++) {
             Entity e = entity.get(i);
-            if(!e.isRendered() || !(entity.get(i) instanceof CombatEntity)) continue;
-            if (e.hitbox().overlaps(rect)) {
+            if(!e.isRendered() || !(entity.get(i) instanceof CombatEntity) ) continue;
+            if (e.hitbox().overlaps(entity1.range())) {
                 array.add((CombatEntity) e);
             }
         }
         return array;
+    }
+
+    public Player isPlayerInRange(Rectangle rect){
+        if (entita(0).hitbox().overlaps(rect)){
+            return player;
+        }
+        return null;
     }
 
 

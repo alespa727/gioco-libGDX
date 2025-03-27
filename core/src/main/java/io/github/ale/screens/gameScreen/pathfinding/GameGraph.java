@@ -10,8 +10,10 @@ import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.Entity;
 
-public class GameGraph implements IndexedGraph<Node> {
+import java.util.HashMap;
 
+public class GameGraph implements IndexedGraph<Node> {
+    private final HashMap<String, Node> nodeLookup = new HashMap<>(); // For O(1) lookup
     private final Array<Node> nodes = new Array<>(); // Lista di tutti i nodi
     private final int width, height; // Dimensioni della griglia
     private final boolean[][] walkable; // Celle attraversabili
@@ -34,11 +36,21 @@ public class GameGraph implements IndexedGraph<Node> {
         // Genera il grafo con nodi e connessioni
         generateGraph();
 
+        for (Node node : nodes) {
+            String key = generateKey(node.x, node.y);
+            nodeLookup.put(key, node);
+        }
+
         for (int i = 0; i < nodes.size; i++) {
             nodes.get(i).setIndex(i);
         }
 
     }
+
+    private String generateKey(int x, int y) {
+        return x + "," + y; // Create a key for the HashMap
+    }
+
 
     @Override
     public Array<Connection<Node>> getConnections(Node fromNode) {
@@ -159,57 +171,21 @@ public class GameGraph implements IndexedGraph<Node> {
      * @return
      */
     public Node getNodeAt(int x, int y) {
-        for (Node node : nodes) {
-            // Controlla se le coordinate corrispondono
-            if (node.x == x && node.y == y) {
-                return node;
-            }
-        }
-        // Restituisce null se nessun nodo corrisponde
-        return null;
+        return nodeLookup.get(generateKey(x, y));
     }
 
-
-   /**
+    /**
      * Restituisce il nodo più vicino alle coordinate fornite.
      * @param x Coordinata x
      * @param y Coordinata y
      * @return Il nodo più vicino o null se nessun nodo è disponibile.
      */
     public Node getClosestNode(float x, float y) {
-        Node closestNode = null;
-        float closestDistance = Float.MAX_VALUE;
-
-        // Controlla se ci sono nodi nel grafo
-        if (nodes == null || nodes.isEmpty()) {
-            System.err.println("Nessun nodo disponibile nel grafo!");
-            return null;
-        }
-
-        // Trova il nodo più vicino
-        /*for (Node node : nodes) {
-            // Calcola la distanza euclidea tra il nodo corrente e le coordinate fornite
-            float distance = (float) Math.sqrt(Math.pow(node.x + 0.5f - x, 2) + Math.pow(node.y + 0.5f - y, 2));
-
-            // Trova il nodo con la distanza minima
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestNode = node;
-            }
-        }*/
 
         int xRounded = MathUtils.floor(x);
         int yRounded = MathUtils.floor(y);
-        closestNode = getNodeAt(xRounded, yRounded);
 
-        // Log per debug
-        if (closestNode != null) {
-            //System.out.println("Nodo più vicino: (" + closestNode.x + ", " + closestNode.y + ") con distanza: " + closestDistance);
-        } else {
-            System.err.println("Nessun nodo valido trovato!");
-        }
-
-        return closestNode; // Restituisce il nodo più vicino
+        return nodeLookup.get(generateKey(xRounded, yRounded)); // Restituisce il nodo più vicino
     }
 
     public Node getRandomNode(float x, float y){

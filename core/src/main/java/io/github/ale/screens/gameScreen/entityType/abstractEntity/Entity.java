@@ -92,7 +92,7 @@ public abstract class Entity{
     // Core methods
     public void render(float delta) {
         this.delta = delta;
-        //updateNode();
+        updateNode();
         hitbox.adjust(this);
         updateEntity(delta);
         updateEntityType(delta);
