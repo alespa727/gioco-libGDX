@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.Dimensioni;
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.caratteristiche.EntityInfo;
@@ -16,9 +17,12 @@ import io.github.ale.screens.gameScreen.entityType.abstractEntity.graphics.Entit
 import io.github.ale.screens.gameScreen.entityType.abstractEntity.state.EntityState;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.pathfinding.Node;
-import io.github.ale.screens.gameScreen.pathfinding.NodeConnection;
 
 public abstract class Entity{
+
+    public Body body;
+    float width, height;
+    float offsetX, offsetY;
 
     // Fields
     public float delta;
@@ -26,6 +30,7 @@ public abstract class Entity{
     private boolean isRendered;
 
     private final EntityConfig config;
+    private Node lastNode;
     private Node node;
     private EntityInfo info;
     private Dimensioni size;
@@ -43,6 +48,7 @@ public abstract class Entity{
     public Entity(EntityConfig config, EntityManager manager) {
         this.config = config;
         this.manager = manager;
+        createHitbox(config.x, config.y, config.width, config.height);
         inizializzaEntityGraphics();
         inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
         inizializzaCoordinate(config.x, config.y);
@@ -55,12 +61,43 @@ public abstract class Entity{
         Gdx.app.postRunnable(this::create);
     }
 
-    // Abstract methods
+    // metodi astratti
     public abstract void updateEntity(float delta);
     public abstract void updateEntityType(float delta);
     public abstract void create();
     public abstract void drawHitbox(ShapeRenderer renderer);
 
+    public void createHitbox(float x, float y, float width, float height){
+        this.width=width;
+        this.height=height;
+        // creo un corpo dinamico
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        // creo la hitbox
+        body = manager.world.createBody(bodyDef);
+        body.setTransform(x, y, 0f);
+        body.setLinearDamping(5F);
+        body.setUserData(this);
+
+        // forma hitbox
+        PolygonShape boxShape = new PolygonShape();
+        boxShape.setAsBox(width/2, height/2);
+
+        // proprietà fisiche
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = boxShape;
+        fixtureDef.density = 5;      // Set density (mass per area)
+        fixtureDef.friction = 1f;   // Set friction (sliding resistance)
+        fixtureDef.restitution = 0f; // Set restitution ("bounciness")
+
+        // aggiungo le proprietà fisiche
+        body.createFixture(fixtureDef);
+        body.setFixedRotation(true);
+        body.setBullet(true);
+        // disposa
+        boxShape.dispose();
+    }
 
     public void setRendered(boolean rendered) {
         isRendered = rendered;
@@ -82,7 +119,14 @@ public abstract class Entity{
     }
 
     public void updateNode(){
+        if (lastNode!=null) {
+            lastNode.setWalkable(true);
+        }
+        if (node!=null) {
+            lastNode = node;
+        }
         node = Map.getGraph().getClosestNode(coordinateCentro().x, coordinateCentro().y);
+        node.setWalkable(false);
     }
 
     public Node getNode(){
@@ -96,6 +140,7 @@ public abstract class Entity{
         hitbox.adjust(this);
         updateEntity(delta);
         updateEntityType(delta);
+        setCoordinate(body.getPosition().x, body.getPosition().y);
     }
 
     public void despawn() {
@@ -141,8 +186,13 @@ public abstract class Entity{
         return coordinate;
     }
 
+    public final void setCoordinate(float x, float y) {
+        this.coordinate.x =x-getSize().width/2;
+        this.coordinate.y = y-getSize().height/2;
+    }
+
     public final Vector2 coordinateCentro() {
-        return new Vector2( hitbox().x+hitbox().width/2, hitbox().y+hitbox().height/2);
+        return new Vector2( body.getPosition());
     }
 
     public final float getX() {

@@ -1,12 +1,10 @@
 package io.github.ale.screens.gameScreen.entities.player.movement;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.gameScreen.entityType.livingEntity.LivingEntity;
 import io.github.ale.screens.gameScreen.entities.player.KeyHandlerPlayer;
 import io.github.ale.screens.gameScreen.entityType.livingEntity.movement.StatiDiMovimento;
-import io.github.ale.screens.gameScreen.maps.Map;
 
 public class PlayerMovementManager{
     private final KeyHandlerPlayer keyH;
@@ -54,30 +52,15 @@ public class PlayerMovementManager{
 
         float speed;
 
-        if (sprint && !fermo) {
-            // System.out.println("SPRINT!");
-            if (diagonale) speed = sprintSpeedMultiplier/1.41f;
-            else speed = sprintSpeedMultiplier;
+        if (sprint) {
+            p.statistiche().setSpeedBuff(sprintSpeedMultiplier);
+        }else p.statistiche().setSpeedBuff(baseSpeedMultiplier);
 
-            p.statistiche().setSpeedBuff(p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) *0.1f);
-
+        if (diagonale) {
+            if (sprint)
+                p.statistiche().setSpeedBuff(sprintSpeedMultiplier/1.41f);
+            else p.statistiche().setSpeedBuff(baseSpeedMultiplier/1.41f);
         }
-
-        if (!sprint && !fermo) {
-            if (diagonale) speed = baseSpeedMultiplier/1.41f;
-            else speed = baseSpeedMultiplier;
-            // System.out.println("NIENTE SPRINT");
-            p.statistiche().setSpeedBuff(p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) *0.1f);
-        }
-
-        if (fermo) {
-            speed = 0;
-            float newSpeedBuff = p.statistiche().getSpeedBuff() + (speed - p.statistiche().getSpeedBuff()) * 0.7f;
-            if (newSpeedBuff < 0.01f) newSpeedBuff = 0f;  // Se troppo vicino sinistra 0, azzeralo
-            p.statistiche().setSpeedBuff(newSpeedBuff);
-
-        }
-
     }
 
     /**
@@ -113,10 +96,8 @@ public class PlayerMovementManager{
                 if (sinistra || destra) {
                     p.direzione().y=0;
                     aggiornaDirezioneX(p);
-                    aggiornaCollisioni(p);
 
-                    muoviAsseX(p, delta); //MUOVE IL PLAYER SE PREME ALTRI TASTI
-                    aggiornaStatoCollisione(p);
+                    muoviAsseX(p, delta);
                 }else{
                     addNotMoving(p);
                 }
@@ -125,31 +106,16 @@ public class PlayerMovementManager{
                 if (su || giu) {
                     p.direzione().x=0;
                     aggiornaDirezioneY(p);
-                    aggiornaCollisioni(p);
-
                     muoviAsseY(p, delta); //MUOVE IL PLAYER SE PREME ALTRI TASTI
-
-                    aggiornaStatoCollisione(p);
                 }else{
-
                     addNotMoving(p);
                 }
             }
             case ANYKEY -> {
-
                 aggiornaDirezioneY(p);
-
-                aggiornaCollisioni(p);
                 muoviAsseY(p, delta);
-
-                aggiornaStatoCollisione(p);
                 aggiornaDirezioneX(p);
-
-                aggiornaCollisioni(p);
                 muoviAsseX(p, delta);
-
-                aggiornaStatoCollisione(p);
-
             }
             case NOTMOVING -> {
                 addNotMoving(p);
@@ -160,6 +126,7 @@ public class PlayerMovementManager{
     }
 
     private void addNotMoving(LivingEntity p) {
+        p.body.setLinearVelocity(0, 0);
 
         if (last.x > 0) {
             p.direzione().set(0.5f, 0); // Annulla X, mantiene Y
@@ -174,11 +141,6 @@ public class PlayerMovementManager{
 
     }
 
-
-    private void aggiornaCollisioni(LivingEntity p) {
-        isCollidingVertically = Map.checkCollisionY(p);
-        isCollidingHorizontally = Map.checkCollisionX(p);
-    }
 
     private void aggiornaDirezioneX(LivingEntity p) {
         float dx = 0;
@@ -215,38 +177,43 @@ public class PlayerMovementManager{
         //System.out.println(p.direzione());
     }
 
-    private void aggiornaStatoCollisione(LivingEntity p) {
-        if (isCollidingHorizontally || isCollidingVertically)
-            p.stati().setInCollisione(true);
-
-    }
-
     private void muoviAsseX(LivingEntity p, float delta){
 
-        if (!isCollidingHorizontally) {
+
             float speed = p.statistiche().speed();
             float x = p.getX();
 
-            if (sinistra)
+            if (sinistra){
                 p.setX(x - speed * (float) delta);
-            if (destra)
+                p.body.setLinearVelocity(-speed, p.body.getLinearVelocity().y);
+            }
+
+            if (destra){
                 p.setX(x + speed * (float) delta);
-            p.stati().setInCollisione(false);
-        }
+                p.body.setLinearVelocity(speed, p.body.getLinearVelocity().y);
+            }
+
+            if(!sinistra && !destra){
+                p.body.setLinearVelocity(0, p.body.getLinearVelocity().y);
+            }
 
     }
     private void muoviAsseY(LivingEntity p, float delta){
 
-        if (!isCollidingVertically) {
+
             float speed = p.statistiche().speed();
             float y = p.getY();
 
-            if (giu)
-                p.setY(y - speed * (float) delta);
-            if (su)
-                p.setY(y + speed * (float) delta);
-            p.stati().setInCollisione(false);
-        }
+            if (giu){
+                p.body.setLinearVelocity(p.body.getLinearVelocity().x, -speed);
+            }
+            if (su){
+                p.body.setLinearVelocity(p.body.getLinearVelocity().x, +speed);
+            }
+
+            if(!giu && !su){
+                p.body.setLinearVelocity(p.body.getLinearVelocity().x, 0);
+            }
 
     }
 }

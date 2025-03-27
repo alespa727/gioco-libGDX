@@ -24,7 +24,7 @@ public class Pathfinder implements Disposable{
     private Heuristic<Node> heuristic;
     private IndexedAStarPathFinder<Node> pathFinder;
     private final DefaultGraphPath<Node> path;
-    private final Cooldown cooldown = new Cooldown(2f);
+    private final Cooldown cooldown = new Cooldown(0.8f);
 
     public Pathfinder(LivingEntity entity) {
         this.path = new DefaultGraphPath<>();
@@ -36,7 +36,11 @@ public class Pathfinder implements Disposable{
 
     public void countdown(float delta) {
         cooldown.update(delta);
-
+        if (cooldown.isReady) {
+            cooldown.reset(0.8f);
+            path.clear();
+            entity.movement().searchingfornext = true;
+        }
     }
 
     public void renderPath(float x, float y, float delta) {

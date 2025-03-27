@@ -54,8 +54,9 @@ public class GameGraph implements IndexedGraph<Node> {
 
     @Override
     public Array<Connection<Node>> getConnections(Node fromNode) {
-        // Restituisce tutte le connessioni di un nodo
-        return fromNode.connessioni;
+
+        return fromNode.getConnections();
+
     }
 
     @Override

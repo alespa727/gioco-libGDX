@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.screens.gameScreen.GameScreen;
 import io.github.ale.screens.gameScreen.camera.CameraManager;
 import io.github.ale.screens.gameScreen.entityType.EntityManager;
@@ -40,7 +41,10 @@ public class Map {
     public static boolean isLoaded=false;
     private EntityManager manager;
 
-    public Map(OrthographicCamera camera, String name, EntityManager manager){
+    private final MapManager mapManager;
+
+    public Map(OrthographicCamera camera, String name, EntityManager manager, MapManager mapManager){
+        this.mapManager=mapManager;
         temp = new Rectangle();
         this.manager=manager;
         this.camera=camera;
@@ -133,6 +137,41 @@ public class Map {
         }
     }
 
+    public void createCollision() {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (collisions[i][j]){
+                    // definizione del blocco
+                    BodyDef bodyDef = new BodyDef();
+                    bodyDef.type = BodyDef.BodyType.StaticBody; // blocco statico
+                    bodyDef.position.set(i+0.5f, j+0.5f);
+
+                    // crea il blocco
+                    Body body = manager.world.createBody(bodyDef);
+
+                    // definisci la forma
+                    PolygonShape boxShape = new PolygonShape();
+                    boxShape.setAsBox(0.51f, 0.51f);
+
+
+                    // definisci le proprietà fisiche
+                    FixtureDef fixtureDef = new FixtureDef();
+                    fixtureDef.shape = boxShape;
+                    fixtureDef.density = 1f;
+                    fixtureDef.friction = 0f;
+                    fixtureDef.restitution = 0f;
+
+                    // collega le proprietà fisiche al corpo
+                    body.createFixture(fixtureDef);
+                    // dispose
+                    boxShape.dispose();
+                }
+            }
+        }
+
+    }
+
+
 
 
     public static int width(){
@@ -163,27 +202,6 @@ public class Map {
             }
         }
         //System.out.println(controlli);
-        return false;
-    }
-
-    public static boolean checkRectangleCollision(float x, float y, float width, float height){
-        temp.set(x, y, width, height);
-        int minTileX = Math.max(0, (int) (CameraManager.getFrustumCorners()[0].x-2f));
-        int maxTileX = Math.min(Map.width - 1, (int) (CameraManager.getFrustumCorners()[2].x+2f));
-        int minTileY = Math.max(0, (int) (CameraManager.getFrustumCorners()[0].y-2f));
-        int maxTileY = Math.min(Map.height - 1, (int) (CameraManager.getFrustumCorners()[2].y+2f));
-        /*System.out.print(CameraManager.limiti()[0].x);
-        System.out.print(" "+CameraManager.limiti()[0].y);
-        System.out.print(" "+CameraManager.limiti()[2].x);
-        System.out.println(" "+CameraManager.limiti()[2].y);*/
-        for (int i = minTileX; i <= maxTileX; i++) {
-            for (int j = minTileY; j <= maxTileY; j++) {
-                if (collisionBoxes[i][j]!=null && temp.overlaps(collisionBoxes[i][j])) {
-                    return true;
-                }
-            }
-        }
-
         return false;
     }
 

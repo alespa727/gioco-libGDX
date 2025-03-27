@@ -30,7 +30,7 @@ public enum EnemyStates implements State<Enemy> {
             if(entity.direzione().y !=0f && (entity.direzione().y == 1f || entity.direzione().y == -1f)){
                 entity.direzione().scl(1f, 0.5f);
             }
-            if (!entity.manager.player().hitbox().overlaps(entity.range())) {
+            if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro())>1.5f) {
                 entity.statemachine().changeState(EnemyStates.PURSUE);
             }
         }
@@ -45,10 +45,6 @@ public enum EnemyStates implements State<Enemy> {
             return false;
         }
 
-
-        private float roundToOne(float value) {
-            return value >= 0 ? 1 : -1;
-        }
 
         public Vector2 calculateVector(Vector2 from, Vector2 to) {
             // Differenza tra i due punti
@@ -93,6 +89,7 @@ public enum EnemyStates implements State<Enemy> {
         @Override
         public void exit(Enemy entity) {
             entity.pathfinder().clear();
+            entity.body.setLinearVelocity(0, 0);
         }
 
         @Override

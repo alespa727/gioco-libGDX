@@ -8,10 +8,21 @@ public class Node{
     public Array<Connection<Node>> connessioni = new Array<>();
     private int index;
 
+    private boolean walkable = true;
+
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
+    public boolean isWalkable() {
+        return walkable;
+    }
+
+    public void setWalkable(boolean walkable) {
+        this.walkable = walkable;
+    }
+
 
     public int getIndex() {
         return index;

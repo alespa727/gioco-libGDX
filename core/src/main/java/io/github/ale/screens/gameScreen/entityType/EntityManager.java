@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
@@ -34,8 +35,11 @@ public final class EntityManager {
     private int nextEntityId =0;
 
     public final Comparator<Entity> comparator;
+    public final World world;
 
-    public EntityManager(MyGame game) {
+    public EntityManager(MyGame game, World world) {
+
+        this.world = world;
 
         comparator = new Comparator<Entity>() {
 
@@ -53,8 +57,8 @@ public final class EntityManager {
         p.x = 8.5f;
         p.y = 5.5f;
         p.img = new Texture("entities/Finn.png");
-        p.width = 0.5f;
-        p.height = 0.4f;
+        p.width = 16/32f;
+        p.height = 8/16f;
         p.offsetX=0;
         p.offsetY=-0.25f;
         p.direzione = new Vector2(0, -0.5f);
@@ -79,8 +83,8 @@ public final class EntityManager {
         e.x = 8.5f;
         e.y = 8.5f;
         e.img = new Texture("entities/Finn.png");
-        e.width = 0.5f;
-        e.height = 0.4f;
+        e.width = 16/32f;
+        e.height = 8/16f;
         e.offsetX=0;
         e.offsetY=-0.25f;
         e.direzione = new Vector2(0, -0.5f);
@@ -97,7 +101,8 @@ public final class EntityManager {
             @Override
             public void run() {
                 Array<Entity> array = new Array<>();
-                for (int index = 0; index < 10000; index++) { //Oltre le mille inizia a perdere colpi
+                for (int index = 0; index < 100; index++) {
+                    e.y++;//Oltre le mille inizia a perdere colpi
                     e.id = nextEntityId;
                     array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 1.5f));
                     nextEntityId++;

@@ -55,10 +55,9 @@ public class EntityMovementManager {
 
     private void towards(LivingEntity entity, Vector2 target, float delta) {
         Vector2 movementDirection = new Vector2(target).sub(entity.coordinateCentro()).nor();
-        float speed = entity.statistiche().speed() * delta;
+        float speed = entity.statistiche().speed();
         Vector2 movement = movementDirection.scl(speed);
-        entity.setX(entity.getX() + movement.x);
-        entity.setY(entity.getY() + movement.y);
+        entity.body.setLinearVelocity(movement);
 
         if (entity.coordinateCentro().dst(target) < REACHED_THRESHOLD) {
             searchingfornext = true;

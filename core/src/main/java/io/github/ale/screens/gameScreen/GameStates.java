@@ -9,6 +9,8 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import io.github.ale.screens.pauseScreen.PauseScreen;
 import io.github.ale.screens.settings.Settings;
 
+import static io.github.ale.screens.gameScreen.GameScreen.STEP;
+
 public enum GameStates implements State<GameScreen> {
 
     PLAYING {
@@ -26,9 +28,11 @@ public enum GameStates implements State<GameScreen> {
                 screen.accumulator += screen.delta;
 
                 // Aggiorna il gioco finché necessario
-                while (screen.accumulator >= screen.STEP) {
-                    screen.update(screen.STEP, true);
-                    screen.accumulator -= screen.STEP;
+                while (screen.accumulator >= STEP) {
+                    screen.update(STEP, true);
+                    screen.accumulator -= STEP;
+
+                    screen.world.step(STEP, 6, 2); // Fixed timestep simulation
                 }
             }
 

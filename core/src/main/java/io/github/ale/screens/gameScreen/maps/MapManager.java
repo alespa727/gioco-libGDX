@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.music.MusicPlayer;
@@ -20,11 +21,12 @@ public class MapManager {
     private boolean ambienteAperto;
     private final MusicPlayer playlist;
     private final int totalMaps;
-
+    private final World world;
 
     boolean flag;
 
-    public MapManager(OrthographicCamera camera, FitViewport viewport, EntityManager manager, int startingMap){
+    public MapManager(OrthographicCamera camera, FitViewport viewport, EntityManager manager, int startingMap, World world){
+        this.world=world;
         this.manager=manager;
         this.camera=camera;
         this.viewport=viewport;
@@ -33,7 +35,7 @@ public class MapManager {
         this.ambienteAperto=true;
         this.changeMap();
         playlist = new MusicPlayer("music/mymusic.mp3");
-        this.currentMap = new Map(camera, this.nome, manager);
+        this.currentMap = new Map(camera, this.nome, manager, this);
         totalMaps = 2;
     }
 
@@ -62,7 +64,8 @@ public class MapManager {
         }
         currentMapNum++;
         currentMap = null;
-        currentMap = new Map(camera, nome, manager);
+        currentMap = new Map(camera, nome, manager, this);
+        currentMap.createCollision();
         viewport.apply();
     }
 

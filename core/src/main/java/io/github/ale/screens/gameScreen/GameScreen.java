@@ -2,6 +2,9 @@ package io.github.ale.screens.gameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -15,8 +18,6 @@ import io.github.ale.screens.gameScreen.entityType.EntityManager;
 import io.github.ale.screens.gameScreen.gui.Gui;
 import io.github.ale.screens.gameScreen.maps.Map;
 import io.github.ale.screens.gameScreen.maps.MapManager;
-import io.github.ale.screens.pauseScreen.PauseScreen;
-import io.github.ale.screens.settings.Settings;
 
 public class GameScreen implements Screen {
 
@@ -38,7 +39,10 @@ public class GameScreen implements Screen {
     public boolean loaded = false;
     public boolean isPaused = false;
 
+    final World world;
+    private Box2DDebugRenderer debugRenderer;
 
+    Body body;
 
     // Aggiungi la variabile accumulator
     public static final float STEP = 1 / 60f; // Durata fissa per logica (60Hz)
@@ -50,6 +54,9 @@ public class GameScreen implements Screen {
         this.game = game;
         gameState = new DefaultStateMachine<>(this);
         gameState.changeState(GameStates.PLAYING);
+        Box2D.init();
+
+        world = new World(new Vector2(0, 0), true);
     }
 
     @Override
@@ -64,26 +71,44 @@ public class GameScreen implements Screen {
             camera = new CameraManager();   // Configura la camera
             viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
             viewport.apply(); // applica cosa si vede
-            entities = new EntityManager(this.game);
-            mapManager = new MapManager(camera.get(), viewport, entities, 1); // map manager
+            entities = new EntityManager(this.game, world);
+            mapManager = new MapManager(camera.get(), viewport, entities, 1, world); // map manager
             loaded = true;
+
         } else {
             mapManager.getPlaylist().play(0);
             if (!entities.player().stati().isAlive())
                 entities.player().respawn();
         }
+        debugRenderer = new Box2DDebugRenderer();
         isPaused=false;
+        worldCreation();
+    }
+
+    public void worldCreation(){
+
+
+
+
+        // Some debug message
+        System.out.println("Body added to the world!");
+
     }
 
     @Override
     public void render(float delta) {
         this.delta = delta;
+
+
         //System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
         //System.out.println(Gdx.app.getJavaHeap()/1000000 + "MB");
 
         // Pulizia dello schermo
         ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
+
+
+        debugRenderer.render(world, camera.get().combined);
 
     }
 
@@ -154,7 +179,7 @@ public class GameScreen implements Screen {
      * disegna hitbox
      */
     public void drawHitboxes(float delta) {
-        //Map.getGraph().drawConnections(game.renderer);
+        Map.getGraph().drawConnections(game.renderer);
         //Map.getGraph().drawNodes(game.renderer);
         entities.drawDebug();
     }
