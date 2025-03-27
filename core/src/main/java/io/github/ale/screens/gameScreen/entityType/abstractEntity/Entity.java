@@ -146,6 +146,7 @@ public abstract class Entity{
     public void despawn() {
         System.out.println("Entità id " + id() + " despawnata");
         manager.removeEntity(this);
+        manager.world.destroyBody(body);
     }
 
     public void limiti() {

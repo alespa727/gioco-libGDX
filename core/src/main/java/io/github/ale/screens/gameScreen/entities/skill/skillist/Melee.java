@@ -27,7 +27,7 @@ public class Melee extends CombatSkill {
         for (int i = 0; i < inRange.size; i++) {
             entity.getAttackCooldown().reset();
             if (!inRange.get(i).getClass().equals(entity.getClass())) {
-                //inRange.get(i).hit(entity.manager.getAngleToTarget(entity, inRange.get(i)), damage);
+                inRange.get(i).hit(entity.manager.getAngleToTarget(entity, inRange.get(i)), damage);
                 System.out.println("Pugno a " + inRange.get(i).getClass() + " " + inRange.get(i).id());
             }
         }

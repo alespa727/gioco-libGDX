@@ -50,7 +50,7 @@ public abstract class CombatEntity extends LivingEntity {
 
     @Override
     public void hit(float angolo, float damage) {
-        statistiche().inflictDamage(damage, stati().immortality());
+        statistiche().inflictDamage(damage, false);
         dx = (float) Math.cos(Math.toRadians(angolo));
         dy = (float) Math.sin(Math.toRadians(angolo));
         knockback.reset();

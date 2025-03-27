@@ -71,7 +71,7 @@ public final class EntityManager {
         p.imageHeight = 2f;
         p.imageWidth = 2f;
 
-        player = new Player(p, this, 1.5f);
+        player = new Player(p, this, 0.7f);
 
         nextEntityId++;
 
@@ -101,7 +101,7 @@ public final class EntityManager {
             @Override
             public void run() {
                 Array<Entity> array = new Array<>();
-                for (int index = 0; index < 100; index++) {
+                for (int index = 0; index < 1; index++) {
                     e.y++;//Oltre le mille inizia a perdere colpi
                     e.id = nextEntityId;
                     array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 1.5f));

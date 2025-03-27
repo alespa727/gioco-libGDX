@@ -33,6 +33,7 @@ public enum EnemyStates implements State<Enemy> {
             if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro())>1.5f) {
                 entity.statemachine().changeState(EnemyStates.PURSUE);
             }
+            entity.checkIfDead();
         }
 
         @Override
