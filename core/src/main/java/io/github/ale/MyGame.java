@@ -3,8 +3,7 @@ package io.github.ale;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import io.github.ale.screens.defeatScreen.DefeatScreen;
-import io.github.ale.screens.gameScreen.GameScreen;
+import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.mainScreen.MainScreen;
 
 public class MyGame extends com.badlogic.gdx.Game{

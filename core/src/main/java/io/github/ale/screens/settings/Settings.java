@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,6 +26,8 @@ public class Settings implements Screen {
     private Table root;
     private Table table;
 
+    TextButton.TextButtonStyle buttonStyle;
+    Label.LabelStyle labelStyle;
     // I pulsanti sono static final int
 
     private static int[] pulsanti = new int[]{ // Tasti dei pulsanti
@@ -33,8 +38,8 @@ public class Settings implements Screen {
         Input.Keys.SHIFT_LEFT, // 4
         Input.Keys.E, // 5
         Input.Keys.F, // 6
-        Input.Keys.SPACE, // 7
-        Input.Keys.ESCAPE // 8
+        Input.Keys.ESCAPE, // 7
+        Input.Keys.SPACE // 8
     };
     final String[] comandi = new String[]{ // Array descrizione tasti
         "Su",
@@ -62,6 +67,18 @@ public class Settings implements Screen {
         root = new Table(); // Creo la tabella che conterra' quella principale
         root.setFillParent(true);
         skin = new Skin(Gdx.files.internal("metal-ui.json")); // Creo la skin che conterra' i dati
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        BitmapFont font;
+        parameter.size = 25;
+        font = generator.generateFont(parameter); // font size 12 pixels
+        buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = font;
+        buttonStyle.fontColor = Color.BLACK;
+        labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.fontColor = Color.BLACK;
         table = new Table(); // Creo una tabella principale
         table.setSize(500, 500); // Assegno la dimensione che avra'
         table.setDebug(true); // per vedere come e' fatta la tabella
@@ -122,7 +139,7 @@ public class Settings implements Screen {
     }
 
     private Label creaLabel(String testo) {
-        Label label = new Label(testo, skin); // Lable che conterra' il testo
+        Label label = new Label(testo, labelStyle); // Lable che conterra' il testo
         label.setTouchable(null); // Rende il testo non editabile
         return label;
     }
@@ -143,7 +160,7 @@ public class Settings implements Screen {
 
             final int ii = i; // faccio una variabile int final per la classe anonima
 
-            bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), skin); // Creo un bottone
+            bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), buttonStyle); // Creo un bottone
             bottoni[i].addListener(new ClickListener() { // Aggiungo il listener al bottone
                 @Override
                 public void clicked(InputEvent event, float x, float y) { // Appena clicco il bottone
@@ -162,7 +179,7 @@ public class Settings implements Screen {
             t.add(label).expand().fill().pad(5); // Aggiungo alla tabella la label col testo + setto una dimensione fissa che deve avere
             t.add(bottoni[i]).expand().fill().pad(5); // Aggiungo alla tabella il bottone col suo listener + setto una dimensione fissa che deve avere
             t.row(); // Vado a capo
-            //t.setDebug(true); per vedere come e' fatta la tabella
+            t.setDebug(true); //per vedere come e' fatta la tabella
         }
 
         table.add(t); // Aggiungo la tabella dei comandi a quella principale
@@ -170,7 +187,7 @@ public class Settings implements Screen {
     }
 
     private void creaBackButton(Table table){
-        TextButton back = new TextButton("Back", skin); // Creo un bottone
+        TextButton back = new TextButton("Back", buttonStyle); // Creo un bottone
         back.addListener(new ClickListener() { // Aggiungo un listener al bottone per il click
             @Override
             public void clicked(InputEvent event, float x, float y) { // Quando c'è il click del bottone
