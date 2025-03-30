@@ -15,7 +15,6 @@ import io.github.ale.MyGame;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.gui.Gui;
-import io.github.ale.screens.game.maps.Map;
 import io.github.ale.screens.game.maps.MapManager;
 
 public class GameScreen implements Screen {
@@ -41,8 +40,6 @@ public class GameScreen implements Screen {
     final World world;
     private Box2DDebugRenderer debugRenderer;
 
-    Body body;
-
     // Aggiungi la variabile accumulator
     public static final float STEP = 1 / 60f; // Durata fissa per logica (60Hz)
     public float accumulator = 0f;
@@ -59,69 +56,71 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void show() { //METODO CREATE
-        if (!loaded) {
-            System.out.println("GameScreen loaded");
-            rect = new Gui(this);
-            stage = new Stage(new ScreenViewport());
-            root = new Table();
-            root.setFillParent(true);
-            stage.addActor(root);
-            camera = new CameraManager();   // Configura la camera
-            viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
-            viewport.apply(); // applica cosa si vede
-            entities = new EntityManager(this.game, world);
-            mapManager = new MapManager(camera.get(), viewport, entities, 1, world); // map manager
-            loaded = true;
+    public void render(float delta) {
+        updateDeltaTime(delta);
 
-        } else {
-            mapManager.getPlaylist().play(0);
-            if (!entities.player().stati().isAlive())
-                entities.player().respawn();
-        }
+        ScreenUtils.clear(0, 0, 0, 1);
+
+        gameState.update();
+
+        Box2DDebugRender();
+    }
+
+    @Override
+    public void show() { //METODO CREATE
+        if (!loaded) load();
+
+        mapManager.getPlaylist().play(0);
+
+        if (!entities.player().stati().isAlive())
+            entities.player().respawn();
 
         debugRenderer = new Box2DDebugRenderer();
         debugRenderer.setDrawVelocities(true);
+
         isPaused=false;
+    }
 
+    public void load(){
+        System.out.println("GameScreen loaded");
+        rect = new Gui(this);
+        stage = new Stage(new ScreenViewport());
+        root = new Table();
+        root.setFillParent(true);
+        stage.addActor(root);
+        camera = new CameraManager();   // Configura la camera
+        viewport = new FitViewport(32f, 18f, camera.get()); // grandezza telecamera
+        viewport.apply(); // applica cosa si vede
+        entities = new EntityManager(this.game, world);
+        mapManager = new MapManager(camera.get(), viewport, entities, 1, world); // map manager
+        loaded = true;
     }
 
 
-    @Override
-    public void render(float delta) {
-        this.delta = delta;
-
-
-        //System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
-        //System.out.println(Gdx.app.getJavaHeap()/1000000 + "MB");
-
-        // Pulizia dello schermo
-        ScreenUtils.clear(0, 0, 0, 1);
-        gameState.update();
-
-
-        debugRenderer.render(world, camera.get().combined);
-
+    public void updateDeltaTime(float deltaTime){
+        this.delta = deltaTime;
     }
-
 
     // Mostra i valori della memoria heap usati in byte
-    public void mostraCalcoloHeap() {
+    public void performanceInfo() {
+        System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
         // Calcola la memoria Heap in byte
         System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal java
         System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB"); // Memoria Heap usata dal dispositivo
     }
 
-
+    public void Box2DDebugRender(){
+        debugRenderer.render(world, camera.get().combined);
+    }
 
     /**
      * Aggiorna tutto il necessario
      */
-    public void update(float delta, boolean boundaries) {
+    public void update(float delta) {
         elapsedTime += delta; // Incrementa il tempo totale qui
-        mapManager.checkInput(); // Gestisci input per la mappa
+        mapManager.render(); // Gestisci input per la mappa
         entities.render(delta); // Aggiorna entità
-        updateCamera(boundaries); // Aggiorna telecamera
+        updateCamera(true); // Aggiorna telecamera
     }
 
     /**
@@ -129,8 +128,8 @@ public class GameScreen implements Screen {
      */
     public void draw(float delta) {
         mapManager.draw();
-        //drawHitboxes(delta);
         drawOggetti(delta);
+        drawHitboxes(delta);
         drawGUI(delta);
     }
 
@@ -171,10 +170,11 @@ public class GameScreen implements Screen {
      * disegna hitbox
      */
     public void drawHitboxes(float delta) {
-        maps().debugDraw(game.renderer);
+        //maps().debugDraw(game.renderer);
         //Map.getGraph().drawConnections(game.renderer);
         //Map.getGraph().drawNodes(game.renderer);
         //entities.drawDebug();
+
     }
 
     /**

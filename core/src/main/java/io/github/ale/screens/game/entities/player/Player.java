@@ -1,15 +1,14 @@
 package io.github.ale.screens.game.entities.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entityType.EntityManager;
-import io.github.ale.screens.game.entityType.abstractEntity.Entity;
-import io.github.ale.screens.game.entityType.abstractEntity.EntityConfig;
-import io.github.ale.screens.game.entityType.combatEntity.CombatEntity;
+import io.github.ale.screens.game.entityType.entity.Entity;
+import io.github.ale.screens.game.entityType.entity.EntityConfig;
+import io.github.ale.screens.game.entityType.combat.CombatEntity;
 import io.github.ale.screens.game.entities.player.movement.PlayerMovementManager;
 import io.github.ale.screens.game.entities.skill.skillist.Melee;
 import io.github.ale.screens.settings.Settings;
@@ -22,10 +21,12 @@ public class Player extends CombatEntity {
     private final Cooldown direzione = new Cooldown(0.5f);
     private int count=0;
 
+
+
     // Costruttore
     public Player(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager, attackcooldown);
-        this.movement = new PlayerMovementManager();
+        this.movement = new PlayerMovementManager(this);
         skillset().add(new Melee(this, "pugno", "un pugno molto forte!", 20));
         stati().setImmortality(true);
     }
@@ -43,7 +44,6 @@ public class Player extends CombatEntity {
     @Override
     public final void create() {
         System.out.println("Player creato");
-
     }
 
     public Vector2 predizione(Entity e){
@@ -77,11 +77,12 @@ public class Player extends CombatEntity {
         movement.update(this);
         setIsAttacking(Gdx.input.isKeyPressed(Settings.getPulsanti()[6]));
         checkIfDead();
+        limitSpeed();
     }
 
     @Override
     public void cooldown(float delta){
-        attackCooldown(delta);
+        attackCooldown();
         damageCooldown(delta);
         salvadirezionecooldown(delta);
     }

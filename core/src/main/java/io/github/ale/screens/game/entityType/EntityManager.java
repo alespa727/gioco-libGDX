@@ -10,20 +10,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.MyGame;
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.defeatScreen.DefeatScreen;
+import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entities.player.Player;
-import io.github.ale.screens.game.entityType.abstractEnemy.Enemy;
-import io.github.ale.screens.game.entityType.abstractEntity.Entity;
-import io.github.ale.screens.game.entityType.abstractEntity.EntityConfig;
-import io.github.ale.screens.game.entityType.combatEntity.CombatEntity;
-import io.github.ale.screens.game.entityType.entityFactories.EnemyFactory;
-import io.github.ale.screens.game.entityType.livingEntity.LivingEntity;
+import io.github.ale.screens.game.entityType.enemy.Enemy;
+import io.github.ale.screens.game.entityType.enemy.enemyStates.EnemyStates;
+import io.github.ale.screens.game.entityType.entity.Entity;
+import io.github.ale.screens.game.entityType.entity.EntityConfig;
+import io.github.ale.screens.game.entityType.combat.CombatEntity;
+import io.github.ale.screens.game.entityType.factories.EnemyFactory;
+import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 
 public final class EntityManager {
     private final MyGame game;
@@ -37,6 +38,8 @@ public final class EntityManager {
     public final World world;
 
     private Cooldown cooldown;
+
+    public static final short RANGE = 0x0010;
 
     public EntityManager(MyGame game, World world) {
 
@@ -55,6 +58,7 @@ public final class EntityManager {
         this.game = game;
         EntityConfig p = new EntityConfig();
         p.id = nextEntityId;
+        p.nome = "player";
         p.x = 8.5f;
         p.y = 5.5f;
         p.img = new Texture("entities/Finn.png");
@@ -98,20 +102,17 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Array<Entity> array = new Array<>();
-                for (int index = 0; index < 4; index++) {
-                    e.y++;//Oltre le mille inizia a perdere colpi
-                    e.id = nextEntityId;
-                    array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 1.5f));
-                    nextEntityId++;
-                }
-                Gdx.app.postRunnable(() -> entity.addAll(array));
-            }
-        }).start();
 
+        Array<Entity> array = new Array<>();
+        for (int index = 0; index < 100; index++) {
+            e.y++;//Oltre le mille inizia a perdere colpi
+            e.id = nextEntityId;
+            array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 1.5f));
+            nextEntityId++;
+        }
+        entity.addAll(array);
+
+        setEnemyRangeContactListener();
     }
 
     public void draw(float elapsedTime){
@@ -200,7 +201,8 @@ public final class EntityManager {
             if (e.stati().inCollisione()) game.renderer.setColor(Color.RED);
             else game.renderer.setColor(Color.BLACK);
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) e.drawHitbox(game.renderer);
-
+            game.renderer.setColor(Color.WHITE);
+            game.renderer.rectLine(e.body.getPosition(), player.body.getPosition(), 0.1f);
         }
         game.renderer.end();
     }
@@ -309,7 +311,46 @@ public final class EntityManager {
         return angle < 0 ? angle + 360 : angle;
     }
 
-    public boolean isPaused(){
-        return game.gameScreen.isPaused;
+    public void setEnemyRangeContactListener(){
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+
+                if (fixtureA.getFilterData().categoryBits == RANGE && fixtureB.getBody().getUserData().equals(player)) {
+                    Enemy combatEntity1 = (Enemy) fixtureA.getBody().getUserData();
+                    combatEntity1.setIsAttacking(true);
+                    combatEntity1.attackCooldown();
+                    System.out.println("BEGIN CONTACT");
+
+                }
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+
+
+                if (fixtureA.getFilterData().categoryBits == RANGE && fixtureB.getBody().getUserData().equals(player) && !fixtureA.getBody().getUserData().equals(player) ) {
+                    Enemy combatEntity1 = (Enemy) fixtureA.getBody().getUserData();
+                    combatEntity1.setIsAttacking(false);
+                    System.out.println("END CONTACT");
+
+                }
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
     }
 }

@@ -3,7 +3,7 @@ package io.github.ale.screens.game.entities.skill.skillist;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.game.entityType.combatEntity.CombatEntity;
+import io.github.ale.screens.game.entityType.combat.CombatEntity;
 
 public class Melee extends CombatSkill {
     private final float damage;
@@ -22,14 +22,7 @@ public class Melee extends CombatSkill {
     @Override
     public void execute() {
         draw();
-        inRange = entity.manager.combatEntity(entity);
-        for (int i = 0; i < inRange.size; i++) {
-            entity.getAttackCooldown().reset();
-            if (!inRange.get(i).getClass().equals(entity.getClass())) {
-                inRange.get(i).hit(entity.coordinateCentro(), damage);
-                System.out.println("Pugno a " + inRange.get(i).getClass() + " " + inRange.get(i).id());
-            }
-        }
+        entity.manager.player().hit(entity, damage);
     }
 
 }

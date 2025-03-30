@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import io.github.ale.screens.game.GameScreen;
-import io.github.ale.screens.mainScreen.MainScreen;
+import io.github.ale.screens.mainmenu.MainScreen;
 
 public class MyGame extends com.badlogic.gdx.Game{
 

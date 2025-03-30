@@ -20,13 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.ale.MyGame;
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.defeatScreen.DefeatScreen;
+import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.game.camera.CameraManager;
-import io.github.ale.screens.game.entityType.abstractEnemy.Enemy;
 
 public class PauseScreen implements Screen{
     MyGame game;
@@ -184,10 +182,10 @@ public class PauseScreen implements Screen{
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
 
         // Disegna l'entità sopra il rettangolo
-        game.batch.begin();
+        /*game.batch.begin();
         game.batch.enableBlending();
         game.batch.draw(background, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        game.batch.end();
+        game.batch.end();*/
         gameScreen.entities().drawEntity(0, delta);
         gameScreen.maps().debugDraw(game.renderer);
 

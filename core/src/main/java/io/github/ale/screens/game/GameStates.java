@@ -23,24 +23,22 @@ public enum GameStates implements State<GameScreen> {
             if (Gdx.input.isKeyPressed(Settings.getPulsanti()[7]))
                 screen.gameState().changeState(GameStates.PAUSED);
 
-            if (!screen.isPaused) {
                 screen.accumulator += screen.delta;
 
                 // Aggiorna il gioco finché necessario
                 while (screen.accumulator >= STEP) {
-                    screen.update(STEP, true);
+                    screen.update(STEP);
                     screen.accumulator -= STEP;
 
-                    screen.world.step(STEP, 6, 2); // Fixed timestep simulation
+                    screen.world.step(STEP, 8, 3);
                 }
-            }
+
 
             // Disegna il gioco
             screen.draw(screen.delta);
 
             // Pausa
-            if (Gdx.input.isKeyJustPressed(Settings.getPulsanti()[7]) && !screen.isPaused) {
-                screen.isPaused = true;
+            if (Gdx.input.isKeyJustPressed(Settings.getPulsanti()[7])) {
                 screen.game.setScreen(new PauseScreen(screen.game, screen));
             }
         }
@@ -64,8 +62,7 @@ public enum GameStates implements State<GameScreen> {
 
         @Override
         public void update(GameScreen screen) {
-            if (!screen.isPaused)
-                screen.gameState().changeState(GameStates.PLAYING);
+
         }
 
         @Override

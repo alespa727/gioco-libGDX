@@ -1,6 +1,6 @@
 package io.github.ale.screens.game.entities.skill.skillist;
 
-import io.github.ale.screens.game.entityType.combatEntity.CombatEntity;
+import io.github.ale.screens.game.entityType.combat.CombatEntity;
 
 public abstract class CombatSkill extends Skill {
     protected CombatEntity entity;

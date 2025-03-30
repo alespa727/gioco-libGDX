@@ -1,9 +1,9 @@
 package io.github.ale.screens.game.entities.enemy.umani;
 
 import io.github.ale.screens.game.entityType.EntityManager;
-import io.github.ale.screens.game.entityType.abstractEnemy.enemyStates.EnemyStates;
-import io.github.ale.screens.game.entityType.abstractEntity.EntityConfig;
-import io.github.ale.screens.game.entityType.abstractEnemy.Enemy;
+import io.github.ale.screens.game.entityType.enemy.enemyStates.EnemyStates;
+import io.github.ale.screens.game.entityType.entity.EntityConfig;
+import io.github.ale.screens.game.entityType.enemy.Enemy;
 import io.github.ale.screens.game.entities.skill.skillist.Melee;
 
 public final class Finn extends Enemy {

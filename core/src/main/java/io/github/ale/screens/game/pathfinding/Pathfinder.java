@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.game.entityType.livingEntity.LivingEntity;
+import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 import io.github.ale.screens.game.maps.Map;
 import io.github.ale.screens.game.maps.MapManager;
 
@@ -47,8 +47,9 @@ public class Pathfinder implements Disposable{
 
     public void calculatePathTo(float x, float y){
             //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
-            if (Map.isGraphLoaded && map != MapManager.currentmap()) {
-                map = MapManager.currentmap();
+
+            if (Map.isGraphLoaded && map != MapManager.currentMap()) {
+                map = MapManager.currentMap();
                 pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
                 search(x, y);
                 if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));

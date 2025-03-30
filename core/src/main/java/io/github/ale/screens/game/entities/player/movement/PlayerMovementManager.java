@@ -2,11 +2,13 @@ package io.github.ale.screens.game.entities.player.movement;
 
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.ale.screens.game.entityType.livingEntity.LivingEntity;
+import io.github.ale.screens.game.entities.player.Player;
+import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 import io.github.ale.screens.game.entities.player.KeyHandlerPlayer;
-import io.github.ale.screens.game.entityType.livingEntity.movement.StatiDiMovimento;
+import io.github.ale.screens.game.entityType.mobs.movement.StatiDiMovimento;
 
 public class PlayerMovementManager{
+    private final Player player;
     private final KeyHandlerPlayer keyH;
     private boolean su;
     private boolean giu;
@@ -19,7 +21,8 @@ public class PlayerMovementManager{
     private StatiDiMovimento stato;
     private Vector2 last;
 
-    public PlayerMovementManager() {
+    public PlayerMovementManager(Player player) {
+        this.player = player;
         keyH = new KeyHandlerPlayer();
         last = new Vector2();
     }
@@ -32,15 +35,15 @@ public class PlayerMovementManager{
 
     public void update(LivingEntity p) {
         keyH.input();
-        speedMultiplier(p);
-        movimento(p, p.delta);
+        speedMultiplier();
+        movimento(p.delta);
     }
 
     /**
      * input sprint
      */
 
-    private void speedMultiplier(LivingEntity p) {
+    private void speedMultiplier() {
 
         final float sprintSpeedMultiplier = 1.5f;
         final float baseSpeedMultiplier = 1f;
@@ -50,25 +53,22 @@ public class PlayerMovementManager{
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
         boolean fermo = (!su && !giu && !sinistra && !destra);
 
-        float speed;
-
         if (sprint) {
-            p.statistiche().setSpeedBuff(sprintSpeedMultiplier);
-        }else p.statistiche().setSpeedBuff(baseSpeedMultiplier);
+            player.statistiche().setSpeedBuff(sprintSpeedMultiplier);
+        }else player.statistiche().setSpeedBuff(baseSpeedMultiplier);
 
         if (diagonale) {
             if (sprint)
-                p.statistiche().setSpeedBuff(sprintSpeedMultiplier/1.41f);
-            else p.statistiche().setSpeedBuff(baseSpeedMultiplier/1.41f);
+                player.statistiche().setSpeedBuff(sprintSpeedMultiplier/1.41f);
+            else player.statistiche().setSpeedBuff(baseSpeedMultiplier/1.41f);
         }
     }
 
     /**
      * gestisce il movimento in base agli input
      *
-     * @param p player
      */
-    private void movimento(LivingEntity p, float delta) {
+    private void movimento(float delta) {
         su = keyH.su;
         giu = keyH.giu;
         sinistra = keyH.sinistra;
@@ -93,112 +93,91 @@ public class PlayerMovementManager{
 
         switch (stato) {
             case OPPOSTOY -> {
+                player.body.setLinearDamping(20f);
                 if (sinistra || destra) {
-                    p.direzione().y=0;
-                    aggiornaDirezioneX(p);
+                    player.body.setLinearDamping(3f);
+                    player.direzione().y=0;
+                    aggiornaDirezione();
 
-                    muoviAsseX(p, delta);
+                    muoviAsseX();
                 }else{
-                    addNotMoving(p);
+                    addNotMoving();
                 }
             }
             case OPPOSTOX -> {
+                player.body.setLinearDamping(20f);
                 if (su || giu) {
-                    p.direzione().x=0;
-                    aggiornaDirezioneY(p);
-                    muoviAsseY(p, delta); //MUOVE IL PLAYER SE PREME ALTRI TASTI
+                    player.body.setLinearDamping(3f);
+                    player.direzione().x=0;
+                    aggiornaDirezione();
+                    muoviAsseY(); //MUOVE IL PLAYER SE PREME ALTRI TASTI
                 }else{
-                    addNotMoving(p);
+                    addNotMoving();
                 }
             }
             case ANYKEY -> {
-                aggiornaDirezioneY(p);
-                muoviAsseY(p, delta);
-                aggiornaDirezioneX(p);
-                muoviAsseX(p, delta);
+                player.body.setLinearDamping(3f);
+                aggiornaDirezione();
+                muoviAsseY();
+                aggiornaDirezione();
+                muoviAsseX();
+
             }
             case NOTMOVING -> {
-                addNotMoving(p);
+                player.body.setLinearDamping(20f);
+                addNotMoving();
             }
             default -> {
             }
         }
+
     }
 
-    private void addNotMoving(LivingEntity p) {
-
-        if (last.x > 0) {
-            p.direzione().set(0.5f, 0); // Annulla X, mantiene Y
-        }else if(last.x < 0){
-            p.direzione().set(-0.5f, 0); // Annulla X, mantiene Y
+    private void addNotMoving() {
+        Vector2 direction = player.direzione();
+        if (direction.x == 1f || direction.x == -1f) {
+            direction.scl(0.5f, 1f);
         }
-        if (last.y > 0) {
-            p.direzione().set(0, 0.5f); // Annulla X, mantiene Y
-        }else if(last.y < 0){
-            p.direzione().set(0, -0.5f); // Annulla X, mantiene Y
+        if(direction.y == 1f || direction.y == -1f){
+            direction.scl(1f, 0.5f);
         }
 
     }
 
 
-    private void aggiornaDirezioneX(LivingEntity p) {
-        float dx = 0;
+    private void aggiornaDirezione() {
+        Vector2 dir = new Vector2(0, 0);
 
-        if (sinistra && destra) {
-            return;
-        }
+        if (sinistra) dir.x -= 1;
+        if (destra) dir.x += 1;
+        if (su) dir.y += 1;
+        if (giu) dir.y -= 1;
 
-        last = p.direzione();
 
-        // Determina il movimento orizzontale
-        if (sinistra) dx = -1f;
-        if (destra) dx = 1f;
-
-        p.direzione().set(dx, p.direzione().y);
-        //System.out.println(p.direzione());
+        player.direzione().set(dir);
     }
 
-    public void aggiornaDirezioneY(LivingEntity p){
-        float dy = 0;
+    private void muoviAsseX(){
 
-        if (su && giu) {
-            return;
-        }
+        float desiredVelocity = player.statistiche().speed();
 
-        last = p.direzione();
+        Vector2 force = new Vector2(player.direzione()).scl(desiredVelocity).scl(player.body.getMass());
 
-        // Determina il movimento verticale
-        if (su) dy = 1f;
-        if (giu) dy = -1f;
-
-
-        p.direzione().set(p.direzione().x, dy);
-        //System.out.println(p.direzione());
-    }
-
-    private void muoviAsseX(LivingEntity p, float delta){
-
-        float desiredVelocity = p.statistiche().speed();
-
-        if (sinistra) {
-            p.body.setLinearVelocity(-desiredVelocity, p.body.getLinearVelocity().y);
-        }
-
-        if (destra) {
-            p.body.setLinearVelocity(desiredVelocity, p.body.getLinearVelocity().y);
+        if (sinistra || destra) {
+            player.body.applyForceToCenter(force.scl(5),true);
+            player.body.setLinearDamping(5f);
         }
     }
 
-    private void muoviAsseY(LivingEntity p, float delta) {
+    private void muoviAsseY() {
 
-        float desiredVelocity = p.statistiche().speed();
+        float desiredVelocity = player.statistiche().speed();
 
-        if (su) {
-            p.body.setLinearVelocity(p.body.getLinearVelocity().x, desiredVelocity);
-        }
+        Vector2 force = new Vector2(player.direzione()).scl(desiredVelocity).scl(player.body.getMass());
 
-        if (giu) {
-            p.body.setLinearVelocity(p.body.getLinearVelocity().x, -desiredVelocity);
+        if (su || giu) {
+            player.body.applyForceToCenter(force.scl(5),true);
+            player.body.setLinearDamping(5f);
         }
     }
 }

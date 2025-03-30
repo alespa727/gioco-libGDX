@@ -180,18 +180,22 @@ public class GameGraph implements IndexedGraph<Node> {
         return nodeLookup.get(generateKey(x, y));
     }
 
-    /**
-     * Restituisce il nodo più vicino alle coordinate fornite.
-     * @param x Coordinata x
-     * @param y Coordinata y
-     * @return Il nodo più vicino o null se nessun nodo è disponibile.
-     */
     public Node getClosestNode(float x, float y) {
+        Node closestNode = null;
+        float closestDistanceSquared = Float.MAX_VALUE;
 
-        int xRounded = Math.min(Map.width(), Math.max(0, MathUtils.floor(x)));
-        int yRounded = Math.min(Map.height(), Math.max(0, MathUtils.floor(y)));
+        for (Node node : nodeLookup.values()) {
+            float dx = node.getX() - x;
+            float dy = node.getY() - y;
+            float distanceSquared = dx * dx + dy * dy; // Distanza al quadrato (evita Math.sqrt, più efficiente)
 
-        return nodeLookup.get(generateKey(xRounded, yRounded)); // Restituisce il nodo più vicino
+            if (distanceSquared < closestDistanceSquared) {
+                closestDistanceSquared = distanceSquared;
+                closestNode = node;
+            }
+        }
+
+        return closestNode;
     }
 
 }
