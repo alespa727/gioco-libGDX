@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.screens.game.entityType.entity.Entity;
 
-public abstract class MapEvent {
+public abstract class MapEvent{
     protected Vector2 position;
     protected float radius;
 
