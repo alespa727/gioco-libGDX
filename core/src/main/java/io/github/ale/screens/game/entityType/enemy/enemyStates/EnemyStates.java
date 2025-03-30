@@ -20,13 +20,15 @@ public enum EnemyStates implements State<Enemy> {
         Player player;
         @Override
         public void enter(Enemy entity) {
-            //System.out.println(entity.nome()+ " id."+entity.id()+" is Attacking");
+
         }
 
         @Override
         public void update(Enemy entity) {
             if (player == null)
                 player = entity.manager.player();
+
+            entity.attack();
 
             entity.direzione().set(calculateVector(entity.coordinateCentro(), entity.manager.player().coordinateCentro()));
             entity.body.setLinearDamping(10f);
@@ -159,11 +161,11 @@ public enum EnemyStates implements State<Enemy> {
                     return -1; // Ignora il fixture e continua il raycasting
                 }
 
-                if (userData instanceof Player) {
-                    if(start.dst(end) < entity.rangeRadius() && entity.statemachine.getCurrentState() != ATTACKING && filter.categoryBits!= EntityManager.RANGE){
+                if (userData instanceof Player && filter.categoryBits!=EntityManager.RANGE) {
+                    if(start.dst(end) < entity.rangeRadius() && entity.statemachine.getCurrentState() != ATTACKING){
                         entity.statemachine.changeState(ATTACKING);
                     }
-                    if (start.dst(end) > entity.rangeRadius() && filter.categoryBits== EntityManager.RANGE && entity.statemachine.getCurrentState() != PURSUE){
+                    if (start.dst(end) > entity.rangeRadius() && entity.statemachine.getCurrentState() != PURSUE){
                         entity.statemachine.changeState(PURSUE);
                     }
                     return fraction;

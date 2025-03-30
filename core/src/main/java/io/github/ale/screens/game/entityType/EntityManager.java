@@ -5,7 +5,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,7 +18,6 @@ import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entities.player.Player;
 import io.github.ale.screens.game.entityType.enemy.Enemy;
-import io.github.ale.screens.game.entityType.enemy.enemyStates.EnemyStates;
 import io.github.ale.screens.game.entityType.entity.Entity;
 import io.github.ale.screens.game.entityType.entity.EntityConfig;
 import io.github.ale.screens.game.entityType.combat.CombatEntity;
@@ -37,9 +35,11 @@ public final class EntityManager {
     public final Comparator<Entity> comparator;
     public final World world;
 
-    private Cooldown cooldown;
+    private final Cooldown cooldown;
 
+    public static final short WALL = 0;
     public static final short RANGE = 0x0010;
+    public static final short ENEMY = 0x0020;
 
     public EntityManager(MyGame game, World world) {
 
@@ -76,7 +76,7 @@ public final class EntityManager {
         p.imageHeight = 2f;
         p.imageWidth = 2f;
 
-        player = new Player(p, this, 0.7f);
+        player = new Player(p, this);
 
         nextEntityId++;
 
@@ -104,15 +104,14 @@ public final class EntityManager {
 
 
         Array<Entity> array = new Array<>();
-        for (int index = 0; index < 100; index++) {
+        for (int index = 0; index < 1; index++) {
             e.y++;//Oltre le mille inizia a perdere colpi
             e.id = nextEntityId;
-            array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 1.5f));
+            array.add(EnemyFactory.createEnemy("Finn", e, player.manager, 0.75f));
             nextEntityId++;
         }
         entity.addAll(array);
 
-        setEnemyRangeContactListener();
     }
 
     public void draw(float elapsedTime){
@@ -158,12 +157,7 @@ public final class EntityManager {
 
     public void drawEntity(int id, float elapsedTime){
         game.batch.begin();
-        entity.sort(new Comparator<Entity>() {
-            @Override
-            public int compare(Entity o1, Entity o2) {
-                return Float.compare(o1.coordinateCentro().y, o2.coordinateCentro().y);
-            }
-        });
+        entity.sort((o1, o2) -> Float.compare(o1.coordinateCentro().y, o2.coordinateCentro().y));
         for (Entity e : entity) {
             if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y) && e.id()==id) {
                 try{
@@ -207,17 +201,8 @@ public final class EntityManager {
         game.renderer.end();
     }
 
-    public void drawRange(){
-        game.renderer.begin(ShapeRenderer.ShapeType.Line);
-        for (Entity e : entity) {
-            if (e instanceof CombatEntity && CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) ((CombatEntity)e).drawRange(game.renderer);
-        }
-        game.renderer.end();
-    }
-
     public void drawDebug(){
         drawHitbox();
-        drawRange();
         drawPath();
     }
 
@@ -311,46 +296,4 @@ public final class EntityManager {
         return angle < 0 ? angle + 360 : angle;
     }
 
-    public void setEnemyRangeContactListener(){
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-
-                if (fixtureA.getFilterData().categoryBits == RANGE && fixtureB.getBody().getUserData().equals(player)) {
-                    Enemy combatEntity1 = (Enemy) fixtureA.getBody().getUserData();
-                    combatEntity1.setIsAttacking(true);
-                    combatEntity1.attackCooldown();
-                    System.out.println("BEGIN CONTACT");
-
-                }
-
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-
-
-                if (fixtureA.getFilterData().categoryBits == RANGE && fixtureB.getBody().getUserData().equals(player) && !fixtureA.getBody().getUserData().equals(player) ) {
-                    Enemy combatEntity1 = (Enemy) fixtureA.getBody().getUserData();
-                    combatEntity1.setIsAttacking(false);
-                    System.out.println("END CONTACT");
-
-                }
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-
-            }
-        });
-    }
 }

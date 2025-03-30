@@ -1,7 +1,5 @@
-package io.github.ale.screens.game.maps;
+package io.github.ale.screens.game.map;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -11,12 +9,15 @@ import io.github.ale.music.MusicPlayer;
 import io.github.ale.screens.game.entityType.EntityManager;
 
 public class MapManager {
+    private final int defaultMap = 0;
     private final EntityManager manager;
     private final OrthographicCamera camera;
     private final FitViewport viewport;
     private final World world;
     private final MusicPlayer playlist;
     private final int totalMaps = 2;
+
+    public static final float TILE_SIZE = 1/16f;
 
     private Map currentMap;
     private static int currentMapNum;
@@ -31,7 +32,7 @@ public class MapManager {
         currentMapNum = startingMap;
         this.ambienteAperto = true;
 
-        this.changeMap();
+        this.changeMap(defaultMap);
         this.playlist = new MusicPlayer("music/mymusic.mp3");
         this.currentMap = new Map(camera, this.nome, manager, this);
     }
@@ -48,44 +49,33 @@ public class MapManager {
         this.currentMap.draw();
     }
 
-    private void changeMap() {
+    public void changeMap(int map) {
+        System.out.println("cambio mappa");
         if (currentMap != null) {
             currentMap.dispose();
             System.out.println("Mappa: " + currentMapNum);
         }
 
         System.out.println("Mappa: " + currentMapNum);
-        switch (currentMapNum) {
+        switch (map) {
             case 1 -> {
-                nome = "map3";
+                nome = "map";
                 ambienteAperto = true;
                 viewport.setWorldSize(20f, 20f * 9 / 16f);
             }
-            case 2 -> {
-                nome = "map2";
-                ambienteAperto = true;
-                viewport.setWorldSize(15f, 15 * 9 / 16f);
+
+            default -> {
+                nome = "stanza";
+                ambienteAperto = false;
+                viewport.setWorldSize(16f, 16f * 9 / 16f);
             }
-            default -> {}
         }
 
-        if (currentMapNum >= totalMaps) {
-            currentMapNum = 0;
-        }
-        currentMapNum++;
+        currentMapNum=map;
 
         currentMap = new Map(camera, nome, manager, this);
         currentMap.createCollision();
         viewport.apply();
-    }
-
-    /**
-     * Controlla per eventuale cambio mappa
-     */
-    public void render() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-            changeMap();
-        }
     }
 
     public boolean getAmbiente() {

@@ -5,8 +5,6 @@ public class EntityState{
     private boolean isMoving;
     private boolean immortality;
 
-
-
     public boolean isAlive() {
         return isAlive;
     }

@@ -23,8 +23,8 @@ public class Hitbox {
     }
 
     public void adjust(Entity e){
-        this.hitbox.x = e.getX()+e.getSize().width/2-this.hitbox.width/2 + offset.x;
-        this.hitbox.y = e.getY()+e.getSize().height/2-this.hitbox.height/2 + offset.y;
+        this.hitbox.x = e.getX()+e.config().imageWidth/2-this.hitbox.width/2 + offset.x;
+        this.hitbox.y = e.getY()+e.config().imageHeight/2-this.hitbox.height/2 + offset.y;
     }
 
 }

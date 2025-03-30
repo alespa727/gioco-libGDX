@@ -1,6 +1,7 @@
 package io.github.ale.screens.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -15,7 +16,7 @@ import io.github.ale.MyGame;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.gui.Gui;
-import io.github.ale.screens.game.maps.MapManager;
+import io.github.ale.screens.game.map.MapManager;
 
 public class GameScreen implements Screen {
     // Costanti
@@ -107,16 +108,16 @@ public class GameScreen implements Screen {
 
     public void update(float delta) {
         elapsedTime += delta;
-        mapManager.render();
         entities.render(delta);
-        updateCamera(true);
+        boolean ambiente = maps().getAmbiente();
+        updateCamera(ambiente);
     }
 
     public void draw(float delta) {
         mapManager.draw();
         drawOggetti(delta);
         drawHitboxes(delta);
-        drawGUI(delta);
+        if (maps().getAmbiente()) drawGUI(delta);
     }
 
     private void drawGUI(float delta) {
@@ -161,7 +162,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
-        isPaused = false;
         mapManager.getPlaylist().play(0);
         mapManager.getPlaylist().setVolume(0.1f);
         mapManager.getPlaylist().setLooping(0, true);

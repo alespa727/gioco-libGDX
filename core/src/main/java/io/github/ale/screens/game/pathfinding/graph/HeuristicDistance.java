@@ -1,4 +1,4 @@
-package io.github.ale.screens.game.pathfinding;
+package io.github.ale.screens.game.pathfinding.graph;
 
 import com.badlogic.gdx.ai.pfa.Heuristic;
 

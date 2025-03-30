@@ -24,6 +24,7 @@ import io.github.ale.MyGame;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.GameScreen;
+import io.github.ale.screens.game.GameStates;
 import io.github.ale.screens.game.camera.CameraManager;
 
 public class PauseScreen implements Screen{
@@ -118,15 +119,14 @@ public class PauseScreen implements Screen{
         pause = new Cooldown(0.7f);
         pause.reset();
         resume.reset();
-        gameScreen.entities().player().statistiche().gotDamaged=false;
+        gameScreen.entities().player().setHasBeenHit(false);
 
-        stage.setDebugAll(false);
+        stage.setDebugAll(true);
     }
 
     @Override
     public void render(float delta) {
         corners=CameraManager.getFrustumCorners();
-        input();
         drawBackground(delta);
     }
 
@@ -143,6 +143,7 @@ public class PauseScreen implements Screen{
 
         if (resumeRequest) {
             transitionOut(delta);
+            gameScreen.resume();
             return;
         }
 
@@ -152,7 +153,8 @@ public class PauseScreen implements Screen{
 
     public void transitionOut(float delta){
         resume.update(delta);
-        gameScreen.updateCamera(true);
+        boolean boundaries = gameScreen.maps().getAmbiente();
+        gameScreen.updateCamera(boundaries);
         gameScreen.render(delta);
         gameScreen.draw(delta);
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -168,10 +170,9 @@ public class PauseScreen implements Screen{
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         if (resume.isReady) {
-            resumeRequest = false;
-            gameScreen.resume();
-            Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
             game.setScreen(gameScreen);
+            resumeRequest = false;
+            Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
         }
     }
 
@@ -179,15 +180,14 @@ public class PauseScreen implements Screen{
     float y=0;
 
     public void drawPauseMenu(float delta) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            resumeRequest = true;
+        }
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
 
-        // Disegna l'entità sopra il rettangolo
-        /*game.batch.begin();
-        game.batch.enableBlending();
-        game.batch.draw(background, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        game.batch.end();*/
-        gameScreen.entities().drawEntity(0, delta);
         gameScreen.maps().debugDraw(game.renderer);
+        gameScreen.entities().drawEntity(0, delta);
+
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -210,8 +210,9 @@ public class PauseScreen implements Screen{
     public void transitionIn(float delta){
         pause.update(delta);
         gameScreen.updateCamera(false);
-        gameScreen.entities().drawEntity(0, delta);
+
         gameScreen.maps().debugDraw(game.renderer);
+        gameScreen.entities().drawEntity(0, delta);
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -230,17 +231,6 @@ public class PauseScreen implements Screen{
             pauseRequest = false;
             this.alpha = alpha;
             System.out.println("Pause request is ready");
-        }
-
-        //stage.act();
-        //stage.draw();
-
-    }
-
-    public void input(){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && !resumeRequest) {
-            resumeRequest = true;
-            gameScreen.resume();
         }
     }
 

@@ -16,13 +16,13 @@ public class MusicPlayer {
     }
 
     private void initializePlaylist(String path) {
-        new Thread(() -> {
-                add(path);
-                System.out.println("Canzone caricata!");
-                playlist.get(path).setLooping(true);
-                playlist.get(path).setVolume(0.5f);
-                playlist.get(path).play();
-        }).start();
+
+        add(path);
+        System.out.println("Canzone caricata!");
+        playlist.get(path).setLooping(true);
+        playlist.get(path).setVolume(0.5f);
+        playlist.get(path).play();
+
     }
 
     public void addAsincrono(String path) {

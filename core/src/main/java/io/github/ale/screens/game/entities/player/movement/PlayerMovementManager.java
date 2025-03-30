@@ -51,16 +51,15 @@ public class PlayerMovementManager{
         boolean sprint = keyH.sprint;
 
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
-        boolean fermo = (!su && !giu && !sinistra && !destra);
 
         if (sprint) {
-            player.statistiche().setSpeedBuff(sprintSpeedMultiplier);
-        }else player.statistiche().setSpeedBuff(baseSpeedMultiplier);
+            player.setSpeedMultiplier(sprintSpeedMultiplier);
+        }else player.setSpeedMultiplier(baseSpeedMultiplier);
 
         if (diagonale) {
             if (sprint)
-                player.statistiche().setSpeedBuff(sprintSpeedMultiplier/1.41f);
-            else player.statistiche().setSpeedBuff(baseSpeedMultiplier/1.41f);
+                player.setSpeedMultiplier(sprintSpeedMultiplier/1.41f);
+            else player.setSpeedMultiplier(baseSpeedMultiplier/1.41f);
         }
     }
 
@@ -159,7 +158,7 @@ public class PlayerMovementManager{
 
     private void muoviAsseX(){
 
-        float desiredVelocity = player.statistiche().speed();
+        float desiredVelocity = player.speed();
 
         Vector2 force = new Vector2(player.direzione()).scl(desiredVelocity).scl(player.body.getMass());
 
@@ -171,7 +170,7 @@ public class PlayerMovementManager{
 
     private void muoviAsseY() {
 
-        float desiredVelocity = player.statistiche().speed();
+        float desiredVelocity = player.speed();
 
         Vector2 force = new Vector2(player.direzione()).scl(desiredVelocity).scl(player.body.getMass());
 

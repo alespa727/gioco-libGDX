@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.ale.screens.game.entityType.EntityManager;
-import io.github.ale.screens.game.maps.Map;
-import io.github.ale.screens.game.maps.MapManager;
+import io.github.ale.screens.game.map.Map;
+import io.github.ale.screens.game.map.MapManager;
 
 public class CameraManager {
     private static OrthographicCamera camera;

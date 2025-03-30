@@ -31,14 +31,13 @@ public class Gui{
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f, 220, -50);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f+10, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-10, 200*gamescreen.entities().player().statistiche().health()/100, -30);
+        shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f+10, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-10, 200*gamescreen.entities().player().health()/100, -30);
     }
 
     public void skill(){
-        float cooldown = 1f - gamescreen.entities().player().getAttackCooldown().time/gamescreen.entities().player().getAttackCooldown().maxTime;
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-60, 220, -30);
         shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f+10, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-70, 200 * cooldown, -10);
+        shapeRenderer.rect(Gdx.graphics.getHeight()*0.05f+10, Gdx.graphics.getHeight()-Gdx.graphics.getHeight()*0.05f-70, 200, -10);
     }
 }

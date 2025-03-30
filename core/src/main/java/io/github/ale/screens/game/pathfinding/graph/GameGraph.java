@@ -1,14 +1,12 @@
-package io.github.ale.screens.game.pathfinding;
+package io.github.ale.screens.game.pathfinding.graph;
 
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entityType.EntityManager;
-import io.github.ale.screens.game.maps.Map;
 
 import java.util.HashMap;
 

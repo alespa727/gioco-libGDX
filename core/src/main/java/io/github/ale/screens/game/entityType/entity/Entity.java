@@ -8,11 +8,10 @@ import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.screens.game.entityType.EntityManager;
-import io.github.ale.screens.game.entityType.entity.caratteristiche.Dimensioni;
 import io.github.ale.screens.game.entityType.entity.graphics.EntityGraphics;
 import io.github.ale.screens.game.entityType.entity.state.EntityState;
-import io.github.ale.screens.game.maps.Map;
-import io.github.ale.screens.game.pathfinding.Node;
+import io.github.ale.screens.game.map.Map;
+import io.github.ale.screens.game.pathfinding.graph.Node;
 
 public abstract class Entity{
 
@@ -20,6 +19,8 @@ public abstract class Entity{
 
     public Body body;
     float width, height;
+
+    float texturewidth, textureheight;
 
     public final int id;
     public final String nome;
@@ -30,10 +31,9 @@ public abstract class Entity{
     private final EntityConfig config;
     private Node lastNode;
     private Node node;
-    private Dimensioni size;
     private EntityState stati;
-    private Vector2 coordinate;
-    private Vector2 direzione;
+    private final Vector2 coordinate;
+    private final Vector2 direzione;
     private EntityGraphics graphics;
 
     public EntityManager manager;
@@ -46,18 +46,20 @@ public abstract class Entity{
         this.manager = manager;
         this.nome = config.nome;
 
+        this.coordinate = new Vector2();
+
         this.body = createBody(config.x, config.y, config.width, config.height);
 
         this.descrizione = config.descrizione;
         this.id = config.id;
         this.isRendered = false;
 
-        inizializzaEntityGraphics();
-        inizializzaDimensione(new Dimensioni(config.imageWidth, config.imageHeight));
+        this.direzione = new Vector2(config.direzione);
 
-        inizializzaCoordinate(config.x, config.y);
+        inizializzaEntityGraphics();
+
         graphics.setTexture(config.img);
-        inizializzaDirezione(config.direzione);
+
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
         inizializzaAnimazione();
         Gdx.app.postRunnable(this::create);
@@ -96,7 +98,7 @@ public abstract class Entity{
 
         // aggiungo le proprietà fisiche
         body.createFixture(fixtureDef);
-        body.setFixedRotation(false);
+        body.setAngularDamping(1f);
         body.setBullet(true);
 
         // disposa
@@ -118,7 +120,7 @@ public abstract class Entity{
     public void draw(SpriteBatch batch, float elapsedTime) {
         graphics.setAnimation(this);
 
-        batch.draw(graphics.getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), getSize().width, getSize().height);
+        batch.draw(graphics.getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), config.imageWidth, config.imageHeight);
 
         batch.setColor(Color.WHITE);
     }
@@ -144,8 +146,10 @@ public abstract class Entity{
     // Core methods
     public void render(float delta) {
         this.delta = delta;
-        updateEntity(delta);
+
         updateEntityType(delta);
+        updateEntity(delta);
+
         setCoordinate(body.getPosition().x, body.getPosition().y);
     }
 
@@ -185,8 +189,8 @@ public abstract class Entity{
     }
 
     public final void setCoordinate(float x, float y) {
-        this.coordinate.x =x-getSize().width/2;
-        this.coordinate.y = y-getSize().height/2;
+        this.coordinate.x =x- config().imageWidth/2;
+        this.coordinate.y =y - config().imageHeight/2;
     }
 
     public final Vector2 coordinateCentro() {
@@ -207,10 +211,6 @@ public abstract class Entity{
 
     public final void setY(float y) {
         this.coordinate.y = y;
-    }
-
-    public final Dimensioni getSize() {
-        return this.size;
     }
 
     public final EntityGraphics graphics() {
@@ -234,14 +234,6 @@ public abstract class Entity{
         this.graphics = new EntityGraphics();
     }
 
-    public final void inizializzaCoordinate(float x, float y) {
-        coordinate = new Vector2(x - size.width/2, y - size.height/2);
-    }
-
-    public final void inizializzaDirezione(Vector2 direzione) {
-        this.direzione = new Vector2(direzione);
-    }
-
     public final void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving) {
         stati = new EntityState();
         stati.setIsAlive(isAlive);
@@ -252,10 +244,6 @@ public abstract class Entity{
 
     public final void inizializzaAnimazione() {
         this.graphics.inizializzaAnimazione(this);
-    }
-
-    public final void inizializzaDimensione(Dimensioni size) {
-        this.size = size;
     }
 
 }

@@ -9,10 +9,12 @@ import com.badlogic.gdx.utils.Disposable;
 
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entityType.mobs.LivingEntity;
-import io.github.ale.screens.game.maps.Map;
-import io.github.ale.screens.game.maps.MapManager;
+import io.github.ale.screens.game.map.Map;
+import io.github.ale.screens.game.map.MapManager;
+import io.github.ale.screens.game.pathfinding.graph.HeuristicDistance;
+import io.github.ale.screens.game.pathfinding.graph.Node;
 
-public class Pathfinder implements Disposable{
+public class EntityPathFinder implements Disposable{
     private final LivingEntity entity;
     private Node startNode;
     private Node endNode;
@@ -22,7 +24,7 @@ public class Pathfinder implements Disposable{
     private final DefaultGraphPath<Node> path;
     private final Cooldown cooldown = new Cooldown(0.5f);
 
-    public Pathfinder(LivingEntity entity) {
+    public EntityPathFinder(LivingEntity entity) {
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
         cooldown.isReady = true;
