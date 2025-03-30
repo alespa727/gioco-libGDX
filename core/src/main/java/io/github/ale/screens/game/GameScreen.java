@@ -3,6 +3,12 @@ package io.github.ale.screens.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
@@ -46,6 +52,13 @@ public class GameScreen implements Screen {
     private Stage stage;
     private Table root;
 
+    ShaderProgram shaderProgram;
+    ShaderProgram blurShaderX;
+    ShaderProgram blurShaderY;
+    FrameBuffer fbo1;
+    FrameBuffer fbo2;
+
+
     public GameScreen(MyGame game) {
         this.game = game;
         this.gameState = new DefaultStateMachine<>(this);
@@ -53,13 +66,25 @@ public class GameScreen implements Screen {
 
         Box2D.init();
         this.world = new World(new Vector2(0, 0), true);
+
+    }
+
+    private void buildFBO(int width, int height) {
+        fbo1 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
+        fbo2 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
+    }
+
+    private void createShaderProgram() {
+        String vertexShader = Gdx.files.internal("shaders/vertex.glsl").readString();
+        String fragmentShader = Gdx.files.internal("shaders/fragment.glsl").readString();
+        shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
     }
 
     @Override
     public void show() {
+        createShaderProgram();
+        buildFBO(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         if (!loaded) load();
-
-        mapManager.getPlaylist().play(0);
 
         if (!entities.player().stati().isAlive()) {
             entities.player().respawn();
@@ -94,8 +119,30 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         updateDeltaTime(delta);
         ScreenUtils.clear(0, 0, 0, 1);
+        fbo1.begin();
         gameState.update();
         Box2DDebugRender();
+        fbo1.end();
+
+        Texture fboText = fbo1.getColorBufferTexture();
+        TextureRegion fboTextReg = new TextureRegion(fboText);
+        fboTextReg.flip(false, true);
+
+        fbo2.begin();
+        game.batch.begin();
+        game.batch.setShader(null);
+        game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, camera.getViewportWidth(), camera.getViewportHeight());
+        game.batch.setShader(null);
+        game.batch.end();
+        fbo2.end();
+
+        fboText = fbo2.getColorBufferTexture();
+        fboTextReg = new TextureRegion(fboText);
+        fboTextReg.flip(false, true);
+
+        game.batch.begin();
+        game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, camera.getViewportWidth(), camera.getViewportHeight());
+        game.batch.end();
     }
 
     private void updateDeltaTime(float deltaTime) {
@@ -114,9 +161,9 @@ public class GameScreen implements Screen {
     }
 
     public void draw(float delta) {
-        mapManager.draw();
-        drawOggetti(delta);
-        drawHitboxes(delta);
+        mapManager.getCurrentMap().getMapRenderer().setView(camera.get());
+        mapManager.getCurrentMap().getMapRenderer().render();
+        entities.draw(elapsedTime);
         if (maps().getAmbiente()) drawGUI(delta);
     }
 
@@ -124,14 +171,6 @@ public class GameScreen implements Screen {
         rect.draw();
         stage.act();
         stage.draw();
-    }
-
-    private void drawHitboxes(float delta) {
-        // Debugging hitboxes
-    }
-
-    private void drawOggetti(float delta) {
-        entities.draw(elapsedTime);
     }
 
     public void updateCamera(boolean boundaries) {
@@ -151,25 +190,21 @@ public class GameScreen implements Screen {
         game.batch.dispose();
         game.renderer.dispose();
         stage.dispose();
-        mapManager.getPlaylist().empty();
     }
 
     @Override
     public void pause() {
-        mapManager.getPlaylist().stop();
         isPaused = true;
     }
 
     @Override
     public void resume() {
-        mapManager.getPlaylist().play(0);
-        mapManager.getPlaylist().setVolume(0.1f);
-        mapManager.getPlaylist().setLooping(0, true);
+
     }
 
     @Override
     public void hide() {
-        mapManager.getPlaylist().stop();
+
     }
 
     // Getter per componenti principali

@@ -20,7 +20,7 @@ public enum EnemyStates implements State<Enemy> {
         Player player;
         @Override
         public void enter(Enemy entity) {
-
+            entity.body.setLinearDamping(20f);
         }
 
         @Override
@@ -31,7 +31,6 @@ public enum EnemyStates implements State<Enemy> {
             entity.attack();
 
             entity.direzione().set(calculateVector(entity.coordinateCentro(), entity.manager.player().coordinateCentro()));
-            entity.body.setLinearDamping(10f);
             entity.movement().reset();
 
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
@@ -49,7 +48,7 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void exit(Enemy entity) {
-            entity.body.setLinearDamping(1f);
+
         }
 
         @Override
@@ -78,6 +77,7 @@ public enum EnemyStates implements State<Enemy> {
         @Override
         public void enter(Enemy entity) {
             System.out.println(entity.nome()+ " id."+entity.id()+" in Pursuing");
+            entity.body.setLinearDamping(3f);
         }
 
         @Override
@@ -101,7 +101,6 @@ public enum EnemyStates implements State<Enemy> {
         @Override
         public void exit(Enemy entity) {
             entity.pathfinder().clear();
-            entity.body.setLinearVelocity(0, 0);
         }
 
         @Override

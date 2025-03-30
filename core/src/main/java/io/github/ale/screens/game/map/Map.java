@@ -5,11 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -17,7 +14,7 @@ import com.badlogic.gdx.utils.Disposable;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.map.events.ChangeMapEvent;
 import io.github.ale.screens.game.map.events.MapEvent;
-import io.github.ale.screens.game.map.events.MapEventListener;
+import io.github.ale.screens.game.map.events.EventListener;
 import io.github.ale.screens.game.pathfinding.graph.GameGraph;
 
 public class Map implements Disposable {
@@ -60,9 +57,8 @@ public class Map implements Disposable {
         isLoaded = true;
     }
 
-    public void draw() {
-        mapRenderer.setView(camera);
-        mapRenderer.render();
+    public OrthogonalTiledMapRenderer getMapRenderer() {
+        return mapRenderer;
     }
 
     public void debugDraw(ShapeRenderer renderer) {
@@ -171,7 +167,7 @@ public class Map implements Disposable {
             }
 
         }
-        MapEventListener listener = new MapEventListener();
+        EventListener listener = new EventListener();
 
         this.entityManager.world.setContactListener(listener);
     }

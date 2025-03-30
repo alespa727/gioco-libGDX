@@ -185,9 +185,7 @@ public class PauseScreen implements Screen{
         }
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
 
-        gameScreen.maps().debugDraw(game.renderer);
-        gameScreen.entities().drawEntity(0, delta);
-
+        gameScreen.draw(delta);
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -211,9 +209,7 @@ public class PauseScreen implements Screen{
         pause.update(delta);
         gameScreen.updateCamera(false);
 
-        gameScreen.maps().debugDraw(game.renderer);
-        gameScreen.entities().drawEntity(0, delta);
-
+        gameScreen.draw(delta);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 

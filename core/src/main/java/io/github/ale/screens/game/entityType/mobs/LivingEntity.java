@@ -10,7 +10,7 @@ import io.github.ale.screens.game.entityType.entity.EntityConfig;
 import io.github.ale.screens.game.entities.skill.skillist.Skill;
 import io.github.ale.screens.game.entityType.mobs.movement.EntityMovementManager;
 import io.github.ale.screens.game.entities.skill.SkillSet;
-import io.github.ale.screens.game.pathfinding.EntityPathFinder;
+import io.github.ale.screens.game.entityType.mobs.movement.EntityPathFinder;
 
 public abstract class LivingEntity extends Entity {
 

@@ -1,11 +1,11 @@
 package io.github.ale.screens.game.map;
 
+import com.badlogic.gdx.assets.loaders.MusicLoader;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import io.github.ale.music.MusicPlayer;
 import io.github.ale.screens.game.entityType.EntityManager;
 
 public class MapManager {
@@ -14,7 +14,6 @@ public class MapManager {
     private final OrthographicCamera camera;
     private final FitViewport viewport;
     private final World world;
-    private final MusicPlayer playlist;
     private final int totalMaps = 2;
 
     public static final float TILE_SIZE = 1/16f;
@@ -23,6 +22,7 @@ public class MapManager {
     private static int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
+
 
     public MapManager(OrthographicCamera camera, FitViewport viewport, EntityManager manager, int startingMap, World world) {
         this.world = world;
@@ -33,7 +33,6 @@ public class MapManager {
         this.ambienteAperto = true;
 
         this.changeMap(defaultMap);
-        this.playlist = new MusicPlayer("music/mymusic.mp3");
         this.currentMap = new Map(camera, this.nome, manager, this);
     }
 
@@ -41,12 +40,12 @@ public class MapManager {
         return currentMapNum;
     }
 
-    public void debugDraw(ShapeRenderer renderer) {
-        this.currentMap.debugDraw(renderer);
+    public Map getCurrentMap() {
+        return currentMap;
     }
 
-    public void draw() {
-        this.currentMap.draw();
+    public void debugDraw(ShapeRenderer renderer) {
+        this.currentMap.debugDraw(renderer);
     }
 
     public void changeMap(int map) {
@@ -82,7 +81,4 @@ public class MapManager {
         return ambienteAperto;
     }
 
-    public MusicPlayer getPlaylist() {
-        return this.playlist;
-    }
 }

@@ -3,7 +3,7 @@ package io.github.ale.screens.game.entityType.mobs.movement;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.game.entityType.mobs.LivingEntity;
-import io.github.ale.screens.game.pathfinding.graph.Node;
+import io.github.ale.screens.game.pathfinding.graph.node.Node;
 
 public class EntityMovementManager {
     public boolean fermo;
@@ -56,12 +56,12 @@ public class EntityMovementManager {
         Vector2 movementDirection = new Vector2(target).sub(entity.coordinateCentro()).nor();
         float speed = entity.speed();
         Vector2 movement = movementDirection.scl(speed);
-        entity.body.setLinearVelocity(movement);
+        Vector2 force = new Vector2(movement).scl(speed).scl(entity.body.getMass());
+        entity.body.applyForceToCenter(force.scl(2f), true);
 
         if (entity.coordinateCentro().dst(target) < REACHED_THRESHOLD) {
             searchingfornext = true;
             lastNode = node; // Safely mark the current node as reached
-            entity.body.setLinearDamping(10f);
         }else searchingfornext=false;
 
     }

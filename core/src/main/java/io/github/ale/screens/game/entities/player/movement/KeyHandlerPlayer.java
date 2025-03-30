@@ -1,4 +1,4 @@
-package io.github.ale.screens.game.entities.player;
+package io.github.ale.screens.game.entities.player.movement;
 
 import com.badlogic.gdx.Gdx;
 

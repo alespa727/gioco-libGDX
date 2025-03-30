@@ -1,6 +1,7 @@
 package io.github.ale.screens.game.pathfinding.graph;
 
 import com.badlogic.gdx.ai.pfa.Heuristic;
+import io.github.ale.screens.game.pathfinding.graph.node.Node;
 
 public class HeuristicDistance implements Heuristic<Node> {
 

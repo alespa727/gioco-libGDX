@@ -18,7 +18,7 @@ public abstract class CombatEntity extends LivingEntity {
     public CombatEntity(EntityConfig config, EntityManager manager) {
         super(config, manager);
         hitDirection = new Vector2();
-        knockback = new Cooldown(0.15f);
+        knockback = new Cooldown(0.22f);
         knockback.reset();
         damage.reset();
         stati().setImmortality(false);
@@ -71,7 +71,6 @@ public abstract class CombatEntity extends LivingEntity {
     public void damageCooldown(float delta) {
         if (hasBeenHit()) {
             damage.update(delta);
-            body.setLinearDamping(0f);
             if (damage.isReady) {
                 setHasBeenHit(false);
                 damage.reset();

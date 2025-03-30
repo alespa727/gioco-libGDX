@@ -11,7 +11,7 @@ import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.entityType.entity.graphics.EntityGraphics;
 import io.github.ale.screens.game.entityType.entity.state.EntityState;
 import io.github.ale.screens.game.map.Map;
-import io.github.ale.screens.game.pathfinding.graph.Node;
+import io.github.ale.screens.game.pathfinding.graph.node.Node;
 
 public abstract class Entity{
 

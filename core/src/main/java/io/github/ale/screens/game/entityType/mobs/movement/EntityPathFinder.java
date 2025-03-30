@@ -1,4 +1,4 @@
-package io.github.ale.screens.game.pathfinding;
+package io.github.ale.screens.game.entityType.mobs.movement;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
@@ -12,7 +12,7 @@ import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 import io.github.ale.screens.game.map.Map;
 import io.github.ale.screens.game.map.MapManager;
 import io.github.ale.screens.game.pathfinding.graph.HeuristicDistance;
-import io.github.ale.screens.game.pathfinding.graph.Node;
+import io.github.ale.screens.game.pathfinding.graph.node.Node;
 
 public class EntityPathFinder implements Disposable{
     private final LivingEntity entity;

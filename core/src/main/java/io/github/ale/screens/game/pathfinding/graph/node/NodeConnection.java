@@ -1,4 +1,4 @@
-package io.github.ale.screens.game.pathfinding.graph;
+package io.github.ale.screens.game.pathfinding.graph.node;
 
 import com.badlogic.gdx.ai.pfa.Connection;
 
