@@ -1,9 +1,7 @@
 package io.github.ale.screens.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,7 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import io.github.ale.MyGame;
+import io.github.ale.Game;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.gui.Gui;
@@ -29,7 +27,7 @@ public class GameScreen implements Screen {
     public static final float STEP = 1 / 60f; // Durata fissa per logica (60Hz)
 
     // Variabili di stato
-    public final MyGame game;
+    public final Game game;
     public float delta;
     public boolean loaded = false;
     public boolean isPaused = false;
@@ -57,14 +55,13 @@ public class GameScreen implements Screen {
     FrameBuffer fbo2;
 
 
-    public GameScreen(MyGame game) {
+    public GameScreen(Game game) {
         this.game = game;
         this.gameState = new DefaultStateMachine<>(this);
         this.gameState.changeState(GameStates.PLAYING);
 
         Box2D.init();
         this.world = new World(new Vector2(0, 0), true);
-
     }
 
     private void buildFBO(int width, int height) {
@@ -80,6 +77,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Game.assetManager.load("entities/Finn.png", Texture.class);
+        Game.assetManager.finishLoading();
         createShaderProgram();
         buildFBO(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         if (!loaded) load();
@@ -115,11 +114,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         updateDeltaTime(delta);
         fbo1.begin();
         ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
-        Box2DDebugRender();
+        //Box2DDebugRender();
         fbo1.end();
 
         applyShader();

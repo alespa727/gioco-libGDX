@@ -18,10 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.ComandiGioco;
-import io.github.ale.MyGame;
+import io.github.ale.Game;
+import io.github.ale.screens.mainmenu.MainScreen;
 
 public class Settings implements Screen {
-    private final MyGame game;
+    private final Game game;
     private Skin skin;
     private Stage stage;
     private Table root;
@@ -44,7 +45,7 @@ public class Settings implements Screen {
 
     private TextButton bottoni[] = new TextButton[comandi.length]; // Bottoni per cambiare
 
-    public Settings(MyGame game) {
+    public Settings(Game game) {
         this.game = game;
     }
 
@@ -196,7 +197,7 @@ public class Settings implements Screen {
         back.addListener(new ClickListener() { // Aggiungo un listener al bottone per il click
             @Override
             public void clicked(InputEvent event, float x, float y) { // Quando c'è il click del bottone
-                game.setScreen(game.mainScreen); // Modifico quello che si vede (Serve per ritornare alla pagina principale)
+                game.setScreen(new MainScreen(game)); // Modifico quello che si vede (Serve per ritornare alla pagina principale)
             }
         });
 

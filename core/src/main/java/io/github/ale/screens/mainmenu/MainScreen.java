@@ -3,6 +3,9 @@ package io.github.ale.screens.mainmenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,22 +14,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import io.github.ale.MyGame;
+import io.github.ale.Game;
 import io.github.ale.screens.settings.Settings;
 
+import static io.github.ale.Game.assetManager;
+
 public class MainScreen implements Screen {
-    private final MyGame game;
+    private final Game game;
     private Skin skin;
     private Stage stage;
     private Table root;
     private Table table;
 
-    public MainScreen(MyGame game) {
+    private boolean playRequest;
+
+    public MainScreen(Game game) {
         this.game = game;
     }
 
     @Override
     public void show() { //come un costruttore praticamente
+        assetManager.clear();
         stage = new Stage(new ScreenViewport());
 
         Gdx.input.setInputProcessor(stage);

@@ -117,7 +117,6 @@ public class PlayerMovementManager{
     }
 
     private void muoviAsseX(){
-        System.out.println(getForce());
         if (sinistra || destra) {
             player.body.applyForceToCenter(getForce().scl(5),true);
             player.body.setLinearDamping(3f);
@@ -125,7 +124,6 @@ public class PlayerMovementManager{
     }
 
     private void muoviAsseY() {
-        System.out.println(getForce());
         if (su || giu) {
             player.body.applyForceToCenter(getForce().scl(5),true);
             player.body.setLinearDamping(3f);
@@ -135,7 +133,6 @@ public class PlayerMovementManager{
     public Vector2 getForce(){
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
         if (diagonale){
-            System.out.println("DIAGONALE");
             return new Vector2(player.direzione()).scl(player.body.getMass()*player.speed()*1/1.41f).scl(1/1.41f);
         }
         return new Vector2(player.direzione()).scl(player.speed()).scl(player.body.getMass());

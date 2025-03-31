@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
-import io.github.ale.MyGame;
+import io.github.ale.Game;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.camera.CameraManager;
@@ -25,7 +25,7 @@ import io.github.ale.screens.game.entityType.factories.EnemyFactory;
 import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 
 public final class EntityManager {
-    private final MyGame game;
+    private final Game game;
 
     private final Player player;
     private final Array<Entity> entity;
@@ -41,7 +41,7 @@ public final class EntityManager {
     public static final short RANGE = 0x0010;
     public static final short ENEMY = 0x0020;
 
-    public EntityManager(MyGame game, World world) {
+    public EntityManager(Game game, World world) {
 
         this.world = world;
         this.cooldown = new Cooldown(0.5f);
@@ -61,7 +61,7 @@ public final class EntityManager {
         p.nome = "player";
         p.x = 8.5f;
         p.y = 5.5f;
-        p.img = new Texture("entities/Finn.png");
+        p.img = Game.assetManager.get("entities/Finn.png", Texture.class);
         p.width = 16/32f;
         p.height = 8/16f;
         p.offsetX=0;

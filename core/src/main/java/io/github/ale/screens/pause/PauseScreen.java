@@ -20,15 +20,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import io.github.ale.MyGame;
+import io.github.ale.Game;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.GameScreen;
-import io.github.ale.screens.game.GameStates;
 import io.github.ale.screens.game.camera.CameraManager;
+import io.github.ale.screens.mainmenu.MainScreen;
 
 public class PauseScreen implements Screen{
-    MyGame game;
+    Game game;
     GameScreen gameScreen;
 
     private Texture background;
@@ -54,7 +54,7 @@ public class PauseScreen implements Screen{
 
     Vector3[] corners;
 
-    public PauseScreen(MyGame game, GameScreen gameScreen) {
+    public PauseScreen(Game game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
     }
@@ -89,7 +89,7 @@ public class PauseScreen implements Screen{
         MainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(game.mainScreen);
+                game.setScreen(new MainScreen(game));
             }
 
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
