@@ -27,19 +27,8 @@ public class PlayerMovementManager{
 
     public void update(LivingEntity p) {
         keyH.input();
-        speedMultiplier();
         movimento(p.delta);
         movementState.update();
-    }
-
-    private void speedMultiplier() {
-
-        final float sprintSpeedMultiplier = 1.5f;
-        final float baseSpeedMultiplier = 1f;
-
-        boolean sprint = keyH.sprint;
-
-
     }
 
     private void movimento(float delta) {
@@ -50,7 +39,7 @@ public class PlayerMovementManager{
 
         boolean anyKey = su || sinistra || destra || giu;
 
-        if (!anyKey || ((su && giu) && (sinistra && destra))){
+        if (!anyKey){
             movementState.changeState(MovementState.NOTMOVING);
         }
         else if (su && giu){
@@ -131,7 +120,7 @@ public class PlayerMovementManager{
         System.out.println(getForce());
         if (sinistra || destra) {
             player.body.applyForceToCenter(getForce().scl(5),true);
-            player.body.setLinearDamping(5f);
+            player.body.setLinearDamping(3f);
         }
     }
 
@@ -139,7 +128,7 @@ public class PlayerMovementManager{
         System.out.println(getForce());
         if (su || giu) {
             player.body.applyForceToCenter(getForce().scl(5),true);
-            player.body.setLinearDamping(5f);
+            player.body.setLinearDamping(3f);
         }
     }
 
