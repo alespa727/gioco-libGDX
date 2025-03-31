@@ -16,7 +16,7 @@ public abstract class MapEvent{
 
     public void createZone(World world) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(position);
         bodyDef.fixedRotation = true;
 

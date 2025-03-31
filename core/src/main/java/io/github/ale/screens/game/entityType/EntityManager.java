@@ -87,7 +87,7 @@ public final class EntityManager {
         e.descrizione = "Nemico pericoloso";
         e.x = 8.5f;
         e.y = 8.5f;
-        e.img = new Texture("entities/Finn.png");
+        e.img = new Texture("entities/nemico.png");
         e.width = 16/32f;
         e.height = 8/16f;
         e.offsetX=0;

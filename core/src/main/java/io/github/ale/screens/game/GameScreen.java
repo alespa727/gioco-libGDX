@@ -53,8 +53,6 @@ public class GameScreen implements Screen {
     private Table root;
 
     ShaderProgram shaderProgram;
-    ShaderProgram blurShaderX;
-    ShaderProgram blurShaderY;
     FrameBuffer fbo1;
     FrameBuffer fbo2;
 
@@ -118,11 +116,17 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         updateDeltaTime(delta);
-        ScreenUtils.clear(0, 0, 0, 1);
         fbo1.begin();
+        ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
         Box2DDebugRender();
         fbo1.end();
+
+        applyShader();
+
+    }
+
+    public void applyShader(){
 
         Texture fboText = fbo1.getColorBufferTexture();
         TextureRegion fboTextReg = new TextureRegion(fboText);

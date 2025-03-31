@@ -39,17 +39,7 @@ public class PlayerMovementManager{
 
         boolean sprint = keyH.sprint;
 
-        boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
 
-        if (sprint) {
-            player.setSpeedMultiplier(sprintSpeedMultiplier);
-        }else player.setSpeedMultiplier(baseSpeedMultiplier);
-
-        if (diagonale) {
-            if (sprint)
-                player.setSpeedMultiplier(sprintSpeedMultiplier/1.41f);
-            else player.setSpeedMultiplier(baseSpeedMultiplier/1.41f);
-        }
     }
 
     private void movimento(float delta) {
@@ -138,22 +128,27 @@ public class PlayerMovementManager{
     }
 
     private void muoviAsseX(){
-
-        Vector2 force = new Vector2(player.direzione()).scl(player.speed()).scl(player.body.getMass());
-
+        System.out.println(getForce());
         if (sinistra || destra) {
-            player.body.applyForceToCenter(force.scl(5),true);
+            player.body.applyForceToCenter(getForce().scl(5),true);
             player.body.setLinearDamping(5f);
         }
     }
 
     private void muoviAsseY() {
-
-        Vector2 force = new Vector2(player.direzione()).scl(player.speed()).scl(player.body.getMass());
-
+        System.out.println(getForce());
         if (su || giu) {
-            player.body.applyForceToCenter(force.scl(5),true);
+            player.body.applyForceToCenter(getForce().scl(5),true);
             player.body.setLinearDamping(5f);
         }
+    }
+
+    public Vector2 getForce(){
+        boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
+        if (diagonale){
+            System.out.println("DIAGONALE");
+            return new Vector2(player.direzione()).scl(player.body.getMass()*player.speed()*1/1.41f).scl(1/1.41f);
+        }
+        return new Vector2(player.direzione()).scl(player.speed()).scl(player.body.getMass());
     }
 }

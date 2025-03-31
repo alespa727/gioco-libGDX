@@ -78,12 +78,9 @@ public abstract class LivingEntity extends Entity {
     }
 
     public void limitSpeed() {
-        if (Math.abs(body.getLinearVelocity().x) > speed) {
-            body.setLinearVelocity(new Vector2(speed * Math.signum(body.getLinearVelocity().x), body.getLinearVelocity().y));
-        }
-        if (Math.abs(body.getLinearVelocity().y) > speed) {
-            body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, speed * Math.signum(body.getLinearVelocity().y)));
-        }
+       if(body.getLinearVelocity().len() > speed) {
+           body.applyLinearImpulse(body.getLinearVelocity().scl(-1), body.getWorldCenter(), true);
+       }
     }
 
     // --- GESTIONE COMBATTIMENTO ---

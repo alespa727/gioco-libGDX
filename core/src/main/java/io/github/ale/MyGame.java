@@ -3,8 +3,11 @@ package io.github.ale;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import io.github.ale.dialogPkg.toplayerDialog.Dialog;
 import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.mainmenu.MainScreen;
+
+import javax.swing.*;
 
 public class MyGame extends com.badlogic.gdx.Game{
 
@@ -18,6 +21,7 @@ public class MyGame extends com.badlogic.gdx.Game{
         batch = new SpriteBatch(); // praticamente la cosa per disegnare
         renderer = new ShapeRenderer(); // disegna forme
         setScreen(mainScreen);
+        Dialog dialog = new Dialog();
     }
 
     @Override
