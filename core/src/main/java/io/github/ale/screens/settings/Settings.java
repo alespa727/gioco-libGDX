@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import io.github.ale.ComandiGioco;
 import io.github.ale.MyGame;
 
 public class Settings implements Screen {
@@ -28,19 +29,7 @@ public class Settings implements Screen {
 
     TextButton.TextButtonStyle buttonStyle;
     Label.LabelStyle labelStyle;
-    // I pulsanti sono static final int
 
-    private static int[] pulsanti = new int[]{ // Tasti dei pulsanti
-        Input.Keys.W, // 0
-        Input.Keys.A, // 1
-        Input.Keys.S, // 2
-        Input.Keys.D, // 3
-        Input.Keys.SHIFT_LEFT, // 4
-        Input.Keys.E, // 5
-        Input.Keys.F, // 6
-        Input.Keys.ESCAPE, // 7
-        Input.Keys.SPACE // 8
-    };
     final String[] comandi = new String[]{ // Array descrizione tasti
         "Su",
         "Sinistra",
@@ -155,12 +144,28 @@ public class Settings implements Screen {
     // Metodo per creare la tabella dei pulsanti
     private void creaTabellaPulsanti(Table table) {
         Table t = new Table(); // Creo una tabella che conterra' i comandi
+        int pulsanti[] = new int[]{
+            ComandiGioco.getDirezioneNord(),
+            ComandiGioco.getDirezioneOvest(),
+            ComandiGioco.getDirezioneSud(),
+            ComandiGioco.getDirezioneEst(),
+            ComandiGioco.getCORRI(),
+            ComandiGioco.getUSA(),
+            ComandiGioco.getATTACCO(),
+            ComandiGioco.getFERMAGIOCO(),
+            ComandiGioco.getRIPRENDIGIOCO()
+        };
+
         for (int i = 0; i < comandi.length; i++) { // Vado a creare tutti i comandi esistenti di base
             Label label = creaLabel(comandi[i]); // Creo la label che conterra' i dati del comando
 
             final int ii = i; // faccio una variabile int final per la classe anonima
 
-            bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), buttonStyle); // Creo un bottone
+            try {
+                bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), buttonStyle); // Creo un bottone
+            }catch (Exception e){
+                bottoni[i] = new TextButton("", buttonStyle); // Creo un bottone
+            }
             bottoni[i].addListener(new ClickListener() { // Aggiungo il listener al bottone
                 @Override
                 public void clicked(InputEvent event, float x, float y) { // Appena clicco il bottone
@@ -196,13 +201,5 @@ public class Settings implements Screen {
         });
 
         table.add(back); // LO aggiungo alla tabella
-    }
-
-    public static int[] getPulsanti() {
-        return pulsanti;
-    }
-
-    public static void setPulsanti(int[] pulsanti) {
-        Settings.pulsanti = pulsanti;
     }
 }
