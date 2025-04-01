@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import io.github.ale.ComandiGioco;
 import io.github.ale.screens.pause.PauseScreen;
 import io.github.ale.screens.settings.Settings;
 
@@ -21,7 +22,7 @@ public enum GameStates implements State<GameScreen> {
 
         @Override
         public void update(GameScreen screen) {
-            if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if(Gdx.input.isKeyJustPressed(ComandiGioco.getFERMAGIOCO())) {
                 screen.game.setScreen(new PauseScreen(screen.game, screen));
             }
 

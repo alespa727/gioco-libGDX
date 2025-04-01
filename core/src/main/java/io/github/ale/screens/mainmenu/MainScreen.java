@@ -34,7 +34,6 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() { //come un costruttore praticamente
-        assetManager.clear();
         stage = new Stage(new ScreenViewport());
 
         Gdx.input.setInputProcessor(stage);

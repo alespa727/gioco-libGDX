@@ -20,6 +20,7 @@ public class EventListener implements ContactListener {
 
         if (dataA instanceof Entity && dataB instanceof MapEvent) {
             ((MapEvent) dataB).trigger((Entity) dataA);
+            ((MapEvent) dataB).setActive(true);
         }
 
         boolean isPlayerA = dataA instanceof Player;
@@ -48,6 +49,10 @@ public class EventListener implements ContactListener {
         if (!isPlayerB && isPlayerA && isCombatB && isNotRangeB) {
             ((Player) dataA).removeEntity((CombatEntity) dataB);
             System.out.println("Removed combat entity");
+        }
+        if (dataA instanceof Entity && dataB instanceof MapEvent) {
+            ((MapEvent) dataB).trigger((Entity) dataA);
+            ((MapEvent) dataB).setActive(false);
         }
     }
 

@@ -159,6 +159,10 @@ public abstract class Entity{
         manager.world.destroyBody(body);
     }
 
+    public void teleport(Vector2 pos) {
+        body.setTransform(pos, 0f);
+    }
+
     // Getters and setters
     public final EntityConfig config() {
         return new EntityConfig(config);

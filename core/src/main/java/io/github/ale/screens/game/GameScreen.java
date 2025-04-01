@@ -119,7 +119,8 @@ public class GameScreen implements Screen {
         fbo1.begin();
         ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
-        //Box2DDebugRender();
+        mapManager.getCurrentMap().render();
+        Box2DDebugRender();
         fbo1.end();
 
         applyShader();
@@ -162,6 +163,7 @@ public class GameScreen implements Screen {
         entities.render(delta);
         boolean ambiente = maps().getAmbiente();
         updateCamera(ambiente);
+
     }
 
     public void draw(float delta) {
@@ -198,7 +200,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        isPaused = true;
+
     }
 
     @Override

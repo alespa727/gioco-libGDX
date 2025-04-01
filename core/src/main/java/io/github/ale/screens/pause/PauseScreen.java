@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import io.github.ale.ComandiGioco;
 import io.github.ale.Game;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeat.DefeatScreen;
@@ -180,7 +181,7 @@ public class PauseScreen implements Screen{
     float y=0;
 
     public void drawPauseMenu(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        if (Gdx.input.isKeyJustPressed(ComandiGioco.getRIPRENDIGIOCO())) {
             resumeRequest = true;
         }
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero

@@ -1,5 +1,6 @@
 package io.github.ale.screens.game.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -33,8 +34,12 @@ public class Map implements Disposable {
     private final EntityManager entityManager;
     private final MapManager mapManager;
 
-    public Map(OrthographicCamera camera, String name, EntityManager manager, MapManager mapManager) {
+    private Array<MapEvent> events;
+
+    public Map(OrthographicCamera camera, String name, EntityManager manager, MapManager mapManager, float x, float y) {
         TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx"));
+        mapManager.setInChangeMapEvent(false);
+        events = new Array<>();
 
         this.mapManager = mapManager;
         this.entityManager = manager;
@@ -42,7 +47,8 @@ public class Map implements Disposable {
         this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni");
         this.eventLayer = map.getLayers().get("eventi");
 
-        entityManager.player().body.setTransform(eventLayer.getProperties().get("spawnX", Float.class), eventLayer.getProperties().get("spawnY", Float.class), 0);
+        Gdx.app.postRunnable(() -> entityManager.player().teleport(new Vector2(x, y)));
+
 
         width = (Integer) map.getProperties().get("width");
         height = (Integer) map.getProperties().get("height");
@@ -55,6 +61,8 @@ public class Map implements Disposable {
 
         isGraphLoaded = true;
         isLoaded = true;
+
+        createEvents();
     }
 
     public OrthogonalTiledMapRenderer getMapRenderer() {
@@ -72,6 +80,13 @@ public class Map implements Disposable {
             }
         }
         renderer.end();
+    }
+
+    public void render(){
+        for (int i = 0; i < events.size; i++) {
+            MapEvent event = events.get(i);
+            event.update();
+        }
     }
 
     public static GameGraph getGraph() {
@@ -122,7 +137,6 @@ public class Map implements Disposable {
             }
         }
         createBorders();
-        createEvents();
     }
 
     public void createBorders(){
@@ -161,9 +175,11 @@ public class Map implements Disposable {
             float y = object.getProperties().get("y", Float.class)*MapManager.TILE_SIZE;
             float radius = object.getProperties().get("eventRadius", Float.class);
             int map = object.getProperties().get("map", Integer.class);
+            float spawnx = object.getProperties().get("spawnx", Float.class);
+            float spawny = object.getProperties().get("spawny", Float.class);
             if ("changeMap".equals(eventType)) {
-
-                new ChangeMapEvent(new Vector2(x, y), radius, entityManager.world, this.mapManager, map);
+                events.add(new ChangeMapEvent(new Vector2(x, y), radius, entityManager.world, this.mapManager, map, spawnx, spawny));
+                System.out.println("evento aggiunto");
             }
 
         }

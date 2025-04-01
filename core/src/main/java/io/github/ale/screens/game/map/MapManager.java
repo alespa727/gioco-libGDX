@@ -14,7 +14,10 @@ public class MapManager {
     private final OrthographicCamera camera;
     private final FitViewport viewport;
     private final World world;
-    private final int totalMaps = 2;
+
+    private boolean inChangeMapEvent=false;
+
+
 
     public static final float TILE_SIZE = 1/16f;
 
@@ -22,6 +25,7 @@ public class MapManager {
     private static int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
+
 
 
     public MapManager(OrthographicCamera camera, FitViewport viewport, EntityManager manager, int startingMap, World world) {
@@ -32,8 +36,10 @@ public class MapManager {
         currentMapNum = startingMap;
         this.ambienteAperto = true;
 
-        this.changeMap(defaultMap);
-        this.currentMap = new Map(camera, this.nome, manager, this);
+        float defaultx=11, defaulty=11;
+
+        this.changeMap(defaultMap, defaultx, defaulty);
+        this.currentMap = new Map(camera, this.nome, manager, this, defaultx, defaulty);
     }
 
     public static int currentMap() {
@@ -48,7 +54,7 @@ public class MapManager {
         this.currentMap.debugDraw(renderer);
     }
 
-    public void changeMap(int map) {
+    public void changeMap(int map, float x, float y) {
         System.out.println("cambio mappa");
         if (currentMap != null) {
             currentMap.dispose();
@@ -58,7 +64,7 @@ public class MapManager {
         System.out.println("Mappa: " + currentMapNum);
         switch (map) {
             case 1 -> {
-                nome = "map";
+                nome = "corridoio";
                 ambienteAperto = true;
                 viewport.setWorldSize(20f, 20f * 9 / 16f);
             }
@@ -72,7 +78,7 @@ public class MapManager {
 
         currentMapNum=map;
 
-        currentMap = new Map(camera, nome, manager, this);
+        currentMap = new Map(camera, nome, manager, this, x, y);
         currentMap.createCollision();
         viewport.apply();
     }
@@ -81,4 +87,11 @@ public class MapManager {
         return ambienteAperto;
     }
 
+    public boolean isInChangeMapEvent() {
+        return inChangeMapEvent;
+    }
+
+    public void setInChangeMapEvent(boolean inChangeMapEvent) {
+        this.inChangeMapEvent = inChangeMapEvent;
+    }
 }

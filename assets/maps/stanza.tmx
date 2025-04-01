@@ -132,6 +132,11 @@
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
+  <tile id="178">
+   <properties>
+    <property name="solido" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer id="2" name="sfondo" width="20" height="20">
   <data encoding="csv">
@@ -215,6 +220,8 @@
     <property name="eventRadius" type="float" value="1.5"/>
     <property name="eventType" value="changeMap"/>
     <property name="map" type="int" value="1"/>
+    <property name="spawnx" type="float" value="11"/>
+    <property name="spawny" type="float" value="11"/>
    </properties>
   </object>
  </objectgroup>

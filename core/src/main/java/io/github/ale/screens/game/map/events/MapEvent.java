@@ -7,11 +7,20 @@ import io.github.ale.screens.game.entityType.entity.Entity;
 public abstract class MapEvent{
     protected Vector2 position;
     protected float radius;
+    protected boolean active;
 
     public MapEvent(Vector2 position, float radius, World world) {
         this.position = position;
         this.radius = radius;
         this.createZone(world);
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public void createZone(World world) {
@@ -32,5 +41,6 @@ public abstract class MapEvent{
         body.setUserData(this);
     }
 
+    public abstract void update();
     public abstract void trigger(Entity entity);  // Da implementare per ogni evento specifico
 }
