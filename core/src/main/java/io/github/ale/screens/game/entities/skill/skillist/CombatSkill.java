@@ -1,12 +1,13 @@
 package io.github.ale.screens.game.entities.skill.skillist;
 
 import io.github.ale.screens.game.entityType.combat.CombatEntity;
+import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 
 public abstract class CombatSkill extends Skill {
-    protected CombatEntity entity;
+    public final float damage;
 
-    public CombatSkill(CombatEntity entity, String name, String description) {
-        super(name, description);
-        this.entity = entity;
+    public CombatSkill(LivingEntity entity, String name, float damage, String description) {
+        super(entity, name, description);
+        this.damage = damage;
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entities.skill.skillist.player.CloseRangeCombatSkill;
+import io.github.ale.screens.game.entities.skill.skillist.player.Dodge;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.entityType.entity.Entity;
 import io.github.ale.screens.game.entityType.entity.EntityConfig;
@@ -17,6 +18,7 @@ public class Player extends CombatEntity {
     private final PlayerMovementManager movement;
     private final Cooldown direzioneCooldown;
     private final Cooldown attackCooldown;
+    private final Cooldown dodgeCooldown;
     private final Array<Vector2> recentDirections;
     private final Array<CombatEntity> inRange;
     private int count;
@@ -24,12 +26,18 @@ public class Player extends CombatEntity {
     // Costruttore
     public Player(EntityConfig config, EntityManager manager) {
         super(config, manager);
+
         this.movement = new PlayerMovementManager(this);
         this.recentDirections = new Array<>();
         this.inRange = new Array<>();
+
         this.direzioneCooldown = new Cooldown(0.5f);
         this.attackCooldown = new Cooldown(0.8f);
         this.attackCooldown.reset(0);
+        this.dodgeCooldown = new Cooldown(1f);
+        this.dodgeCooldown.reset(0);
+
+        skillset().add(new Dodge(this, "", ""));
         skillset().add(new CloseRangeCombatSkill(this, "", "", 10));
     }
 
@@ -110,8 +118,19 @@ public class Player extends CombatEntity {
         movement.update(this);
         checkIfDead();
         limitSpeed();
+
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             attack();
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.F)) {
+            dodge();
+        }
+    }
+
+    public void dodge() {
+        if (dodgeCooldown.isReady) {
+            getSkill(Dodge.class).execute();
+            dodgeCooldown.reset();
         }
     }
 
@@ -121,6 +140,7 @@ public class Player extends CombatEntity {
     @Override
     public void cooldown(float delta) {
         damageCooldown(delta);
+        dodgeCooldown.update(delta);
         salvadirezionecooldown(delta);
         attackCooldown.update(delta);
     }

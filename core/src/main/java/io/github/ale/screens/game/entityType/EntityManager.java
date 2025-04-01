@@ -97,7 +97,7 @@ public final class EntityManager {
         e.inCollisione = false;
         e.isMoving = false;
         e.hp = 100;
-        e.speed = 1.5f;
+        e.speed = 1.75f;
         e.attackdmg = 20;
         e.imageHeight = 2f;
         e.imageWidth = 2f;
