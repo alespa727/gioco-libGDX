@@ -9,10 +9,17 @@ import io.github.ale.screens.game.entityType.entity.Entity;
 import io.github.ale.screens.game.map.MapManager;
 
 public class ChangeMapEvent extends MapEvent {
+    // Gestore mappa
     private final MapManager mapManager;
-    private float x, y;
+
+    // Coordinate della prossima mappa
+    private final float x;
+    private final float y;
+
+    // Prossima mappa
     private final int map;
 
+    /**Crea l'evento*/
     public ChangeMapEvent(Vector2 position, float radius, World world, MapManager mapManager, int map, float x, float y) {
         super(position, radius, world);
         this.x = x;
@@ -21,6 +28,7 @@ public class ChangeMapEvent extends MapEvent {
         this.mapManager = mapManager;
     }
 
+    /**Aggiorna l'evento*/
     @Override
     public void update() {
         if (isActive()){
@@ -32,6 +40,7 @@ public class ChangeMapEvent extends MapEvent {
         }
     }
 
+    /**Attiva l'evento*/
     @Override
     public void trigger(Entity entity) {
         if (entity instanceof Player) {

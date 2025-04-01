@@ -1,5 +1,4 @@
 package io.github.ale.screens.game.map;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -7,65 +6,58 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.ale.screens.game.entityType.EntityManager;
 
 public class MapManager {
+
+    // Grandezza di un pixel
+    public static final float TILE_SIZE = 1/16f;
+
+    // Mappa default
     private final int defaultMap = 0;
+
+    // Reference utili
     private final EntityManager manager;
-    private final OrthographicCamera camera;
     private final FitViewport viewport;
     private final World world;
 
+    // Variabile di stato in caso di cambio mappa
     private boolean inChangeMapEvent=false;
 
-
-
-    public static final float TILE_SIZE = 1/16f;
-
+    // Mappa attuale
     private Map currentMap;
+
+    // Numero della mappa attuale
     private static int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
 
+    /** Creazione manager delle mappe*/
+    public MapManager(FitViewport viewport, EntityManager manager, int startingMap, World world) {
 
-
-    public MapManager(OrthographicCamera camera, FitViewport viewport, EntityManager manager, int startingMap, World world) {
+        // Inizializzazione
         this.world = world;
         this.manager = manager;
-        this.camera = camera;
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
-
         float defaultx=11, defaulty=11;
 
-        this.changeMap(defaultMap, defaultx, defaulty);
-        this.currentMap = new Map(camera, this.nome, manager, this, defaultx, defaulty);
+        this.changeMap(defaultMap, defaultx, defaulty); // Cambio mappa
     }
 
-    public static int currentMap() {
-        return currentMapNum;
-    }
-
-    public Map getCurrentMap() {
-        return currentMap;
-    }
-
-    public void debugDraw(ShapeRenderer renderer) {
-        this.currentMap.debugDraw(renderer);
-    }
-
+    /** Cambio mappa */
     public void changeMap(int map, float x, float y) {
-        System.out.println("cambio mappa");
         if (currentMap != null) {
-            currentMap.dispose();
-            System.out.println("Mappa: " + currentMapNum);
+            currentMap.dispose(); // Cancellazione mappa precedente
         }
 
-        System.out.println("Mappa: " + currentMapNum);
+        // Cambio mappa
         switch (map) {
             case 1 -> {
-                nome = "corridoio";
-                ambienteAperto = true;
-                viewport.setWorldSize(20f, 20f * 9 / 16f);
+                nome = "corridoio"; // Nome file
+                ambienteAperto = true; // Tipo ambiente
+                viewport.setWorldSize(20f, 20f * 9 / 16f); // Grandezza telecamera
             }
+
+            case 2 -> {}
 
             default -> {
                 nome = "stanza";
@@ -74,21 +66,32 @@ public class MapManager {
             }
         }
 
+        // Riassegnazione index
         currentMapNum=map;
 
-        currentMap = new Map(camera, nome, manager, this, x, y);
-        currentMap.createCollision();
+        // Creazione mappa e crea corpi/eventi rilevanti
+        currentMap = new Map(nome, manager, this, x, y).createCollision();
+
+        // Applico la telecamera
         viewport.apply();
     }
 
+    /**Index mappa*/
+    public static int getMapIndex() {
+        return currentMapNum;
+    }
+
+    /**Restituisce la mappa*/
+    public Map getMap() {
+        return currentMap;
+    }
+
+    /**Restituisce il tipo di ambiente*/
     public boolean getAmbiente() {
         return ambienteAperto;
     }
 
-    public boolean isInChangeMapEvent() {
-        return inChangeMapEvent;
-    }
-
+    /**Setter per possibilità cambio mappa*/
     public void setInChangeMapEvent(boolean inChangeMapEvent) {
         this.inChangeMapEvent = inChangeMapEvent;
     }

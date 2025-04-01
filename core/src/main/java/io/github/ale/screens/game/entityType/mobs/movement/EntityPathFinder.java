@@ -50,8 +50,8 @@ public class EntityPathFinder implements Disposable{
     public void calculatePathTo(float x, float y){
             //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
 
-            if (Map.isGraphLoaded && map != MapManager.currentMap()) {
-                map = MapManager.currentMap();
+            if (Map.isGraphLoaded && map != MapManager.getMapIndex()) {
+                map = MapManager.getMapIndex();
                 pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
                 search(x, y);
                 if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));

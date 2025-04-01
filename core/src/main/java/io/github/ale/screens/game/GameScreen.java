@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
     // Gestione del mondo e della fisica
     final World world;
     private Box2DDebugRenderer debugRenderer;
-    private DefaultStateMachine<GameScreen, GameStates> gameState;
+    private final DefaultStateMachine<GameScreen, GameStates> gameState;
 
     // Componenti di gioco
     private EntityManager entities;
@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
         viewport.apply();
 
         entities = new EntityManager(this.game, world);
-        mapManager = new MapManager(camera.get(), viewport, entities, 1, world);
+        mapManager = new MapManager(viewport, entities, 1, world);
 
         loaded = true;
     }
@@ -119,7 +119,7 @@ public class GameScreen implements Screen {
         fbo1.begin();
         ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
-        mapManager.getCurrentMap().render();
+        mapManager.getMap().render();
         Box2DDebugRender();
         fbo1.end();
 
@@ -167,8 +167,8 @@ public class GameScreen implements Screen {
     }
 
     public void draw(float delta) {
-        mapManager.getCurrentMap().getMapRenderer().setView(camera.get());
-        mapManager.getCurrentMap().getMapRenderer().render();
+        mapManager.getMap().getMapRenderer().setView(camera.get());
+        mapManager.getMap().getMapRenderer().render();
         entities.draw(elapsedTime);
         if (maps().getAmbiente()) drawGUI(delta);
     }

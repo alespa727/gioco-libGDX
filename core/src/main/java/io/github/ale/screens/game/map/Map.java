@@ -30,45 +30,54 @@ public class Map implements Disposable {
     private final TiledMapTileLayer collisionLayer;
     private final MapLayer eventLayer;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final OrthographicCamera camera;
     private final EntityManager entityManager;
     private final MapManager mapManager;
 
-    private Array<MapEvent> events;
+    private final Array<MapEvent> events;
 
-    public Map(OrthographicCamera camera, String name, EntityManager manager, MapManager mapManager, float x, float y) {
-        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx"));
-        mapManager.setInChangeMapEvent(false);
-        events = new Array<>();
+    /* Creazione nuova mappa */
+    public Map(String name, EntityManager manager, MapManager mapManager, float x, float y) {
+
+        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
+        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE); // Inizializzazione map renderer
+        mapManager.setInChangeMapEvent(false); // Evento cambio mappa disattivato
+
+        events = new Array<>(); // Array di eventi
 
         this.mapManager = mapManager;
         this.entityManager = manager;
-        this.camera = camera;
-        this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni");
-        this.eventLayer = map.getLayers().get("eventi");
 
-        Gdx.app.postRunnable(() -> entityManager.player().teleport(new Vector2(x, y)));
+        this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni"); // Layer collisioni
+        this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
 
+        Gdx.app.postRunnable(() -> entityManager.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
 
+        // Salvataggio grandezza mappa
         width = (Integer) map.getProperties().get("width");
         height = (Integer) map.getProperties().get("height");
+
+        //Inizializzazioni collisioni
         collisions = new boolean[width][height];
 
-        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE);
+        loadCollisionMap(); // Carica la mappa delle collisioni
 
-        loadCollisionMap();
+        // Crea un grafo basatosi sulle collisioni
         graph = new GameGraph(width, height, collisions, manager);
 
+        // Variabili di controllo
         isGraphLoaded = true;
         isLoaded = true;
 
+        // Crezione eventi
         createEvents();
     }
 
+    /**Restituisce l'oggetto che disegna la mappa*/
     public OrthogonalTiledMapRenderer getMapRenderer() {
         return mapRenderer;
     }
 
+    /**Disegna le collisioni*/
     public void debugDraw(ShapeRenderer renderer) {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i < width; i++) {
@@ -82,6 +91,7 @@ public class Map implements Disposable {
         renderer.end();
     }
 
+    /** Update eventi della mappa */
     public void render(){
         for (int i = 0; i < events.size; i++) {
             MapEvent event = events.get(i);
@@ -89,10 +99,12 @@ public class Map implements Disposable {
         }
     }
 
+    /** Restituisce il grafo */
     public static GameGraph getGraph() {
         return graph;
     }
 
+    /** Carica la mappa delle collisioni */
     private void loadCollisionMap() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -104,13 +116,14 @@ public class Map implements Disposable {
         }
     }
 
-    public void createCollision() {
+    /** Crea i corpi delle collisioni*/
+    public Map createCollision() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (collisions[i][j]) {
                     // Definizione del blocco
                     BodyDef bodyDef = new BodyDef();
-                    bodyDef.type = BodyDef.BodyType.StaticBody;
+                    bodyDef.type = BodyDef.BodyType.StaticBody; // Corpo statico, non movibile
                     bodyDef.position.set(i + 0.5f, j + 0.5f);
 
                     // Creazione del blocco
@@ -126,7 +139,7 @@ public class Map implements Disposable {
                     fixtureDef.shape = boxShape;
                     fixtureDef.density = 1f;
                     fixtureDef.friction = 0f;
-                    fixtureDef.restitution = 0f;
+                    fixtureDef.restitution = 0f; // Rimbalzo del corpo
 
                     // Collegamento delle proprietà fisiche al corpo
                     body.createFixture(fixtureDef);
@@ -137,8 +150,10 @@ public class Map implements Disposable {
             }
         }
         createBorders();
+        return this;
     }
 
+    /**Crea bordi della mappa*/
     public void createBorders(){
 
         Vector2[] bordi = new Vector2[5];
@@ -149,24 +164,30 @@ public class Map implements Disposable {
         bordi[3] = new Vector2(4, height-4);
         bordi[4] = new Vector2(4, 4);
 
+        // Definizione della forma
         ChainShape chainShape = new ChainShape();
         chainShape.createChain(bordi);
 
+        // Definizione del corpo
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0, 0);
 
+        // Definizione delle caratteristiche fisiche
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = chainShape;
 
-        Body body1 = entityManager.world.createBody(bodyDef);
-        body1.createFixture(fixtureDef);
-        body1.setUserData("map");
+        // Creazione del corpo
+        Body body = entityManager.world.createBody(bodyDef);
+        body.createFixture(fixtureDef);
+        body.setUserData("map");
 
+        // Cancello la forma dalla memoria
         chainShape.dispose();
 
     }
 
+    /** Crea gli eventi caricati dalla mappa */
     public void createEvents(){
         for (MapObject object : eventLayer.getObjects()) {
 
@@ -188,10 +209,11 @@ public class Map implements Disposable {
         this.entityManager.world.setContactListener(listener);
     }
 
+    /**Restituisce la larghezza della mappa*/
     public static int width() {
         return width;
     }
-
+    /**Restituisce l'altezza della mappa*/
     public static int height() {
         return height;
     }
