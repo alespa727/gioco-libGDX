@@ -3,7 +3,6 @@ package io.github.ale.screens.game.entities.player.movement;
 import com.badlogic.gdx.Gdx;
 
 import io.github.ale.ComandiGioco;
-import io.github.ale.screens.settings.Settings;
 
 public class KeyHandlerPlayer {
 

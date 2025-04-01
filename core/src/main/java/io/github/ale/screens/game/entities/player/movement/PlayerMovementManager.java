@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.github.ale.screens.game.entities.player.Player;
 import io.github.ale.screens.game.entityType.mobs.LivingEntity;
-import io.github.ale.screens.game.entityType.mobs.movement.StatiDiMovimento;
 
 public class PlayerMovementManager{
     private final Player player;

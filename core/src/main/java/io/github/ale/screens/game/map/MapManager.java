@@ -1,6 +1,4 @@
 package io.github.ale.screens.game.map;
-
-import com.badlogic.gdx.assets.loaders.MusicLoader;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.World;

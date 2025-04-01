@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.Game;
-import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entities.player.Player;
@@ -34,9 +33,6 @@ public final class EntityManager {
 
     public final Comparator<Entity> comparator;
     public final World world;
-
-    private final Cooldown cooldown;
-
     public static final short WALL = 0;
     public static final short RANGE = 0x0010;
     public static final short ENEMY = 0x0020;
@@ -44,7 +40,6 @@ public final class EntityManager {
     public EntityManager(Game game, World world) {
 
         this.world = world;
-        this.cooldown = new Cooldown(0.5f);
         comparator = new Comparator<Entity>() {
 
             @Override

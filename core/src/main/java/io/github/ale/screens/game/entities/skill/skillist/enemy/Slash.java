@@ -1,6 +1,5 @@
 package io.github.ale.screens.game.entities.skill.skillist.enemy;
 
-import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entities.skill.skillist.CombatSkill;
 import io.github.ale.screens.game.entityType.combat.CombatEntity;
 

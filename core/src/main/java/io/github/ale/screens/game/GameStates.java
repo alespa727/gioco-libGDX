@@ -3,12 +3,10 @@
 package io.github.ale.screens.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import io.github.ale.ComandiGioco;
 import io.github.ale.screens.pause.PauseScreen;
-import io.github.ale.screens.settings.Settings;
 
 import static io.github.ale.screens.game.GameScreen.STEP;
 

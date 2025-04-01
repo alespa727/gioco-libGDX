@@ -4,9 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.screens.game.entities.player.Player;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.entityType.combat.CombatEntity;
-import io.github.ale.screens.game.entityType.enemy.Enemy;
 import io.github.ale.screens.game.entityType.entity.Entity;
-import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 
 public class EventListener implements ContactListener {
 

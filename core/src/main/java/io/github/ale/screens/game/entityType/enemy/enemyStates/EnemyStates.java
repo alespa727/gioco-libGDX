@@ -5,11 +5,9 @@ import com.badlogic.gdx.ai.msg.Telegram;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.game.entities.player.Player;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.entityType.enemy.Enemy;

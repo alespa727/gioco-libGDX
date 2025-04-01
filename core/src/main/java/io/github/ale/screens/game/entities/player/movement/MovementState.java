@@ -2,7 +2,6 @@ package io.github.ale.screens.game.entities.player.movement;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
-import com.badlogic.gdx.math.Vector2;
 import io.github.ale.screens.game.entities.player.Player;
 
 public enum MovementState implements State<Player> {

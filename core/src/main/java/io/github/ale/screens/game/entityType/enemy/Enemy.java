@@ -1,8 +1,6 @@
 package io.github.ale.screens.game.entityType.enemy;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.math.Vector2;
-
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entities.skill.skillist.enemy.Slash;
 import io.github.ale.screens.game.entityType.EntityManager;

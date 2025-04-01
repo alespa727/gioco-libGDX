@@ -3,7 +3,6 @@ package io.github.ale.screens.game.entityType.mobs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.entityType.entity.Entity;
 import io.github.ale.screens.game.entityType.entity.EntityConfig;
