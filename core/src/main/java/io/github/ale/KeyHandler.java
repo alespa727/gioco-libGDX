@@ -1,14 +1,12 @@
-package io.github.ale.screens.game.entities.player.movement;
+package io.github.ale;
 
 import com.badlogic.gdx.Gdx;
 
-import io.github.ale.ComandiGioco;
+public class KeyHandler {
 
-public class KeyHandlerPlayer {
+    public static boolean su, giu, sinistra, destra, sprint, usa;
 
-    public boolean su, giu, sinistra, destra, sprint, usa;
-
-    public KeyHandlerPlayer() {
+    public KeyHandler() {
 
     }
 
@@ -16,7 +14,7 @@ public class KeyHandlerPlayer {
      * tasti di input premuti
      */
 
-    public void input(){
+    public static void input(){
         su = Gdx.input.isKeyPressed(ComandiGioco.getDirezioneNord());
         giu = Gdx.input.isKeyPressed(ComandiGioco.getDirezioneSud());
         sinistra = Gdx.input.isKeyPressed(ComandiGioco.getDirezioneOvest());

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.Game;
+import io.github.ale.KeyHandler;
 import io.github.ale.screens.game.camera.CameraManager;
 import io.github.ale.screens.game.entityType.EntityManager;
 import io.github.ale.screens.game.gui.Gui;
@@ -54,6 +55,7 @@ public class GameScreen implements Screen {
     FrameBuffer fbo1;
     FrameBuffer fbo2;
 
+    public KeyHandler keyHandler;
 
     public GameScreen(Game game) {
         this.game = game;
@@ -114,6 +116,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
+        KeyHandler.input();
 
         updateDeltaTime(delta);
         fbo1.begin();

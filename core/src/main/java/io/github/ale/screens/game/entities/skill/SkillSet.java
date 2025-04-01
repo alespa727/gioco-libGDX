@@ -6,8 +6,11 @@ import io.github.ale.screens.game.entities.skill.skillist.Skill;
 public class SkillSet {
     private final Array<Skill> skillList;
 
+    private boolean active;
+
     public SkillSet(){
         skillList = new Array<>();
+        active=true;
     }
 
     public void add(Skill skill){
@@ -19,6 +22,8 @@ public class SkillSet {
     }
 
     public Skill getSkill(Class<? extends Skill> skillClass) {
+        if (!active) return null;
+
         for (Skill skill : skillList) {
             if (skill.getClass().equals(skillClass)) {
                 return skill;
@@ -27,6 +32,15 @@ public class SkillSet {
         return null;
     }
 
+    private void disable() {
+        if (active) active = false;
+    }
+
+    private void enable() {
+        if (!active) active = true;
+    }
+
+    /**Esegue la skill richiesta*/
     public void execute(Class<? extends Skill> skillClass){
         getSkill(skillClass).execute();
     }

@@ -3,40 +3,29 @@ package io.github.ale.screens.game.entities.player.movement;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.ale.KeyHandler;
 import io.github.ale.screens.game.entities.player.Player;
 import io.github.ale.screens.game.entityType.mobs.LivingEntity;
 
+import static io.github.ale.KeyHandler.*;
+
 public class PlayerMovementManager{
     private final Player player;
-
-    private final KeyHandlerPlayer keyH;
-
-    private boolean su;
-    private boolean giu;
-    private boolean sinistra;
-    private boolean destra;
 
     DefaultStateMachine<Player, MovementState> movementState;
 
     public PlayerMovementManager(Player player) {
         this.player = player;
         movementState = new DefaultStateMachine<>(player);
-        keyH = new KeyHandlerPlayer();
     }
 
     public void update(LivingEntity p) {
-        keyH.input();
         movimento(p.delta);
         movementState.update();
     }
 
     private void movimento(float delta) {
-        su = keyH.su;
-        giu = keyH.giu;
-        sinistra = keyH.sinistra;
-        destra = keyH.destra;
-
-        boolean anyKey = su || sinistra || destra || giu;
+        boolean anyKey = su || giu || sinistra || destra;
 
         if (!anyKey){
             movementState.changeState(MovementState.NOTMOVING);
@@ -92,16 +81,9 @@ public class PlayerMovementManager{
     }
 
     private void stopMovement() {
-        Vector2 direction = player.direzione();
-        if (direction.x == 1f || direction.x == -1f) {
-            direction.scl(0.5f, 1f);
-        }
-        if(direction.y == 1f || direction.y == -1f){
-            direction.scl(1f, 0.5f);
-        }
-
+        if (player.direzione().x == 1f || player.direzione().x == -1f) player.direzione().scl(0.5f, 1f);
+        if (player.direzione().y == 1f || player.direzione().y == -1f) player.direzione().scl(1f, 0.5f);
     }
-
 
     private void aggiornaDirezione() {
         Vector2 dir = new Vector2(0, 0);

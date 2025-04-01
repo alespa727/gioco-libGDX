@@ -9,6 +9,7 @@ public class Slash extends CombatSkill {
         super(entity, name, damage,  description);
     }
 
+    /**Disegna l'evento*/
     public void draw() {
 
     }
