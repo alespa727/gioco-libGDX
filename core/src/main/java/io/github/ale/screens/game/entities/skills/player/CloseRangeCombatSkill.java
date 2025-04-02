@@ -23,17 +23,16 @@ public class CloseRangeCombatSkill extends CombatSkill {
         super(entity, name, description, damage);
         loadTexture("skills/sword_attack", 8, 20);
         direction = new Vector2();
+        cooldown.reset(0);
     }
 
     @Override
     public void update() {
-        System.out.println(isBeingUsed);
         if (isBeingUsed) {
             elapsedTime += entity.delta;
             cooldown.update(entity.delta);
             if (cooldown.isReady){
                 isBeingUsed=false;
-                cooldown.reset();
                 elapsedTime = 0;
             }
         }
@@ -41,8 +40,6 @@ public class CloseRangeCombatSkill extends CombatSkill {
 
     @Override
     public void draw(SpriteBatch batch) {
-
-
         batch.draw(animation.getKeyFrame(elapsedTime),
             entity.getPosition().x + direction.x - 1f,
             entity.getPosition().y + direction.y - 1f,
@@ -54,6 +51,7 @@ public class CloseRangeCombatSkill extends CombatSkill {
 
     @Override
     public void execute() {
+        cooldown.reset();
         inRange = ((Player) entity).getInRange();
         for (CombatEntity combatEntity : inRange) {
             combatEntity.hit((CombatEntity) entity, damage);
