@@ -1,10 +1,12 @@
-package io.github.ale.screens.game.manager;
+package io.github.ale.screens.game.manager.camera;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.ale.screens.game.manager.entity.EntityManager;
+import io.github.ale.screens.game.manager.map.MapManager;
 import io.github.ale.screens.game.map.Map;
 
 public class CameraManager {

@@ -1,6 +1,6 @@
-package io.github.ale.screens.game.entities.skill.skillist.skillType;
+package io.github.ale.screens.game.entities.skills.skillType;
 
-import io.github.ale.screens.game.entities.skill.skillist.Skill;
+import io.github.ale.screens.game.entities.skills.Skill;
 import io.github.ale.screens.game.entities.entityTypes.mobs.LivingEntity;
 
 public abstract class CombatSkill extends Skill {

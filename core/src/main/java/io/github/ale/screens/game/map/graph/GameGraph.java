@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import io.github.ale.screens.game.manager.CameraManager;
+import io.github.ale.screens.game.manager.camera.CameraManager;
 import io.github.ale.screens.game.map.graph.node.Node;
 
 import java.util.HashMap;

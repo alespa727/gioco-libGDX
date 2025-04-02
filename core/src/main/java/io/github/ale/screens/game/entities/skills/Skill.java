@@ -1,4 +1,4 @@
-package io.github.ale.screens.game.entities.skill.skillist;
+package io.github.ale.screens.game.entities.skills;
 import io.github.ale.screens.game.entities.entityTypes.mobs.LivingEntity;
 
 public abstract class Skill {

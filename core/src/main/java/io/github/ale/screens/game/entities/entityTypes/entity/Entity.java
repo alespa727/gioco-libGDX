@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.physics.box2d.*;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.entity.graphics.EntityGraphics;
 import io.github.ale.screens.game.entities.entityTypes.entity.state.EntityState;
 import io.github.ale.screens.game.map.Map;

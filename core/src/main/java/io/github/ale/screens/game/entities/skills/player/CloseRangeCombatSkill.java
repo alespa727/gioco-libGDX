@@ -1,8 +1,8 @@
-package io.github.ale.screens.game.entities.skill.skillist.player;
+package io.github.ale.screens.game.entities.skills.player;
 
 import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.game.entities.entityTypes.player.Player;
-import io.github.ale.screens.game.entities.skill.skillist.skillType.CombatSkill;
+import io.github.ale.screens.game.entities.skills.skillType.CombatSkill;
 import io.github.ale.screens.game.entities.entityTypes.combat.CombatEntity;
 
 public class CloseRangeCombatSkill extends CombatSkill {

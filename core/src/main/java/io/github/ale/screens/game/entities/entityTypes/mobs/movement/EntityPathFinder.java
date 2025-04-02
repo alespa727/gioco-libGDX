@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entities.entityTypes.mobs.LivingEntity;
 import io.github.ale.screens.game.map.Map;
-import io.github.ale.screens.game.manager.MapManager;
+import io.github.ale.screens.game.manager.map.MapManager;
 import io.github.ale.screens.game.map.graph.HeuristicDistance;
 import io.github.ale.screens.game.map.graph.node.Node;
 

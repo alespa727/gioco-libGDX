@@ -1,4 +1,4 @@
-package io.github.ale.screens.game.manager;
+package io.github.ale.screens.game.manager.entity;
 
 import java.util.Comparator;
 
@@ -17,6 +17,7 @@ import io.github.ale.screens.game.entities.entityTypes.enemy.Enemy;
 import io.github.ale.screens.game.entities.entityTypes.entity.Entity;
 import io.github.ale.screens.game.entities.entityTypes.entity.EntityConfig;
 import io.github.ale.screens.game.entities.entityTypes.factories.EnemyFactory;
+import io.github.ale.screens.game.manager.camera.CameraManager;
 
 public final class EntityManager {
     private final Game game;

@@ -1,7 +1,8 @@
-package io.github.ale.screens.game.manager;
+package io.github.ale.screens.game.manager.map;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.map.Map;
 
 public class MapManager {

@@ -1,7 +1,7 @@
 package io.github.ale.screens.game.entities.entityTypes.factories;
 
-import io.github.ale.screens.game.entities.enemy.umani.Finn;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.entities.entityTypes.umani.Finn;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.enemy.Enemy;
 import io.github.ale.screens.game.entities.entityTypes.entity.EntityConfig;
 

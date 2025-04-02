@@ -3,12 +3,12 @@ package io.github.ale.screens.game.entities.entityTypes.mobs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.entity.Entity;
 import io.github.ale.screens.game.entities.entityTypes.entity.EntityConfig;
-import io.github.ale.screens.game.entities.skill.skillist.Skill;
-import io.github.ale.screens.game.manager.EntityMovementManager;
-import io.github.ale.screens.game.entities.skill.SkillSet;
+import io.github.ale.screens.game.entities.skills.Skill;
+import io.github.ale.screens.game.manager.entity.EntityMovementManager;
+import io.github.ale.screens.game.entities.skills.SkillSet;
 import io.github.ale.screens.game.entities.entityTypes.mobs.movement.EntityPathFinder;
 
 public abstract class LivingEntity extends Entity {

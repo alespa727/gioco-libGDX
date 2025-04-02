@@ -2,8 +2,8 @@ package io.github.ale.screens.game.entities.entityTypes.enemy;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.game.entities.skill.skillist.enemy.Slash;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.entities.skills.enemy.Slash;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.enemy.enemyStates.EnemyStates;
 import io.github.ale.screens.game.entities.entityTypes.entity.EntityConfig;
 import io.github.ale.screens.game.entities.entityTypes.combat.CombatEntity;

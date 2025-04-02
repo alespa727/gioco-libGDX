@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import io.github.ale.ComandiGioco;
 import io.github.ale.screens.game.entities.entityTypes.player.Player;
 import io.github.ale.screens.game.entities.entityTypes.entity.Entity;
-import io.github.ale.screens.game.manager.MapManager;
+import io.github.ale.screens.game.manager.map.MapManager;
 
 public class ChangeMapEvent extends MapEvent {
     // Gestore mappa

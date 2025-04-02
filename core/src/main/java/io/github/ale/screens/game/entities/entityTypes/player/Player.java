@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.game.entities.skill.skillist.player.CloseRangeCombatSkill;
-import io.github.ale.screens.game.entities.skill.skillist.player.Dodge;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.entities.skills.player.CloseRangeCombatSkill;
+import io.github.ale.screens.game.entities.skills.player.Dodge;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.entity.EntityConfig;
 import io.github.ale.screens.game.entities.entityTypes.combat.CombatEntity;
-import io.github.ale.screens.game.manager.PlayerMovementManager;
+import io.github.ale.screens.game.manager.entity.PlayerMovementManager;
 
 public class Player extends CombatEntity {
 
@@ -30,7 +30,7 @@ public class Player extends CombatEntity {
         this.dodgeCooldown = new Cooldown(1f);
         this.dodgeCooldown.reset(0);
 
-        skillset().add(new Dodge(this, "", ""));
+        skillset().add(new Dodge(this, "", "", 25f));
         skillset().add(new CloseRangeCombatSkill(this, "", "", 10));
     }
 

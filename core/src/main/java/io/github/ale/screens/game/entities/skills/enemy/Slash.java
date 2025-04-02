@@ -1,6 +1,6 @@
-package io.github.ale.screens.game.entities.skill.skillist.enemy;
+package io.github.ale.screens.game.entities.skills.enemy;
 
-import io.github.ale.screens.game.entities.skill.skillist.skillType.CombatSkill;
+import io.github.ale.screens.game.entities.skills.skillType.CombatSkill;
 import io.github.ale.screens.game.entities.entityTypes.combat.CombatEntity;
 
 public class Slash extends CombatSkill {

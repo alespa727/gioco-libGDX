@@ -18,10 +18,10 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import io.github.ale.Game;
 import io.github.ale.KeyHandler;
-import io.github.ale.screens.game.manager.CameraManager;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.camera.CameraManager;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.gui.Gui;
-import io.github.ale.screens.game.manager.MapManager;
+import io.github.ale.screens.game.manager.map.MapManager;
 
 public class GameScreen implements Screen {
     // Costanti

@@ -1,7 +1,7 @@
 package io.github.ale.screens.game.entities.entityTypes.neutral;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.entity.EntityConfig;
 import io.github.ale.screens.game.entities.entityTypes.mobs.LivingEntity;
 import io.github.ale.screens.game.entities.entityTypes.neutral.states.NpcStates;

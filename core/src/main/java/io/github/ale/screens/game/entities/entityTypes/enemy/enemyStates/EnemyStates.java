@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import io.github.ale.screens.game.entities.entityTypes.player.Player;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.enemy.Enemy;
 
 public enum EnemyStates implements State<Enemy> {

@@ -1,4 +1,4 @@
-package io.github.ale.screens.game.manager;
+package io.github.ale.screens.game.manager.entity;
 
 import com.badlogic.gdx.math.Vector2;
 

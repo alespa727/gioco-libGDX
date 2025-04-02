@@ -3,7 +3,7 @@ package io.github.ale.screens.game.entities.entityTypes.combat;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.entity.EntityConfig;
 import io.github.ale.screens.game.entities.entityTypes.mobs.LivingEntity;
 

@@ -2,7 +2,7 @@ package io.github.ale.screens.game.map.events;
 
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.screens.game.entities.entityTypes.player.Player;
-import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.entities.entityTypes.combat.CombatEntity;
 import io.github.ale.screens.game.entities.entityTypes.entity.Entity;
 
