@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import io.github.ale.Game;
+import io.github.ale.screens.gameplay.GameInfo;
 import io.github.ale.screens.menu.DefeatScreen;
 import io.github.ale.screens.gameplay.entities.types.enemy.Enemy;
 import io.github.ale.screens.gameplay.entities.types.entity.Entity;
@@ -20,8 +21,8 @@ import java.util.Comparator;
 
 public final class EntityManager {
 
+    public GameInfo gameInfo;
     public final World world;
-    private final Game game;
 
     public static final short WALL = 0;
     public static final short RANGE = 0x0010;
@@ -38,9 +39,10 @@ public final class EntityManager {
     public EntityConfig e;
 
 
-    public EntityManager(Game game, World world) {
+    public EntityManager(GameInfo gameInfo, World world) {
 
-        this.game = game;
+        this.gameInfo = gameInfo;
+
         this.world = world;
 
         comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
@@ -119,24 +121,24 @@ public final class EntityManager {
     }
 
     public void draw(float elapsedTime) {
-        game.batch.begin();
+        gameInfo.game.batch.begin();
         entityArray.sort(comparator);
         for (Entity e : entityArray) {
             if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
-                    e.draw(game.batch, elapsedTime);
+                    e.draw(gameInfo.game.batch, elapsedTime);
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.direzione());
                 }
             }
         }
-        game.batch.end();
+        gameInfo.game.batch.end();
     }
 
     public void render(float delta) {
 
         if (!player.stati().isAlive()) {
-            game.setScreen(new DefeatScreen(game));
+            gameInfo.game.setScreen(new DefeatScreen(gameInfo.game));
         }
 
         for (Entity e : entityArray) {
@@ -149,34 +151,34 @@ public final class EntityManager {
     }
 
     public void drawPath() {
-        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
+        gameInfo.game.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entityArray) {
             if (!e.isRendered()){
                 continue;
             }
             if (e instanceof Enemy enemy) {
                 if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
-                    enemy.drawPath(game.renderer);
+                    enemy.drawPath(gameInfo.game.renderer);
             }
 
         }
-        game.renderer.end();
+        gameInfo.game.renderer.end();
     }
 
     public void drawHitbox() {
-        game.renderer.begin(ShapeRenderer.ShapeType.Line);
+        gameInfo.game.renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Entity e : entityArray) {
             if (!e.isRendered()){
                 continue;
             }
-            if (e.stati().inCollisione()) game.renderer.setColor(Color.RED);
-            else game.renderer.setColor(Color.BLACK);
+            if (e.stati().inCollisione()) gameInfo.game.renderer.setColor(Color.RED);
+            else gameInfo.game.renderer.setColor(Color.BLACK);
             if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
-                e.drawHitbox(game.renderer);
-            game.renderer.setColor(Color.WHITE);
-            game.renderer.rectLine(e.body.getPosition(), player.body.getPosition(), 0.1f);
+                e.drawHitbox(gameInfo.game.renderer);
+            gameInfo.game.renderer.setColor(Color.WHITE);
+            gameInfo.game.renderer.rectLine(e.body.getPosition(), player.body.getPosition(), 0.1f);
         }
-        game.renderer.end();
+        gameInfo.game.renderer.end();
     }
 
     public void drawDebug() {

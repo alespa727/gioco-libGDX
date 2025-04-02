@@ -1,5 +1,6 @@
 package io.github.ale.screens.gameplay.entities.skills.player;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -24,7 +25,7 @@ public class CloseRangeCombatSkill extends CombatSkill {
     @Override
     public void update() {
         if (isBeingUsed) {
-            elapsedTime += entity.delta;
+            elapsedTime += Gdx.graphics.getDeltaTime();
             cooldown.update(entity.delta);
             if (cooldown.isReady){
                 isBeingUsed=false;
@@ -48,6 +49,7 @@ public class CloseRangeCombatSkill extends CombatSkill {
     public void execute() {
         CameraManager.shakeTheCamera(0.2f, 0.05f);
         cooldown.reset();
+        entity.manager.gameInfo.screen.setTimeScale(0.04f, 0.4f);
         inRange = ((Player) entity).getInRange();
         for (CombatEntity combatEntity : inRange) {
             combatEntity.hit((CombatEntity) entity, damage);

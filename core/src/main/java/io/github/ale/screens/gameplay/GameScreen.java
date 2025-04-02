@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import io.github.ale.Game;
+import io.github.ale.utils.Cooldown;
 import io.github.ale.utils.KeyHandler;
 import io.github.ale.screens.gameplay.gui.Gui;
 import io.github.ale.screens.gameplay.manager.GameManager;
@@ -26,76 +27,84 @@ import io.github.ale.screens.gameplay.manager.entity.EntityManager;
 import io.github.ale.screens.gameplay.manager.map.MapManager;
 
 public class GameScreen implements Screen {
-    // Constants
     public static final float STEP = 1 / 60f; // Fixed step for logic (60Hz)
-
-    // State Variables
-    public final Game game;
-    final World world;
+    private final GameInfo gameInfo;
     private final DefaultStateMachine<GameScreen, GameManager> gameState;
-    public float delta;
+
     public boolean loaded = false;
-    public boolean isPaused = false;
+
+    public float delta;
     public float accumulator = 0f;
     private float elapsedTime;
+
     private float timeScale = 1f;
 
-    // UI and Viewport
     public FitViewport viewport;
+
     private Gui rect;
     private Stage stage;
     private Table root;
 
     // Rendering and Effects
-    ShaderProgram shaderProgram;
-    FrameBuffer fbo1;
-    FrameBuffer fbo2;
+    private ShaderProgram shaderProgram;
+    private FrameBuffer fbo1;
+    private FrameBuffer fbo2;
     private Box2DDebugRenderer debugRenderer;
 
-    // Game Components
-    private EntityManager entityManager;
-    private MapManager mapManager;
-
-    GameContext gameContext;
+    private Cooldown timeScaleCooldown;
 
     public GameScreen(Game game) {
-        this.game = game;
         this.gameState = new DefaultStateMachine<>(this);
         this.gameState.changeState(GameManager.PLAYING);
         Box2D.init();
-        this.world = new World(new Vector2(0, 0), true);
+        this.gameInfo = new GameInfo();
+        this.gameInfo.game = game;
+        this.gameInfo.screen = this;
+        this.timeScaleCooldown = new Cooldown(0);
+    }
+
+    public void setTimeScale(float timeScale, float time) {
+        this.timeScale = timeScale;
+        timeScaleCooldown.reset(time);
+    }
+
+    public void resetTimeScale() {
+        timeScaleCooldown.update(timeScale);
+        if (timeScaleCooldown.isReady){
+            timeScale=1f;
+        }
     }
 
     // Initialization Methods
     private void buildFBO(int width, int height) {
-        fbo1 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
-        fbo2 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
+        this.fbo1 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
+        this.fbo2 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
     }
 
     private void createShaderProgram() {
         String vertexShader = Gdx.files.internal("shaders/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/fragment.glsl").readString();
-        shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
+        this.shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
     }
 
     private void load() {
-        gameContext = new GameContext(this.game, this, this.world, this.entityManager, this.mapManager);
+        this.gameInfo.world = new World(new Vector2(0, 0), true);
 
         System.out.println("GameScreen loaded");
 
-        rect = new Gui(this);
-        stage = new Stage(new ScreenViewport());
-        root = new Table();
-        root.setFillParent(true);
-        stage.addActor(root);
+        this.rect = new Gui(this);
+        this.stage = new Stage(new ScreenViewport());
+        this.root = new Table();
+        this.root.setFillParent(true);
+        this.stage.addActor(root);
 
-        viewport = new FitViewport(32f, 18f, CameraManager.getCamera());
-        viewport.apply();
+        this.viewport = new FitViewport(32f, 18f, CameraManager.getCamera());
+        this.viewport.apply();
 
-        entityManager = new EntityManager(this.game, world);
-        mapManager = new MapManager(viewport, entityManager, 1, world);
+        this.gameInfo.entityManager = new EntityManager(this.gameInfo, this.gameInfo.world);
+        this.gameInfo.mapManager = new MapManager(viewport, this.gameInfo.entityManager, 1, this.gameInfo.world);
 
-        loaded = true;
+        this.loaded = true;
     }
 
     // Screen Interface Methods
@@ -107,13 +116,12 @@ public class GameScreen implements Screen {
         buildFBO(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         if (!loaded) load();
 
-        if (!entityManager.player().stati().isAlive()) {
-            entityManager.player().respawn();
+        if (!this.gameInfo.entityManager.player().stati().isAlive()) {
+            this.gameInfo.entityManager.player().respawn();
         }
 
         debugRenderer = new Box2DDebugRenderer();
         debugRenderer.setDrawVelocities(true);
-        isPaused = false;
     }
 
     @Override
@@ -124,11 +132,12 @@ public class GameScreen implements Screen {
         fbo1.begin();
         ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
-        mapManager.getMap().render();
+        this.gameInfo.mapManager.getMap().render();
         //Box2DDebugRender();
         fbo1.end();
 
         applyShader();
+        resetTimeScale();
     }
 
     @Override
@@ -147,8 +156,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        game.batch.dispose();
-        game.renderer.dispose();
+        this.gameInfo.game.batch.dispose();
+        this.gameInfo.game.renderer.dispose();
         stage.dispose();
     }
 
@@ -159,7 +168,7 @@ public class GameScreen implements Screen {
 
     public void update(float delta) {
         elapsedTime += delta;
-        entityManager.render(delta);
+        this.gameInfo.entityManager.render(delta);
         boolean ambiente = getMapManager().getAmbiente();
         updateCamera(ambiente);
     }
@@ -170,30 +179,30 @@ public class GameScreen implements Screen {
         fboTextReg.flip(false, true);
 
         fbo2.begin();
-        game.batch.begin();
-        game.batch.setShader(null);
-        game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
-        game.batch.end();
+        this.gameInfo.game.batch.begin();
+        this.gameInfo.game.batch.setShader(null);
+        this.gameInfo.game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
+        this.gameInfo.game.batch.end();
         fbo2.end();
 
         fboText = fbo2.getColorBufferTexture();
         fboTextReg = new TextureRegion(fboText);
         fboTextReg.flip(false, true);
 
-        game.batch.begin();
-        game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
-        game.batch.end();
+        this.gameInfo.game.batch.begin();
+        this.gameInfo.game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
+        this.gameInfo.game.batch.end();
     }
 
     private void Box2DDebugRender() {
-        debugRenderer.render(world, CameraManager.getCamera().combined);
+        debugRenderer.render(this.gameInfo.world, CameraManager.getCamera().combined);
     }
 
     public void draw() {
-        mapManager.getMap().getMapRenderer().setView(CameraManager.getCamera());
-        mapManager.getMap().getMapRenderer().render();
-        entityManager.drawDebug();
-        entityManager.draw(elapsedTime);
+        this.gameInfo.mapManager.getMap().getMapRenderer().setView(CameraManager.getCamera());
+        this.gameInfo.mapManager.getMap().getMapRenderer().render();
+        this.gameInfo.entityManager.drawDebug();
+        this.gameInfo.entityManager.draw(elapsedTime);
         if (getMapManager().getAmbiente()) drawGUI();
     }
 
@@ -204,27 +213,31 @@ public class GameScreen implements Screen {
     }
 
     public void updateCamera(boolean boundaries) {
-        CameraManager.update(entityManager, viewport, delta, boundaries);
+        CameraManager.update(this.gameInfo.entityManager, viewport, delta, boundaries);
         viewport.apply();
-        game.batch.setProjectionMatrix(CameraManager.getCamera().combined);
-        game.renderer.setProjectionMatrix(CameraManager.getCamera().combined);
+        this.gameInfo.game.batch.setProjectionMatrix(CameraManager.getCamera().combined);
+        this.gameInfo.game.renderer.setProjectionMatrix(CameraManager.getCamera().combined);
     }
 
     // Getters
     public EntityManager getEntityManager() {
-        return entityManager;
+        return this.gameInfo.entityManager;
     }
 
     public MapManager getMapManager() {
-        return mapManager;
+        return this.gameInfo.mapManager;
     }
 
     public World getWorld() {
-        return world;
+        return this.gameInfo.world;
     }
 
     public float getTimeScale() {
         return timeScale;
+    }
+
+    public GameInfo getGameInfo() {
+        return this.gameInfo;
     }
 
     @SuppressWarnings("unused")

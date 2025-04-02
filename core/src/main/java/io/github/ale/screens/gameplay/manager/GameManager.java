@@ -21,7 +21,7 @@ public enum GameManager implements State<GameScreen> {
         @Override
         public void update(GameScreen screen) {
             if (Gdx.input.isKeyJustPressed(GameConfig.getFERMAGIOCO())) {
-                screen.game.setScreen(new PauseScreen(screen.game, screen));
+                screen.getGameInfo().game.setScreen(new PauseScreen(screen.getGameInfo().game, screen));
             }
 
             screen.accumulator += screen.delta;
@@ -32,7 +32,7 @@ public enum GameManager implements State<GameScreen> {
                 screen.update(scaledTime);
                 screen.accumulator -= STEP;
 
-                screen.getWorld().step(scaledTime, 8, 3);
+                screen.getWorld().step(scaledTime, 8, 8);
             }
 
 
