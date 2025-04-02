@@ -16,33 +16,37 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.util.LinkedHashMap;
+
 import io.github.ale.ComandiGioco;
 import io.github.ale.Game;
 import io.github.ale.screens.mainmenu.MainScreen;
 
 public class Settings implements Screen {
-    final String[] comandi = new String[]{ // Array descrizione tasti
-        "Su",
-        "Sinistra",
-        "Giu",
-        "Destra",
-        "Sprint",
-        "Interagisci",
-        "Attacca",
-        "pausa",
-        "play"
-    };
     private final Game game;
-    TextButton.TextButtonStyle buttonStyle;
-    Label.LabelStyle labelStyle;
+    private TextButton.TextButtonStyle buttonStyle;
+    private Label.LabelStyle labelStyle;
     private Skin skin;
     private Stage stage;
     private Table root;
     private Table table;
-    private TextButton bottoni[] = new TextButton[comandi.length]; // Bottoni per cambiare
+
+    private LinkedHashMap<String, Integer> comandi = new LinkedHashMap<>();
 
     public Settings(Game game) {
         this.game = game;
+
+        comandi.put("Su", ComandiGioco.getDirezioneNord());
+        comandi.put("Sinistra", ComandiGioco.getDirezioneOvest());
+        comandi.put("Giu", ComandiGioco.getDirezioneSud());
+        comandi.put("Destra", ComandiGioco.getDirezioneEst());
+        comandi.put("Corri", ComandiGioco.getCORRI());
+        comandi.put("Interagisci", ComandiGioco.getUSA());
+        comandi.put("Attacca", ComandiGioco.getATTACCO());
+        comandi.put("Pausa", ComandiGioco.getFERMAGIOCO());
+        comandi.put("Riprendi", ComandiGioco.getRIPRENDIGIOCO());
+
     }
 
     @Override
@@ -124,12 +128,6 @@ public class Settings implements Screen {
         }
     }
 
-    private Label creaLabel(String testo) {
-        Label label = new Label(testo, labelStyle); // Lable che conterra' il testo
-        label.setTouchable(null); // Rende il testo non editabile
-        return label;
-    }
-
     // Metodo per creare il titolo
     private void creaTitolo(Table table) {
         Label label = creaLabel("Comandi");
@@ -141,51 +139,80 @@ public class Settings implements Screen {
     // Metodo per creare la tabella dei pulsanti
     private void creaTabellaPulsanti(Table table) {
         Table t = new Table(); // Creo una tabella che conterra' i comandi
-        int pulsanti[] = new int[]{
-            ComandiGioco.getDirezioneNord(),
-            ComandiGioco.getDirezioneOvest(),
-            ComandiGioco.getDirezioneSud(),
-            ComandiGioco.getDirezioneEst(),
-            ComandiGioco.getCORRI(),
-            ComandiGioco.getUSA(),
-            ComandiGioco.getATTACCO(),
-            ComandiGioco.getFERMAGIOCO(),
-            ComandiGioco.getRIPRENDIGIOCO()
-        };
 
-        for (int i = 0; i < comandi.length; i++) { // Vado a creare tutti i comandi esistenti di base
-            Label label = creaLabel(comandi[i]); // Creo la label che conterra' i dati del comando
-
-            final int ii = i; // faccio una variabile int final per la classe anonima
-
-            try {
-                bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), buttonStyle); // Creo un bottone
-            } catch (Exception e) {
-                bottoni[i] = new TextButton("", buttonStyle); // Creo un bottone
-            }
-            bottoni[i].addListener(new ClickListener() { // Aggiungo il listener al bottone
-                @Override
-                public void clicked(InputEvent event, float x, float y) { // Appena clicco il bottone
-                    Gdx.input.setInputProcessor(new InputAdapter() { // Aspetto
-                        @Override
-                        public boolean keyDown(int keycode) { // Appena clicco un tasto della tastiera
-                            Gdx.input.setInputProcessor(stage); // Do un nuovo processore di input
-                            bottoni[ii].setText(Input.Keys.toString(keycode)); // Cambio il nome del bottone premuto col tasto cliccato
-                            pulsanti[ii] = keycode; // Modifico l'array che contiene i comandi col nuovo tasto cliccato
-                            return true; // Esco
-                        }
-                    });
-                }
-            });
-
-            t.add(label).expand().fill().pad(5); // Aggiungo alla tabella la label col testo + setto una dimensione fissa che deve avere
-            t.add(bottoni[i]).expand().fill().pad(5); // Aggiungo alla tabella il bottone col suo listener + setto una dimensione fissa che deve avere
-            t.row(); // Vado a capo
-            t.setDebug(true); //per vedere come e' fatta la tabella
+        String[] keys = comandi.keySet().toArray(new String[0]); // Ottengo un array delle chiavi
+        for (int i = 0; i < keys.length; i++) {
+            String nome = keys[i]; // Ottengo il nome del comando
+            int keycode = comandi.get(nome); // Ottengo il tasto associato
+            creaBottone(t, nome, keycode);
         }
 
         table.add(t); // Aggiungo la tabella dei comandi a quella principale
         table.row(); // Vado a capo
+    }
+
+    private void creaBottone(Table t, String nome, int keycode){
+        Label label = creaLabel(nome);
+        final TextButton bottone = new TextButton(Input.Keys.toString(keycode), this.buttonStyle);
+
+        bottone.addListener(new ClickListener() { // Aggiungo il listener al bottone
+            @Override
+            public void clicked(InputEvent event, float x, float y) { // Appena clicco il bottone
+                Gdx.input.setInputProcessor(new InputAdapter() { // Aspetto
+                    @Override
+                    public boolean keyDown(int keycode) { // Appena clicco un tasto della tastiera
+                        Gdx.input.setInputProcessor(stage); // Do un nuovo processore di input
+                        bottone.setText(Input.Keys.toString(keycode)); // Cambio il nome del bottone premuto col tasto cliccato
+                        comandi.put(nome, keycode); // Modifico l'array che contiene i comandi col nuovo tasto cliccato
+                        aggiornaComando(nome, keycode);
+                        return true; // Esco
+                    }
+                });
+            }
+        });
+
+        t.add(label).expand().fill().pad(5); // Aggiungo alla tabella la label col testo + setto una dimensione fissa che deve avere
+        t.add(bottone).expand().fill().pad(5); // Aggiungo alla tabella il bottone col suo listener + setto una dimensione fissa che deve avere
+        t.row(); // Vado a capo
+        t.setDebug(true); //per vedere come e' fatta la tabella
+    }
+
+    private Label creaLabel(String testo) {
+        Label label = new Label(testo, labelStyle); // Lable che conterra' il testo
+        label.setTouchable(null); // Rende il testo non editabile
+        return label;
+    }
+
+    private void aggiornaComando(String nome, int keycode) {
+        switch (nome) {
+            case "Su":
+                ComandiGioco.setDirezioneNord(keycode);
+                break;
+            case "Sinistra":
+                ComandiGioco.setDirezioneOvest(keycode);
+                break;
+            case "Giu":
+                ComandiGioco.setDirezioneSud(keycode);
+                break;
+            case "Destra":
+                ComandiGioco.setDirezioneEst(keycode);
+                break;
+            case "Corri":
+                ComandiGioco.setCORRI(keycode);
+                break;
+            case "Interagisci":
+                ComandiGioco.setUSA(keycode);
+                break;
+            case "Attacca":
+                ComandiGioco.setATTACCO(keycode);
+                break;
+            case "Pausa":
+                ComandiGioco.setFERMAGIOCO(keycode);
+                break;
+            case "Riprendi":
+                ComandiGioco.setRIPRENDIGIOCO(keycode);
+                break;
+        }
     }
 
     private void creaBackButton(Table table) {
