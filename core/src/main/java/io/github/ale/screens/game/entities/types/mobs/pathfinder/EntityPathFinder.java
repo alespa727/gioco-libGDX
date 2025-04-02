@@ -16,9 +16,10 @@ import io.github.ale.screens.game.map.graph.node.Node;
 public class EntityPathFinder implements Disposable {
     private final LivingEntity entity;
     private final DefaultGraphPath<Node> path;
-    private final Cooldown cooldown = new Cooldown(0.5f);
+
     private Node startNode;
     private Node endNode;
+
     private volatile int map = -1;
     private Heuristic<Node> heuristic;
     private IndexedAStarPathFinder<Node> pathFinder;
@@ -26,39 +27,20 @@ public class EntityPathFinder implements Disposable {
     public EntityPathFinder(LivingEntity entity) {
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
-        cooldown.isReady = true;
-    }
-
-    public void countdown(float delta) {
-        cooldown.update(delta);
-        if (cooldown.isReady) {
-            cooldown.reset(0.8f);
-            path.clear();
-            entity.movement().searchingfornext = true;
-        }
     }
 
     public void renderPath(float x, float y, float delta) {
-        countdown(delta);
-        //executor.submit(() -> calculatePathTo(x, y));
-        calculatePathTo(x, y);
-    }
-
-    public void calculatePathTo(float x, float y) {
         //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
 
         if (Map.isGraphLoaded && map != MapManager.getMapIndex()) {
             map = MapManager.getMapIndex();
             pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
-            search(x, y);
-            if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
         }
 
-        //CALCOLO DEL PERCORSO
-        if (entity.movement().searchingfornext) {
+        if (entity.movement().isReady()){
             search(x, y);
-            if (path.getCount() > 1) entity.movement().setGoal(path.get(0), path.get(1));
         }
+
     }
 
 
@@ -82,11 +64,7 @@ public class EntityPathFinder implements Disposable {
 
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
 
-        //aggiunta nodo finale se non si trova un percorso
-        if (!success) {
-            entity.movement().reset();
-            System.out.println("percorso non trovato");
-        }
+        entity.movement().setPath(path);
     }
 
     public void drawPath(ShapeRenderer shapeRenderer) {
@@ -99,7 +77,6 @@ public class EntityPathFinder implements Disposable {
         for (Node node : path.nodes) {
             if (previousNode != null) {
                 shapeRenderer.rectLine(previousNode.getX(), previousNode.getY(), node.getX(), node.getY(), 0.1f);
-                shapeRenderer.circle(previousNode.x + 0.5f, previousNode.y + 0.5f, 0.2f, 10);
             }
             previousNode = node;
         }
@@ -118,7 +95,6 @@ public class EntityPathFinder implements Disposable {
 
     public void clear() {
         path.clear();
-        cooldown.reset(0f);
     }
 
     @Override

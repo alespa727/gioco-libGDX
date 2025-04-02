@@ -26,7 +26,7 @@ public abstract class LivingEntity extends Entity {
     public LivingEntity(EntityConfig config, EntityManager manager) {
         super(config, manager);
         skillset = new SkillSet();
-        movement = new EntityMovementManager();
+        movement = new EntityMovementManager(this);
 
         speed = config.speed;
         maxHealth = config.hp;

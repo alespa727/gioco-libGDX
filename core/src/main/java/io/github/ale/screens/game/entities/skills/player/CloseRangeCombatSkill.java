@@ -1,5 +1,6 @@
 package io.github.ale.screens.game.entities.skills.player;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.game.entities.types.combat.CombatEntity;
 import io.github.ale.screens.game.entities.types.player.Player;
@@ -10,6 +11,11 @@ public class CloseRangeCombatSkill extends CombatSkill {
 
     public CloseRangeCombatSkill(Player entity, String name, String description, float damage) {
         super(entity, name, damage, description);
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+
     }
 
     @Override

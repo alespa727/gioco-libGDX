@@ -1,5 +1,6 @@
 package io.github.ale.screens.game.entities.skills.player;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.ale.screens.game.entities.types.mobs.LivingEntity;
 import io.github.ale.screens.game.entities.skills.Skill;
 
@@ -9,6 +10,11 @@ public class Dodge extends Skill {
 
     public Dodge(LivingEntity entity, String name, String description, float dodgeSpeed) {
         super(entity, name, description);
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+
     }
 
     @Override

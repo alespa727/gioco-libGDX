@@ -3,6 +3,7 @@ package io.github.ale.screens.game.entities.types.entity.texture;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -36,27 +37,29 @@ public class TexturesEntity {
 
         salvaAnimazioni(entity);
 
-        animations.put(new Vector2(0, 1f), new Animation<>(1 / 5f, movingUp));
-        animations.put(new Vector2(0, -1f), new Animation<>(1 / 5f, movingDown));
-        animations.put(new Vector2(-1f, 0), new Animation<>(1 / 5f, movingLeft));
-        animations.put(new Vector2(1f, 0), new Animation<>(1 / 5f, movingRight));
+        float offset = MathUtils.random(0f, 0.2f);
 
-        animations.put(new Vector2(-1f, 1f), new Animation<>(1 / 5f, movingLeft));
-        animations.put(new Vector2(-1f, -1f), new Animation<>(1 / 5f, movingLeft));
+        animations.put(new Vector2(0, 1f), new Animation<>(1 / 5f+offset, movingUp));
+        animations.put(new Vector2(0, -1f), new Animation<>(1 / 5f+offset, movingDown));
+        animations.put(new Vector2(-1f, 0), new Animation<>(1 / 5f+offset, movingLeft));
+        animations.put(new Vector2(1f, 0), new Animation<>(1 / 5f+offset, movingRight));
 
-        animations.put(new Vector2(1f, -1f), new Animation<>(1 / 5f, movingRight));
-        animations.put(new Vector2(1f, 1f), new Animation<>(1 / 5f, movingRight));
+        animations.put(new Vector2(-1f, 1f), new Animation<>(1 / 5f+offset, movingLeft));
+        animations.put(new Vector2(-1f, -1f), new Animation<>(1 / 5f+offset, movingLeft));
 
-        animations.put(new Vector2(0, 0.5f), new Animation<>(0.5f, up));
-        animations.put(new Vector2(0, -0.5f), new Animation<>(0.5f, down));
-        animations.put(new Vector2(-0.5f, 0), new Animation<>(0.5f, left));
-        animations.put(new Vector2(0.5f, 0), new Animation<>(0.5f, right));
+        animations.put(new Vector2(1f, -1f), new Animation<>(1 / 5f+offset, movingRight));
+        animations.put(new Vector2(1f, 1f), new Animation<>(1 / 5f+offset, movingRight));
 
-        animations.put(new Vector2(-0.5f, 0.5f), new Animation<>(0.5f, left));
-        animations.put(new Vector2(-0.5f, -0.5f), new Animation<>(0.5f, left));
+        animations.put(new Vector2(0, 0.5f), new Animation<>(0.5f+offset, up));
+        animations.put(new Vector2(0, -0.5f), new Animation<>(0.5f+offset, down));
+        animations.put(new Vector2(-0.5f, 0), new Animation<>(0.5f+offset, left));
+        animations.put(new Vector2(0.5f, 0), new Animation<>(0.5f+offset, right));
 
-        animations.put(new Vector2(0.5f, -0.5f), new Animation<>(0.5f, right));
-        animations.put(new Vector2(0.5f, 0.5f), new Animation<>(0.5f, right));
+        animations.put(new Vector2(-0.5f, 0.5f), new Animation<>(0.5f+offset, left));
+        animations.put(new Vector2(-0.5f, -0.5f), new Animation<>(0.5f+offset, left));
+
+        animations.put(new Vector2(0.5f, -0.5f), new Animation<>(0.5f+offset, right));
+        animations.put(new Vector2(0.5f, 0.5f), new Animation<>(0.5f+offset, right));
 
     }
 
