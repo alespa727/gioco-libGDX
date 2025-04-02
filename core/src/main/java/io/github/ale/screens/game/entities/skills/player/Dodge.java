@@ -10,6 +10,12 @@ public class Dodge extends Skill {
 
     public Dodge(LivingEntity entity, String name, String description, float dodgeSpeed) {
         super(entity, name, description);
+        this.dodgeSpeed = dodgeSpeed;
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override
@@ -17,9 +23,10 @@ public class Dodge extends Skill {
 
     }
 
+
     @Override
     public void execute() {
-        entity.body.setLinearVelocity(entity.body.getLinearVelocity().x * 25f, entity.body.getLinearVelocity().y * 25f);
+        entity.body.setLinearVelocity(entity.body.getLinearVelocity().x * dodgeSpeed, entity.body.getLinearVelocity().y * dodgeSpeed);
         setBeingUsed(true);
     }
 }

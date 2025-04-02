@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.game.entities.types.enemy.Enemy;
 import io.github.ale.screens.game.entities.types.player.Player;
 import io.github.ale.screens.game.manager.entity.EntityManager;
@@ -29,9 +28,9 @@ public enum EnemyStates implements State<Enemy> {
 
             entity.attack();
 
-            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
+            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
 
-            entity.direzione().set(calculateVector(entity.coordinateCentro(), entity.manager.player().coordinateCentro()));
+            entity.direzione().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
 
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
             entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
@@ -89,7 +88,7 @@ public enum EnemyStates implements State<Enemy> {
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
             entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
-            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
+            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
 
 
             entity.checkIfDead();

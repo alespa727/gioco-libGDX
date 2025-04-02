@@ -76,7 +76,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate*10);
         Game.assetManager.load("entities/Finn.png", Texture.class);
         Game.assetManager.finishLoading();
         createShaderProgram();
@@ -161,7 +160,7 @@ public class GameScreen implements Screen {
     }
 
     public void update(float delta) {
-        performanceInfo();
+
         elapsedTime += delta;
         entities.render(delta);
         boolean ambiente = getMapManager().getAmbiente();

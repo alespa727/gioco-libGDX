@@ -1,5 +1,6 @@
 package io.github.ale.screens.game.entities.skills;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 public class SkillSet {
@@ -10,6 +11,20 @@ public class SkillSet {
     public SkillSet() {
         skillList = new Array<>();
         active = true;
+    }
+
+    public void update() {
+        for (Skill skill : skillList) {
+            skill.update();
+        }
+    }
+
+    public void draw(SpriteBatch batch, float elapsedTime) {
+        for (Skill skill : skillList) {
+            if(skill.isBeingUsed()){
+                skill.draw(batch);
+            }
+        }
     }
 
     public void add(Skill skill) {
@@ -29,6 +44,10 @@ public class SkillSet {
             }
         }
         return null;
+    }
+
+    public Array<Skill> getSkillList() {
+        return skillList;
     }
 
     private void disable() {

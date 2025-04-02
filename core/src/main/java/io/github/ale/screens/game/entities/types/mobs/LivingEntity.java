@@ -120,11 +120,13 @@ public abstract class LivingEntity extends Entity {
     public void updateEntity(float delta) {
         cooldown(delta);
         limitSpeed();
+        skillset.update();
     }
 
     // --- METODI DI RENDERING ---
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
+        skillset.draw(batch, elapsedTime);
         graphics().setAnimation(this);
         if (hasBeenHit) {
             batch.setColor(1, 0, 0, 0.6f);
@@ -139,7 +141,7 @@ public abstract class LivingEntity extends Entity {
             renderer.setColor(Color.RED);
         }
         renderer.setColor(Color.BLACK);
-        renderer.circle(coordinateCentro().x, coordinateCentro().y, 0.3f, 10);
+        renderer.circle(getPosition().x, getPosition().y, 0.3f, 10);
     }
 
     public EntityPathFinder pathfinder() {

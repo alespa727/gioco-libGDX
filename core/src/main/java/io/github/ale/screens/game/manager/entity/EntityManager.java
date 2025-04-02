@@ -43,7 +43,7 @@ public final class EntityManager {
         this.game = game;
         this.world = world;
 
-        comparator = (o1, o2) -> Float.compare(o2.coordinateCentro().y, o1.coordinateCentro().y);
+        comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
 
         entityArray = new Array<>();
         entityQueue = new Queue<>();
@@ -80,8 +80,8 @@ public final class EntityManager {
         e = new EntityConfig();
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
-        e.x = 5.5f;
-        e.y = 5.5f;
+        e.x = 7f;
+        e.y = 7f;
         e.img = Game.assetManager.get("entities/nemico.png", Texture.class);
         e.width = 16 / 32f;
         e.height = 8 / 16f;
@@ -97,9 +97,9 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             e.x++;
-            for (int j = 0; j < 100; j++) {
+            for (int j = 0; j < 1; j++) {
                 e.y++;
                 nextEntityId++;
                 e.id = nextEntityId;
@@ -122,7 +122,7 @@ public final class EntityManager {
         game.batch.begin();
         entityArray.sort(comparator);
         for (Entity e : entityArray) {
-            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y)) {
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
                     e.draw(game.batch, elapsedTime);
                 } catch (Exception ex) {
@@ -140,7 +140,7 @@ public final class EntityManager {
         }
 
         for (Entity e : entityArray) {
-            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y) || e instanceof Player) {
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
                 e.render(delta);
                 e.setRendered(true);
                 e.updateNode();
@@ -153,7 +153,7 @@ public final class EntityManager {
         for (Entity e : entityArray) {
 
             if (e instanceof Enemy enemy) {
-                if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y))
+                if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
                     enemy.drawPath(game.renderer);
             }
 
@@ -170,7 +170,7 @@ public final class EntityManager {
             }
             if (e.stati().inCollisione()) game.renderer.setColor(Color.RED);
             else game.renderer.setColor(Color.BLACK);
-            if (CameraManager.isWithinFrustumBounds(e.coordinateCentro().x, e.coordinateCentro().y))
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
                 e.drawHitbox(game.renderer);
             game.renderer.setColor(Color.WHITE);
             game.renderer.rectLine(e.body.getPosition(), player.body.getPosition(), 0.1f);

@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
-import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entities.types.mobs.LivingEntity;
 import io.github.ale.screens.game.manager.map.MapManager;
 import io.github.ale.screens.game.map.Map;
@@ -48,7 +47,7 @@ public class EntityPathFinder implements Disposable {
         //System.out.println("Calcolo del percorso!");
         path.clear();
         //setta il nodo di inizio e fine
-        startNode = Map.getGraph().getClosestNode(entity.coordinateCentro().x, entity.coordinateCentro().y);
+        startNode = Map.getGraph().getClosestNode(entity.getPosition().x, entity.getPosition().y);
         endNode = Map.getGraph().getClosestNode(x, y);
 
         //nodi validi?

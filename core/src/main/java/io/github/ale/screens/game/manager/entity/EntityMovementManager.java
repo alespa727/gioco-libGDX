@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import io.github.ale.cooldown.Cooldown;
-import io.github.ale.screens.game.entities.types.enemy.Enemy;
 import io.github.ale.screens.game.entities.types.mobs.LivingEntity;
 import io.github.ale.screens.game.map.Map;
 import io.github.ale.screens.game.map.graph.node.Node;
@@ -67,7 +66,7 @@ public class EntityMovementManager {
     }
 
     private void towards(Vector2 target) {
-        if (owner.coordinateCentro().dst(target) < 8/16f) {
+        if (owner.getPosition().dst(target) < 8/16f) {
             owner.body.setLinearDamping(20f);
             steps++;
             for (Vector2 node: path){
@@ -80,7 +79,7 @@ public class EntityMovementManager {
             owner.body.setLinearDamping(3f);
         }
 
-        Vector2 movementDirection = new Vector2(target).sub(owner.coordinateCentro()).nor();
+        Vector2 movementDirection = new Vector2(target).sub(owner.getPosition()).nor();
         float speed = owner.speed();
         Vector2 movement = movementDirection.scl(speed);
         Vector2 force = new Vector2(movement).scl(speed).scl(owner.body.getMass());

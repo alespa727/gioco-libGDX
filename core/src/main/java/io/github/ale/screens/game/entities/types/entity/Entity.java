@@ -24,6 +24,7 @@ public abstract class Entity {
     private final Vector2 coordinate;
     private final Vector2 direzione;
     public float delta;
+    public float elapsedTime;
     public Body body;
     public EntityManager manager;
     float width, height;
@@ -119,6 +120,7 @@ public abstract class Entity {
      * disegna il nemico
      */
     public void draw(SpriteBatch batch, float elapsedTime) {
+        this.elapsedTime = elapsedTime;
         graphics.setAnimation(this);
 
         batch.draw(graphics.getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), config.imageWidth, config.imageHeight);
@@ -138,7 +140,7 @@ public abstract class Entity {
         if (node != null) {
             lastNode = node;
         }
-        node = Map.getGraph().getClosestNode(coordinateCentro().x, coordinateCentro().y);
+        node = Map.getGraph().getClosestNode(getPosition().x, getPosition().y);
         if (node != null) {
             node.setWalkable(false);
         }
@@ -203,7 +205,7 @@ public abstract class Entity {
         this.coordinate.y = y - config().imageHeight / 2;
     }
 
-    public final Vector2 coordinateCentro() {
+    public final Vector2 getPosition() {
         return body.getPosition();
     }
 

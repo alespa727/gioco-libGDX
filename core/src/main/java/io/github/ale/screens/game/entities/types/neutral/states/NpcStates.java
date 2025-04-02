@@ -19,7 +19,7 @@ public enum NpcStates implements State<NonCombatEntity> {
             if (entity.direzione().y == 1f || entity.direzione().y == -1f) {
                 entity.direzione().scl(1f, 0.5f);
             }
-            if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) > 1.5f) {
+            if (entity.manager.player().getPosition().dst(entity.getPosition()) > 1.5f) {
                 entity.statemachine().changeState(NpcStates.FOLLOW);
             }
         }
@@ -44,10 +44,10 @@ public enum NpcStates implements State<NonCombatEntity> {
 
         @Override
         public void update(NonCombatEntity entity) {
-            if (entity.manager.player().coordinateCentro().dst(entity.coordinateCentro()) < 1.5f) {
+            if (entity.manager.player().getPosition().dst(entity.getPosition()) < 1.5f) {
                 entity.statemachine().changeState(NpcStates.IDLE);
             }
-            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
+            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
             entity.checkIfDead();
 
             //AGGIORNAMENTO MOVEMENT
