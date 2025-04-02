@@ -1,10 +1,10 @@
 package io.github.ale.screens.game.map.events;
 
 import com.badlogic.gdx.physics.box2d.*;
-import io.github.ale.screens.game.entities.player.Player;
-import io.github.ale.screens.game.entityType.EntityManager;
-import io.github.ale.screens.game.entityType.combat.CombatEntity;
-import io.github.ale.screens.game.entityType.entity.Entity;
+import io.github.ale.screens.game.entities.entityTypes.player.Player;
+import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.entities.entityTypes.combat.CombatEntity;
+import io.github.ale.screens.game.entities.entityTypes.entity.Entity;
 
 public class EventListener implements ContactListener {
 

@@ -2,7 +2,6 @@ package io.github.ale.screens.game.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -12,11 +11,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import io.github.ale.screens.game.entityType.EntityManager;
+import io.github.ale.screens.game.manager.EntityManager;
+import io.github.ale.screens.game.manager.MapManager;
 import io.github.ale.screens.game.map.events.ChangeMapEvent;
 import io.github.ale.screens.game.map.events.MapEvent;
 import io.github.ale.screens.game.map.events.EventListener;
-import io.github.ale.screens.game.pathfinding.graph.GameGraph;
+import io.github.ale.screens.game.map.graph.GameGraph;
 
 public class Map implements Disposable {
     public static boolean isGraphLoaded = false;
@@ -62,7 +62,7 @@ public class Map implements Disposable {
         loadCollisionMap(); // Carica la mappa delle collisioni
 
         // Crea un grafo basatosi sulle collisioni
-        graph = new GameGraph(width, height, collisions, manager);
+        graph = new GameGraph(width, height, collisions);
 
         // Variabili di controllo
         isGraphLoaded = true;
@@ -140,6 +140,9 @@ public class Map implements Disposable {
                     fixtureDef.density = 1f;
                     fixtureDef.friction = 0f;
                     fixtureDef.restitution = 0f; // Rimbalzo del corpo
+
+                    fixtureDef.filter.groupIndex = EntityManager.WALL;
+
 
                     // Collegamento delle proprietà fisiche al corpo
                     body.createFixture(fixtureDef);

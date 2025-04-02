@@ -24,7 +24,7 @@ import io.github.ale.Game;
 import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.defeat.DefeatScreen;
 import io.github.ale.screens.game.GameScreen;
-import io.github.ale.screens.game.camera.CameraManager;
+import io.github.ale.screens.game.manager.CameraManager;
 import io.github.ale.screens.mainmenu.MainScreen;
 
 public class PauseScreen implements Screen{

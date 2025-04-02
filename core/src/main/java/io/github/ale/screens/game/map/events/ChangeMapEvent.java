@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.ale.ComandiGioco;
-import io.github.ale.screens.game.entities.player.Player;
-import io.github.ale.screens.game.entityType.entity.Entity;
-import io.github.ale.screens.game.map.MapManager;
+import io.github.ale.screens.game.entities.entityTypes.player.Player;
+import io.github.ale.screens.game.entities.entityTypes.entity.Entity;
+import io.github.ale.screens.game.manager.MapManager;
 
 public class ChangeMapEvent extends MapEvent {
     // Gestore mappa
