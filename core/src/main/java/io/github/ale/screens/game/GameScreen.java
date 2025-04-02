@@ -183,7 +183,7 @@ public class GameScreen implements Screen {
     }
 
     public void updateCamera(boolean boundaries) {
-        camera.update(mapManager, entities, viewport, boundaries);
+        camera.update(entities, viewport, delta, boundaries);
         viewport.apply();
         game.batch.setProjectionMatrix(camera.get().combined);
         game.renderer.setProjectionMatrix(camera.get().combined);

@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import io.github.ale.Game;
+import io.github.ale.cooldown.Cooldown;
+import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.manager.map.MapManager;
 import io.github.ale.screens.game.map.Map;
@@ -12,6 +15,8 @@ public class CameraManager {
     private static OrthographicCamera camera;
     private static Vector3[] frustumCorners;
 
+    private static Cooldown cooldown;
+    private static float shakeForce;
     /**
      * inizializza la telecamera
      */
@@ -23,6 +28,7 @@ public class CameraManager {
         for (int i = 0; i < 4; i++) {
             frustumCorners[i] = new Vector3(camera.frustum.planePoints[i]);
         }
+        cooldown = new Cooldown(0.2f);
     }
 
     public static Vector3[] getFrustumCorners() {
@@ -31,6 +37,11 @@ public class CameraManager {
 
     public static Vector2 getCenter() {
         return new Vector2(frustumCorners[0].x + camera.viewportWidth / 2, frustumCorners[0].y + camera.viewportHeight / 2);
+    }
+
+    public static void shakeTheCamera(float time, float shakeForce) {
+        cooldown.reset(time);
+        CameraManager.shakeForce = shakeForce;
     }
 
     public static boolean isWithinFrustumBounds(float x, float y) {
@@ -67,11 +78,13 @@ public class CameraManager {
      * aggiorna cosa la telecamera deve seguire/modalità della telecamera
      */
 
-    public void update(MapManager maps, EntityManager entities, FitViewport viewport, boolean boundaries) {
+    public void update(EntityManager entities, FitViewport viewport, float delta, boolean boundaries) {
 
         float x = camera.viewportWidth / 2;
         float y = camera.viewportHeight / 2;
+        cooldown.update(delta);
 
+        if (!cooldown.isReady) shake();
         smoothTransitionTo(new Vector2(entities.player().getPosition().x, entities.player().getPosition().y));
         if (boundaries) boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
         viewport.apply();
@@ -82,6 +95,14 @@ public class CameraManager {
             frustumCorners[i] = new Vector3(camera.frustum.planePoints[i]);
         }
         //System.out.println();
+    }
+
+    private void shake(){
+        float offsetX = (float) (Math.random() * 2 - 1)*shakeForce;
+        float offsetY = (float) (Math.random() * 2 - 1)*shakeForce;
+        camera.position.add(offsetX, offsetY, 0);
+        camera.update();
+
     }
 
     public OrthographicCamera get() {

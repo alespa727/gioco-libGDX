@@ -7,9 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import io.github.ale.cooldown.Cooldown;
 import io.github.ale.screens.game.entities.types.enemy.Enemy;
 import io.github.ale.screens.game.entities.types.player.Player;
 import io.github.ale.screens.game.manager.entity.EntityManager;
+import io.github.ale.screens.game.map.Map;
 
 public enum EnemyStates implements State<Enemy> {
 
@@ -95,6 +97,8 @@ public enum EnemyStates implements State<Enemy> {
 
             //AGGIORNAMENTO MOVEMENT
             entity.movement().update();
+
+            if (!entity.pathfinder().success) entity.statemachine.changeState(PATROLLING);
         }
 
         @Override
@@ -109,6 +113,7 @@ public enum EnemyStates implements State<Enemy> {
 
     PATROLLING {
         Player player;
+        float accumulator = 0;
 
         @Override
         public void enter(Enemy entity) {
@@ -117,12 +122,16 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-
             if (player == null)
                 player = entity.manager.player();
 
-            RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-            entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            accumulator+=player.delta;
+            if (accumulator > 1f){
+                accumulator = 0f;
+                RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
+                entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            }
+
 
             Vector2 direction = entity.direzione();
 
@@ -158,15 +167,21 @@ public enum EnemyStates implements State<Enemy> {
                     return -1; // Ignora il fixture e continua il raycasting
                 }
 
+                if (userData.equals("map")) {
+                    System.out.println("MURO");
+                    return -1;
+                }
+
                 if (userData instanceof Player && filter.categoryBits != EntityManager.RANGE) {
-                    if (start.dst(end) < entity.rangeRadius() && entity.statemachine.getCurrentState() != ATTACKING) {
-                        entity.statemachine.changeState(ATTACKING);
-                        return fraction;
-                    }
                     if (start.dst(end) > entity.rangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
                         entity.statemachine.changeState(PURSUE);
                         return fraction;
                     }
+                    if (start.dst(end) < entity.rangeRadius() && entity.statemachine.getCurrentState() != ATTACKING) {
+                        entity.statemachine.changeState(ATTACKING);
+                        return fraction;
+                    }
+
                 }
 
                 return 0;

@@ -29,7 +29,7 @@ public abstract class Enemy extends CombatEntity {
         viewDistance = 11f;
         pursueMaxDistance = 12f;
         statemachine.setInitialState(EnemyStates.PATROLLING);
-        skillset().add(new Slash(this, "", "", 10));
+        getSkillset().add(new Slash(this, "", "", 10));
     }
 
     public Array<Enemy> getEnemiesNearby(){

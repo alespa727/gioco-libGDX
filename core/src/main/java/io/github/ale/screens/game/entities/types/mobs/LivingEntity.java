@@ -37,8 +37,12 @@ public abstract class LivingEntity extends Entity {
     }
 
     // --- GESTIONE SALUTE ---
-    public float health() {
+    public float getHealth() {
         return health;
+    }
+
+    public float getMaxHealth(){
+        return maxHealth;
     }
 
     public void regenHealthTo(float amount) {
@@ -84,7 +88,7 @@ public abstract class LivingEntity extends Entity {
     // --- GESTIONE COMBATTIMENTO ---
     public abstract void cooldown(float delta);
 
-    public final SkillSet skillset() {
+    public final SkillSet getSkillset() {
         return skillset;
     }
 

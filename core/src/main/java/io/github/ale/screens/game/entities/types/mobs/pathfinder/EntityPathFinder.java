@@ -23,6 +23,8 @@ public class EntityPathFinder implements Disposable {
     private Heuristic<Node> heuristic;
     private IndexedAStarPathFinder<Node> pathFinder;
 
+    public boolean success;
+
     public EntityPathFinder(LivingEntity entity) {
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
@@ -61,7 +63,7 @@ public class EntityPathFinder implements Disposable {
             heuristic = new HeuristicDistance();
         }
 
-        boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
+        success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
 
         entity.movement().setPath(path);
     }

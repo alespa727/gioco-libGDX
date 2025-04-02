@@ -12,6 +12,7 @@ import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.game.entities.types.combat.CombatEntity;
 import io.github.ale.screens.game.entities.types.player.Player;
 import io.github.ale.screens.game.entities.skills.skillType.CombatSkill;
+import io.github.ale.screens.game.manager.camera.CameraManager;
 
 public class CloseRangeCombatSkill extends CombatSkill {
     private Array<CombatEntity> inRange;
@@ -51,6 +52,7 @@ public class CloseRangeCombatSkill extends CombatSkill {
 
     @Override
     public void execute() {
+        CameraManager.shakeTheCamera(0.2f, 0.05f);
         cooldown.reset();
         inRange = ((Player) entity).getInRange();
         for (CombatEntity combatEntity : inRange) {

@@ -8,6 +8,7 @@ import io.github.ale.screens.game.entities.types.combat.CombatEntity;
 import io.github.ale.screens.game.entities.types.entity.EntityConfig;
 import io.github.ale.screens.game.entities.skills.player.CloseRangeCombatSkill;
 import io.github.ale.screens.game.entities.skills.player.Dodge;
+import io.github.ale.screens.game.manager.camera.CameraManager;
 import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.manager.entity.PlayerMovementManager;
 
@@ -30,8 +31,8 @@ public class Player extends CombatEntity {
         this.dodgeCooldown = new Cooldown(1f);
         this.dodgeCooldown.reset(0);
 
-        skillset().add(new Dodge(this, "", "", 25f));
-        skillset().add(new CloseRangeCombatSkill(this, "", "", 10));
+        getSkillset().add(new Dodge(this, "", "", 25f));
+        getSkillset().add(new CloseRangeCombatSkill(this, "", "", 10));
     }
 
     public PlayerMovementManager getMovement() {
@@ -77,7 +78,7 @@ public class Player extends CombatEntity {
      */
     @Override
     public void checkIfDead() {
-        if (health() <= 0) {
+        if (getHealth() <= 0) {
             stati().setIsAlive(false);
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
@@ -100,6 +101,11 @@ public class Player extends CombatEntity {
         if (Gdx.input.isKeyPressed(Input.Keys.F)) {
             dodge();
         }
+    }
+
+    public void hit(CombatEntity entity, float damage) {
+        super.hit(entity, damage);
+        CameraManager.shakeTheCamera(0.2f, damage/getMaxHealth());
     }
 
     public void dodge() {

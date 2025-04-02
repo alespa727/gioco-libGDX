@@ -16,14 +16,14 @@ public final class Finn extends Enemy {
     public void create() {
         System.out.println("Finn n." + id() + " creato");
         statemachine.changeState(EnemyStates.PURSUE);
-        skillset().add(new Slash(this, "pugno", "un pugno molto forte!", 20));
+        getSkillset().add(new Slash(this, "pugno", "un pugno molto forte!", 20));
     }
 
     @Override
     public void attack() {
         attack.update(delta);
         if (attack.isReady) {
-            skillset().execute(Slash.class);
+            getSkillset().execute(Slash.class);
             attack.reset();
         }
     }
