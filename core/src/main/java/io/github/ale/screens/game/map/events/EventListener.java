@@ -35,16 +35,6 @@ public class EventListener implements ContactListener {
             ((Player) dataA).addEntity((CombatEntity) dataB); // Aggiungo entità alla lista di entità del player
         }
 
-        if (dataA instanceof Enemy && dataB instanceof Enemy) {
-            Enemy enemy1 = (Enemy) dataA;
-            Enemy enemy2 = (Enemy) dataB;
-
-            enemy1.addEnemy(enemy2);
-            enemy2.addEnemy(enemy1);
-            System.out.println("Nemici aggiunti a vicenda");
-
-        }
-
     }
 
     @Override
@@ -64,15 +54,6 @@ public class EventListener implements ContactListener {
         boolean isNotRangeB = fixtureB.getFilterData().categoryBits != EntityManager.RANGE; // Controllo del filtro con cui può interagire
         if (!isPlayerB && isPlayerA && isCombatB && isNotRangeB) {
             ((Player) dataA).removeEntity((CombatEntity) dataB); // Rimuovo entità dalla lista del player
-        }
-
-        if (dataA instanceof Enemy && dataB instanceof Enemy) {
-            Enemy enemy1 = (Enemy) dataA;
-            Enemy enemy2 = (Enemy) dataB;
-
-            enemy1.removeEnemy(enemy2);
-            enemy2.removeEnemy(enemy1);
-            System.out.println("Nemici rimossi a vicenda");
         }
 
         // Gestione eventi della mappa

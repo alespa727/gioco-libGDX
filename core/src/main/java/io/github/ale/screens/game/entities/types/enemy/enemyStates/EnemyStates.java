@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import com.badlogic.gdx.utils.Array;
 import io.github.ale.screens.game.entities.types.enemy.Enemy;
 import io.github.ale.screens.game.entities.types.player.Player;
 import io.github.ale.screens.game.manager.entity.EntityManager;
@@ -87,7 +88,9 @@ public enum EnemyStates implements State<Enemy> {
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
             entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
-            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
+            Array<Enemy> enemiesNearby = entity.getEnemiesNearby();
+            if(enemiesNearby.size>0) entity.pathfinder().renderPath(enemiesNearby.get(0).coordinateCentro().x, enemiesNearby.get(0).coordinateCentro().y , entity.delta);
+            else entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
 
 
             entity.checkIfDead();

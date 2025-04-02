@@ -89,7 +89,7 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             e.id = nextEntityId++;
             e.y++;
             System.out.println(e.id);

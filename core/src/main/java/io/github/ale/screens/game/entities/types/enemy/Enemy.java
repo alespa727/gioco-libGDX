@@ -14,7 +14,7 @@ public abstract class Enemy extends CombatEntity {
     public final float viewDistance;
     public final float pursueMaxDistance;
 
-    private Array<Enemy> inRangeEnemies;
+    private final Array<Enemy> inRangeEnemies;
 
     protected Cooldown attack;
 
@@ -30,6 +30,10 @@ public abstract class Enemy extends CombatEntity {
         pursueMaxDistance = 12f;
         statemachine.setInitialState(EnemyStates.PATROLLING);
         skillset().add(new Slash(this, "", "", 10));
+    }
+
+    public Array<Enemy> getEnemiesNearby(){
+        return inRangeEnemies;
     }
 
     @Override

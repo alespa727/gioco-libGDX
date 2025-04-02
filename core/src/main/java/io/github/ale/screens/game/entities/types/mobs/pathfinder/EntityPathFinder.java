@@ -82,11 +82,6 @@ public class EntityPathFinder implements Disposable {
 
         boolean success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
 
-        float cost=0;
-        for (int i = 0; i < path.getCount()-1; i++) {
-            cost+=path.get(i).connessioni.get(0).getCost();
-        }
-        System.out.println(cost);
         //aggiunta nodo finale se non si trova un percorso
         if (!success) {
             entity.movement().reset();
