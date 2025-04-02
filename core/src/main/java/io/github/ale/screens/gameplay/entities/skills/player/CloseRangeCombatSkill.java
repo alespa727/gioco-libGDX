@@ -49,7 +49,6 @@ public class CloseRangeCombatSkill extends CombatSkill {
     public void execute() {
         CameraManager.shakeTheCamera(0.2f, 0.05f);
         cooldown.reset();
-        entity.manager.gameInfo.screen.setTimeScale(0.04f, 0.4f);
         inRange = ((Player) entity).getInRange();
         for (CombatEntity combatEntity : inRange) {
             combatEntity.hit((CombatEntity) entity, damage);
