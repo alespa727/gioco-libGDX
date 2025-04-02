@@ -1,7 +1,6 @@
 package io.github.ale.cooldown;
 
 /**
- *
  * @author alesp
  */
 public class Cooldown {
@@ -16,28 +15,31 @@ public class Cooldown {
         this.isReady = true;
     }
 
-    public void update(float delta){
-        if(!isReady){
+    public void update(float delta) {
+        if (!isReady) {
             time -= delta;
             time = Math.max(0, time);
-            if(time <= 0){
+            if (time <= 0) {
                 isReady = true;
             }
         }
     }
 
-    public void reset(){
+    public void reset() {
         isReady = false;
         time = maxTime;
     }
 
-    public void reset(float time){
+    public void reset(float time) {
         isReady = false;
         this.time = time;
     }
 
-    public float getTimer(){
+    public float getTimer() {
         return time;
     }
-    public float getMaxTime(){return maxTime;}
+
+    public float getMaxTime() {
+        return maxTime;
+    }
 }

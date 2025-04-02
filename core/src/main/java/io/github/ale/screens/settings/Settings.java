@@ -16,21 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import io.github.ale.ComandiGioco;
 import io.github.ale.Game;
 import io.github.ale.screens.mainmenu.MainScreen;
 
 public class Settings implements Screen {
-    private final Game game;
-    private Skin skin;
-    private Stage stage;
-    private Table root;
-    private Table table;
-
-    TextButton.TextButtonStyle buttonStyle;
-    Label.LabelStyle labelStyle;
-
     final String[] comandi = new String[]{ // Array descrizione tasti
         "Su",
         "Sinistra",
@@ -42,7 +32,13 @@ public class Settings implements Screen {
         "pausa",
         "play"
     };
-
+    private final Game game;
+    TextButton.TextButtonStyle buttonStyle;
+    Label.LabelStyle labelStyle;
+    private Skin skin;
+    private Stage stage;
+    private Table root;
+    private Table table;
     private TextButton bottoni[] = new TextButton[comandi.length]; // Bottoni per cambiare
 
     public Settings(Game game) {
@@ -164,7 +160,7 @@ public class Settings implements Screen {
 
             try {
                 bottoni[i] = new TextButton(Input.Keys.toString(pulsanti[i]), buttonStyle); // Creo un bottone
-            }catch (Exception e){
+            } catch (Exception e) {
                 bottoni[i] = new TextButton("", buttonStyle); // Creo un bottone
             }
             bottoni[i].addListener(new ClickListener() { // Aggiungo il listener al bottone
@@ -192,7 +188,7 @@ public class Settings implements Screen {
         table.row(); // Vado a capo
     }
 
-    private void creaBackButton(Table table){
+    private void creaBackButton(Table table) {
         TextButton back = new TextButton("Back", buttonStyle); // Creo un bottone
         back.addListener(new ClickListener() { // Aggiungo un listener al bottone per il click
             @Override

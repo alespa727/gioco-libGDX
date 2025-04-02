@@ -6,7 +6,6 @@ public class NodeConnection implements Connection<Node> {
     private final Node fromNode;
     private final Node toNode;
     private final float cost;
-    public boolean isOccupied = false;
 
     /**
      * conessione fra nodi
@@ -22,7 +21,7 @@ public class NodeConnection implements Connection<Node> {
      */
     @Override
     public float getCost() {
-        if(!toNode.isWalkable()) return 10f;
+        if (!toNode.isWalkable() || !fromNode.isWalkable()) return 1000f;
         return cost;
     }
 

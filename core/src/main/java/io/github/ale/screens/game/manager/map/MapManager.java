@@ -1,35 +1,32 @@
 package io.github.ale.screens.game.manager.map;
+
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.map.Map;
 
 public class MapManager {
 
     // Grandezza di un pixel
-    public static final float TILE_SIZE = 1/16f;
-
+    public static final float TILE_SIZE = 1 / 16f;
+    // Numero della mappa attuale
+    private static int currentMapNum;
     // Mappa default
     private final int defaultMap = 0;
-
     // Reference utili
     private final EntityManager manager;
     private final FitViewport viewport;
     private final World world;
-
     // Variabile di stato in caso di cambio mappa
-    private boolean inChangeMapEvent=false;
-
+    private boolean inChangeMapEvent = false;
     // Mappa attuale
     private Map currentMap;
-
-    // Numero della mappa attuale
-    private static int currentMapNum;
     private String nome;
     private boolean ambienteAperto;
 
-    /** Creazione manager delle mappe*/
+    /**
+     * Creazione manager delle mappe
+     */
     public MapManager(FitViewport viewport, EntityManager manager, int startingMap, World world) {
 
         // Inizializzazione
@@ -38,12 +35,21 @@ public class MapManager {
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
-        float defaultx=11, defaulty=11;
+        float defaultx = 11, defaulty = 11;
 
         this.changeMap(defaultMap, defaultx, defaulty); // Cambio mappa
     }
 
-    /** Cambio mappa */
+    /**
+     * Index mappa
+     */
+    public static int getMapIndex() {
+        return currentMapNum;
+    }
+
+    /**
+     * Cambio mappa
+     */
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) {
             currentMap.dispose(); // Cancellazione mappa precedente
@@ -57,7 +63,8 @@ public class MapManager {
                 viewport.setWorldSize(20f, 20f * 9 / 16f); // Grandezza telecamera
             }
 
-            case 2 -> {}
+            case 2 -> {
+            }
 
             default -> {
                 nome = "stanza";
@@ -67,7 +74,7 @@ public class MapManager {
         }
 
         // Riassegnazione index
-        currentMapNum=map;
+        currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
         currentMap = new Map(nome, manager, this, x, y).createCollision();
@@ -76,22 +83,23 @@ public class MapManager {
         viewport.apply();
     }
 
-    /**Index mappa*/
-    public static int getMapIndex() {
-        return currentMapNum;
-    }
-
-    /**Restituisce la mappa*/
+    /**
+     * Restituisce la mappa
+     */
     public Map getMap() {
         return currentMap;
     }
 
-    /**Restituisce il tipo di ambiente*/
+    /**
+     * Restituisce il tipo di ambiente
+     */
     public boolean getAmbiente() {
         return ambienteAperto;
     }
 
-    /**Setter per possibilità cambio mappa*/
+    /**
+     * Setter per possibilità cambio mappa
+     */
     public void setInChangeMapEvent(boolean inChangeMapEvent) {
         this.inChangeMapEvent = inChangeMapEvent;
     }

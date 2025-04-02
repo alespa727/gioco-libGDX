@@ -3,7 +3,7 @@ package io.github.ale.screens.game.map.graph.node;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.utils.Array;
 
-public class Node{
+public class Node {
     public int x, y;
     public Array<Connection<Node>> connessioni = new Array<>();
     private int index;
@@ -34,22 +34,25 @@ public class Node{
 
     /**
      * coordinata x del nodo
+     *
      * @return
      */
-    public float getX(){
-        return x+0.5f;
+    public float getX() {
+        return x + 0.5f;
     }
 
     /**
      * coordinata y del nodo
+     *
      * @return
      */
-    public float getY(){
-        return y+0.5f;
+    public float getY() {
+        return y + 0.5f;
     }
 
     /**
      * aggiunge una connessione ad un nodo
+     *
      * @param toNode
      * @param cost
      */
@@ -59,6 +62,7 @@ public class Node{
 
     /**
      * restituisce tutte le connessioni
+     *
      * @return
      */
     public Array<Connection<Node>> getConnections() {
@@ -67,6 +71,7 @@ public class Node{
 
     /**
      * restituisce tutti i nodi vicini
+     *
      * @return
      */
     public Array<Node> getNeighbors() {

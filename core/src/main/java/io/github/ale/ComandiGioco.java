@@ -3,20 +3,22 @@ package io.github.ale;
 import com.badlogic.gdx.Input;
 
 /**
-<p>
-    Questa classe contiene tutti i comandi che dovranno essere usati nel gioco.
-<br>
-    I comandi sono e devono essere TUTTI STATICI poiche' piu' facile ad accedervi.
-<br>
-    Gli attributi sono PRIVATI poiche' devono essere modificabili, solo,
-    attraverso i metodi GETTER E SETTER.
-</p>
-*/
+ * <p>
+ * Questa classe contiene tutti i comandi che dovranno essere usati nel gioco.
+ * <br>
+ * I comandi sono e devono essere TUTTI STATICI poiche' piu' facile ad accedervi.
+ * <br>
+ * Gli attributi sono PRIVATI poiche' devono essere modificabili, solo,
+ * attraverso i metodi GETTER E SETTER.
+ * </p>
+ */
 
 public final class ComandiGioco {
     // ATTRIBUTI -----------------------------------------------------------------------------
 
-    /**<p>MOVIMENTI---------------------------------------------------------------------------------</p>*/
+    /**
+     * <p>MOVIMENTI---------------------------------------------------------------------------------</p>
+     */
     // TASTO PER LA DIREZIONE BASE, MODIFICABILE, VERSO SOPRA (SU)
     private static int DIREZIONE_NORD = Input.Keys.W; //             <---------
 
@@ -30,23 +32,33 @@ public final class ComandiGioco {
     private static int DIREZIONE_OVEST = Input.Keys.A; //             <---------
     // ---------------------------------------------------------------
 
-    /**<p>TASTO PER L'ATTACCO BASE, MODIFICABILE----------------------------------------------------</p>*/
+    /**
+     * <p>TASTO PER L'ATTACCO BASE, MODIFICABILE----------------------------------------------------</p>
+     */
     private static int ATTACCO = Input.Keys.F;
 
 
-    /**<p>TASTO PER USARE UN OGGETTO O INTERAGIRE, MODIFICABILE-------------------------------------</p>*/
+    /**
+     * <p>TASTO PER USARE UN OGGETTO O INTERAGIRE, MODIFICABILE-------------------------------------</p>
+     */
     private static int USA = Input.Keys.E;
 
 
-    /**<p>TASTO PER MUOVERSI PIU' VELOCEMENTE, MODIFICABILE-----------------------------------------</p>*/
+    /**
+     * <p>TASTO PER MUOVERSI PIU' VELOCEMENTE, MODIFICABILE-----------------------------------------</p>
+     */
     private static int CORRI = Input.Keys.SHIFT_LEFT;
 
 
-    /**<p>TASTO PER FERMARE IL GIOCO, MODIFICABILE--------------------------------------------------</p>*/
+    /**
+     * <p>TASTO PER FERMARE IL GIOCO, MODIFICABILE--------------------------------------------------</p>
+     */
     private static int FERMAGIOCO = Input.Keys.ESCAPE;
 
 
-    /**<p>TASTO PER RIPRENDERE IL GIOCO, MODIFICABILE-----------------------------------------------</p>*/
+    /**
+     * <p>TASTO PER RIPRENDERE IL GIOCO, MODIFICABILE-----------------------------------------------</p>
+     */
     private static int RIPRENDIGIOCO = Input.Keys.SPACE;
 
     // COSTRUTTORI -----------------------------------------------------------------------------

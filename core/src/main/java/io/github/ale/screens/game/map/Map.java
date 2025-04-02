@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.tiled.*;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -14,8 +16,8 @@ import com.badlogic.gdx.utils.Disposable;
 import io.github.ale.screens.game.manager.entity.EntityManager;
 import io.github.ale.screens.game.manager.map.MapManager;
 import io.github.ale.screens.game.map.events.ChangeMapEvent;
-import io.github.ale.screens.game.map.events.MapEvent;
 import io.github.ale.screens.game.map.events.EventListener;
+import io.github.ale.screens.game.map.events.MapEvent;
 import io.github.ale.screens.game.map.graph.GameGraph;
 
 public class Map implements Disposable {
@@ -72,12 +74,37 @@ public class Map implements Disposable {
         createEvents();
     }
 
-    /**Restituisce l'oggetto che disegna la mappa*/
+    /**
+     * Restituisce il grafo
+     */
+    public static GameGraph getGraph() {
+        return graph;
+    }
+
+    /**
+     * Restituisce la larghezza della mappa
+     */
+    public static int width() {
+        return width;
+    }
+
+    /**
+     * Restituisce l'altezza della mappa
+     */
+    public static int height() {
+        return height;
+    }
+
+    /**
+     * Restituisce l'oggetto che disegna la mappa
+     */
     public OrthogonalTiledMapRenderer getMapRenderer() {
         return mapRenderer;
     }
 
-    /**Disegna le collisioni*/
+    /**
+     * Disegna le collisioni
+     */
     public void debugDraw(ShapeRenderer renderer) {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i < width; i++) {
@@ -91,20 +118,19 @@ public class Map implements Disposable {
         renderer.end();
     }
 
-    /** Update eventi della mappa */
-    public void render(){
+    /**
+     * Update eventi della mappa
+     */
+    public void render() {
         for (int i = 0; i < events.size; i++) {
             MapEvent event = events.get(i);
             event.update();
         }
     }
 
-    /** Restituisce il grafo */
-    public static GameGraph getGraph() {
-        return graph;
-    }
-
-    /** Carica la mappa delle collisioni */
+    /**
+     * Carica la mappa delle collisioni
+     */
     private void loadCollisionMap() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -116,7 +142,9 @@ public class Map implements Disposable {
         }
     }
 
-    /** Crea i corpi delle collisioni*/
+    /**
+     * Crea i corpi delle collisioni
+     */
     public Map createCollision() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -156,15 +184,17 @@ public class Map implements Disposable {
         return this;
     }
 
-    /**Crea bordi della mappa*/
-    public void createBorders(){
+    /**
+     * Crea bordi della mappa
+     */
+    public void createBorders() {
 
         Vector2[] bordi = new Vector2[5];
 
         bordi[0] = new Vector2(4, 4);
-        bordi[1] = new Vector2(width-4, 4);
-        bordi[2] = new Vector2(width-4, height-4);
-        bordi[3] = new Vector2(4, height-4);
+        bordi[1] = new Vector2(width - 4, 4);
+        bordi[2] = new Vector2(width - 4, height - 4);
+        bordi[3] = new Vector2(4, height - 4);
         bordi[4] = new Vector2(4, 4);
 
         // Definizione della forma
@@ -190,13 +220,15 @@ public class Map implements Disposable {
 
     }
 
-    /** Crea gli eventi caricati dalla mappa */
-    public void createEvents(){
+    /**
+     * Crea gli eventi caricati dalla mappa
+     */
+    public void createEvents() {
         for (MapObject object : eventLayer.getObjects()) {
 
             String eventType = (String) object.getProperties().get("eventType", String.class);
-            float x = object.getProperties().get("x", Float.class)*MapManager.TILE_SIZE;
-            float y = object.getProperties().get("y", Float.class)*MapManager.TILE_SIZE;
+            float x = object.getProperties().get("x", Float.class) * MapManager.TILE_SIZE;
+            float y = object.getProperties().get("y", Float.class) * MapManager.TILE_SIZE;
             float radius = object.getProperties().get("eventRadius", Float.class);
             int map = object.getProperties().get("map", Integer.class);
             float spawnx = object.getProperties().get("spawnx", Float.class);
@@ -210,15 +242,6 @@ public class Map implements Disposable {
         EventListener listener = new EventListener();
 
         this.entityManager.world.setContactListener(listener);
-    }
-
-    /**Restituisce la larghezza della mappa*/
-    public static int width() {
-        return width;
-    }
-    /**Restituisce l'altezza della mappa*/
-    public static int height() {
-        return height;
     }
 
     @Override

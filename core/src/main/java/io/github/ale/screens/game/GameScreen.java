@@ -2,25 +2,27 @@ package io.github.ale.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import io.github.ale.Game;
 import io.github.ale.KeyHandler;
+import io.github.ale.screens.game.gui.Gui;
+import io.github.ale.screens.game.manager.GameManager;
 import io.github.ale.screens.game.manager.camera.CameraManager;
 import io.github.ale.screens.game.manager.entity.EntityManager;
-import io.github.ale.screens.game.gui.Gui;
 import io.github.ale.screens.game.manager.map.MapManager;
 
 public class GameScreen implements Screen {
@@ -29,38 +31,33 @@ public class GameScreen implements Screen {
 
     // Variabili di stato
     public final Game game;
+    // Gestione del mondo e della fisica
+    final World world;
+    private final DefaultStateMachine<GameScreen, GameManager> gameState;
     public float delta;
     public boolean loaded = false;
     public boolean isPaused = false;
-    private float elapsedTime;
     public float accumulator = 0f;
-
-    // Gestione del mondo e della fisica
-    final World world;
+    // UI e viewport
+    public FitViewport viewport;
+    public KeyHandler keyHandler;
+    ShaderProgram shaderProgram;
+    FrameBuffer fbo1;
+    FrameBuffer fbo2;
+    private float elapsedTime;
     private Box2DDebugRenderer debugRenderer;
-    private final DefaultStateMachine<GameScreen, GameStates> gameState;
-
     // Componenti di gioco
     private EntityManager entities;
     private CameraManager camera;
     private MapManager mapManager;
     private Gui rect;
-
-    // UI e viewport
-    public FitViewport viewport;
     private Stage stage;
     private Table root;
-
-    ShaderProgram shaderProgram;
-    FrameBuffer fbo1;
-    FrameBuffer fbo2;
-
-    public KeyHandler keyHandler;
 
     public GameScreen(Game game) {
         this.game = game;
         this.gameState = new DefaultStateMachine<>(this);
-        this.gameState.changeState(GameStates.PLAYING);
+        this.gameState.changeState(GameManager.PLAYING);
 
         Box2D.init();
         this.world = new World(new Vector2(0, 0), true);
@@ -131,7 +128,7 @@ public class GameScreen implements Screen {
 
     }
 
-    public void applyShader(){
+    public void applyShader() {
 
         Texture fboText = fbo1.getColorBufferTexture();
         TextureRegion fboTextReg = new TextureRegion(fboText);
@@ -165,7 +162,7 @@ public class GameScreen implements Screen {
     public void update(float delta) {
         elapsedTime += delta;
         entities.render(delta);
-        boolean ambiente = maps().getAmbiente();
+        boolean ambiente = getMapManager().getAmbiente();
         updateCamera(ambiente);
 
     }
@@ -174,7 +171,7 @@ public class GameScreen implements Screen {
         mapManager.getMap().getMapRenderer().setView(camera.get());
         mapManager.getMap().getMapRenderer().render();
         entities.draw(elapsedTime);
-        if (maps().getAmbiente()) drawGUI(delta);
+        if (getMapManager().getAmbiente()) drawGUI(delta);
     }
 
     private void drawGUI(float delta) {
@@ -218,10 +215,26 @@ public class GameScreen implements Screen {
     }
 
     // Getter per componenti principali
-    public EntityManager entities() { return entities; }
-    public MapManager maps() { return mapManager; }
-    public CameraManager camera() { return camera; }
-    public DefaultStateMachine<GameScreen, GameStates> gameState() { return gameState; }
+    public EntityManager getEntityManager() {
+        return entities;
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
+    }
+
+    public CameraManager getCameraManager() {
+        return camera;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public DefaultStateMachine<GameScreen, GameManager> gameState() {
+        return gameState;
+    }
+
 
     // Debugging performance
     public void performanceInfo() {

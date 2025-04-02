@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
-
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -27,32 +27,27 @@ import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.game.manager.camera.CameraManager;
 import io.github.ale.screens.mainmenu.MainScreen;
 
-public class PauseScreen implements Screen{
+public class PauseScreen implements Screen {
     Game game;
     GameScreen gameScreen;
-
-    private Texture background;
-    private Texture overlay;
-
-    private Stage stage;
-    private Table root;
-    private Table table;
-
     boolean resumeRequest;
     boolean pauseRequest;
     Cooldown pause;
     Cooldown resume;
-
     ScreenViewport viewport;
-
     TextButton MainMenu;
     FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
     FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     BitmapFont font;
-
     float alpha;
-
     Vector3[] corners;
+    float x = 0;
+    float y = 0;
+    private Texture background;
+    private Texture overlay;
+    private Stage stage;
+    private Table root;
+    private Table table;
 
     public PauseScreen(Game game, GameScreen gameScreen) {
         this.game = game;
@@ -64,7 +59,7 @@ public class PauseScreen implements Screen{
         viewport = new ScreenViewport();
 
         stage = new Stage(new ScreenViewport());
-        viewport.setCamera(gameScreen.camera().get());
+        viewport.setCamera(gameScreen.getCameraManager().get());
         viewport.apply(false);
         background = new Texture("pause.png");
         overlay = new Texture("pause_overlay.png");
@@ -119,19 +114,19 @@ public class PauseScreen implements Screen{
         pause = new Cooldown(0.7f);
         pause.reset();
         resume.reset();
-        gameScreen.entities().player().setHasBeenHit(false);
+        gameScreen.getEntityManager().player().setHasBeenHit(false);
 
         stage.setDebugAll(true);
     }
 
     @Override
     public void render(float delta) {
-        corners=CameraManager.getFrustumCorners();
+        corners = CameraManager.getFrustumCorners();
         drawBackground(delta);
     }
 
-    public void drawBackground(float delta){
-        if (!gameScreen.entities().player().stati().isAlive()) {
+    public void drawBackground(float delta) {
+        if (!gameScreen.getEntityManager().player().stati().isAlive()) {
             game.setScreen(new DefeatScreen(game));
             return;
         }
@@ -151,9 +146,9 @@ public class PauseScreen implements Screen{
 
     }
 
-    public void transitionOut(float delta){
+    public void transitionOut(float delta) {
         resume.update(delta);
-        boolean boundaries = gameScreen.maps().getAmbiente();
+        boolean boundaries = gameScreen.getMapManager().getAmbiente();
         gameScreen.updateCamera(boundaries);
         gameScreen.render(delta);
         gameScreen.draw(delta);
@@ -175,9 +170,6 @@ public class PauseScreen implements Screen{
             Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
         }
     }
-
-    float x=0;
-    float y=0;
 
     public void drawPauseMenu(float delta) {
         if (Gdx.input.isKeyJustPressed(ComandiGioco.getRIPRENDIGIOCO())) {
@@ -204,8 +196,7 @@ public class PauseScreen implements Screen{
     }
 
 
-
-    public void transitionIn(float delta){
+    public void transitionIn(float delta) {
         pause.update(delta);
         gameScreen.updateCamera(false);
 

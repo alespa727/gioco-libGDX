@@ -14,7 +14,7 @@ public class KeyHandler {
      * tasti di input premuti
      */
 
-    public static void input(){
+    public static void input() {
         su = Gdx.input.isKeyPressed(ComandiGioco.getDirezioneNord());
         giu = Gdx.input.isKeyPressed(ComandiGioco.getDirezioneSud());
         sinistra = Gdx.input.isKeyPressed(ComandiGioco.getDirezioneOvest());

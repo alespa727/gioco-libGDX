@@ -2,31 +2,39 @@ package io.github.ale.screens.game.map.events;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import io.github.ale.screens.game.entities.entityTypes.entity.Entity;
+import io.github.ale.screens.game.entities.types.entity.Entity;
 
-public abstract class MapEvent{
+public abstract class MapEvent {
     protected Vector2 position; // Posizione fisica dell'evento
     protected float radius; // Raggio di attivazione evento
     protected boolean active; // Switch di attivazione dell'evento
 
-    /**Crea l'evento fisicamente*/
+    /**
+     * Crea l'evento fisicamente
+     */
     public MapEvent(Vector2 position, float radius, World world) {
         this.position = position;
         this.radius = radius;
         this.createZone(world);
     }
 
-    /**Attiva l'evento*/
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    /**Restituisce se l'evento è attivo*/
+    /**
+     * Restituisce se l'evento è attivo
+     */
     public boolean isActive() {
         return active;
     }
 
-    /**Crea la zona dell'evento*/
+    /**
+     * Attiva l'evento
+     */
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    /**
+     * Crea la zona dell'evento
+     */
     public void createZone(World world) {
         // Definizione corpo
         BodyDef bodyDef = new BodyDef();
@@ -49,8 +57,13 @@ public abstract class MapEvent{
         body.setUserData(this); // Aggiunge come proprietario dell'evento la reference all'evento
     }
 
-    /**Aggiorna l'evento*/
+    /**
+     * Aggiorna l'evento
+     */
     public abstract void update();
-    /**Attiva l'evento*/
+
+    /**
+     * Attiva l'evento
+     */
     public abstract void trigger(Entity entity);  // Da implementare per ogni evento specifico
 }

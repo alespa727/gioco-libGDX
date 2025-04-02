@@ -3,19 +3,15 @@ package io.github.ale;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 import io.github.ale.screens.game.GameScreen;
 import io.github.ale.screens.mainmenu.MainScreen;
 
 
 public class Game extends com.badlogic.gdx.Game {
 
+    public static AssetManager assetManager;
     public SpriteBatch batch;
     public ShapeRenderer renderer;
-
-    public static AssetManager assetManager;
-
-
     public GameScreen gameScreen;
 
     @Override
@@ -28,11 +24,10 @@ public class Game extends com.badlogic.gdx.Game {
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
         batch.dispose();
         renderer.dispose();
     }
-
 
 
 }

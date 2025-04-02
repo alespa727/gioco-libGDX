@@ -98,8 +98,8 @@ public class GameGraph implements IndexedGraph<Node> {
     private void connectNeighbors(Node[][] grid, int x, int y) {
         Node node = grid[x][y];
         int[][] directions = {
-            { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },   // Direzioni x/y
-            { 1, 1 }, { 1, -1 }, { -1, 1 }, { -1, -1 } // Diagonali
+            {0, 1}, {1, 0}, {0, -1}, {-1, 0},   // Direzioni x/y
+            {1, 1}, {1, -1}, {-1, 1}, {-1, -1} // Diagonali
         };
 
         for (int[] dir : directions) {
@@ -129,6 +129,7 @@ public class GameGraph implements IndexedGraph<Node> {
 
     /**
      * disegna nodi
+     *
      * @param shapeRenderer
      */
     public void drawNodes(ShapeRenderer shapeRenderer) {
@@ -150,6 +151,7 @@ public class GameGraph implements IndexedGraph<Node> {
 
     /**
      * disegna connessioni
+     *
      * @param shapeRenderer
      */
     public void drawConnections(ShapeRenderer shapeRenderer) {

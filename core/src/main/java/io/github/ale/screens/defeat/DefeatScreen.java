@@ -10,11 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import io.github.ale.Game;
 import io.github.ale.screens.mainmenu.MainScreen;
 
-public class DefeatScreen implements Screen{
+public class DefeatScreen implements Screen {
     private final Game game;
     private Skin skin;
     private Stage stage;
@@ -39,21 +38,21 @@ public class DefeatScreen implements Screen{
         root.add(table);
 
         TextButton button1 = new TextButton("Play again", skin);
-        button1.addListener(new InputListener(){
+        button1.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(game.gameScreen);
                 return true;
-	    }
+            }
         });
         table.add(button1);
         TextButton button2 = new TextButton("Main menu", skin);
-        button2.addListener(new InputListener(){
+        button2.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new MainScreen(game));
                 return true;
-	    }
+            }
         });
         table.add(button2);
     }

@@ -7,16 +7,16 @@ public class SkillSet {
 
     private boolean active;
 
-    public SkillSet(){
+    public SkillSet() {
         skillList = new Array<>();
-        active=true;
+        active = true;
     }
 
-    public void add(Skill skill){
+    public void add(Skill skill) {
         skillList.add(skill);
     }
 
-    public void remove(Skill skill){
+    public void remove(Skill skill) {
         skillList.removeValue(skill, false);
     }
 
@@ -39,8 +39,10 @@ public class SkillSet {
         if (!active) active = true;
     }
 
-    /**Esegue la skill richiesta*/
-    public void execute(Class<? extends Skill> skillClass){
+    /**
+     * Esegue la skill richiesta
+     */
+    public void execute(Class<? extends Skill> skillClass) {
         getSkill(skillClass).execute();
     }
 }
