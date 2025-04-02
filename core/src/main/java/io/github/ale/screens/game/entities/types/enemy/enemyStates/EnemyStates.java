@@ -29,8 +29,9 @@ public enum EnemyStates implements State<Enemy> {
 
             entity.attack();
 
+            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
+
             entity.direzione().set(calculateVector(entity.coordinateCentro(), entity.manager.player().coordinateCentro()));
-            entity.movement().reset();
 
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
             entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
@@ -88,20 +89,17 @@ public enum EnemyStates implements State<Enemy> {
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
             entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
-            Array<Enemy> enemiesNearby = entity.getEnemiesNearby();
-            if(enemiesNearby.size>0) entity.pathfinder().renderPath(enemiesNearby.get(0).coordinateCentro().x, enemiesNearby.get(0).coordinateCentro().y , entity.delta);
-            else entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
+            entity.pathfinder().renderPath(entity.manager.player().coordinateCentro().x, entity.manager.player().coordinateCentro().y, entity.delta);
 
 
             entity.checkIfDead();
 
             //AGGIORNAMENTO MOVEMENT
-            entity.movement().update(entity, entity.delta);
+            entity.movement().update();
         }
 
         @Override
         public void exit(Enemy entity) {
-            entity.pathfinder().clear();
         }
 
         @Override
@@ -124,8 +122,6 @@ public enum EnemyStates implements State<Enemy> {
             if (player == null)
                 player = entity.manager.player();
 
-            entity.movement().reset();
-
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
             entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
@@ -137,8 +133,6 @@ public enum EnemyStates implements State<Enemy> {
             if (direction.y == 1f || direction.y == -1f) {
                 direction.scl(1f, 0.5f);
             }
-
-            entity.pathfinder().renderPath(player.coordinateCentro().x, player.coordinateCentro().y, entity.delta);
         }
 
         @Override

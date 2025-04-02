@@ -35,6 +35,15 @@ public class EventListener implements ContactListener {
             ((Player) dataA).addEntity((CombatEntity) dataB); // Aggiungo entità alla lista di entità del player
         }
 
+        boolean isRangeA = fixtureA.getFilterData().categoryBits == EntityManager.RANGE;
+        boolean isRangeB = fixtureB.getFilterData().categoryBits == EntityManager.RANGE;
+        if (dataA instanceof Enemy && isRangeA && dataB instanceof Enemy && !isRangeB) {
+            Enemy enemy1 = (Enemy) dataA;
+            Enemy enemy2 = (Enemy) dataB;
+
+            enemy1.addEnemy(enemy2);
+        }
+
     }
 
     @Override
@@ -54,6 +63,15 @@ public class EventListener implements ContactListener {
         boolean isNotRangeB = fixtureB.getFilterData().categoryBits != EntityManager.RANGE; // Controllo del filtro con cui può interagire
         if (!isPlayerB && isPlayerA && isCombatB && isNotRangeB) {
             ((Player) dataA).removeEntity((CombatEntity) dataB); // Rimuovo entità dalla lista del player
+        }
+
+        boolean isRangeA = fixtureA.getFilterData().categoryBits == EntityManager.RANGE;
+        boolean isRangeB = fixtureB.getFilterData().categoryBits == EntityManager.RANGE;
+        if (dataA instanceof Enemy && isRangeA && dataB instanceof Enemy && !isRangeB) {
+            Enemy enemy1 = (Enemy) dataA;
+            Enemy enemy2 = (Enemy) dataB;
+
+            enemy1.removeEnemy(enemy2);
         }
 
         // Gestione eventi della mappa

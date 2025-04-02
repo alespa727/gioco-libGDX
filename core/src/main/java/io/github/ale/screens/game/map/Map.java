@@ -168,6 +168,7 @@ public class Map implements Disposable {
                     fixtureDef.density = 1f;
                     fixtureDef.friction = 0f;
                     fixtureDef.restitution = 0f; // Rimbalzo del corpo
+                    fixtureDef.isSensor = false;
 
                     fixtureDef.filter.groupIndex = EntityManager.WALL;
 

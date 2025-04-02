@@ -1,6 +1,7 @@
 package io.github.ale.screens.game.map.graph.node;
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class Node {
@@ -48,6 +49,10 @@ public class Node {
      */
     public float getY() {
         return y + 0.5f;
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(getX(), getY());
     }
 
     /**

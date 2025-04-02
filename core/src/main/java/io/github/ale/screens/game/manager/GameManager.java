@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import io.github.ale.ComandiGioco;
 import io.github.ale.screens.game.GameScreen;
+import io.github.ale.screens.game.entities.factories.EnemyFactory;
 import io.github.ale.screens.pause.PauseScreen;
 
 import static io.github.ale.screens.game.GameScreen.STEP;
@@ -31,7 +32,7 @@ public enum GameManager implements State<GameScreen> {
                 screen.update(STEP);
                 screen.accumulator -= STEP;
 
-                screen.getWorld().step(STEP, 1, 1);
+                screen.getWorld().step(STEP, 8, 3);
             }
 
 

@@ -51,7 +51,7 @@ public enum NpcStates implements State<NonCombatEntity> {
             entity.checkIfDead();
 
             //AGGIORNAMENTO MOVEMENT
-            entity.movement().update(entity, entity.delta);
+            entity.movement().update();
         }
 
         @Override

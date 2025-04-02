@@ -49,8 +49,6 @@ public class ChangeMapEvent extends MapEvent {
      */
     @Override
     public void trigger(Entity entity) {
-        if (entity instanceof Player) {
-            System.out.println("attivato");
-        }
+
     }
 }

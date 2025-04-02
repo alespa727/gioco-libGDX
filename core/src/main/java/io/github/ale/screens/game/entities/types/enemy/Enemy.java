@@ -44,7 +44,6 @@ public abstract class Enemy extends CombatEntity {
     @Override
     public void hit(CombatEntity entity, float damage) {
         super.hit(entity, damage);
-        movement().reset();
     }
 
     public void addEnemy(Enemy e){

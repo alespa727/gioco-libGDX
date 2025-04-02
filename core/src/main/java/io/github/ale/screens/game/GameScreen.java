@@ -76,6 +76,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate*10);
         Game.assetManager.load("entities/Finn.png", Texture.class);
         Game.assetManager.finishLoading();
         createShaderProgram();
@@ -121,7 +122,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
         mapManager.getMap().render();
-        Box2DDebugRender();
+        //Box2DDebugRender();
         fbo1.end();
 
         applyShader();
@@ -160,6 +161,7 @@ public class GameScreen implements Screen {
     }
 
     public void update(float delta) {
+        performanceInfo();
         elapsedTime += delta;
         entities.render(delta);
         boolean ambiente = getMapManager().getAmbiente();
@@ -170,6 +172,7 @@ public class GameScreen implements Screen {
     public void draw(float delta) {
         mapManager.getMap().getMapRenderer().setView(camera.get());
         mapManager.getMap().getMapRenderer().render();
+        entities.drawDebug();
         entities.draw(elapsedTime);
         if (getMapManager().getAmbiente()) drawGUI(delta);
     }

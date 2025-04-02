@@ -101,6 +101,7 @@ public abstract class Entity {
 
         // disposa
         boxShape.dispose();
+        body.setActive(true);
         return body;
     }
 
@@ -108,8 +109,10 @@ public abstract class Entity {
         return isRendered;
     }
 
-    public void setRendered(boolean rendered) {
+    public Entity setRendered(boolean rendered) {
+        body.setActive(rendered);
         isRendered = rendered;
+        return this;
     }
 
     /**
