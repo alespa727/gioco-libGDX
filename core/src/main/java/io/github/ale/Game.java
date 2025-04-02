@@ -3,8 +3,9 @@ package io.github.ale;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import io.github.ale.screens.game.GameScreen;
-import io.github.ale.screens.mainmenu.MainScreen;
+import io.github.ale.screens.gameplay.GameScreen;
+import io.github.ale.utils.camera.CameraManager;
+import io.github.ale.screens.menu.MainScreen;
 
 
 public class Game extends com.badlogic.gdx.Game {
@@ -16,6 +17,7 @@ public class Game extends com.badlogic.gdx.Game {
 
     @Override
     public void create() {
+        CameraManager.init();
         assetManager = new AssetManager();
         batch = new SpriteBatch(); // praticamente la cosa per disegnare
         renderer = new ShapeRenderer(); // disegna forme
