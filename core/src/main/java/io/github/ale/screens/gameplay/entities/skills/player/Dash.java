@@ -1,8 +1,9 @@
 package io.github.ale.screens.gameplay.entities.skills.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.github.ale.screens.gameplay.entities.types.mobs.LivingEntity;
+
 import io.github.ale.screens.gameplay.entities.skills.Skill;
+import io.github.ale.screens.gameplay.entities.types.mobs.LivingEntity;
 import io.github.ale.screens.gameplay.entities.types.player.Player;
 import io.github.ale.utils.Cooldown;
 
@@ -21,7 +22,7 @@ public class Dash extends Skill {
             elapsedTime += entity.delta;
             cooldown.update(entity.delta);
             if (((Player) entity).getInRange().size > 0){
-                entity.manager.gameInfo.screen.setTimeScale(0.05f, 1f);
+                entity.manager.gameInfo.screen.setTimeScale(0.01f, 1f);
                 isBeingUsed = false;
             }
             if (cooldown.isReady){

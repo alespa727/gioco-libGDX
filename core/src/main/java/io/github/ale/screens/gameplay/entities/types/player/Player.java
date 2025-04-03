@@ -3,14 +3,15 @@ package io.github.ale.screens.gameplay.entities.types.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
-import io.github.ale.utils.Cooldown;
-import io.github.ale.screens.gameplay.entities.types.combat.CombatEntity;
-import io.github.ale.screens.gameplay.entities.types.entity.EntityConfig;
+
 import io.github.ale.screens.gameplay.entities.skills.player.CloseRangeCombatSkill;
 import io.github.ale.screens.gameplay.entities.skills.player.Dash;
-import io.github.ale.utils.camera.CameraManager;
+import io.github.ale.screens.gameplay.entities.types.combat.CombatEntity;
+import io.github.ale.screens.gameplay.entities.types.entity.EntityConfig;
 import io.github.ale.screens.gameplay.manager.entity.EntityManager;
 import io.github.ale.screens.gameplay.manager.entity.PlayerMovementManager;
+import io.github.ale.utils.Cooldown;
+import io.github.ale.utils.camera.CameraManager;
 
 public class Player extends CombatEntity {
 
@@ -106,7 +107,7 @@ public class Player extends CombatEntity {
 
     public void hit(CombatEntity entity, float damage) {
         super.hit(entity, damage);
-        CameraManager.shakeTheCamera(0.2f, damage/getMaxHealth());
+        CameraManager.shakeTheCamera(0.1f, 0.05f);
     }
 
     public void dash() {
