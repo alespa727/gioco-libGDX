@@ -133,7 +133,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         gameState.update();
         this.gameInfo.mapManager.getMap().render();
-        //Box2DDebugRender();
+        Box2DDebugRender();
         fbo1.end();
 
         applyShader();

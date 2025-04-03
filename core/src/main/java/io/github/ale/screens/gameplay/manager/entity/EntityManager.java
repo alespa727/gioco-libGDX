@@ -3,7 +3,10 @@ package io.github.ale.screens.gameplay.manager.entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
@@ -38,11 +41,12 @@ public final class EntityManager {
 
     public EntityConfig e;
 
+    public Queue<BodyDef> bodyDefQueue;
+    public Queue<FixtureDef> fixtureDefQueue;
 
     public EntityManager(GameInfo gameInfo, World world) {
 
         this.gameInfo = gameInfo;
-
         this.world = world;
 
         comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
@@ -82,8 +86,8 @@ public final class EntityManager {
         e = new EntityConfig();
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
-        e.x = 7f;
-        e.y = 7f;
+        e.x = 9f;
+        e.y = 9f;
         e.img = Game.assetManager.get("entities/nemico.png", Texture.class);
         e.width = 16 / 32f;
         e.height = 8 / 16f;
@@ -100,24 +104,17 @@ public final class EntityManager {
         e.imageWidth = 2f;
 
         for (int i = 0; i < 1; i++) {
-            e.x++;
-            for (int j = 0; j < 1; j++) {
-                e.y++;
-                nextEntityId++;
-                e.id = nextEntityId;
-                summon(EnemyFactory.createEnemy("Finn", this.e, this, 1.5f));
-            }
-            e.y-=100;
+
+            nextEntityId++;
+            e.id = nextEntityId;
+            summon(EnemyFactory.createEnemy("Finn", this.e, this, 1.5f));
+
         }
 
     }
 
     public void summon(Entity e) {
-        entityArray.add(e);
-    }
-
-    public void summon(Array<Entity> e) {
-        entityArray.addAll(e);
+        entityQueue.addFirst(e);
     }
 
     public void draw(float elapsedTime) {
@@ -136,6 +133,9 @@ public final class EntityManager {
     }
 
     public void render(float delta) {
+        if(!entityQueue.isEmpty()){
+            entityArray.add(entityQueue.removeLast());
+        }
 
         if (!player.stati().isAlive()) {
             gameInfo.game.setScreen(new DefeatScreen(gameInfo.game));

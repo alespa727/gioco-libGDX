@@ -38,7 +38,6 @@ public class EntityMovementManager {
         }
         this.cooldown.reset();
         this.isReady = false;
-        System.out.println("Path: " + path);
     }
 
     public void update() {

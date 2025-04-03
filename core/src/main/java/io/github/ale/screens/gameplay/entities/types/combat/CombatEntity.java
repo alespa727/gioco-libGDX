@@ -24,17 +24,16 @@ public abstract class CombatEntity extends LivingEntity {
         knockback.reset();
         damage.reset();
         stati().setImmortality(false);
-        createRange();
     }
 
     // --- GESTIONE RANGE ---
 
-    public void createRange() {
+    public void createRange(float radius) {
         BodyDef range = new BodyDef();
         range.type = BodyDef.BodyType.KinematicBody;
 
         CircleShape shape = new CircleShape();
-        shape.setRadius(1f);
+        shape.setRadius(radius);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -44,10 +43,11 @@ public abstract class CombatEntity extends LivingEntity {
         this.range = manager.world.createBody(range);
         this.range.createFixture(fixtureDef);
         this.range.setUserData(this);
+        this.range.setFixedRotation(true);
     }
 
     public void adjustRange() {
-        range.setTransform(body.getPosition(), 0);
+        range.setTransform(body.getPosition(), body.getLinearVelocity().angleRad());
     }
 
     public float rangeRadius() {

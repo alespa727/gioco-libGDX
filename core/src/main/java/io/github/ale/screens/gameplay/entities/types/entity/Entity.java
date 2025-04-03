@@ -44,7 +44,7 @@ public abstract class Entity {
 
         this.coordinate = new Vector2();
 
-        this.body = createBody(config.x, config.y, config.width, config.height);
+        body = createBody();
 
         this.descrizione = config.descrizione;
         this.id = config.id;
@@ -70,16 +70,16 @@ public abstract class Entity {
 
     public abstract void drawHitbox(ShapeRenderer renderer);
 
-    public Body createBody(float x, float y, float width, float height) {
-        this.width = width;
-        this.height = height;
+    public Body createBody() {
+        this.width = config.width;
+        this.height = config.height;
         // creo un corpo dinamico
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         // creo la hitbox
         Body body = manager.world.createBody(bodyDef);
-        body.setTransform(x, y, 0f);
+        body.setTransform(config.x, config.y, 0f);
         System.out.println("Creato corpo dinamico per " + nome());
         body.setUserData(this);
         body.setLinearDamping(3f);
