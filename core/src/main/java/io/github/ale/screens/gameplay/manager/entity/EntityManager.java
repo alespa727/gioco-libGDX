@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import io.github.ale.Game;
 import io.github.ale.screens.gameplay.GameInfo;
+import io.github.ale.screens.gameplay.entities.types.mobs.LivingEntity;
 import io.github.ale.screens.menu.DefeatScreen;
 import io.github.ale.screens.gameplay.entities.types.enemy.Enemy;
 import io.github.ale.screens.gameplay.entities.types.entity.Entity;
@@ -124,6 +125,15 @@ public final class EntityManager {
             if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
                     e.draw(gameInfo.game.batch, elapsedTime);
+                } catch (Exception ex) {
+                    System.out.println("ERRORE" + e.direzione());
+                }
+            }
+        }
+        for (Entity e : entityArray) {
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof LivingEntity) {
+                try {
+                    ((LivingEntity) e).getSkillset().draw(gameInfo.game.batch, elapsedTime);
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.direzione());
                 }

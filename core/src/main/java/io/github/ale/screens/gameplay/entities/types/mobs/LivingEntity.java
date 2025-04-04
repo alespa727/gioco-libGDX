@@ -130,7 +130,6 @@ public abstract class LivingEntity extends Entity {
     // --- METODI DI RENDERING ---
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        skillset.draw(batch, elapsedTime);
         graphics().setAnimation(this);
         if (hasBeenHit) {
             batch.setColor(1, 0, 0, 0.6f);

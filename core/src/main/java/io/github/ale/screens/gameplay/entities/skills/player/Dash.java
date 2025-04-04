@@ -22,7 +22,7 @@ public class Dash extends Skill {
             elapsedTime += entity.delta;
             cooldown.update(entity.delta);
             if (((Player) entity).getInRange().size > 0){
-                entity.manager.gameInfo.screen.setTimeScale(0.01f, 1f);
+                entity.manager.gameInfo.screen.setTimeScale(0.1f, 1f);
                 isBeingUsed = false;
             }
             if (cooldown.isReady){

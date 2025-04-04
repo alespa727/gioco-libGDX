@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
     }
 
     public void resetTimeScale() {
-        timeScaleCooldown.update(timeScale);
+        timeScaleCooldown.update(delta);
         if (timeScaleCooldown.isReady){
             timeScale=1f;
         }
@@ -126,6 +126,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        resetTimeScale();
         KeyHandler.input();
         updateDeltaTime(delta);
 
@@ -137,7 +138,7 @@ public class GameScreen implements Screen {
         fbo1.end();
 
         applyShader();
-        resetTimeScale();
+
     }
 
     @Override
