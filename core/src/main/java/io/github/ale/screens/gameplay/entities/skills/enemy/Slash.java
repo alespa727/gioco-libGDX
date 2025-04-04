@@ -3,6 +3,7 @@ package io.github.ale.screens.gameplay.entities.skills.enemy;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.ale.screens.gameplay.entities.types.combat.CombatEntity;
 import io.github.ale.screens.gameplay.entities.skills.skillType.CombatSkill;
+import io.github.ale.screens.gameplay.entities.types.enemy.Enemy;
 
 public class Slash extends CombatSkill {
 
@@ -25,7 +26,9 @@ public class Slash extends CombatSkill {
     @Override
     public void execute() {
         System.out.println("Melee execute");
-        entity.manager.player().hit((CombatEntity) entity, damage);
+        if (((Enemy) entity).getInRange().size>0){
+            entity.manager.player().hit((CombatEntity) entity, damage);
+        }
     }
 
 }

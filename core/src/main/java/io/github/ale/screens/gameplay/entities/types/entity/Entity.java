@@ -5,15 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.screens.gameplay.entities.types.entity.graphics.EntityGraphics;
 import io.github.ale.screens.gameplay.entities.types.entity.state.EntityState;
 import io.github.ale.screens.gameplay.manager.entity.EntityManager;
 import io.github.ale.screens.gameplay.map.Map;
 import io.github.ale.screens.gameplay.map.graph.node.Node;
+import io.github.ale.utils.BodyBuilder.BodyBuilder;
 
 public abstract class Entity {
 
@@ -74,35 +72,22 @@ public abstract class Entity {
         this.width = config.width;
         this.height = config.height;
         // creo un corpo dinamico
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-        // creo la hitbox
-        Body body = manager.world.createBody(bodyDef);
-        body.setTransform(config.x, config.y, 0f);
-        System.out.println("Creato corpo dinamico per " + nome());
-        body.setUserData(this);
-        body.setLinearDamping(3f);
+        BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.DynamicBody, config.x, config.y);
 
         // forma hitbox
-        CircleShape boxShape = new CircleShape();
-        boxShape.setRadius(0.3f);
+        Shape circleShape = BodyBuilder.createCircle(0.3f);
 
         // proprietà fisiche
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = boxShape;
-        fixtureDef.density = 25f;      // Set density (mass per area)
-        fixtureDef.friction = 0.8f;   // Set friction (sliding resistance)
-        fixtureDef.restitution = 0.1f; // Set restitution ("bounciness")
+        FixtureDef fixtureDef = BodyBuilder.createFixtureDef(circleShape, 25f, .8f, .1f);
 
-        // aggiungo le proprietà fisiche
-        body.createFixture(fixtureDef);
+        // creo la hitbox
+        Body body = BodyBuilder.createBody(manager.world, this, bodyDef, fixtureDef, circleShape);
+        System.out.println("Creato corpo dinamico per " + nome());
+
+        body.setLinearDamping(3f);
         body.setAngularDamping(5f);
         body.setBullet(true);
 
-        // disposa
-        boxShape.dispose();
-        body.setActive(true);
         return body;
     }
 

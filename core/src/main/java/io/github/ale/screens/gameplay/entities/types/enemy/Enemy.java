@@ -14,7 +14,7 @@ public abstract class Enemy extends CombatEntity {
     public final float viewDistance;
     public final float pursueMaxDistance;
 
-    private final Array<Enemy> inRangeEnemies;
+    private final Array<CombatEntity> inRange;
 
     protected Cooldown attack;
 
@@ -22,19 +22,34 @@ public abstract class Enemy extends CombatEntity {
 
     public Enemy(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager);
-        inRangeEnemies = new Array<>();
+
         attack = new Cooldown(attackcooldown);
         attack.reset(0f);
         statemachine = new DefaultStateMachine<>(this);
         viewDistance = 11f;
         pursueMaxDistance = 12f;
         statemachine.setInitialState(EnemyStates.PATROLLING);
+
+        this.inRange = new Array<>();
+
         getSkillset().add(new Slash(this, "", "", 10));
     }
 
-    public Array<Enemy> getEnemiesNearby(){
-        return inRangeEnemies;
+    /**
+     * Gestione entità in range
+     */
+    public void addEntity(CombatEntity entity) {
+        inRange.add(entity);
     }
+
+    public void removeEntity(CombatEntity entity) {
+        inRange.removeValue(entity, false);
+    }
+
+    public Array<CombatEntity> getInRange() {
+        return inRange;
+    }
+
 
     @Override
     public void updateEntityType(float delta) {
@@ -46,13 +61,6 @@ public abstract class Enemy extends CombatEntity {
         super.hit(entity, damage);
     }
 
-    public void addEnemy(Enemy e){
-        inRangeEnemies.add(e);
-    }
-
-    public void removeEnemy(Enemy e){
-        inRangeEnemies.removeValue(e, true);
-    }
 
     @Override
     public void cooldown(float delta) {

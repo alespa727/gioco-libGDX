@@ -1,13 +1,17 @@
 package io.github.ale.screens.gameplay.entities.skills.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.ale.screens.gameplay.entities.skills.skillType.CombatSkill;
 import io.github.ale.screens.gameplay.entities.types.combat.CombatEntity;
+import io.github.ale.screens.gameplay.entities.types.entity.Entity;
 import io.github.ale.screens.gameplay.entities.types.player.Player;
 import io.github.ale.utils.camera.CameraManager;
+
+import java.util.ArrayList;
 
 public class CloseRangeCombatSkill extends CombatSkill {
     private Array<CombatEntity> inRange;
@@ -59,4 +63,14 @@ public class CloseRangeCombatSkill extends CombatSkill {
         isBeingUsed=true;
     }
 
+    public Vector2 attackDirection(Entity player, Array<CombatEntity> entities) {
+        float sommax=0, sommay=0, count=0;
+        for (CombatEntity combatEntity : entities) {
+            count++;
+            sommax += combatEntity.getPosition().x;
+            sommay += combatEntity.getPosition().y;
+        }
+        Vector2 media = new Vector2(sommax/count, sommay/count);
+        return media.sub(player.getPosition());
+    }
 }

@@ -34,7 +34,7 @@ public class Player extends CombatEntity {
 
         getSkillset().add(new Dash(this, "", "", 25f));
         getSkillset().add(new CloseRangeCombatSkill(this, "", "", 10));
-        createRange(1.2f);
+        createRange(1.6f);
     }
 
     public PlayerMovementManager getMovement() {

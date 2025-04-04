@@ -19,6 +19,7 @@ import io.github.ale.screens.gameplay.map.events.ChangeMapEvent;
 import io.github.ale.screens.gameplay.map.events.EventListener;
 import io.github.ale.screens.gameplay.map.events.MapEvent;
 import io.github.ale.screens.gameplay.map.graph.GameGraph;
+import io.github.ale.utils.BodyBuilder.BodyBuilder;
 
 public class Map implements Disposable {
     public static boolean isGraphLoaded = false;
@@ -150,34 +151,18 @@ public class Map implements Disposable {
             for (int j = 0; j < height; j++) {
                 if (collisions[i][j]) {
                     // Definizione del blocco
-                    BodyDef bodyDef = new BodyDef();
-                    bodyDef.type = BodyDef.BodyType.StaticBody; // Corpo statico, non movibile
-                    bodyDef.position.set(i + 0.5f, j + 0.5f);
-
-                    // Creazione del blocco
-                    Body body = entityManager.world.createBody(bodyDef);
-                    body.setUserData("map");
+                    BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.StaticBody, i+0.5f, j+0.5f);
 
                     // Definizione della forma
-                    PolygonShape boxShape = new PolygonShape();
-                    boxShape.setAsBox(0.5f, 0.5f);
+                    Shape boxShape = BodyBuilder.createPolygonShape(0.5f, 0.5f);
 
                     // Definizione delle proprietà fisiche
-                    FixtureDef fixtureDef = new FixtureDef();
-                    fixtureDef.shape = boxShape;
-                    fixtureDef.density = 1f;
-                    fixtureDef.friction = 0f;
-                    fixtureDef.restitution = 0f; // Rimbalzo del corpo
-                    fixtureDef.isSensor = false;
+                    FixtureDef fixtureDef = BodyBuilder.createFixtureDef(boxShape, 1f, 0, 0);
+
+                    // Creazione del blocco
+                    BodyBuilder.createBody(entityManager.world, "map", bodyDef, fixtureDef, boxShape);
 
                     fixtureDef.filter.groupIndex = EntityManager.WALL;
-
-
-                    // Collegamento delle proprietà fisiche al corpo
-                    body.createFixture(fixtureDef);
-
-                    // Pulizia della memoria
-                    boxShape.dispose();
                 }
             }
         }
@@ -199,26 +184,16 @@ public class Map implements Disposable {
         bordi[4] = new Vector2(4, 4);
 
         // Definizione della forma
-        ChainShape chainShape = new ChainShape();
-        chainShape.createChain(bordi);
+        Shape chainShape = BodyBuilder.createChainShape(bordi);
 
         // Definizione del corpo
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(0, 0);
+        BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.StaticBody, 0, 0);
 
         // Definizione delle caratteristiche fisiche
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = chainShape;
+        FixtureDef fixtureDef = BodyBuilder.createFixtureDef(chainShape, 1f, 0, 0);
 
         // Creazione del corpo
-        Body body = entityManager.world.createBody(bodyDef);
-        body.createFixture(fixtureDef);
-        body.setUserData("map");
-
-        // Cancello la forma dalla memoria
-        chainShape.dispose();
-
+        BodyBuilder.createBody(entityManager.world, "map", bodyDef, fixtureDef, chainShape);
     }
 
     /**

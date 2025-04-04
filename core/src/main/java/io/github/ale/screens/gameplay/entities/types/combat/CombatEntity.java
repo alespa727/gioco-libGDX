@@ -1,10 +1,8 @@
 package io.github.ale.screens.gameplay.entities.types.combat;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.*;
 import io.github.ale.utils.Cooldown;
 import io.github.ale.screens.gameplay.entities.types.entity.EntityConfig;
 import io.github.ale.screens.gameplay.entities.types.mobs.LivingEntity;
@@ -15,6 +13,8 @@ public abstract class CombatEntity extends LivingEntity {
     private final Cooldown knockback;
     private Body range;
     private Vector2 hitDirection;
+
+    private float rangeRadius;
 
     // Costruttore
     public CombatEntity(EntityConfig config, EntityManager manager) {
@@ -29,11 +29,19 @@ public abstract class CombatEntity extends LivingEntity {
     // --- GESTIONE RANGE ---
 
     public void createRange(float radius) {
+        this.rangeRadius = radius;
         BodyDef range = new BodyDef();
         range.type = BodyDef.BodyType.KinematicBody;
 
-        CircleShape shape = new CircleShape();
-        shape.setRadius(radius);
+        PolygonShape shape = new PolygonShape();
+
+        Vector2[] vertices = new Vector2[5];
+        vertices[0] = new Vector2(0,0);
+        for (int i = 2; i < 6; i++) {
+            float angle = (float) (i  / 6.0 * 145 * MathUtils.degreesToRadians); // convert degrees to radians
+            vertices[i-1] = new Vector2( radius * ((float)Math.cos(angle)), radius * ((float)Math.sin(angle)));
+        }
+        shape.set(vertices);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -43,15 +51,18 @@ public abstract class CombatEntity extends LivingEntity {
         this.range = manager.world.createBody(range);
         this.range.createFixture(fixtureDef);
         this.range.setUserData(this);
-        this.range.setFixedRotation(true);
     }
 
     public void adjustRange() {
-        range.setTransform(body.getPosition(), body.getLinearVelocity().angleRad());
+        range.setTransform(body.getPosition(), direzione().angleRad()-90*MathUtils.degreesToRadians);
     }
 
     public float rangeRadius() {
-        return range.getFixtureList().get(0).getShape().getRadius();
+        return rangeRadius;
+    }
+
+    public Body getRange() {
+        return range;
     }
 
     // --- GESTIONE COMBATTIMENTO ---
