@@ -1,0 +1,66 @@
+package progetto.screens.gameplay.entities.types.neutral.states;
+
+import com.badlogic.gdx.ai.fsm.State;
+import com.badlogic.gdx.ai.msg.Telegram;
+import progetto.screens.gameplay.entities.types.neutral.NonCombatEntity;
+
+public enum NpcStates implements State<NonCombatEntity> {
+    IDLE {
+        @Override
+        public void enter(NonCombatEntity entity) {
+        }
+
+        @Override
+        public void update(NonCombatEntity entity) {
+            if (entity.direzione().x == 1f || entity.direzione().x == -1f) {
+                entity.direzione().scl(0.5f, 1f);
+            }
+            if (entity.direzione().y == 1f || entity.direzione().y == -1f) {
+                entity.direzione().scl(1f, 0.5f);
+            }
+            if (entity.manager.player().getPosition().dst(entity.getPosition()) > 1.5f) {
+                entity.statemachine().changeState(NpcStates.FOLLOW);
+            }
+        }
+
+        @Override
+        public void exit(NonCombatEntity entity) {
+
+        }
+
+        @Override
+        public boolean onMessage(NonCombatEntity entity, Telegram telegram) {
+            return false;
+        }
+    },
+
+    FOLLOW {
+        @Override
+        public void enter(NonCombatEntity entity) {
+        }
+
+        @Override
+        public void update(NonCombatEntity entity) {
+            if (entity.manager.player().getPosition().dst(entity.getPosition()) < 1.5f) {
+                entity.statemachine().changeState(NpcStates.IDLE);
+            }
+            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
+            entity.checkIfDead();
+
+            //AGGIORNAMENTO MOVEMENT
+            entity.movement().update();
+        }
+
+        @Override
+        public void exit(NonCombatEntity entity) {
+            entity.pathfinder().clear();
+        }
+
+        @Override
+        public boolean onMessage(NonCombatEntity entity, Telegram telegram) {
+            return false;
+        }
+    };
+
+
+}
