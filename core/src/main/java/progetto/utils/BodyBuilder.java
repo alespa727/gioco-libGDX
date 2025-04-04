@@ -2,6 +2,7 @@ package progetto.utils;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.gameplay.WorldManager;
 
 public class BodyBuilder {
     public static BodyDef createBodyDef(BodyDef.BodyType type, float x, float y) {
@@ -37,8 +38,8 @@ public class BodyBuilder {
         return fixtureDef;
     }
 
-    public static Body createBody(World world, Object userdata, BodyDef bodyDef, FixtureDef fixtureDef, Shape shape) {
-        Body body = world.createBody(bodyDef);
+    public static Body createBody(Object userdata, BodyDef bodyDef, FixtureDef fixtureDef, Shape shape) {
+        Body body = WorldManager.getInstance().createBody(bodyDef);
         body.setTransform(bodyDef.position.x, bodyDef.position.y, 0f);
         body.createFixture(fixtureDef);
         body.setUserData(userdata);

@@ -3,6 +3,7 @@ package progetto.gameplay.entities.types;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.gameplay.WorldManager;
 import progetto.utils.Cooldown;
 import progetto.gameplay.entities.types.entity.EntityConfig;
 import progetto.gameplay.manager.entity.EntityManager;
@@ -47,7 +48,7 @@ public abstract class CombatEntity extends LivingEntity {
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = EntityManager.RANGE;
 
-        this.range = manager.world.createBody(range);
+        this.range = WorldManager.getInstance().createBody(range);
         this.range.createFixture(fixtureDef);
         this.range.setUserData(this);
     }
@@ -103,6 +104,6 @@ public abstract class CombatEntity extends LivingEntity {
 
     public void despawn() {
         super.despawn();
-        manager.world.destroyBody(range);
+        WorldManager.getInstance().destroyBody(range);
     }
 }

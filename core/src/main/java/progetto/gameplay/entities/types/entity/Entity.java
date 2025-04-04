@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.gameplay.WorldManager;
 import progetto.gameplay.entities.types.entity.graphics.EntityGraphics;
 import progetto.gameplay.entities.types.entity.state.EntityState;
 import progetto.gameplay.manager.entity.EntityManager;
@@ -81,7 +82,7 @@ public abstract class Entity {
         FixtureDef fixtureDef = BodyBuilder.createFixtureDef(circleShape, 25f, .8f, .1f);
 
         // creo la hitbox
-        Body body = BodyBuilder.createBody(manager.world, this, bodyDef, fixtureDef, circleShape);
+        Body body = BodyBuilder.createBody(this, bodyDef, fixtureDef, circleShape);
         System.out.println("Creato corpo dinamico per " + nome());
 
         body.setLinearDamping(3f);
@@ -149,7 +150,7 @@ public abstract class Entity {
     public void despawn() {
         System.out.println("Entità id " + id() + " despawnata");
         manager.removeEntity(this);
-        manager.world.destroyBody(body);
+        WorldManager.getInstance().destroyBody(body);
     }
 
     public void teleport(Vector2 pos) {

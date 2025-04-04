@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import progetto.gameplay.WorldManager;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.manager.map.MapManager;
 import progetto.gameplay.map.events.ChangeMapEvent;
@@ -160,7 +161,7 @@ public class Map implements Disposable {
                     FixtureDef fixtureDef = BodyBuilder.createFixtureDef(boxShape, 1f, 0, 0);
 
                     // Creazione del blocco
-                    BodyBuilder.createBody(entityManager.world, "map", bodyDef, fixtureDef, boxShape);
+                    BodyBuilder.createBody("map", bodyDef, fixtureDef, boxShape);
 
                     fixtureDef.filter.groupIndex = EntityManager.WALL;
                 }
@@ -193,7 +194,7 @@ public class Map implements Disposable {
         FixtureDef fixtureDef = BodyBuilder.createFixtureDef(chainShape, 1f, 0, 0);
 
         // Creazione del corpo
-        BodyBuilder.createBody(entityManager.world, "map", bodyDef, fixtureDef, chainShape);
+        BodyBuilder.createBody("map", bodyDef, fixtureDef, chainShape);
     }
 
     /**
@@ -210,23 +211,23 @@ public class Map implements Disposable {
             float spawnx = object.getProperties().get("spawnx", Float.class);
             float spawny = object.getProperties().get("spawny", Float.class);
             if ("changeMap".equals(eventType)) {
-                events.add(new ChangeMapEvent(new Vector2(x, y), radius, entityManager.world, this.mapManager, map, spawnx, spawny));
+                events.add(new ChangeMapEvent(new Vector2(x, y), radius, this.mapManager, map, spawnx, spawny));
                 System.out.println("evento aggiunto");
             }
 
         }
         EventListener listener = new EventListener();
 
-        this.entityManager.world.setContactListener(listener);
+        WorldManager.getInstance().setContactListener(listener);
     }
 
     @Override
     public void dispose() {
         Array<Body> bodies = new Array<>();
-        entityManager.world.getBodies(bodies);
+        WorldManager.getInstance().getBodies(bodies);
         for (Body body : bodies) {
             if ("map".equals(body.getUserData()) || body.getUserData() instanceof MapEvent) {
-                entityManager.world.destroyBody(body);
+                WorldManager.getInstance().destroyBody(body);
             }
         }
     }

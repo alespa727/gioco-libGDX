@@ -53,9 +53,10 @@ public class GameScreen implements Screen {
     private Cooldown timeScaleCooldown;
 
     public GameScreen(Game game) {
+        WorldManager.init();
+        Box2D.init();
         this.gameState = new DefaultStateMachine<>(this);
         this.gameState.changeState(GameManager.PLAYING);
-        Box2D.init();
         this.gameInfo = new GameInfo();
         this.gameInfo.game = game;
         this.gameInfo.screen = this;
@@ -87,8 +88,6 @@ public class GameScreen implements Screen {
     }
 
     private void load() {
-        this.gameInfo.world = new World(new Vector2(0, 0), true);
-
         System.out.println("GameScreen loaded");
 
         this.rect = new Gui(this);
@@ -100,8 +99,8 @@ public class GameScreen implements Screen {
         this.viewport = new FitViewport(32f, 18f, CameraManager.getCamera());
         this.viewport.apply();
 
-        this.gameInfo.entityManager = new EntityManager(this.gameInfo, this.gameInfo.world);
-        this.gameInfo.mapManager = new MapManager(viewport, this.gameInfo.entityManager, 1, this.gameInfo.world);
+        this.gameInfo.entityManager = new EntityManager(this.gameInfo);
+        this.gameInfo.mapManager = new MapManager(viewport, this.gameInfo.entityManager, 1);
 
         this.loaded = true;
     }
@@ -195,7 +194,7 @@ public class GameScreen implements Screen {
     }
 
     private void Box2DDebugRender() {
-        debugRenderer.render(this.gameInfo.world, CameraManager.getCamera().combined);
+        debugRenderer.render(WorldManager.getInstance(), CameraManager.getCamera().combined);
     }
 
     public void draw() {
@@ -226,10 +225,6 @@ public class GameScreen implements Screen {
 
     public MapManager getMapManager() {
         return this.gameInfo.mapManager;
-    }
-
-    public World getWorld() {
-        return this.gameInfo.world;
     }
 
     public float getTimeScale() {

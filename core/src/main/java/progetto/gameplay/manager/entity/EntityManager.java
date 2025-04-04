@@ -25,7 +25,6 @@ import java.util.Comparator;
 public final class EntityManager {
 
     public GameInfo gameInfo;
-    public final World world;
 
     public static final short WALL = 0;
     public static final short RANGE = 0x0010;
@@ -44,11 +43,9 @@ public final class EntityManager {
     public Queue<BodyDef> bodyDefQueue;
     public Queue<FixtureDef> fixtureDefQueue;
 
-    public EntityManager(GameInfo gameInfo, World world) {
+    public EntityManager(GameInfo gameInfo) {
 
         this.gameInfo = gameInfo;
-        this.world = world;
-
         comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
 
         entityArray = new Array<>();

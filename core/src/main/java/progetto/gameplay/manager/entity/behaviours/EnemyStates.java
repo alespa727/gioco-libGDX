@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import progetto.gameplay.WorldManager;
 import progetto.gameplay.entities.types.Enemy;
 import progetto.gameplay.entities.types.Player;
 import progetto.gameplay.manager.entity.EntityManager;
@@ -33,7 +34,7 @@ public enum EnemyStates implements State<Enemy> {
             entity.direzione().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
 
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-            entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            WorldManager.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
             if (entity.direzione().x != 0f && (entity.direzione().x == 1f || entity.direzione().x == -1f)) {
                 entity.direzione().scl(0.5f, 1f);
@@ -85,7 +86,7 @@ public enum EnemyStates implements State<Enemy> {
                 player = entity.manager.player();
 
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-            entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            WorldManager.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
             entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
 
@@ -125,7 +126,7 @@ public enum EnemyStates implements State<Enemy> {
             if (accumulator > 1f){
                 accumulator = 0f;
                 RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-                entity.manager.world.rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+                WorldManager.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
             }
 
 

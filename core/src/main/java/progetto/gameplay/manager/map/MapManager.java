@@ -16,7 +16,6 @@ public class MapManager {
     // Reference utili
     private final EntityManager manager;
     private final FitViewport viewport;
-    private final World world;
     // Variabile di stato in caso di cambio mappa
     private boolean inChangeMapEvent = false;
     // Mappa attuale
@@ -27,10 +26,9 @@ public class MapManager {
     /**
      * Creazione manager delle mappe
      */
-    public MapManager(FitViewport viewport, EntityManager manager, int startingMap, World world) {
+    public MapManager(FitViewport viewport, EntityManager manager, int startingMap) {
 
         // Inizializzazione
-        this.world = world;
         this.manager = manager;
         this.viewport = viewport;
         currentMapNum = startingMap;

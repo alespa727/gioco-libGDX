@@ -21,8 +21,8 @@ public class ChangeMapEvent extends MapEvent {
     /**
      * Crea l'evento
      */
-    public ChangeMapEvent(Vector2 position, float radius, World world, MapManager mapManager, int map, float x, float y) {
-        super(position, radius, world);
+    public ChangeMapEvent(Vector2 position, float radius, MapManager mapManager, int map, float x, float y) {
+        super(position, radius);
         this.x = x;
         this.y = y;
         this.map = map;

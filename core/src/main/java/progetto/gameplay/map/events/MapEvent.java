@@ -2,6 +2,7 @@ package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.gameplay.WorldManager;
 import progetto.gameplay.entities.types.entity.Entity;
 import progetto.utils.BodyBuilder;
 
@@ -13,10 +14,10 @@ public abstract class MapEvent {
     /**
      * Crea l'evento fisicamente
      */
-    public MapEvent(Vector2 position, float radius, World world) {
+    public MapEvent(Vector2 position, float radius) {
         this.position = position;
         this.radius = radius;
-        this.createZone(world);
+        this.createZone();
     }
 
     /**
@@ -36,7 +37,7 @@ public abstract class MapEvent {
     /**
      * Crea la zona dell'evento
      */
-    public void createZone(World world) {
+    public void createZone() {
         // Definizione corpo
         BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.KinematicBody, position.x , position.y);
         bodyDef.fixedRotation = true; // Rotazione fissa
@@ -49,7 +50,7 @@ public abstract class MapEvent {
         fixtureDef.isSensor = true; // Gestione manuale fisica
 
         // Creo il corpo
-        BodyBuilder.createBody(world, this, bodyDef, fixtureDef, shape);
+        BodyBuilder.createBody(this, bodyDef, fixtureDef, shape);
     }
 
     /**
