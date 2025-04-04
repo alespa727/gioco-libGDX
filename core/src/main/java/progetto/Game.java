@@ -3,9 +3,9 @@ package progetto;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import progetto.screens.gameplay.GameScreen;
+import progetto.gameplay.GameScreen;
 import progetto.utils.camera.CameraManager;
-import progetto.screens.menu.MainScreen;
+import progetto.menu.MainScreen;
 
 
 public class Game extends com.badlogic.gdx.Game {

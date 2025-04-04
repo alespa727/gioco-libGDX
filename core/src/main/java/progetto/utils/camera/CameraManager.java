@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.utils.Cooldown;
-import progetto.screens.gameplay.manager.entity.EntityManager;
-import progetto.screens.gameplay.map.Map;
+import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.map.Map;
 
 public class CameraManager {
     private static OrthographicCamera camera;
