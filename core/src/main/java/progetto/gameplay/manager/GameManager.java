@@ -32,7 +32,7 @@ public enum GameManager implements State<GameScreen> {
                 float scaledTime = STEP * screen.getTimeScale();
                 screen.update(scaledTime);
                 screen.accumulator -= STEP;
-
+                WorldManager.update();
                 WorldManager.getInstance().step(scaledTime, 8, 8);
             }
 

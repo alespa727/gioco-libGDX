@@ -194,7 +194,8 @@ public class Map implements Disposable {
         FixtureDef fixtureDef = BodyBuilder.createFixtureDef(chainShape, 1f, 0, 0);
 
         // Creazione del corpo
-        BodyBuilder.createBody("map", bodyDef, fixtureDef, chainShape);
+        WorldManager.addBody("map", bodyDef, fixtureDef);
+        chainShape.dispose();
     }
 
     /**
