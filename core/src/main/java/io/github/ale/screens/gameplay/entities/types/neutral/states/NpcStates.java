@@ -8,7 +8,6 @@ public enum NpcStates implements State<NonCombatEntity> {
     IDLE {
         @Override
         public void enter(NonCombatEntity entity) {
-            System.out.println(entity.nome() + " id." + entity.id() + " in Idle");
         }
 
         @Override
@@ -38,8 +37,6 @@ public enum NpcStates implements State<NonCombatEntity> {
     FOLLOW {
         @Override
         public void enter(NonCombatEntity entity) {
-            System.out.println(entity.nome() + " id." + entity.id() + " in Pursuing");
-
         }
 
         @Override

@@ -76,7 +76,6 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void enter(Enemy entity) {
-            System.out.println(entity.nome() + " id." + entity.id() + " in Pursuing");
             entity.body.setLinearDamping(3f);
         }
 
@@ -115,7 +114,6 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void enter(Enemy entity) {
-            System.out.println(entity.nome() + " id." + entity.id() + " in Patrolling");
         }
 
         @Override

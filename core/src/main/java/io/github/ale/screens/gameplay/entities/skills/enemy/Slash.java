@@ -25,7 +25,6 @@ public class Slash extends CombatSkill {
 
     @Override
     public void execute() {
-        System.out.println("Melee execute");
         if (((Enemy) entity).getInRange().size>0){
             entity.manager.player().hit((CombatEntity) entity, damage);
         }
