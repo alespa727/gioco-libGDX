@@ -50,8 +50,7 @@ public abstract class MapEvent {
         fixtureDef.isSensor = true; // Gestione manuale fisica
 
         // Creo il corpo
-        WorldManager.addBody(this, bodyDef, fixtureDef);
-        shape.dispose();
+        BodyBuilder.createBody(this, bodyDef, fixtureDef, shape);
     }
 
     /**
