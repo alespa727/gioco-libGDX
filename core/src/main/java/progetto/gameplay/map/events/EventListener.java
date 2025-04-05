@@ -1,14 +1,12 @@
 package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entities.types.Bullet;
-import progetto.gameplay.entities.types.CombatEntity;
-import progetto.gameplay.entities.types.Enemy;
-import progetto.gameplay.entities.types.entity.Entity;
-import progetto.gameplay.entities.types.Player;
+import progetto.gameplay.entity.types.bullet.Bullet;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.CombatEntity;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.Enemy;
+import progetto.gameplay.entity.types.abstractEntity.Entity;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
 import progetto.gameplay.manager.entity.EntityManager;
-
-import java.nio.Buffer;
 
 public class EventListener implements ContactListener {
 
@@ -103,9 +101,7 @@ public class EventListener implements ContactListener {
         boolean isRangeA = fixtureA.getFilterData().categoryBits == EntityManager.RANGE;
         boolean isRangeB = fixtureB.getFilterData().categoryBits == EntityManager.RANGE;
 
-        if (dataA instanceof Enemy && isRangeA && dataB instanceof Player && !isRangeB) {
-            Enemy enemy1 = (Enemy) dataA;
-            Player player = (Player) dataB;
+        if (dataA instanceof Enemy enemy1 && isRangeA && dataB instanceof Player player && !isRangeB) {
             enemy1.removeEntity(player);
         }
 

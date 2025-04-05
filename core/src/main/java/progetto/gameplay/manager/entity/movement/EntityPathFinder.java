@@ -6,7 +6,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
-import progetto.gameplay.entities.types.HumanEntity;
+import progetto.gameplay.entity.types.humanEntity.HumanEntity;
 import progetto.gameplay.manager.map.MapManager;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.HeuristicDistance;

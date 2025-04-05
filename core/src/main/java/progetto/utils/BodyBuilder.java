@@ -2,7 +2,7 @@ package progetto.utils;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.WorldManager;
+import progetto.gameplay.manager.map.WorldManager;
 
 public class BodyBuilder {
     public static BodyDef createBodyDef(BodyDef.BodyType type, float x, float y) {

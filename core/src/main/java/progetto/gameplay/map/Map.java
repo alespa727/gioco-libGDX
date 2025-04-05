@@ -1,8 +1,6 @@
 package progetto.gameplay.map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import progetto.gameplay.WorldManager;
+import progetto.gameplay.manager.map.WorldManager;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.manager.map.MapManager;
 import progetto.gameplay.map.events.ChangeMapEvent;
@@ -23,6 +21,8 @@ import progetto.gameplay.map.graph.GameGraph;
 import progetto.utils.BodyBuilder;
 
 public class Map implements Disposable {
+    public final String nome;
+
     public static boolean isGraphLoaded = false;
     public static boolean isLoaded = false;
 
@@ -42,9 +42,10 @@ public class Map implements Disposable {
     /* Creazione nuova mappa */
     public Map(String name, EntityManager manager, MapManager mapManager, float x, float y) {
 
+        this.nome = name;
+
         TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
         mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE); // Inizializzazione map renderer
-        mapManager.setInChangeMapEvent(false); // Evento cambio mappa disattivato
 
         events = new Array<>(); // Array di eventi
 

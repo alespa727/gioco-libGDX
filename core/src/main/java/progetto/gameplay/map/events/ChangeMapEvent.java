@@ -2,10 +2,9 @@ package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import progetto.GameConfig;
-import progetto.gameplay.entities.types.Player;
-import progetto.gameplay.entities.types.entity.Entity;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
+import progetto.gameplay.entity.types.abstractEntity.Entity;
 import progetto.gameplay.manager.map.MapManager;
 
 public class ChangeMapEvent extends MapEvent {

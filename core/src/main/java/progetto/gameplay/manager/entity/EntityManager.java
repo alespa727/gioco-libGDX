@@ -1,28 +1,31 @@
 package progetto.gameplay.manager.entity;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.Game;
 import progetto.gameplay.GameInfo;
-import progetto.gameplay.entities.types.*;
+import progetto.gameplay.entity.types.abstractEntity.EntityInstance;
+import progetto.gameplay.entity.types.bullet.Bullet;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.CombatEntity;
+import progetto.gameplay.entity.types.humanEntity.HumanEntity;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.Enemy;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.EnemyInstance;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
 import progetto.menu.DefeatScreen;
-import progetto.gameplay.entities.types.entity.Entity;
-import progetto.gameplay.entities.types.entity.EntityConfig;
-import progetto.gameplay.entities.factories.EnemyFactory;
+import progetto.gameplay.entity.types.abstractEntity.Entity;
+import progetto.gameplay.entity.types.abstractEntity.EntityConfig;
+import progetto.gameplay.entity.factories.EntityFactory;
 import progetto.utils.BodyBuilder;
-import progetto.utils.camera.CameraManager;
+import progetto.gameplay.manager.camera.CameraManager;
 
 import java.util.Comparator;
 
 public final class EntityManager {
 
-    public GameInfo gameInfo;
+    public final GameInfo gameInfo;
 
     public static final short WALL = 0;
     public static final short RANGE = 0x0010;
@@ -32,13 +35,13 @@ public final class EntityManager {
 
     private final Player player;
     private final Array<Entity> entityArray;
-    private final Array<Bullet> bulletArray;
-    private Queue<Entity> entityQueue;
-    private Queue<Bullet> bulletQueue;
+    private final Queue<Entity> entityQueue;
 
     private int nextEntityId = 0;
 
-    public EntityConfig e;
+    public final EntityConfig e;
+
+    public Array<EntityInstance> instances;
 
     public EntityManager(GameInfo gameInfo) {
 
@@ -46,9 +49,7 @@ public final class EntityManager {
         comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
 
         entityArray = new Array<>();
-        bulletArray = new Array<>();
         entityQueue = new Queue<>();
-        bulletQueue = new Queue<>();
 
         EntityConfig p = new EntityConfig();
         p.id = nextEntityId;
@@ -103,16 +104,36 @@ public final class EntityManager {
         for (int i = 0; i < n; i++) {
             nextEntityId++;
             e.id = nextEntityId;
-            summon(EnemyFactory.createEnemy("Finn", this.e, this, 1.5f));
+            summon(EntityFactory.createEnemy("Finn", this.e, this, 1.5f));
 
         }
         System.out.println(player.getPosition());
     }
 
+    public Array<EntityInstance> despawnEveryone() {
+        instances = new Array<>();
+        entityQueue.clear();
+        for (int i = 0; i < entityArray.size; i++) {
+            Entity e = entityArray.get(i);
+            if (!player.equals(e) && !(e instanceof Bullet)) {
+                System.out.println(e.getPosition());
+                instances.add(e.despawn());
+            }
+        }
+        System.out.println(instances.size);
+        return instances;
+    }
+
+    public void summon(Array<EntityInstance> instances) {
+        for (EntityInstance instance : instances) {
+            System.out.println(instance.id);
+            summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
+        }
+    }
+
     public void summon(Entity e) {
         entityQueue.addFirst(e);
     }
-
 
     public void createBullet(float x, float y, Vector2 direction, float speed, float damage) {
         EntityConfig config = new EntityConfig();
@@ -154,15 +175,14 @@ public final class EntityManager {
         if(!entityQueue.isEmpty()){
             entityArray.add(entityQueue.last());
             entityQueue.last().initBody();
-            if (entityQueue.last() instanceof CombatEntity) {
-                CombatEntity ce = (CombatEntity) entityQueue.last();
+            if (entityQueue.last() instanceof CombatEntity ce) {
                 ce.range = BodyBuilder.createBody(ce, ce.bodyDef, ce.fixtureDef, ce.shape);
             }
             entityQueue.last().create();
             entityQueue.removeLast().isLoaded = true;
         }
 
-        if (!player.stati().isAlive()) {
+        if (!player.isAlive()) {
             gameInfo.game.setScreen(new DefeatScreen(gameInfo.game));
         }
 
@@ -190,24 +210,7 @@ public final class EntityManager {
         gameInfo.game.renderer.end();
     }
 
-    public void drawHitbox() {
-        gameInfo.game.renderer.begin(ShapeRenderer.ShapeType.Line);
-        for (Entity e : entityArray) {
-            if (!e.isRendered() || !e.isLoaded){
-                continue;
-            }
-            if (e.stati().inCollisione()) gameInfo.game.renderer.setColor(Color.RED);
-            else gameInfo.game.renderer.setColor(Color.BLACK);
-            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
-                e.drawHitbox(gameInfo.game.renderer);
-            gameInfo.game.renderer.setColor(Color.WHITE);
-            gameInfo.game.renderer.rectLine(e.body.getPosition(), player.body.getPosition(), 0.1f);
-        }
-        gameInfo.game.renderer.end();
-    }
-
     public void drawDebug() {
-        drawHitbox();
         drawPath();
     }
 
