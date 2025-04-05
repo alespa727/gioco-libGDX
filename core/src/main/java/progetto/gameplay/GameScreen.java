@@ -200,7 +200,7 @@ public class GameScreen implements Screen {
     public void draw() {
         this.gameInfo.mapManager.getMap().getMapRenderer().setView(CameraManager.getCamera());
         this.gameInfo.mapManager.getMap().getMapRenderer().render();
-        this.gameInfo.entityManager.drawDebug();
+        //this.gameInfo.entityManager.drawDebug();
         this.gameInfo.entityManager.draw(elapsedTime);
         if (getMapManager().getAmbiente()) drawGUI();
     }

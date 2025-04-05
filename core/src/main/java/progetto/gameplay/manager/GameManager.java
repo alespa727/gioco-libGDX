@@ -13,7 +13,6 @@ import static progetto.gameplay.GameScreen.STEP;
 public enum GameManager implements State<GameScreen> {
 
     PLAYING {
-
         @Override
         public void enter(GameScreen screen) {
             System.out.println("GameScreen.PLAYING");
@@ -32,8 +31,7 @@ public enum GameManager implements State<GameScreen> {
                 float scaledTime = STEP * screen.getTimeScale();
                 screen.update(scaledTime);
                 screen.accumulator -= STEP;
-
-                WorldManager.getInstance().step(scaledTime, 7, 7);
+                WorldManager.getInstance().step(scaledTime, 5, 5);
             }
 
 

@@ -56,7 +56,6 @@ public abstract class Entity {
         textures = new HumanTextures(config.img);
 
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
-        Gdx.app.postRunnable(this::create);
     }
 
     public HumanTextures getTextures() {
@@ -79,7 +78,7 @@ public abstract class Entity {
         bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.DynamicBody, config.x, config.y);
 
         // forma hitbox
-        shape = BodyBuilder.createCircle(0.3f);
+        shape = BodyBuilder.createCircle(config.width);
 
         // proprietà fisiche
         fixtureDef = BodyBuilder.createFixtureDef(shape, 25f, .8f, .1f);

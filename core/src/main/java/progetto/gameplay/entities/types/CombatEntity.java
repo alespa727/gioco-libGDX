@@ -54,7 +54,7 @@ public abstract class CombatEntity extends HumanEntity {
     }
 
     public void adjustRange() {
-        range.setTransform(body.getPosition(), direzione().angleRad()-90*MathUtils.degreesToRadians);
+        if(range!=null) range.setTransform(body.getPosition(), direzione().angleRad()-90*MathUtils.degreesToRadians);
     }
 
     public float rangeRadius() {

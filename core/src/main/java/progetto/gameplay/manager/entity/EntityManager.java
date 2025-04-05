@@ -10,14 +10,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.Game;
 import progetto.gameplay.GameInfo;
-import progetto.gameplay.entities.types.CombatEntity;
-import progetto.gameplay.entities.types.HumanEntity;
+import progetto.gameplay.entities.types.*;
 import progetto.menu.DefeatScreen;
-import progetto.gameplay.entities.types.Enemy;
 import progetto.gameplay.entities.types.entity.Entity;
 import progetto.gameplay.entities.types.entity.EntityConfig;
 import progetto.gameplay.entities.factories.EnemyFactory;
-import progetto.gameplay.entities.types.Player;
 import progetto.utils.BodyBuilder;
 import progetto.utils.camera.CameraManager;
 
@@ -85,10 +82,10 @@ public final class EntityManager {
         e = new EntityConfig();
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
-        e.x = 9f;
-        e.y = 13f;
+        e.x = 9.01f;
+        e.y = 8.01f;
         e.img = Game.assetManager.get("entities/nemico.png", Texture.class);
-        e.width = 16 / 32f;
+        e.width = 6 / 32f;
         e.height = 8 / 16f;
         e.offsetX = 0;
         e.offsetY = -0.25f;
@@ -102,7 +99,8 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        for (int i = 0; i < 10; i++) {
+        int n = 1;
+        for (int i = 0; i < n; i++) {
             nextEntityId++;
             e.id = nextEntityId;
             summon(EnemyFactory.createEnemy("Finn", this.e, this, 1.5f));
@@ -148,8 +146,11 @@ public final class EntityManager {
                 CombatEntity ce = (CombatEntity) entityQueue.last();
                 ce.range = BodyBuilder.createBody(ce, ce.bodyDef, ce.fixtureDef, ce.shape);
             }
+            entityQueue.last().create();
             entityQueue.removeLast().isLoaded = true;
         }
+
+        Bullet bullet = new Bullet(10, 10, new Vector2(0, 1));
 
         if (!player.stati().isAlive()) {
             gameInfo.game.setScreen(new DefeatScreen(gameInfo.game));
