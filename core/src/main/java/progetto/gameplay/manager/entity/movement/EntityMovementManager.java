@@ -5,17 +5,17 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import progetto.utils.Cooldown;
-import progetto.gameplay.entities.types.HumanEntity;
+import progetto.gameplay.entity.types.humanEntity.HumanEntity;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.node.Node;
 
 public class EntityMovementManager {
 
-    HumanEntity owner;
-    Array<Vector2> path;
+    final HumanEntity owner;
+    final Array<Vector2> path;
     boolean isReady = true;
 
-    Cooldown cooldown;
+    final Cooldown cooldown;
     Vector2 direction;
 
     int steps = 0;
@@ -79,7 +79,7 @@ public class EntityMovementManager {
         }
 
         Vector2 movementDirection = new Vector2(target).sub(owner.getPosition()).nor();
-        float speed = owner.speed();
+        float speed = owner.getSpeed();
         Vector2 movement = movementDirection.scl(speed);
         Vector2 force = new Vector2(movement).scl(speed).scl(owner.body.getMass());
         owner.body.applyForceToCenter(force.scl(2f), true);

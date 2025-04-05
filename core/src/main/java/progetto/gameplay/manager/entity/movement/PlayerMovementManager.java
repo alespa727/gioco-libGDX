@@ -1,8 +1,8 @@
 package progetto.gameplay.manager.entity.movement;
 
 import com.badlogic.gdx.math.Vector2;
-import progetto.gameplay.entities.types.HumanEntity;
-import progetto.gameplay.entities.types.Player;
+import progetto.gameplay.entity.types.humanEntity.HumanEntity;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
 
 import static progetto.utils.KeyHandler.*;
 
@@ -97,8 +97,8 @@ public class PlayerMovementManager {
     public Vector2 getForce() {
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
         if (diagonale) {
-            return new Vector2(player.direzione()).scl(player.body.getMass() * player.speed() * 1 / 1.41f).scl(1 / 1.41f);
+            return new Vector2(player.direzione()).scl(player.body.getMass() * player.getSpeed() * 1 / 1.41f).scl(1 / 1.41f);
         }
-        return new Vector2(player.direzione()).scl(player.speed()).scl(player.body.getMass());
+        return new Vector2(player.direzione()).scl(player.getSpeed()).scl(player.body.getMass());
     }
 }

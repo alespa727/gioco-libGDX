@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import progetto.utils.camera.CameraManager;
+import progetto.gameplay.manager.camera.CameraManager;
 import progetto.gameplay.map.graph.node.Node;
 
 import java.util.HashMap;
@@ -110,12 +110,11 @@ public class GameGraph implements IndexedGraph<Node> {
             if (nx >= 0 && nx < width && ny >= 0 && ny < height && grid[nx][ny] != null) {
                 if (Math.abs(dir[0]) + Math.abs(dir[1]) == 2) {
                     int checkX = x + dir[0];
-                    int checkY = y; // Direzione orizzontale
-                    int checkX2 = x;
+                    // Direzione orizzontale
                     int checkY2 = y + dir[1]; // Direzione verticale
 
                     // salta direzione diagonale se le altre direzioni sono occupate
-                    if (grid[checkX][checkY] == null || grid[checkX2][checkY2] == null) {
+                    if (grid[checkX][y] == null || grid[x][checkY2] == null) {
                         continue;
                     }
                 }

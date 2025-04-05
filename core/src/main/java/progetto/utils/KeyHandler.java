@@ -1,7 +1,7 @@
 package progetto.utils;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
 import progetto.GameConfig;
 
@@ -9,7 +9,9 @@ public class KeyHandler {
 
     public static boolean su, giu, sinistra, destra, sprint, usa;
 
-    public static Vector3 mouse = new Vector3(0, 0, 0);
+    public static boolean debug;
+
+    public static final Vector3 mouse = new Vector3(0, 0, 0);
     /**
      * tasti di input premuti
      */
@@ -23,6 +25,8 @@ public class KeyHandler {
         usa = Gdx.input.isKeyPressed(GameConfig.getUSA());
         mouse.x = Gdx.input.getX();
         mouse.y = Gdx.input.getY();
+
+        debug = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
     }
 
 

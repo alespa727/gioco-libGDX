@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.GameScreen;
-import progetto.utils.camera.CameraManager;
+import progetto.gameplay.manager.camera.CameraManager;
 import progetto.menu.MainScreen;
 
 

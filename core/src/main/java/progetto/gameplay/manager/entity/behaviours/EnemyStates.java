@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import progetto.gameplay.WorldManager;
-import progetto.gameplay.entities.types.Enemy;
-import progetto.gameplay.entities.types.Player;
+import progetto.gameplay.manager.map.WorldManager;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.Enemy;
+import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
 import progetto.gameplay.manager.entity.EntityManager;
 
 public enum EnemyStates implements State<Enemy> {

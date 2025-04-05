@@ -5,8 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class Node {
-    public int x, y;
-    public Array<Connection<Node>> connessioni = new Array<>();
+    public final int x;
+    public final int y;
+    public final Array<Connection<Node>> connessioni = new Array<>();
     private int index;
 
     private boolean walkable = true;

@@ -1,7 +1,9 @@
 package progetto.gameplay.manager.map;
 
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import progetto.gameplay.entity.types.abstractEntity.EntityInstance;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.map.Map;
 
@@ -14,14 +16,15 @@ public class MapManager {
     // Mappa default
     private final int defaultMap = 0;
     // Reference utili
-    private final EntityManager manager;
+    private final EntityManager entityManager;
     private final FitViewport viewport;
     // Variabile di stato in caso di cambio mappa
-    private boolean inChangeMapEvent = false;
     // Mappa attuale
     private Map currentMap;
     private String nome;
     private boolean ambienteAperto;
+
+    public final ArrayMap<String, Array<EntityInstance>> mapEntityInstances = new ArrayMap<>();
 
     /**
      * Creazione manager delle mappe
@@ -29,7 +32,7 @@ public class MapManager {
     public MapManager(FitViewport viewport, EntityManager manager, int startingMap) {
 
         // Inizializzazione
-        this.manager = manager;
+        this.entityManager = manager;
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
@@ -50,6 +53,7 @@ public class MapManager {
      */
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) {
+            mapEntityInstances.put(currentMap.nome, entityManager.despawnEveryone());
             currentMap.dispose(); // Cancellazione mappa precedente
         }
 
@@ -66,6 +70,10 @@ public class MapManager {
 
             default -> {
                 nome = "stanza";
+                if(mapEntityInstances.containsKey("stanza")) {
+                    Array<EntityInstance> instances = mapEntityInstances.get("stanza");
+                    entityManager.summon(instances);
+                }
                 ambienteAperto = false;
                 viewport.setWorldSize(16f, 16f * 9 / 16f);
             }
@@ -75,7 +83,7 @@ public class MapManager {
         currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, manager, this, x, y).createCollision();
+        currentMap = new Map(nome, entityManager, this, x, y).createCollision();
 
         // Applico la telecamera
         viewport.apply();
@@ -95,10 +103,4 @@ public class MapManager {
         return ambienteAperto;
     }
 
-    /**
-     * Setter per possibilità cambio mappa
-     */
-    public void setInChangeMapEvent(boolean inChangeMapEvent) {
-        this.inChangeMapEvent = inChangeMapEvent;
-    }
 }

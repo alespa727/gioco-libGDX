@@ -23,19 +23,19 @@ import progetto.GameConfig;
 import progetto.Game;
 import progetto.utils.Cooldown;
 import progetto.gameplay.GameScreen;
-import progetto.utils.camera.CameraManager;
+import progetto.gameplay.manager.camera.CameraManager;
 
 public class PauseScreen implements Screen {
-    Game game;
-    GameScreen gameScreen;
+    final Game game;
+    final GameScreen gameScreen;
     boolean resumeRequest;
     boolean pauseRequest;
     Cooldown pause;
     Cooldown resume;
     ScreenViewport viewport;
     TextButton MainMenu;
-    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+    final FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     BitmapFont font;
     float alpha;
     Vector3[] corners;
@@ -124,7 +124,7 @@ public class PauseScreen implements Screen {
     }
 
     public void drawBackground(float delta) {
-        if (!gameScreen.getEntityManager().player().stati().isAlive()) {
+        if (!gameScreen.getEntityManager().player().isAlive()) {
             game.setScreen(new DefeatScreen(game));
             return;
         }
@@ -189,8 +189,8 @@ public class PauseScreen implements Screen {
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        //stage.act();
-        //stage.draw();
+        stage.act();
+        stage.draw();
     }
 
 

@@ -2,13 +2,12 @@ package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.WorldManager;
-import progetto.gameplay.entities.types.entity.Entity;
+import progetto.gameplay.entity.types.abstractEntity.Entity;
 import progetto.utils.BodyBuilder;
 
 public abstract class MapEvent {
-    protected Vector2 position; // Posizione fisica dell'evento
-    protected float radius; // Raggio di attivazione evento
+    protected final Vector2 position; // Posizione fisica dell'evento
+    protected final float radius; // Raggio di attivazione evento
     protected boolean active; // Switch di attivazione dell'evento
 
     /**

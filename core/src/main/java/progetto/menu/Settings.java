@@ -30,7 +30,7 @@ public class Settings implements Screen {
     private Table root;
     private Table table;
 
-    private LinkedHashMap<String, Integer> comandi = new LinkedHashMap<>();
+    private final LinkedHashMap<String, Integer> comandi = new LinkedHashMap<>();
 
     public Settings(Game game) {
         this.game = game;
