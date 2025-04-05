@@ -98,7 +98,7 @@ public class CameraManager {
         camera.update();
     }
 
-    public static OrthographicCamera getCamera() {
+    public static OrthographicCamera getInstance() {
         return camera;
     }
 

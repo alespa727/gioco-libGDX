@@ -1,11 +1,14 @@
 package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.gameplay.entities.types.Bullet;
 import progetto.gameplay.entities.types.CombatEntity;
 import progetto.gameplay.entities.types.Enemy;
 import progetto.gameplay.entities.types.entity.Entity;
 import progetto.gameplay.entities.types.Player;
 import progetto.gameplay.manager.entity.EntityManager;
+
+import java.nio.Buffer;
 
 public class EventListener implements ContactListener {
 
@@ -50,6 +53,22 @@ public class EventListener implements ContactListener {
 
         if (dataA instanceof Enemy && isRangeA && dataB instanceof Player && !isRangeB) {
             ((Enemy) dataA).addEntity((Player) dataB);
+        }
+
+        if (dataA instanceof CombatEntity && !isRangeA && dataB instanceof Bullet) {
+            ((CombatEntity) dataA).hit((Entity) dataB, ((Bullet) dataB).damage);
+            ((Bullet) dataB).despawn();
+        }
+        if (dataB instanceof CombatEntity && !isRangeA && dataA instanceof Bullet) {
+            ((CombatEntity) dataB).hit((Entity) dataA, ((Bullet) dataA).damage);
+            ((Bullet) dataA).despawn();
+        }
+
+        if ("map".equals(dataB) && dataA instanceof Bullet) {
+            ((Bullet) dataA).despawn();
+        }
+        if ("map".equals(dataA) && dataB instanceof Bullet) {
+            ((Bullet) dataB).despawn();
         }
 
     }

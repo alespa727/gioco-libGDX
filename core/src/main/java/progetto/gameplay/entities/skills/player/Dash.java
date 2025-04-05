@@ -43,6 +43,5 @@ public class Dash extends Skill {
         entity.body.setLinearVelocity(entity.body.getLinearVelocity().x * dodgeSpeed, entity.body.getLinearVelocity().y * dodgeSpeed);
         cooldown.reset(0.5f);
         if (((Player) entity).getInRange().size == 0) setBeingUsed(true);
-
     }
 }

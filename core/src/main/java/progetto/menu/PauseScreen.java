@@ -57,7 +57,7 @@ public class PauseScreen implements Screen {
         viewport = new ScreenViewport();
 
         stage = new Stage(new ScreenViewport());
-        viewport.setCamera(CameraManager.getCamera());
+        viewport.setCamera(CameraManager.getInstance());
         viewport.apply(false);
         background = new Texture("pause.png");
         overlay = new Texture("pause_overlay.png");

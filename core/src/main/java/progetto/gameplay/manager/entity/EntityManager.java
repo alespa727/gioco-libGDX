@@ -32,15 +32,13 @@ public final class EntityManager {
 
     private final Player player;
     private final Array<Entity> entityArray;
+    private final Array<Bullet> bulletArray;
     private Queue<Entity> entityQueue;
-
+    private Queue<Bullet> bulletQueue;
 
     private int nextEntityId = 0;
 
     public EntityConfig e;
-
-    public Queue<BodyDef> bodyDefQueue;
-    public Queue<FixtureDef> fixtureDefQueue;
 
     public EntityManager(GameInfo gameInfo) {
 
@@ -48,7 +46,9 @@ public final class EntityManager {
         comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
 
         entityArray = new Array<>();
+        bulletArray = new Array<>();
         entityQueue = new Queue<>();
+        bulletQueue = new Queue<>();
 
         EntityConfig p = new EntityConfig();
         p.id = nextEntityId;
@@ -56,7 +56,7 @@ public final class EntityManager {
         p.x = 8.5f;
         p.y = 5.5f;
         p.img = Game.assetManager.get("entities/Finn.png", Texture.class);
-        p.width = 16 / 32f;
+        p.width = 10 / 32f;
         p.height = 8 / 16f;
         p.offsetX = 0;
         p.offsetY = -0.25f;
@@ -106,11 +106,24 @@ public final class EntityManager {
             summon(EnemyFactory.createEnemy("Finn", this.e, this, 1.5f));
 
         }
-
+        System.out.println(player.getPosition());
     }
 
     public void summon(Entity e) {
         entityQueue.addFirst(e);
+    }
+
+
+    public void createBullet(float x, float y, Vector2 direction, float speed, float damage) {
+        EntityConfig config = new EntityConfig();
+        config.nome = "Bullet";
+        config.x = x;
+        config.y = y;
+        config.descrizione = "fa male";
+        config.direzione = direction;
+        config.isAlive = true;
+        config.img = Game.assetManager.get("entities/Finn.png", Texture.class);
+        summon(new Bullet(config, this, speed, damage));
     }
 
     public void draw(float elapsedTime) {
@@ -140,7 +153,6 @@ public final class EntityManager {
     public void render(float delta) {
         if(!entityQueue.isEmpty()){
             entityArray.add(entityQueue.last());
-            entityQueue.last().body = BodyBuilder.createBody(entityQueue.last(), entityQueue.last().bodyDef, entityQueue.last().fixtureDef, entityQueue.last().shape);
             entityQueue.last().initBody();
             if (entityQueue.last() instanceof CombatEntity) {
                 CombatEntity ce = (CombatEntity) entityQueue.last();
@@ -149,8 +161,6 @@ public final class EntityManager {
             entityQueue.last().create();
             entityQueue.removeLast().isLoaded = true;
         }
-
-        Bullet bullet = new Bullet(10, 10, new Vector2(0, 1));
 
         if (!player.stati().isAlive()) {
             gameInfo.game.setScreen(new DefeatScreen(gameInfo.game));

@@ -1,14 +1,13 @@
 package progetto.gameplay;
 
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.gameplay.entities.types.Enemy;
-import progetto.gameplay.entities.types.entity.Entity;
+import progetto.gameplay.map.events.MapEvent;
 
 public class WorldManager{
     private static World instance;
@@ -30,9 +29,14 @@ public class WorldManager{
         return instance;
     }
 
-    public static void addBody(BodyDef bodyDef, FixtureDef fixtureDef) {
-        bodyToCreate.addLast(bodyDef);
-        fixtureToCreate.addLast(fixtureDef);
+    public static void clearMap() {
+        Array<Body> bodies = new Array<>();
+        instance.getBodies(bodies);
+        for (Body body : bodies) {
+            if ("map".equals(body.getUserData()) || body.getUserData() instanceof MapEvent) {
+                instance.destroyBody(body);
+            }
+        }
     }
 
     public static void update() {

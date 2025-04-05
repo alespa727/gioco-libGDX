@@ -85,6 +85,7 @@ public abstract class Entity {
     }
 
     public void initBody(){
+        body = BodyBuilder.createBody(this, bodyDef, fixtureDef, shape);
         body.setAngularDamping(5f);
         body.setLinearDamping(5f);
     }
@@ -147,7 +148,7 @@ public abstract class Entity {
     public void despawn() {
         System.out.println("Entità id " + id() + " despawnata");
         manager.removeEntity(this);
-        WorldManager.getInstance().destroyBody(body);
+        Gdx.app.postRunnable(() -> WorldManager.getInstance().destroyBody(body));
     }
 
     public void teleport(Vector2 pos) {

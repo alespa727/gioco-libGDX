@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -96,7 +94,7 @@ public class GameScreen implements Screen {
         this.root.setFillParent(true);
         this.stage.addActor(root);
 
-        this.viewport = new FitViewport(32f, 18f, CameraManager.getCamera());
+        this.viewport = new FitViewport(16f, 9f, CameraManager.getInstance());
         this.viewport.apply();
 
         this.gameInfo.entityManager = new EntityManager(this.gameInfo);
@@ -141,7 +139,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, false);
+        viewport.update(width, height, true);
+        CameraManager.getInstance().update();
     }
 
     @Override
@@ -178,6 +177,7 @@ public class GameScreen implements Screen {
         fboTextReg.flip(false, true);
 
         fbo2.begin();
+        ScreenUtils.clear(0, 0, 0, 1);
         this.gameInfo.game.batch.begin();
         this.gameInfo.game.batch.setShader(null);
         this.gameInfo.game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
@@ -194,13 +194,12 @@ public class GameScreen implements Screen {
     }
 
     private void Box2DDebugRender() {
-        debugRenderer.render(WorldManager.getInstance(), CameraManager.getCamera().combined);
+        debugRenderer.render(WorldManager.getInstance(), CameraManager.getInstance().combined);
     }
 
     public void draw() {
-        this.gameInfo.mapManager.getMap().getMapRenderer().setView(CameraManager.getCamera());
+        this.gameInfo.mapManager.getMap().getMapRenderer().setView(CameraManager.getInstance());
         this.gameInfo.mapManager.getMap().getMapRenderer().render();
-        //this.gameInfo.entityManager.drawDebug();
         this.gameInfo.entityManager.draw(elapsedTime);
         if (getMapManager().getAmbiente()) drawGUI();
     }
@@ -213,9 +212,8 @@ public class GameScreen implements Screen {
 
     public void updateCamera(boolean boundaries) {
         CameraManager.update(this.gameInfo.entityManager, viewport, delta, boundaries);
-        viewport.apply();
-        this.gameInfo.game.batch.setProjectionMatrix(CameraManager.getCamera().combined);
-        this.gameInfo.game.renderer.setProjectionMatrix(CameraManager.getCamera().combined);
+        this.gameInfo.game.batch.setProjectionMatrix(CameraManager.getInstance().combined);
+        this.gameInfo.game.renderer.setProjectionMatrix(CameraManager.getInstance().combined);
     }
 
     // Getters

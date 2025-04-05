@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.WorldManager;
+import progetto.gameplay.entities.types.entity.Entity;
 import progetto.utils.Cooldown;
 import progetto.gameplay.entities.types.entity.EntityConfig;
 import progetto.gameplay.manager.entity.EntityManager;
@@ -69,7 +70,7 @@ public abstract class CombatEntity extends HumanEntity {
 
     public abstract void attack();
 
-    public void hit(CombatEntity entity, float damage) {
+    public void hit(Entity entity, float damage) {
         hitDirection = new Vector2(entity.body.getPosition()).sub(body.getPosition()).scl(-1);
         inflictDamage(damage);
         knockback.reset();

@@ -105,22 +105,6 @@ public class Map implements Disposable {
     }
 
     /**
-     * Disegna le collisioni
-     */
-    public void debugDraw(ShapeRenderer renderer) {
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (collisions[i][j]) {
-                    renderer.setColor(Color.DARK_GRAY);
-                    renderer.rect(i, j, 1, 1);
-                }
-            }
-        }
-        renderer.end();
-    }
-
-    /**
      * Update eventi della mappa
      */
     public void render() {
@@ -223,12 +207,6 @@ public class Map implements Disposable {
 
     @Override
     public void dispose() {
-        Array<Body> bodies = new Array<>();
-        WorldManager.getInstance().getBodies(bodies);
-        for (Body body : bodies) {
-            if ("map".equals(body.getUserData()) || body.getUserData() instanceof MapEvent) {
-                WorldManager.getInstance().destroyBody(body);
-            }
-        }
+        WorldManager.clearMap();
     }
 }

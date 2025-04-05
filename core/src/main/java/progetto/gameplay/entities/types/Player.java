@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entities.skills.player.CloseRangeCombatSkill;
 import progetto.gameplay.entities.skills.player.Dash;
+import progetto.gameplay.entities.skills.player.MachineGun;
 import progetto.gameplay.entities.types.entity.EntityConfig;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.manager.entity.movement.PlayerMovementManager;
@@ -25,6 +26,7 @@ public class Player extends CombatEntity {
 
         this.movement = new PlayerMovementManager(this);
         this.inRange = new Array<>();
+        CameraManager.getInstance().position.set(coordinate().x, coordinate().y, 0);
 
         this.attackCooldown = new Cooldown(0.8f);
         this.attackCooldown.reset(0);
@@ -33,6 +35,8 @@ public class Player extends CombatEntity {
 
         getSkillset().add(new Dash(this, "", "", 25f));
         getSkillset().add(new CloseRangeCombatSkill(this, "", "", 10));
+        getSkillset().add(new MachineGun(this, "", "", 25f, 5f));
+
         createRange(1.6f);
     }
 
@@ -61,7 +65,7 @@ public class Player extends CombatEntity {
     @Override
     public void attack() {
         if (attackCooldown.isReady) {
-            getSkill(CloseRangeCombatSkill.class).execute();
+            getSkill(MachineGun.class).execute();
             attackCooldown.reset();
         }
     }
