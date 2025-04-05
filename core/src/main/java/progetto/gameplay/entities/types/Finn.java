@@ -15,7 +15,7 @@ public final class Finn extends Enemy {
     @Override
     public void create() {
         System.out.println("Finn n." + id() + " creato");
-        statemachine.changeState(EnemyStates.PURSUE);
+        statemachine.changeState(EnemyStates.PATROLLING);
         getSkillset().add(new Slash(this, "pugno", "un pugno molto forte!", 20));
     }
 

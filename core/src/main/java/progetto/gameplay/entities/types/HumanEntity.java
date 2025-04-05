@@ -11,7 +11,7 @@ import progetto.gameplay.entities.skills.SkillSet;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.manager.entity.movement.EntityMovementManager;
 
-public abstract class LivingEntity extends Entity {
+public abstract class HumanEntity extends Entity {
 
     // --- ATTRIBUTI PRINCIPALI ---
     private final SkillSet skillset;
@@ -23,7 +23,7 @@ public abstract class LivingEntity extends Entity {
     private boolean hasBeenHit = false;
 
     // --- COSTRUTTORE ---
-    public LivingEntity(EntityConfig config, EntityManager manager) {
+    public HumanEntity(EntityConfig config, EntityManager manager) {
         super(config, manager);
         skillset = new SkillSet();
         movement = new EntityMovementManager(this);
@@ -130,11 +130,10 @@ public abstract class LivingEntity extends Entity {
     // --- METODI DI RENDERING ---
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        graphics().setAnimation(this);
         if (hasBeenHit) {
             batch.setColor(1, 0, 0, 0.6f);
         }
-        batch.draw(graphics().getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), config().imageWidth, config().imageHeight);
+        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true), getX(), getY(), config().imageWidth, config().imageHeight);
         batch.setColor(Color.WHITE);
     }
 

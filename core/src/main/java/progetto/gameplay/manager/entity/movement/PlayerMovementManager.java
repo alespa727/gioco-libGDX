@@ -1,8 +1,7 @@
 package progetto.gameplay.manager.entity.movement;
 
-import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.math.Vector2;
-import progetto.gameplay.entities.types.LivingEntity;
+import progetto.gameplay.entities.types.HumanEntity;
 import progetto.gameplay.entities.types.Player;
 
 import static progetto.utils.KeyHandler.*;
@@ -13,7 +12,7 @@ public class PlayerMovementManager {
         this.player = player;
     }
 
-    public void update(LivingEntity p) {
+    public void update(HumanEntity p) {
 
         if (!(su || giu || sinistra || destra)) {
             notMoving();

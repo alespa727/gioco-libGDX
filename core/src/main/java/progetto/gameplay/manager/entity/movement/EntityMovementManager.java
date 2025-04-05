@@ -5,13 +5,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import progetto.utils.Cooldown;
-import progetto.gameplay.entities.types.LivingEntity;
+import progetto.gameplay.entities.types.HumanEntity;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.node.Node;
 
 public class EntityMovementManager {
 
-    LivingEntity owner;
+    HumanEntity owner;
     Array<Vector2> path;
     boolean isReady = true;
 
@@ -20,7 +20,7 @@ public class EntityMovementManager {
 
     int steps = 0;
 
-    public EntityMovementManager(LivingEntity entity) {
+    public EntityMovementManager(HumanEntity entity) {
         this.path = new Array<>();
         this.owner = entity;
         float offset = MathUtils.random(-0.3f, 0.3f);

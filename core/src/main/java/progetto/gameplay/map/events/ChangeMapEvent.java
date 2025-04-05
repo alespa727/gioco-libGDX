@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import progetto.GameConfig;
+import progetto.gameplay.entities.types.Player;
 import progetto.gameplay.entities.types.entity.Entity;
 import progetto.gameplay.manager.map.MapManager;
 
@@ -39,7 +40,6 @@ public class ChangeMapEvent extends MapEvent {
                 Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f));
                 active = false;
             }
-
         }
     }
 
@@ -48,6 +48,6 @@ public class ChangeMapEvent extends MapEvent {
      */
     @Override
     public void trigger(Entity entity) {
-
+        if (entity instanceof Player) setActive(true);
     }
 }

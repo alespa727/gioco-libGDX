@@ -6,14 +6,14 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
-import progetto.gameplay.entities.types.LivingEntity;
+import progetto.gameplay.entities.types.HumanEntity;
 import progetto.gameplay.manager.map.MapManager;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.HeuristicDistance;
 import progetto.gameplay.map.graph.node.Node;
 
 public class EntityPathFinder implements Disposable {
-    private final LivingEntity entity;
+    private final HumanEntity entity;
     private final DefaultGraphPath<Node> path;
 
     private Node startNode;
@@ -25,7 +25,7 @@ public class EntityPathFinder implements Disposable {
 
     public boolean success;
 
-    public EntityPathFinder(LivingEntity entity) {
+    public EntityPathFinder(HumanEntity entity) {
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
     }

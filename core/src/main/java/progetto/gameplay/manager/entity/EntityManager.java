@@ -6,18 +6,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.Game;
 import progetto.gameplay.GameInfo;
-import progetto.gameplay.entities.types.LivingEntity;
+import progetto.gameplay.entities.types.CombatEntity;
+import progetto.gameplay.entities.types.HumanEntity;
 import progetto.menu.DefeatScreen;
 import progetto.gameplay.entities.types.Enemy;
 import progetto.gameplay.entities.types.entity.Entity;
 import progetto.gameplay.entities.types.entity.EntityConfig;
 import progetto.gameplay.entities.factories.EnemyFactory;
 import progetto.gameplay.entities.types.Player;
+import progetto.utils.BodyBuilder;
 import progetto.utils.camera.CameraManager;
 
 import java.util.Comparator;
@@ -35,6 +36,7 @@ public final class EntityManager {
     private final Player player;
     private final Array<Entity> entityArray;
     private Queue<Entity> entityQueue;
+
 
     private int nextEntityId = 0;
 
@@ -75,7 +77,7 @@ public final class EntityManager {
 
         nextEntityId++;
 
-        entityArray.add(player);
+        summon(player);
 
         Game.assetManager.load("entities/nemico.png", Texture.class);
         Game.assetManager.finishLoading();
@@ -84,7 +86,7 @@ public final class EntityManager {
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
         e.x = 9f;
-        e.y = 9f;
+        e.y = 13f;
         e.img = Game.assetManager.get("entities/nemico.png", Texture.class);
         e.width = 16 / 32f;
         e.height = 8 / 16f;
@@ -100,8 +102,7 @@ public final class EntityManager {
         e.imageHeight = 2f;
         e.imageWidth = 2f;
 
-        for (int i = 0; i < 1; i++) {
-
+        for (int i = 0; i < 10; i++) {
             nextEntityId++;
             e.id = nextEntityId;
             summon(EnemyFactory.createEnemy("Finn", this.e, this, 1.5f));
@@ -127,9 +128,9 @@ public final class EntityManager {
             }
         }
         for (Entity e : entityArray) {
-            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof LivingEntity) {
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof HumanEntity) {
                 try {
-                    ((LivingEntity) e).getSkillset().draw(gameInfo.game.batch, elapsedTime);
+                    ((HumanEntity) e).getSkillset().draw(gameInfo.game.batch, elapsedTime);
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.direzione());
                 }
@@ -140,7 +141,14 @@ public final class EntityManager {
 
     public void render(float delta) {
         if(!entityQueue.isEmpty()){
-            entityArray.add(entityQueue.removeLast());
+            entityArray.add(entityQueue.last());
+            entityQueue.last().body = BodyBuilder.createBody(entityQueue.last(), entityQueue.last().bodyDef, entityQueue.last().fixtureDef, entityQueue.last().shape);
+            entityQueue.last().initBody();
+            if (entityQueue.last() instanceof CombatEntity) {
+                CombatEntity ce = (CombatEntity) entityQueue.last();
+                ce.range = BodyBuilder.createBody(ce, ce.bodyDef, ce.fixtureDef, ce.shape);
+            }
+            entityQueue.removeLast().isLoaded = true;
         }
 
         if (!player.stati().isAlive()) {
@@ -174,7 +182,7 @@ public final class EntityManager {
     public void drawHitbox() {
         gameInfo.game.renderer.begin(ShapeRenderer.ShapeType.Line);
         for (Entity e : entityArray) {
-            if (!e.isRendered()){
+            if (!e.isRendered() || !e.isLoaded){
                 continue;
             }
             if (e.stati().inCollisione()) gameInfo.game.renderer.setColor(Color.RED);

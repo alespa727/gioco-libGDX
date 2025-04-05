@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
+import progetto.gameplay.entities.types.entity.Entity;
 
-public class TexturesEntity {
-    private final Texture entity;
+public class HumanTextures extends EntityTextures {
     private final TextureRegion[] movingUp; // Frame per la direzione su
     private final TextureRegion[] movingDown; // Frame per la direzione giù
     private final TextureRegion[] movingLeft; // Frame per la direzione sinistra
@@ -18,11 +18,8 @@ public class TexturesEntity {
     private final TextureRegion[] left; // Frame per la direzione sinistra fermo
     private final TextureRegion[] right; // Frame per la direzione destra fermo
 
-    private final ObjectMap<Vector2, Animation<TextureRegion>> animations;
-
-    public TexturesEntity(Texture img) {
-        entity = img;
-        animations = new ObjectMap<>();
+    public HumanTextures(Texture img) {
+        super(img);
 
         // Assegna i frame per le diverse direzioni, creare una classe che puo contenere le texture
         movingUp = new TextureRegion[4];
@@ -35,7 +32,7 @@ public class TexturesEntity {
         left = new TextureRegion[2];
         right = new TextureRegion[2];
 
-        salvaAnimazioni(entity);
+        salvaAnimazioni(texture);
 
         float offset = MathUtils.random(0f, 0.2f);
 
@@ -68,7 +65,8 @@ public class TexturesEntity {
      *
      * @param entity
      */
-    private void salvaAnimazioni(Texture entity) {
+    @Override
+    public void salvaAnimazioni(Texture entity) {
 
         TextureRegion[][] tmpFrames = TextureRegion.split(entity, 32, 32);
         for (int i = 0; i < 4; i++) {
@@ -96,12 +94,13 @@ public class TexturesEntity {
 
     /**
      * restituisce la animazione corretta a seconda della direzione dell'entità
-     *
-     * @param direzione
      * @return
      */
-
-    public Animation<TextureRegion> setAnimazione(Vector2 direzione) {
-        return animations.get(direzione);
+    @Override
+    public Animation<TextureRegion> getAnimation(Entity e) {
+        if (animations.containsKey(e.direzione())) {
+            return animations.get(e.direzione());
+        }
+        return null;
     }
 }

@@ -8,11 +8,15 @@ import progetto.utils.Cooldown;
 import progetto.gameplay.entities.types.entity.EntityConfig;
 import progetto.gameplay.manager.entity.EntityManager;
 
-public abstract class CombatEntity extends LivingEntity {
+public abstract class CombatEntity extends HumanEntity {
     private final Cooldown damage = new Cooldown(.273f);
     private final Cooldown knockback;
-    private Body range;
+    public Body range;
     private Vector2 hitDirection;
+
+    public BodyDef bodyDef = new BodyDef();
+    public FixtureDef fixtureDef;
+    public Shape shape;
 
     private float rangeRadius;
 
@@ -30,10 +34,10 @@ public abstract class CombatEntity extends LivingEntity {
 
     public void createRange(float radius) {
         this.rangeRadius = radius;
-        BodyDef range = new BodyDef();
-        range.type = BodyDef.BodyType.KinematicBody;
+        bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
 
-        PolygonShape shape = new PolygonShape();
+        shape = new PolygonShape();
 
         Vector2[] vertices = new Vector2[5];
         vertices[0] = new Vector2(0,0);
@@ -41,16 +45,12 @@ public abstract class CombatEntity extends LivingEntity {
             float angle = (float) (i  / 6.0 * 145 * MathUtils.degreesToRadians); // convert degrees to radians
             vertices[i-1] = new Vector2( radius * ((float)Math.cos(angle)), radius * ((float)Math.sin(angle)));
         }
-        shape.set(vertices);
+        ((PolygonShape) shape).set(vertices);
 
-        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = EntityManager.RANGE;
-
-        this.range = WorldManager.getInstance().createBody(range);
-        this.range.createFixture(fixtureDef);
-        this.range.setUserData(this);
     }
 
     public void adjustRange() {

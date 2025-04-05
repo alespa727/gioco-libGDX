@@ -33,7 +33,7 @@ public enum GameManager implements State<GameScreen> {
                 screen.update(scaledTime);
                 screen.accumulator -= STEP;
 
-                WorldManager.getInstance().step(scaledTime, 8, 8);
+                WorldManager.getInstance().step(scaledTime, 7, 7);
             }
 
 

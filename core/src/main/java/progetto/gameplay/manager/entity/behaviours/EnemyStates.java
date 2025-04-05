@@ -77,11 +77,11 @@ public enum EnemyStates implements State<Enemy> {
 
         @Override
         public void enter(Enemy entity) {
-            entity.body.setLinearDamping(3f);
         }
 
         @Override
         public void update(Enemy entity) {
+            entity.body.setLinearDamping(3f);
             if (player == null)
                 player = entity.manager.player();
 
@@ -165,7 +165,6 @@ public enum EnemyStates implements State<Enemy> {
                 }
 
                 if (userData.equals("map")) {
-                    System.out.println("MURO");
                     return -1;
                 }
 

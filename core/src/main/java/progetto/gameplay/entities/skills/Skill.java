@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import progetto.utils.Cooldown;
-import progetto.gameplay.entities.types.LivingEntity;
+import progetto.gameplay.entities.types.HumanEntity;
 
 public abstract class Skill {
 
@@ -15,14 +15,14 @@ public abstract class Skill {
 
     public final String name;
     public final String description;
-    protected LivingEntity entity;
+    protected HumanEntity entity;
 
     protected boolean isBeingUsed = false;
     protected Cooldown cooldown;
 
     protected float elapsedTime;
 
-    public Skill(LivingEntity entity, String name, String description) {
+    public Skill(HumanEntity entity, String name, String description) {
         this.entity = entity;
         this.name = name;
         this.description = description;

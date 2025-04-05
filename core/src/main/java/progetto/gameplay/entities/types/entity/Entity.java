@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.WorldManager;
-import progetto.gameplay.entities.types.entity.graphics.EntityGraphics;
 import progetto.gameplay.entities.types.entity.state.EntityState;
+import progetto.gameplay.entities.types.entity.texture.HumanTextures;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.node.Node;
@@ -25,15 +25,18 @@ public abstract class Entity {
     public float delta;
     public float elapsedTime;
     public Body body;
+    public BodyDef bodyDef;
+    public FixtureDef fixtureDef;
+    public Shape shape;
     public EntityManager manager;
     float width, height;
-    float texturewidth, textureheight;
     private boolean isRendered;
     private Node lastNode;
     private Node node;
     private EntityState stati;
-    private EntityGraphics graphics;
+    private HumanTextures textures;
     private float atkCooldown = 0;
+    public boolean isLoaded = false;
 
     // Constructor
     public Entity(EntityConfig config, EntityManager manager) {
@@ -41,23 +44,23 @@ public abstract class Entity {
         this.manager = manager;
         this.nome = config.nome;
 
-        this.coordinate = new Vector2();
+        this.coordinate = new Vector2(config.x, config.y);
 
-        body = createBody();
+        createBody();
 
         this.descrizione = config.descrizione;
         this.id = config.id;
         this.isRendered = false;
 
         this.direzione = new Vector2(config.direzione);
-
-        inizializzaEntityGraphics();
-
-        graphics.setTexture(config.img);
+        textures = new HumanTextures(config.img);
 
         inizializzaStati(config.isAlive, config.inCollisione, config.isMoving);
-        inizializzaAnimazione();
         Gdx.app.postRunnable(this::create);
+    }
+
+    public HumanTextures getTextures() {
+        return textures;
     }
 
     // metodi astratti
@@ -69,37 +72,31 @@ public abstract class Entity {
 
     public abstract void drawHitbox(ShapeRenderer renderer);
 
-    public Body createBody() {
+    public void createBody() {
         this.width = config.width;
         this.height = config.height;
         // creo un corpo dinamico
-        BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.DynamicBody, config.x, config.y);
+        bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.DynamicBody, config.x, config.y);
 
         // forma hitbox
-        Shape circleShape = BodyBuilder.createCircle(0.3f);
+        shape = BodyBuilder.createCircle(0.3f);
 
         // proprietà fisiche
-        FixtureDef fixtureDef = BodyBuilder.createFixtureDef(circleShape, 25f, .8f, .1f);
+        fixtureDef = BodyBuilder.createFixtureDef(shape, 25f, .8f, .1f);
+    }
 
-        // creo la hitbox
-        Body body = BodyBuilder.createBody(this, bodyDef, fixtureDef, circleShape);
-        System.out.println("Creato corpo dinamico per " + nome());
-
-        body.setLinearDamping(3f);
+    public void initBody(){
         body.setAngularDamping(5f);
-        body.setBullet(true);
-
-        return body;
+        body.setLinearDamping(5f);
     }
 
     public boolean isRendered() {
         return isRendered;
     }
 
-    public Entity setRendered(boolean rendered) {
+    public void setRendered(boolean rendered) {
         body.setActive(rendered);
         isRendered = rendered;
-        return this;
     }
 
     /**
@@ -107,9 +104,8 @@ public abstract class Entity {
      */
     public void draw(SpriteBatch batch, float elapsedTime) {
         this.elapsedTime = elapsedTime;
-        graphics.setAnimation(this);
 
-        batch.draw(graphics.getAnimazione().getKeyFrame(elapsedTime, true), getX(), getY(), config.imageWidth, config.imageHeight);
+        batch.draw(textures.getAnimation(this).getKeyFrame(elapsedTime, true), getX(), getY(), config.imageWidth, config.imageHeight);
 
         batch.setColor(Color.WHITE);
     }
@@ -139,12 +135,14 @@ public abstract class Entity {
 
     // Core methods
     public void render(float delta) {
-        this.delta = delta;
+        if (isLoaded){
+            this.delta = delta;
 
-        updateEntityType(delta);
-        updateEntity(delta);
+            updateEntityType(delta);
+            updateEntity(delta);
 
-        setCoordinate(body.getPosition().x, body.getPosition().y);
+            setCoordinate(body.getPosition().x, body.getPosition().y);
+        }
     }
 
     public void despawn() {
@@ -154,7 +152,7 @@ public abstract class Entity {
     }
 
     public void teleport(Vector2 pos) {
-        body.setTransform(pos, 0f);
+        if (isLoaded) body.setTransform(pos, 0f);
     }
 
     // Getters and setters
@@ -192,7 +190,8 @@ public abstract class Entity {
     }
 
     public final Vector2 getPosition() {
-        return body.getPosition();
+        if (body!=null) return body.getPosition();
+        return coordinate;
     }
 
     public final float getX() {
@@ -211,10 +210,6 @@ public abstract class Entity {
         this.coordinate.y = y;
     }
 
-    public final EntityGraphics graphics() {
-        return this.graphics;
-    }
-
     public float atkCooldown() {
         return atkCooldown;
     }
@@ -227,11 +222,6 @@ public abstract class Entity {
         this.direzione.set(direzione);
     }
 
-    // Initialization methods
-    public final void inizializzaEntityGraphics() {
-        this.graphics = new EntityGraphics();
-    }
-
     public final void inizializzaStati(boolean isAlive, boolean inCollisione, boolean isMoving) {
         stati = new EntityState();
         stati.setIsAlive(isAlive);
@@ -239,9 +229,4 @@ public abstract class Entity {
         stati.setIsMoving(isMoving);
         stati.setImmortality(false);
     }
-
-    public final void inizializzaAnimazione() {
-        this.graphics.inizializzaAnimazione(this);
-    }
-
 }

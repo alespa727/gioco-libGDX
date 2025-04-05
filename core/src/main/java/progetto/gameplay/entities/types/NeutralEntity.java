@@ -5,7 +5,7 @@ import progetto.gameplay.entities.types.entity.EntityConfig;
 import progetto.gameplay.manager.entity.behaviours.NeutralEntityStates;
 import progetto.gameplay.manager.entity.EntityManager;
 
-public abstract class NeutralEntity extends LivingEntity {
+public abstract class NeutralEntity extends HumanEntity {
 
     private final DefaultStateMachine<NeutralEntity, NeutralEntityStates> stateMachine;
 
