@@ -12,6 +12,7 @@ buildscript {
 }
 plugins {
   id "application"
+  id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 apply plugin: 'io.github.fourlastor.construo'
 
@@ -19,7 +20,7 @@ apply plugin: 'io.github.fourlastor.construo'
 import io.github.fourlastor.construo.Target
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
-mainClassName = 'io.github.ale.lwjgl3.Lwjgl3Launcher'
+mainClassName = 'progetto.lwjgl3.Lwjgl3Launcher'
 application.setMainClass(mainClassName)
 eclipse.project.name = appName + '-lwjgl3'
 java.sourceCompatibility = 21
