@@ -35,7 +35,7 @@ public class Player extends CombatEntity {
         attackCooldown.reset(0);
         dashCooldown.reset(0);
 
-        CameraManager.getInstance().position.set(coordinate().x, coordinate().y, 0);
+        CameraManager.getInstance().position.set(getPosition().x, getPosition().y, 0);
 
         getSkillset().add(new Dash(this, "", "", 25f));
         getSkillset().add(new PlayerSwordAttack(this, "", "", 10));
@@ -69,7 +69,7 @@ public class Player extends CombatEntity {
     @Override
     public void attack() {
         if (attackCooldown.isReady) {
-            getSkill(MachineGun.class).execute();
+            getSkill(PlayerSwordAttack.class).execute();
             attackCooldown.reset();
         }
     }

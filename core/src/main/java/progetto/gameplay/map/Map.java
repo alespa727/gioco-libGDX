@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import progetto.gameplay.manager.camera.CameraManager;
 import progetto.gameplay.manager.map.WorldManager;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.manager.map.MapManager;
@@ -56,6 +57,8 @@ public class Map implements Disposable {
         this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
 
         Gdx.app.postRunnable(() -> entityManager.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+        CameraManager.getInstance().position.set(entityManager.player().getPosition(), 0);
+        CameraManager.getInstance().update();
 
         // Salvataggio grandezza mappa
         width = (Integer) map.getProperties().get("width");

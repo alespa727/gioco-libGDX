@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.GameConfig;
 import progetto.Game;
@@ -32,7 +33,7 @@ public class PauseScreen implements Screen {
     boolean pauseRequest;
     Cooldown pause;
     Cooldown resume;
-    ScreenViewport viewport;
+    FitViewport viewport;
     TextButton MainMenu;
     final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
     final FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -54,7 +55,7 @@ public class PauseScreen implements Screen {
 
     @Override
     public void show() {
-        viewport = new ScreenViewport();
+        viewport = gameScreen.viewport;
 
         stage = new Stage(new ScreenViewport());
         viewport.setCamera(CameraManager.getInstance());
@@ -136,7 +137,6 @@ public class PauseScreen implements Screen {
 
         if (resumeRequest) {
             transitionOut(delta);
-            gameScreen.resume();
             return;
         }
 
@@ -164,6 +164,8 @@ public class PauseScreen implements Screen {
 
         if (resume.isReady) {
             game.setScreen(gameScreen);
+            CameraManager.getInstance().position.set(gameScreen.getEntityManager().player().getPosition(), 0);
+            CameraManager.getInstance().update();
             resumeRequest = false;
             Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
         }

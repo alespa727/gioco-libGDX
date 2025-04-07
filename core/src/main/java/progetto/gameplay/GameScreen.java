@@ -3,6 +3,7 @@ package progetto.gameplay;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -116,6 +117,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         // Carica gli asset necessari all'inizio
+
         Game.assetManager.load("entities/Finn.png", Texture.class);
         Game.assetManager.finishLoading();
 
@@ -124,16 +126,23 @@ public class GameScreen implements Screen {
         buildFBO(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // Carica la scena di gioco se non è già stata caricata
-        if (!loaded) load();
+        if (!loaded){
+            load();
+        }
 
         // Se il giocatore è morto, lo fa respawnare
         if (!this.gameInfo.entityManager.player().isAlive()) {
             this.gameInfo.entityManager.player().respawn();
         }
 
+        CameraManager.getInstance().position.set(this.gameInfo.entityManager.player().getPosition(), 0);
+        CameraManager.getInstance().update();
+        
+
         // Inizializza il renderer di debug di Box2D
         debugRenderer = new Box2DDebugRenderer();
         debugRenderer.setDrawVelocities(true);
+
     }
 
     @Override
@@ -165,7 +174,9 @@ public class GameScreen implements Screen {
     @Override
     public void pause() {}
     @Override
-    public void resume() {}
+    public void resume() {
+
+    }
     @Override
     public void hide() {}
 
@@ -239,7 +250,7 @@ public class GameScreen implements Screen {
 
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
-        CameraManager.update(this.gameInfo.entityManager, viewport, delta, boundaries);
+        CameraManager.update(gameInfo.entityManager, viewport, delta, boundaries);
         this.gameInfo.game.batch.setProjectionMatrix(CameraManager.getInstance().combined);
         this.gameInfo.game.renderer.setProjectionMatrix(CameraManager.getInstance().combined);
     }

@@ -147,7 +147,6 @@ public abstract class Entity {
     public final String nome() { return nome; }
     public final String descrizione() { return descrizione; }
     public final Vector2 direzione() { return this.direzione; }
-    public final Vector2 coordinate() { return coordinate; }
 
     public final void setCoordinate(float x, float y) {
         this.coordinate.x = x - config().imageWidth / 2;

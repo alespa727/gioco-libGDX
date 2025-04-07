@@ -7,6 +7,8 @@ import progetto.gameplay.entity.types.abstractEntity.EntityInstance;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.map.Map;
 
+import java.util.HashMap;
+
 public class MapManager {
 
     // Grandezza di un pixel
@@ -18,19 +20,17 @@ public class MapManager {
     // Reference utili
     private final EntityManager entityManager;
     private final FitViewport viewport;
-    // Variabile di stato in caso di cambio mappa
     // Mappa attuale
     private Map currentMap;
     private String nome;
     private boolean ambienteAperto;
 
-    public final ArrayMap<String, Array<EntityInstance>> mapEntityInstances = new ArrayMap<>();
+    public final HashMap<String, Array<EntityInstance>> mapEntityInstances = new HashMap<>();
 
     /**
      * Creazione manager delle mappe
      */
     public MapManager(FitViewport viewport, EntityManager manager, int startingMap) {
-
         // Inizializzazione
         this.entityManager = manager;
         this.viewport = viewport;
@@ -52,8 +52,8 @@ public class MapManager {
      * Cambio mappa
      */
     public void changeMap(int map, float x, float y) {
-        if (currentMap != null) {
-            mapEntityInstances.put(currentMap.nome, entityManager.despawnEveryone());
+        if (currentMap != null) { // Se almeno una mappa è stata caricata
+            mapEntityInstances.put(currentMap.nome, entityManager.despawnEveryone()); // Salva le entità in una hashmap
             currentMap.dispose(); // Cancellazione mappa precedente
         }
 
@@ -70,14 +70,12 @@ public class MapManager {
 
             default -> {
                 nome = "stanza";
-                if(mapEntityInstances.containsKey("stanza")) {
-                    Array<EntityInstance> instances = mapEntityInstances.get("stanza");
-                    entityManager.summon(instances);
-                }
                 ambienteAperto = false;
                 viewport.setWorldSize(16f, 16f * 9 / 16f);
             }
         }
+
+        spawnInstances();
 
         // Riassegnazione index
         currentMapNum = map;
@@ -87,6 +85,13 @@ public class MapManager {
 
         // Applico la telecamera
         viewport.apply();
+    }
+
+    public void spawnInstances(){
+        if(mapEntityInstances.containsKey(nome)) {
+            Array<EntityInstance> instances = mapEntityInstances.get(nome);
+            entityManager.summon(instances);
+        }
     }
 
     /**
