@@ -7,10 +7,10 @@ import progetto.gameplay.entity.types.humanEntity.HumanEntity;
 import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
 import progetto.utils.Cooldown;
 
-public class Dash extends Skill {
+public class PlayerDash extends Skill {
     private final float dodgeSpeed;
 
-    public Dash(HumanEntity entity, String name, String description, float dodgeSpeed) {
+    public PlayerDash(HumanEntity entity, String name, String description, float dodgeSpeed) {
         super(entity, name, description);
         this.dodgeSpeed = dodgeSpeed;
         cooldown = new Cooldown(2f);

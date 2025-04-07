@@ -61,7 +61,7 @@ public abstract class CombatEntity extends HumanEntity {
         vertices[0] = new Vector2(0, 0);
 
         for (int i = 2; i < 6; i++) {
-            float angle = (float) (i / 6.0 * 165 * MathUtils.degreesToRadians);
+            float angle = (float) (i / 6.0 * 100 * MathUtils.degreesToRadians);
             vertices[i - 1] = new Vector2(
                 radius * MathUtils.cos(angle),
                 radius * MathUtils.sin(angle)
@@ -78,7 +78,7 @@ public abstract class CombatEntity extends HumanEntity {
 
     public void adjustRange() {
         if (range != null) {
-            range.setTransform(body.getPosition(), direzione().angleRad() - 90 * MathUtils.degreesToRadians);
+            range.setTransform(body.getPosition(), direzione().angleRad() - 60 *MathUtils.degreesToRadians);
         }
     }
 

@@ -3,7 +3,6 @@ package progetto.gameplay;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import progetto.Game;
+import progetto.Core;
 import progetto.utils.Cooldown;
 import progetto.utils.KeyHandler;
 import progetto.gameplay.manager.GameManager;
@@ -25,14 +24,14 @@ import progetto.gameplay.manager.camera.CameraManager;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.manager.map.MapManager;
 
-public class GameScreen implements Screen {
+public class Game implements Screen {
 
     // Costante per il passo fisico (60Hz)
     public static final float STEP = 1 / 60f;
 
     // Variabili principali per la gestione dello stato di gioco e del tempo
     private final GameInfo gameInfo;
-    private final DefaultStateMachine<GameScreen, GameManager> gameState;
+    private final DefaultStateMachine<Game, GameManager> gameState;
     public boolean loaded = false;
     public float delta;
     public float accumulator = 0f;
@@ -51,7 +50,7 @@ public class GameScreen implements Screen {
     public FitViewport viewport;
 
     // Costruttore
-    public GameScreen(Game game) {
+    public Game(Core game) {
         // Inizializza variabili
         WorldManager.init();
         Box2D.init();
@@ -118,8 +117,8 @@ public class GameScreen implements Screen {
     public void show() {
         // Carica gli asset necessari all'inizio
 
-        Game.assetManager.load("entities/Finn.png", Texture.class);
-        Game.assetManager.finishLoading();
+        Core.assetManager.load("entities/Finn.png", Texture.class);
+        Core.assetManager.finishLoading();
 
         // Crea e imposta gli shader e i framebuffer
         createShaderProgram();
@@ -137,7 +136,7 @@ public class GameScreen implements Screen {
 
         CameraManager.getInstance().position.set(this.gameInfo.entityManager.player().getPosition(), 0);
         CameraManager.getInstance().update();
-        
+
 
         // Inizializza il renderer di debug di Box2D
         debugRenderer = new Box2DDebugRenderer();
@@ -273,7 +272,7 @@ public class GameScreen implements Screen {
     }
 
     @SuppressWarnings("unused")
-    public DefaultStateMachine<GameScreen, GameManager> gameState() {
+    public DefaultStateMachine<Game, GameManager> gameState() {
         return gameState;
     }
 

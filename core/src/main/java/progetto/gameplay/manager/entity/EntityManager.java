@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.Game;
+import progetto.Core;
 import progetto.gameplay.GameInfo;
 import progetto.gameplay.entity.types.abstractEntity.EntityInstance;
 import progetto.gameplay.entity.types.bullet.Bullet;
@@ -56,7 +56,7 @@ public final class EntityManager {
         p.nome = "player";
         p.x = 8.5f;
         p.y = 5.5f;
-        p.img = Game.assetManager.get("entities/Finn.png", Texture.class);
+        p.img = Core.assetManager.get("entities/Finn.png", Texture.class);
         p.width = 10 / 32f;
         p.height = 8 / 16f;
         p.offsetX = 0;
@@ -77,16 +77,16 @@ public final class EntityManager {
 
         summon(player);
 
-        Game.assetManager.load("entities/nemico.png", Texture.class);
-        Game.assetManager.finishLoading();
+        Core.assetManager.load("entities/nemico.png", Texture.class);
+        Core.assetManager.finishLoading();
 
         e = new EntityConfig();
         e.nome = "Finn";
         e.descrizione = "Nemico pericoloso";
         e.x = 9.01f;
         e.y = 8.01f;
-        e.img = Game.assetManager.get("entities/nemico.png", Texture.class);
-        e.width = 6 / 32f;
+        e.img = Core.assetManager.get("entities/nemico.png", Texture.class);
+        e.width = 10 / 32f;
         e.height = 8 / 16f;
         e.offsetX = 0;
         e.offsetY = -0.25f;
@@ -143,7 +143,7 @@ public final class EntityManager {
         config.descrizione = "fa male";
         config.direzione = direction;
         config.isAlive = true;
-        config.img = Game.assetManager.get("entities/Finn.png", Texture.class);
+        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
         summon(new Bullet(config, this, speed, damage));
     }
 

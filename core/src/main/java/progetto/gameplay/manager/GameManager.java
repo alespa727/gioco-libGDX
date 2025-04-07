@@ -3,24 +3,24 @@ package progetto.gameplay.manager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
-import progetto.GameConfig;
-import progetto.gameplay.GameScreen;
+import progetto.CoreConfig;
+import progetto.gameplay.Game;
 import progetto.gameplay.manager.map.WorldManager;
 import progetto.menu.PauseScreen;
 
-import static progetto.gameplay.GameScreen.STEP;
+import static progetto.gameplay.Game.STEP;
 
-public enum GameManager implements State<GameScreen> {
+public enum GameManager implements State<Game> {
 
     PLAYING {
         @Override
-        public void enter(GameScreen screen) {
+        public void enter(Game screen) {
             System.out.println("GameScreen.PLAYING");
         }
 
         @Override
-        public void update(GameScreen screen) {
-            if (Gdx.input.isKeyJustPressed(GameConfig.getFERMAGIOCO())) {
+        public void update(Game screen) {
+            if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
                 screen.getGameInfo().game.setScreen(new PauseScreen(screen.getGameInfo().game, screen));
             }
 
@@ -40,12 +40,12 @@ public enum GameManager implements State<GameScreen> {
         }
 
         @Override
-        public void exit(GameScreen screen) {
+        public void exit(Game screen) {
 
         }
 
         @Override
-        public boolean onMessage(GameScreen entity, Telegram telegram) {
+        public boolean onMessage(Game entity, Telegram telegram) {
             return false;
         }
     }

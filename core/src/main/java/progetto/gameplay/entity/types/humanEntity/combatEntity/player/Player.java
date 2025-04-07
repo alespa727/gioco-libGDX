@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entity.skills.player.PlayerSwordAttack;
-import progetto.gameplay.entity.skills.player.Dash;
-import progetto.gameplay.entity.skills.player.MachineGun;
+import progetto.gameplay.entity.skills.player.PlayerDash;
+import progetto.gameplay.entity.skills.player.PlayerRangedAttack;
 import progetto.gameplay.entity.types.abstractEntity.EntityConfig;
 import progetto.gameplay.entity.types.abstractEntity.EntityInstance;
 import progetto.gameplay.entity.types.humanEntity.combatEntity.CombatEntity;
@@ -37,9 +37,9 @@ public class Player extends CombatEntity {
 
         CameraManager.getInstance().position.set(getPosition().x, getPosition().y, 0);
 
-        getSkillset().add(new Dash(this, "", "", 25f));
-        getSkillset().add(new PlayerSwordAttack(this, "", "", 10));
-        getSkillset().add(new MachineGun(this, "", "", 25f, 5f));
+        getSkillset().add(new PlayerDash(this, "", "", 25f));
+        getSkillset().add(new PlayerSwordAttack(this, "", "",10));
+        getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
 
         createRange(1.6f);
     }
@@ -69,21 +69,21 @@ public class Player extends CombatEntity {
     @Override
     public void attack() {
         if (attackCooldown.isReady) {
-            getSkill(PlayerSwordAttack.class).execute();
+            getSkill(PlayerRangedAttack.class).execute();
             attackCooldown.reset();
         }
     }
 
     public void dash() {
         if (dashCooldown.isReady) {
-            getSkill(Dash.class).execute();
+            getSkill(PlayerDash.class).execute();
             dashCooldown.reset();
         }
     }
 
     public void hit(CombatEntity entity, float damage) {
         super.hit(entity, damage);
-        CameraManager.shakeTheCamera(0.1f, 0.05f);
+        CameraManager.shakeTheCamera(0.1f, 0.025f);
     }
 
     // === GESTIONE VITA ===

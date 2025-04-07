@@ -13,7 +13,7 @@ import com.badlogic.gdx.Input;
  * </p>
  */
 
-public final class GameConfig {
+public final class CoreConfig {
     // ATTRIBUTI -----------------------------------------------------------------------------
     /**
      * <p>COSTANTI DI GIOCO-------------------------------------------------------------------------</p>
@@ -108,7 +108,7 @@ public final class GameConfig {
     }
 
     public static void setATTACCO(int ATTACCO) {
-        GameConfig.ATTACCO = ATTACCO;
+        CoreConfig.ATTACCO = ATTACCO;
     }
 
     public static int getUSA() {
@@ -116,7 +116,7 @@ public final class GameConfig {
     }
 
     public static void setUSA(int USA) {
-        GameConfig.USA = USA;
+        CoreConfig.USA = USA;
     }
 
     public static int getCORRI() {
@@ -124,7 +124,7 @@ public final class GameConfig {
     }
 
     public static void setCORRI(int CORRI) {
-        GameConfig.CORRI = CORRI;
+        CoreConfig.CORRI = CORRI;
     }
 
     public static int getFERMAGIOCO() {
@@ -132,7 +132,7 @@ public final class GameConfig {
     }
 
     public static void setFERMAGIOCO(int FERMAGIOCO) {
-        GameConfig.FERMAGIOCO = FERMAGIOCO;
+        CoreConfig.FERMAGIOCO = FERMAGIOCO;
     }
 
     public static int getRIPRENDIGIOCO() {
@@ -140,6 +140,6 @@ public final class GameConfig {
     }
 
     public static void setRIPRENDIGIOCO(int RIPRENDIGIOCO) {
-        GameConfig.RIPRENDIGIOCO = RIPRENDIGIOCO;
+        CoreConfig.RIPRENDIGIOCO = RIPRENDIGIOCO;
     }
 }

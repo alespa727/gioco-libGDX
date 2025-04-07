@@ -15,6 +15,7 @@ import progetto.gameplay.manager.camera.CameraManager;
 import progetto.gameplay.manager.map.WorldManager;
 import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.manager.map.MapManager;
+import progetto.gameplay.map.events.HealthEvent;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.EventListener;
 import progetto.gameplay.map.events.MapEvent;

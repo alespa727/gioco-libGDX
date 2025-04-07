@@ -3,25 +3,24 @@ package progetto;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import progetto.gameplay.GameScreen;
+import progetto.gameplay.Game;
 import progetto.gameplay.manager.camera.CameraManager;
 import progetto.menu.MainScreen;
 
 
-public class Game extends com.badlogic.gdx.Game {
+public class Core extends com.badlogic.gdx.Game {
 
-    public static AssetManager assetManager;
+    public static AssetManager assetManager = new AssetManager();
     public SpriteBatch batch;
     public ShapeRenderer renderer;
-    public GameScreen gameScreen;
+    public Game game;
 
     @Override
     public void create() {
         CameraManager.init();
-        assetManager = new AssetManager();
         batch = new SpriteBatch(); // praticamente la cosa per disegnare
         renderer = new ShapeRenderer(); // disegna forme
-        gameScreen = new GameScreen(this);
+        game = new Game(this);
         setScreen(new MainScreen(this));
     }
 
@@ -29,6 +28,7 @@ public class Game extends com.badlogic.gdx.Game {
     public void dispose() {
         batch.dispose();
         renderer.dispose();
+        assetManager.dispose();
     }
 
 

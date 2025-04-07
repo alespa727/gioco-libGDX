@@ -2,7 +2,7 @@ package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import progetto.GameConfig;
+import progetto.CoreConfig;
 import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
 import progetto.gameplay.entity.types.abstractEntity.Entity;
 import progetto.gameplay.manager.map.MapManager;
@@ -35,7 +35,7 @@ public class ChangeMapEvent extends MapEvent {
     @Override
     public void update() {
         if (isActive()) {
-            if (Gdx.input.isKeyJustPressed(GameConfig.getUSA())) {
+            if (Gdx.input.isKeyJustPressed(CoreConfig.getUSA())) {
                 Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f));
                 active = false;
             }

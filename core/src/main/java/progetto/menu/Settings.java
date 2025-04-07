@@ -16,13 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import progetto.Game;
-import progetto.GameConfig;
+import progetto.Core;
+import progetto.CoreConfig;
 
 import java.util.LinkedHashMap;
 
 public class Settings implements Screen {
-    private final Game game;
+    private final Core game;
     private TextButton.TextButtonStyle buttonStyle;
     private Label.LabelStyle labelStyle;
     private Skin skin;
@@ -32,18 +32,18 @@ public class Settings implements Screen {
 
     private final LinkedHashMap<String, Integer> comandi = new LinkedHashMap<>();
 
-    public Settings(Game game) {
+    public Settings(Core game) {
         this.game = game;
 
-        comandi.put("Su", GameConfig.getDirezioneNord());
-        comandi.put("Sinistra", GameConfig.getDirezioneOvest());
-        comandi.put("Giu", GameConfig.getDirezioneSud());
-        comandi.put("Destra", GameConfig.getDirezioneEst());
-        comandi.put("Corri", GameConfig.getCORRI());
-        comandi.put("Interagisci", GameConfig.getUSA());
-        comandi.put("Attacca", GameConfig.getATTACCO());
-        comandi.put("Pausa", GameConfig.getFERMAGIOCO());
-        comandi.put("Riprendi", GameConfig.getRIPRENDIGIOCO());
+        comandi.put("Su", CoreConfig.getDirezioneNord());
+        comandi.put("Sinistra", CoreConfig.getDirezioneOvest());
+        comandi.put("Giu", CoreConfig.getDirezioneSud());
+        comandi.put("Destra", CoreConfig.getDirezioneEst());
+        comandi.put("Corri", CoreConfig.getCORRI());
+        comandi.put("Interagisci", CoreConfig.getUSA());
+        comandi.put("Attacca", CoreConfig.getATTACCO());
+        comandi.put("Pausa", CoreConfig.getFERMAGIOCO());
+        comandi.put("Riprendi", CoreConfig.getRIPRENDIGIOCO());
 
     }
 
@@ -184,31 +184,31 @@ public class Settings implements Screen {
     private void aggiornaComando(String nome, int keycode) {
         switch (nome) {
             case "Su":
-                GameConfig.setDirezioneNord(keycode);
+                CoreConfig.setDirezioneNord(keycode);
                 break;
             case "Sinistra":
-                GameConfig.setDirezioneOvest(keycode);
+                CoreConfig.setDirezioneOvest(keycode);
                 break;
             case "Giu":
-                GameConfig.setDirezioneSud(keycode);
+                CoreConfig.setDirezioneSud(keycode);
                 break;
             case "Destra":
-                GameConfig.setDirezioneEst(keycode);
+                CoreConfig.setDirezioneEst(keycode);
                 break;
             case "Corri":
-                GameConfig.setCORRI(keycode);
+                CoreConfig.setCORRI(keycode);
                 break;
             case "Interagisci":
-                GameConfig.setUSA(keycode);
+                CoreConfig.setUSA(keycode);
                 break;
             case "Attacca":
-                GameConfig.setATTACCO(keycode);
+                CoreConfig.setATTACCO(keycode);
                 break;
             case "Pausa":
-                GameConfig.setFERMAGIOCO(keycode);
+                CoreConfig.setFERMAGIOCO(keycode);
                 break;
             case "Riprendi":
-                GameConfig.setRIPRENDIGIOCO(keycode);
+                CoreConfig.setRIPRENDIGIOCO(keycode);
                 break;
         }
     }

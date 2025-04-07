@@ -10,16 +10,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import progetto.Game;
+import progetto.Core;
 
 public class DefeatScreen implements Screen {
-    private final Game game;
+    private final Core game;
     private Skin skin;
     private Stage stage;
     private Table root;
 
 
-    public DefeatScreen(Game game) {
+    public DefeatScreen(Core game) {
         this.game = game;
 
     }
@@ -40,7 +40,7 @@ public class DefeatScreen implements Screen {
         button1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(game.gameScreen);
+                game.setScreen(game.game);
                 return true;
             }
         });

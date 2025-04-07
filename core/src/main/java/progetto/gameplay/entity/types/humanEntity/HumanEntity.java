@@ -22,6 +22,7 @@ public abstract class HumanEntity extends Entity {
     private float health;
     private float speedMultiplier;
     private boolean hasBeenHit = false;
+    private boolean hasAnyBuff = false;
 
 
     public HumanEntity(HumanInstance instance, EntityManager entityManager) {
@@ -52,6 +53,18 @@ public abstract class HumanEntity extends Entity {
     }
 
     // --- GESTIONE SALUTE ---
+    public void checkIfHaveBuff(){
+        hasAnyBuff = health < maxHealth;
+    }
+
+    public void setHealthBuff(float multiplier) {
+        this.health = maxHealth*multiplier;
+    }
+
+    public boolean hasAnyHealthBuff(){
+        return hasAnyBuff;
+    }
+
     public float getHealth() {
         return health;
     }
@@ -139,6 +152,7 @@ public abstract class HumanEntity extends Entity {
         cooldown(delta);
         limitSpeed();
         skillset.update();
+        checkIfHaveBuff();
     }
 
     // --- METODI DI RENDERING ---
