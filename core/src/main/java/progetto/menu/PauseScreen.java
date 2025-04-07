@@ -28,7 +28,7 @@ import progetto.gameplay.manager.camera.CameraManager;
 
 public class PauseScreen implements Screen {
     final Core game;
-    final Game game;
+    final Game gameScreen;
     boolean resumeRequest;
     boolean pauseRequest;
     Cooldown pause;
@@ -50,12 +50,12 @@ public class PauseScreen implements Screen {
 
     public PauseScreen(Core game, Game gameScreen) {
         this.game = game;
-        this.game = gameScreen;
+        this.gameScreen = gameScreen;
     }
 
     @Override
     public void show() {
-        viewport = game.viewport;
+        viewport = gameScreen.viewport;
 
         stage = new Stage(new ScreenViewport());
         viewport.setCamera(CameraManager.getInstance());
@@ -113,7 +113,7 @@ public class PauseScreen implements Screen {
         pause = new Cooldown(0.7f);
         pause.reset();
         resume.reset();
-        game.getEntityManager().player().setHasBeenHit(false);
+        gameScreen.getEntityManager().player().setHasBeenHit(false);
 
         stage.setDebugAll(true);
     }
@@ -125,7 +125,7 @@ public class PauseScreen implements Screen {
     }
 
     public void drawBackground(float delta) {
-        if (!game.getEntityManager().player().isAlive()) {
+        if (!gameScreen.getEntityManager().player().isAlive()) {
             game.setScreen(new DefeatScreen(game));
             return;
         }
@@ -146,10 +146,10 @@ public class PauseScreen implements Screen {
 
     public void transitionOut(float delta) {
         resume.update(delta);
-        boolean boundaries = game.getMapManager().getAmbiente();
-        game.updateCamera(boundaries);
-        game.render(delta);
-        game.draw();
+        boolean boundaries = gameScreen.getMapManager().getAmbiente();
+        gameScreen.updateCamera(boundaries);
+        gameScreen.render(delta);
+        gameScreen.draw();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -163,8 +163,8 @@ public class PauseScreen implements Screen {
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         if (resume.isReady) {
-            game.setScreen(game);
-            CameraManager.getInstance().position.set(game.getEntityManager().player().getPosition(), 0);
+            game.setScreen(gameScreen);
+            CameraManager.getInstance().position.set(gameScreen.getEntityManager().player().getPosition(), 0);
             CameraManager.getInstance().update();
             resumeRequest = false;
             Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
@@ -177,7 +177,7 @@ public class PauseScreen implements Screen {
         }
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
 
-        game.draw();
+        gameScreen.draw();
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -198,9 +198,9 @@ public class PauseScreen implements Screen {
 
     public void transitionIn(float delta) {
         pause.update(delta);
-        game.updateCamera(false);
+        gameScreen.updateCamera(false);
 
-        game.draw();
+        gameScreen.draw();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
