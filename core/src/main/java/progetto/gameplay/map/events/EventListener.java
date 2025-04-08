@@ -1,12 +1,12 @@
 package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entity.types.bullet.Bullet;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.CombatEntity;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.Enemy;
-import progetto.gameplay.entity.types.abstractEntity.Entity;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
-import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.entity.types.notliving.Bullet;
+import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
+import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.entity.behaviors.EntityManager;
 
 public class EventListener implements ContactListener {
 
@@ -33,11 +33,11 @@ public class EventListener implements ContactListener {
         // e se il filtro del fixtureB non indica il RANGE, aggiungi dataB al player.
         boolean isPlayerA = dataA instanceof Player;
         boolean isPlayerB = dataB instanceof Player;
-        boolean isCombatB = dataB instanceof CombatEntity;
+        boolean isCombatB = dataB instanceof Warriors;
         boolean isNotRangeB = (fixtureB.getFilterData().categoryBits != EntityManager.RANGE);
 
         if (isPlayerA && !isPlayerB && isCombatB && isNotRangeB) {
-            ((Player) dataA).addEntity((CombatEntity) dataB);
+            ((Player) dataA).addEntity((Warriors) dataB);
         }
 
         // ---------------------------------------------
@@ -53,12 +53,12 @@ public class EventListener implements ContactListener {
             ((Enemy) dataA).addEntity((Player) dataB);
         }
 
-        if (dataA instanceof CombatEntity && !isRangeA && dataB instanceof Bullet) {
-            ((CombatEntity) dataA).hit((Entity) dataB, ((Bullet) dataB).damage,2);
+        if (dataA instanceof Warriors && !isRangeA && dataB instanceof Bullet) {
+            ((Warriors) dataA).hit((Entity) dataB, ((Bullet) dataB).damage,2);
             ((Bullet) dataB).despawn();
         }
-        if (dataB instanceof CombatEntity && !isRangeA && dataA instanceof Bullet) {
-            ((CombatEntity) dataB).hit((Entity) dataA, ((Bullet) dataA).damage, 2);
+        if (dataB instanceof Warriors && !isRangeA && dataA instanceof Bullet) {
+            ((Warriors) dataB).hit((Entity) dataA, ((Bullet) dataA).damage, 2);
             ((Bullet) dataA).despawn();
         }
 
@@ -87,11 +87,11 @@ public class EventListener implements ContactListener {
         // e se il filtro del fixtureB non indica RANGE, rimuovo la CombatEntity dal Player.
         boolean isPlayerA = dataA instanceof Player;
         boolean isPlayerB = dataB instanceof Player;
-        boolean isCombatB = dataB instanceof CombatEntity;
+        boolean isCombatB = dataB instanceof Warriors;
         boolean isNotRangeB = fixtureB.getFilterData().categoryBits != EntityManager.RANGE;
 
         if (isPlayerA && !isPlayerB && isCombatB && isNotRangeB) {
-            ((Player) dataA).removeEntity((CombatEntity) dataB);
+            ((Player) dataA).removeEntity((Warriors) dataB);
         }
 
         // ----------------------------------------------------

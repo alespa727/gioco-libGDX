@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import progetto.utils.Cooldown;
-import progetto.gameplay.entity.types.humanEntity.HumanEntity;
+import progetto.gameplay.entity.types.living.Humanoid;
 
 public abstract class Skill {
 
@@ -17,7 +17,7 @@ public abstract class Skill {
 
     public final String name;                  // Nome della skill
     public final String description;           // Descrizione della skill
-    protected final HumanEntity entity;        // Entità che possiede la skill
+    protected final Humanoid entity;        // Entità che possiede la skill
 
     protected boolean isBeingUsed = false;     // Flag per verificare se la skill è in uso
     protected Cooldown cooldown;               // Gestore del cooldown per la skill
@@ -26,7 +26,7 @@ public abstract class Skill {
 
     // === COSTRUTTORE ===
 
-    public Skill(HumanEntity entity, String name, String description) {
+    public Skill(Humanoid entity, String name, String description) {
         this.entity = entity;
         this.name = name;
         this.description = description;

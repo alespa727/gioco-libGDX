@@ -3,9 +3,9 @@ package progetto.gameplay.map.events;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import progetto.CoreConfig;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
-import progetto.gameplay.entity.types.abstractEntity.Entity;
-import progetto.gameplay.manager.map.MapManager;
+import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.behaviors.manager.map.MapManager;
 
 public class ChangeMapEvent extends MapEvent {
     // Gestore mappa

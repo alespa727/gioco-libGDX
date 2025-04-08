@@ -11,16 +11,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import progetto.gameplay.manager.camera.CameraManager;
-import progetto.gameplay.manager.map.WorldManager;
-import progetto.gameplay.manager.entity.EntityManager;
-import progetto.gameplay.manager.map.MapManager;
-import progetto.gameplay.map.events.HealthEvent;
+import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
+import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
+import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.entity.behaviors.manager.map.MapManager;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.EventListener;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
-import progetto.utils.BodyBuilder;
+import progetto.gameplay.entity.factories.BodyBuilder;
 
 public class Map implements Disposable {
     public final String nome;

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
+import progetto.gameplay.entity.types.living.combat.player.Player;
 
 public class Gui {
     private final Game gamescreen; // Riferimento allo schermo di gioco

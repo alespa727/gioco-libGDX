@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.manager.camera.CameraManager;
+import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
 import progetto.gameplay.map.graph.node.Node;
 
 import java.util.HashMap;

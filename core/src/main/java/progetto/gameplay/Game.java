@@ -18,11 +18,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.Core;
 import progetto.utils.Cooldown;
 import progetto.utils.KeyHandler;
-import progetto.gameplay.manager.GameManager;
-import progetto.gameplay.manager.map.WorldManager;
-import progetto.gameplay.manager.camera.CameraManager;
-import progetto.gameplay.manager.entity.EntityManager;
-import progetto.gameplay.manager.map.MapManager;
+import progetto.gameplay.entity.behaviors.manager.GameManager;
+import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
+import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
+import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.entity.behaviors.manager.map.MapManager;
 
 public class Game implements Screen {
 

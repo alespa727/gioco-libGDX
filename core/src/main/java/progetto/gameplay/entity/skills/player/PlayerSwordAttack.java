@@ -5,10 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entity.skills.skillType.CombatSkill;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.CombatEntity;
-import progetto.gameplay.entity.types.abstractEntity.Entity;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
-import progetto.gameplay.manager.camera.CameraManager;
+import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
 
 public class PlayerSwordAttack extends CombatSkill {
 
@@ -50,21 +50,21 @@ public class PlayerSwordAttack extends CombatSkill {
         CameraManager.shakeTheCamera(0.1f, 0.01f);
         entity.manager.gameInfo.screen.setTimeScale(1f, 1f);
         cooldown.reset();
-        Array<CombatEntity> inRange = ((Player) entity).getInRange();
-        for (CombatEntity combatEntity : inRange) {
-            combatEntity.hit((CombatEntity) entity, damage, 2);
+        Array<Warriors> inRange = ((Player) entity).getInRange();
+        for (Warriors warriors : inRange) {
+            warriors.hit((Warriors) entity, damage, 2);
         }
         direction.set(entity.direzione().x, entity.direzione().y).setLength(((Player) entity).rangeRadius());
         angle = entity.direzione().angleDeg()-90;
         isBeingUsed=true;
     }
 
-    public Vector2 attackDirection(Entity player, Array<CombatEntity> entities) {
+    public Vector2 attackDirection(Entity player, Array<Warriors> entities) {
         float sommax=0, sommay=0, count=0;
-        for (CombatEntity combatEntity : entities) {
+        for (Warriors warriors : entities) {
             count++;
-            sommax += combatEntity.getPosition().x;
-            sommay += combatEntity.getPosition().y;
+            sommax += warriors.getPosition().x;
+            sommay += warriors.getPosition().y;
         }
         Vector2 media = new Vector2(sommax/count, sommay/count);
         return media.sub(player.getPosition());

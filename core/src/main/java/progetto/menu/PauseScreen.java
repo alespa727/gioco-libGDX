@@ -24,7 +24,7 @@ import progetto.CoreConfig;
 import progetto.Core;
 import progetto.utils.Cooldown;
 import progetto.gameplay.Game;
-import progetto.gameplay.manager.camera.CameraManager;
+import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
 
 public class PauseScreen implements Screen {
     final Core game;

@@ -1,10 +1,11 @@
 package progetto.gameplay.entity.factories;
 
-import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.Enemy;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.EnemyInstance;
-import progetto.gameplay.entity.types.abstractEntity.EntityConfig;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.enemyEntity.Finn;
-import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.entity.types.living.combat.boss.Lich;
+import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
+import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
+import progetto.gameplay.entity.types.EntityConfig;
+import progetto.gameplay.entity.types.living.combat.enemy.Finn;
+import progetto.gameplay.entity.behaviors.EntityManager;
 
 public class EntityFactory {
     public static Enemy createEnemy(String type, EntityConfig config, EntityManager manager, float attackCooldown) {

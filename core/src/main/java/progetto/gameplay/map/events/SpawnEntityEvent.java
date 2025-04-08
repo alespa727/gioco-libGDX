@@ -3,11 +3,12 @@ package progetto.gameplay.map.events;
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entity.factories.EntityConfigFactory;
 import progetto.gameplay.entity.factories.EntityFactory;
-import progetto.gameplay.entity.types.abstractEntity.Entity;
-import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.behaviors.EntityManager;
 
 public class SpawnEntityEvent extends MapEvent{
     private EntityManager entityManager;
+    private String type;
 
     /**
      * Crea l'evento fisicamente
@@ -15,10 +16,12 @@ public class SpawnEntityEvent extends MapEvent{
      * @param position
      * @param radius
      */
-    public SpawnEntityEvent(Vector2 position, float radius, EntityManager entityManager) {
+    public SpawnEntityEvent(Vector2 position, float radius, EntityManager entityManager, String entityType) {
         super(position, radius);
         this.entityManager = entityManager;
-        trigger(null);
+        this.type = entityType;
+        this.trigger(null);
+        this.despawn();
     }
 
 
@@ -30,8 +33,8 @@ public class SpawnEntityEvent extends MapEvent{
     @Override
     public void trigger(Entity entity) {
         entityManager.summon(EntityFactory.createEnemy(
-            "Finn",
-            EntityConfigFactory.createEntityConfig("Finn", 15, 15),
+            type,
+            EntityConfigFactory.createEntityConfig(type, position.x,  position.y),
             entityManager,
             1.5f
         ));

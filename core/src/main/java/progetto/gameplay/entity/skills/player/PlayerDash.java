@@ -3,14 +3,14 @@ package progetto.gameplay.entity.skills.player;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import progetto.gameplay.entity.skills.Skill;
-import progetto.gameplay.entity.types.humanEntity.HumanEntity;
-import progetto.gameplay.entity.types.humanEntity.combatEntity.player.Player;
+import progetto.gameplay.entity.types.living.Humanoid;
+import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.utils.Cooldown;
 
 public class PlayerDash extends Skill {
     private final float dodgeSpeed;
 
-    public PlayerDash(HumanEntity entity, String name, String description, float dodgeSpeed) {
+    public PlayerDash(Humanoid entity, String name, String description, float dodgeSpeed) {
         super(entity, name, description);
         this.dodgeSpeed = dodgeSpeed;
         cooldown = new Cooldown(2f);

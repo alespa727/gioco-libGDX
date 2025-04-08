@@ -2,10 +2,13 @@ package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entity.types.abstractEntity.Entity;
-import progetto.utils.BodyBuilder;
+import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
+import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.factories.BodyBuilder;
 
 public abstract class MapEvent {
+
+    private Body body;
     protected final Vector2 position; // Posizione fisica dell'evento
     protected final float radius; // Raggio di attivazione evento
     protected boolean active; // Switch di attivazione dell'evento
@@ -49,7 +52,7 @@ public abstract class MapEvent {
         fixtureDef.isSensor = true; // Gestione manuale fisica
 
         // Creo il corpo
-        Body body = BodyBuilder.createBody(this, bodyDef, fixtureDef, shape);
+        body = BodyBuilder.createBody(this, bodyDef, fixtureDef, shape);
     }
 
     /**
@@ -61,4 +64,9 @@ public abstract class MapEvent {
      * Attiva l'evento
      */
     public abstract void trigger(Entity entity);  // Da implementare per ogni evento specifico
+
+    public void despawn(){
+        System.out.println("Despawning " + this);
+        WorldManager.getInstance().destroyBody(body);
+    }
 }

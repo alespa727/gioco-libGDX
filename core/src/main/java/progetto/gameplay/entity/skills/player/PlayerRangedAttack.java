@@ -4,18 +4,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import progetto.gameplay.entity.skills.skillType.CombatSkill;
-import progetto.gameplay.entity.types.humanEntity.HumanEntity;
+import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.utils.KeyHandler;
-import progetto.gameplay.manager.camera.CameraManager;
-
-import static progetto.utils.KeyHandler.mouse;
+import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
 
 public class PlayerRangedAttack extends CombatSkill {
     final float speed;
     final int maxBullets;
     int bullets;
 
-    public PlayerRangedAttack(HumanEntity entity, String name, String description, int bullets, float damage, float speed) {
+    public PlayerRangedAttack(Humanoid entity, String name, String description, int bullets, float damage, float speed) {
         super(entity, name, description, damage);
         this.maxBullets = bullets;
         this.bullets = bullets;

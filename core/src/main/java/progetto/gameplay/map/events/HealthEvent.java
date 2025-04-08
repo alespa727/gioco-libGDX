@@ -1,8 +1,8 @@
 package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.math.Vector2;
-import progetto.gameplay.entity.types.abstractEntity.Entity;
-import progetto.gameplay.entity.types.humanEntity.HumanEntity;
+import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.types.living.Humanoid;
 
 public class HealthEvent extends MapEvent{
     float multiplier;
@@ -24,10 +24,10 @@ public class HealthEvent extends MapEvent{
 
     @Override
     public void trigger(Entity entity) {
-        if (entity instanceof HumanEntity){
+        if (entity instanceof Humanoid){
             System.out.println("EVENTO");
-            if (!((HumanEntity) entity).hasAnyHealthBuff())
-                ((HumanEntity) entity).setHealthBuff(multiplier);
+            if (!((Humanoid) entity).hasAnyHealthBuff())
+                ((Humanoid) entity).setHealthBuff(multiplier);
         }
     }
 }
