@@ -69,8 +69,7 @@ public final class EntityManager {
             summon(EntityFactory.createEnemy("Finn", e, this, 1.5f));
         }
 
-        new SpawnEntityEvent(new Vector2(10, 12), 1f, this, "Lich");
-        //summon(new Lich(EntityConfigFactory.createEntityConfig("Lich", 10, 12),this));
+        summon(new Lich(EntityConfigFactory.createEntityConfig("Lich", 10, 12),this));
     }
 
     public Array<EntityInstance> despawnEveryone() {
@@ -89,8 +88,8 @@ public final class EntityManager {
 
     public void summon(Array<EntityInstance> instances) {
         for (EntityInstance instance : instances) {
-            System.out.println(instance.id);
-            summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
+            if (instance!=null)
+                summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
         }
     }
 
@@ -98,7 +97,7 @@ public final class EntityManager {
         entityQueue.addFirst(e);
     }
 
-    public void createBullet(float x, float y, Vector2 direction, float speed, float damage) {
+    public void createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Entity owner) {
         EntityConfig config = new EntityConfig();
         config.nome = "Bullet";
         config.x = x;
@@ -107,7 +106,7 @@ public final class EntityManager {
         config.direzione = direction;
         config.isAlive = true;
         config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
-        summon(new Bullet(config, this, speed, damage));
+        summon(new Bullet(config, this, radius, speed, damage, owner));
     }
 
     public void draw(float elapsedTime) {

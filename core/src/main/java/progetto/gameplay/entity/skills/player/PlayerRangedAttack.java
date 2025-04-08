@@ -43,7 +43,7 @@ public class PlayerRangedAttack extends CombatSkill {
             direction.nor();
             Vector2 position=new Vector2(entity.getPosition()).add(direction);
 
-            entity.manager.createBullet(position.x, position.y, direction, this.speed, this.damage);
+            entity.manager.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, entity);
         }else{
             System.out.println("FINITI I PROIETTILI");
         }

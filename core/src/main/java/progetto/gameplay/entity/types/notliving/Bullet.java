@@ -16,12 +16,20 @@ public class Bullet extends Entity {
     // === Attributi specifici ===
     public final float damage;
     private final float velocity;
+    private final float radius;
+    private final Entity owner;
 
     // === Costruttore ===
-    public Bullet(EntityConfig config, EntityManager manager, float velocity, float damage) {
+    public Bullet(EntityConfig config, EntityManager manager, float radius, float velocity, float damage, Entity owner) {
         super(config, manager);
         this.velocity = velocity;
         this.damage = damage;
+        this.radius = radius;
+        this.owner = owner;
+    }
+
+    public Entity getOwner() {
+        return owner;
     }
 
     // === Override metodi principali ===
@@ -47,7 +55,7 @@ public class Bullet extends Entity {
         bodyDef.fixedRotation = true;
         bodyDef.position.set(config().x, config().y);
 
-        shape = BodyBuilder.createCircle(0.1f);
+        shape = BodyBuilder.createCircle(radius);
         fixtureDef = BodyBuilder.createFixtureDef(shape, 1f, 0, 0);
         fixtureDef.isSensor = true;
 

@@ -1,5 +1,6 @@
 package progetto.gameplay.entity.factories;
 
+import progetto.gameplay.entity.types.living.combat.boss.Boss;
 import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
@@ -15,7 +16,6 @@ public class EntityFactory {
             default -> throw new IllegalArgumentException("Tipo di nemico sconosciuto: " + type);
         };
     }
-
     public static Enemy createEnemy(String type, EnemyInstance instance, EntityManager manager, float attackCooldown) {
         return switch (type) {
             case "Finn" -> new Finn(instance, manager);
