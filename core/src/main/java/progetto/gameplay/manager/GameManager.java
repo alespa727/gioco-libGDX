@@ -3,9 +3,11 @@ package progetto.gameplay.manager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.math.Vector2;
 import progetto.CoreConfig;
 import progetto.gameplay.Game;
 import progetto.gameplay.manager.map.WorldManager;
+import progetto.gameplay.map.events.SpawnEntityEvent;
 import progetto.menu.PauseScreen;
 
 import static progetto.gameplay.Game.STEP;

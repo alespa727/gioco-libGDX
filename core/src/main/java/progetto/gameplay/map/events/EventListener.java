@@ -54,11 +54,11 @@ public class EventListener implements ContactListener {
         }
 
         if (dataA instanceof CombatEntity && !isRangeA && dataB instanceof Bullet) {
-            ((CombatEntity) dataA).hit((Entity) dataB, ((Bullet) dataB).damage);
+            ((CombatEntity) dataA).hit((Entity) dataB, ((Bullet) dataB).damage,2);
             ((Bullet) dataB).despawn();
         }
         if (dataB instanceof CombatEntity && !isRangeA && dataA instanceof Bullet) {
-            ((CombatEntity) dataB).hit((Entity) dataA, ((Bullet) dataA).damage);
+            ((CombatEntity) dataB).hit((Entity) dataA, ((Bullet) dataA).damage, 2);
             ((Bullet) dataA).despawn();
         }
 

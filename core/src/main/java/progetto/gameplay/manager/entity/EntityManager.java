@@ -86,7 +86,7 @@ public final class EntityManager {
         e.x = 9.01f;
         e.y = 8.01f;
         e.img = Core.assetManager.get("entities/nemico.png", Texture.class);
-        e.width = 10 / 32f;
+        e.width = 25 / 32f;
         e.height = 8 / 16f;
         e.offsetX = 0;
         e.offsetY = -0.25f;
@@ -94,11 +94,11 @@ public final class EntityManager {
         e.isAlive = true;
         e.inCollisione = false;
         e.isMoving = false;
-        e.hp = 100;
+        e.hp = 200;
         e.speed = 1.25f;
         e.attackdmg = 20;
-        e.imageHeight = 2f;
-        e.imageWidth = 2f;
+        e.imageHeight = 5f;
+        e.imageWidth = 5f;
 
         int n = 1;
         for (int i = 0; i < n; i++) {

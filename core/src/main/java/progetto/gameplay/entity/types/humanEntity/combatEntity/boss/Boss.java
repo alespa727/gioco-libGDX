@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.types.humanEntity.combatEntity.boss;
+ package progetto.gameplay.entity.types.humanEntity.combatEntity.boss;
 
 import progetto.gameplay.entity.types.abstractEntity.EntityInstance;
 import progetto.gameplay.entity.types.humanEntity.HumanInstance;

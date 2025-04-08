@@ -123,7 +123,7 @@ public enum EnemyStates implements State<Enemy> {
                 player = entity.manager.player();
 
             accumulator+=player.delta;
-            if (accumulator > 1f){
+            if (accumulator > 0.5f){
                 accumulator = 0f;
                 RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
                 WorldManager.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());

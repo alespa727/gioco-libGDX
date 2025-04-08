@@ -94,8 +94,8 @@ public abstract class CombatEntity extends HumanEntity {
 
     public abstract void attack();
 
-    public void hit(Entity entity, float damage) {
-        hitDirection = new Vector2(entity.body.getPosition()).sub(body.getPosition()).scl(-1);
+    public void hit(Entity entity, float damage, float hitForce) {
+        hitDirection = new Vector2(entity.body.getPosition()).sub(body.getPosition()).nor().scl(-1*hitForce);
         inflictDamage(damage);
         knockback.reset();
     }
@@ -103,7 +103,7 @@ public abstract class CombatEntity extends HumanEntity {
     public void knockback(Vector2 force) {
         knockback.update(delta);
         if (!knockback.isReady) {
-            body.applyLinearImpulse(force.scl(body.getMass()), body.getWorldCenter(), true);
+            body.applyLinearImpulse(force, body.getWorldCenter(), true);
         }
     }
 
@@ -123,6 +123,6 @@ public abstract class CombatEntity extends HumanEntity {
     public void updateEntity(float delta) {
         super.updateEntity(delta);
         adjustRange();
-        knockback(hitDirection.nor());
+        knockback(hitDirection);
     }
 }

@@ -26,7 +26,7 @@ public class EnemySwordAttack extends CombatSkill {
     @Override
     public void execute() {
         if (((Enemy) entity).getInRange().size>0){
-            entity.manager.player().hit((CombatEntity) entity, damage);
+            entity.manager.player().hit((CombatEntity) entity, damage, 2);
         }
     }
 

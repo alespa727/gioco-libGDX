@@ -52,7 +52,7 @@ public class PlayerSwordAttack extends CombatSkill {
         cooldown.reset();
         Array<CombatEntity> inRange = ((Player) entity).getInRange();
         for (CombatEntity combatEntity : inRange) {
-            combatEntity.hit((CombatEntity) entity, damage);
+            combatEntity.hit((CombatEntity) entity, damage, 2);
         }
         direction.set(entity.direzione().x, entity.direzione().y).setLength(((Player) entity).rangeRadius());
         angle = entity.direzione().angleDeg()-90;

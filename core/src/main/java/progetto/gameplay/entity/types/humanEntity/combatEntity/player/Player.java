@@ -81,8 +81,8 @@ public class Player extends CombatEntity {
         }
     }
 
-    public void hit(CombatEntity entity, float damage) {
-        super.hit(entity, damage);
+    public void hit(CombatEntity entity, float damage, float hitForce) {
+        super.hit(entity, damage, hitForce);
         CameraManager.shakeTheCamera(0.1f, 0.025f);
     }
 
