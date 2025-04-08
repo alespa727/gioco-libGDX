@@ -33,7 +33,7 @@ public enum StatesLich implements State<Lich> {
             // ATTACCO AD AREA SPARANDO PROIETTILI IN TUTTE LE DIREZIONI
             if(!isPreparedToFireDomain){
                 prepareFireDomain.update(entity.delta);
-                prepareToFireball(entity);
+                preparedToFireDomain(entity);
             }else{
                 useFireDomain.update(entity.delta);
                 fireDomain(entity);
@@ -43,10 +43,7 @@ public enum StatesLich implements State<Lich> {
             // AGGIORNAMENTO MOVEMENT
             if (!isPrepareToFireball){
                 prepareToFireball.update(entity.delta);
-                if (prepareToFireball.isReady){
-                    useFireball.reset();
-                    isPrepareToFireball = true;
-                }
+                prepareToFireBall(entity);
             }else{
                 useFireball.update(entity.delta);
                 if (useFireball.isReady) fireball(entity);
@@ -77,6 +74,14 @@ public enum StatesLich implements State<Lich> {
             prepareToFireball.reset();
         }
 
+        public void preparedToFireDomain(Lich entity){
+            if (prepareFireDomain.isReady){
+                System.out.println("FireDomain ready");
+                isPreparedToFireDomain=true;
+                useFireDomain.reset(MathUtils.random(2f, 3f));
+            }
+        }
+
         public void fireDomain(Lich entity){
             entity.fireDomain();
             if (useFireDomain.isReady){
@@ -87,13 +92,13 @@ public enum StatesLich implements State<Lich> {
             }
         }
 
-        public void prepareToFireball(Lich entity){
-            if (prepareFireDomain.isReady){
-                System.out.println("FireDomain ready");
-                isPreparedToFireDomain=true;
-                useFireDomain.reset(MathUtils.random(2f, 3f));
+        public void prepareToFireBall(Lich entity) {
+            if (prepareToFireball.isReady){
+                useFireball.reset();
+                isPrepareToFireball = true;
             }
         }
+
     },
     IDLE {
         @Override
