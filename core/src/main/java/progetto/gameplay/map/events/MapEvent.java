@@ -2,9 +2,9 @@ package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
+import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.entity.factories.BodyBuilder;
+import progetto.factories.BodyFactory;
 
 public abstract class MapEvent {
 
@@ -41,18 +41,18 @@ public abstract class MapEvent {
      */
     public void createZone() {
         // Definizione corpo
-        BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.KinematicBody, position.x , position.y);
+        BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.KinematicBody, position.x , position.y);
         bodyDef.fixedRotation = true; // Rotazione fissa
 
         // Definizione forma
-        Shape shape = BodyBuilder.createCircle(radius);
+        Shape shape = BodyFactory.createCircle(radius);
 
         // Definizione caratteristiche fisiche
-        FixtureDef fixtureDef = BodyBuilder.createFixtureDef(shape, 0, 0, 0);
+        FixtureDef fixtureDef = BodyFactory.createFixtureDef(shape, 0, 0, 0);
         fixtureDef.isSensor = true; // Gestione manuale fisica
 
         // Creo il corpo
-        body = BodyBuilder.createBody(this, bodyDef, fixtureDef, shape);
+        body = BodyFactory.createBody(this, bodyDef, fixtureDef, shape);
     }
 
     /**
@@ -67,6 +67,6 @@ public abstract class MapEvent {
 
     public void despawn(){
         System.out.println("Despawning " + this);
-        WorldManager.getInstance().destroyBody(body);
+        ManagerWorld.getInstance().destroyBody(body);
     }
 }

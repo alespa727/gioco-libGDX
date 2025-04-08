@@ -7,9 +7,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.behaviors.EntityManager;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
-import progetto.gameplay.entity.factories.BodyBuilder;
+import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
+import progetto.factories.BodyFactory;
 
 public class Bullet extends Entity {
 
@@ -20,7 +20,7 @@ public class Bullet extends Entity {
     private final Entity owner;
 
     // === Costruttore ===
-    public Bullet(EntityConfig config, EntityManager manager, float radius, float velocity, float damage, Entity owner) {
+    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity owner) {
         super(config, manager);
         this.velocity = velocity;
         this.damage = damage;
@@ -51,15 +51,15 @@ public class Bullet extends Entity {
 
     @Override
     public void initBody() {
-        bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.KinematicBody, config().x, config().y);
+        bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.KinematicBody, config().x, config().y);
         bodyDef.fixedRotation = true;
         bodyDef.position.set(config().x, config().y);
 
-        shape = BodyBuilder.createCircle(radius);
-        fixtureDef = BodyBuilder.createFixtureDef(shape, 1f, 0, 0);
+        shape = BodyFactory.createCircle(radius);
+        fixtureDef = BodyFactory.createFixtureDef(shape, 1f, 0, 0);
         fixtureDef.isSensor = true;
 
-        body = WorldManager.getInstance().createBody(bodyDef);
+        body = ManagerWorld.getInstance().createBody(bodyDef);
         body.setUserData(this);
         body.createFixture(fixtureDef);
 
@@ -72,7 +72,7 @@ public class Bullet extends Entity {
     public EntityInstance despawn() {
         System.out.println("Entità id " + id() + " despawnata");
         manager.removeEntity(this);
-        Gdx.app.postRunnable(() -> WorldManager.getInstance().destroyBody(body));
+        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(body));
         return null;
     }
 

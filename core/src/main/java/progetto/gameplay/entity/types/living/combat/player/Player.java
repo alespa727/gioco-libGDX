@@ -10,9 +10,9 @@ import progetto.gameplay.entity.skills.player.PlayerRangedAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.combat.Warriors;
-import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.entity.behaviors.manager.entity.movement.PlayerMovementManager;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
+import progetto.gameplay.manager.ManagerCamera;
 import progetto.utils.Cooldown;
 
 public class Player extends Warriors {
@@ -24,7 +24,7 @@ public class Player extends Warriors {
     private final Array<Warriors> inRange;
 
     // === COSTRUTTORE ===
-    public Player(EntityConfig config, EntityManager manager) {
+    public Player(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
 
         this.movement = new PlayerMovementManager(this);
@@ -35,7 +35,7 @@ public class Player extends Warriors {
         attackCooldown.reset(0);
         dashCooldown.reset(0);
 
-        CameraManager.getInstance().position.set(getPosition().x, getPosition().y, 0);
+        ManagerCamera.getInstance().position.set(getPosition().x, getPosition().y, 0);
 
         getSkillset().add(new PlayerDash(this, "", "", 25f));
         getSkillset().add(new PlayerSwordAttack(this, "", "",10));
@@ -83,7 +83,7 @@ public class Player extends Warriors {
 
     public void hit(Warriors entity, float damage, float hitForce) {
         super.hit(entity, damage, hitForce);
-        CameraManager.shakeTheCamera(0.1f, 0.025f);
+        ManagerCamera.shakeTheCamera(0.1f, 0.025f);
     }
 
     // === GESTIONE VITA ===
@@ -113,6 +113,11 @@ public class Player extends Warriors {
     @Override
     public void updateEntityType(float delta) {
         movement.update(this);
+
+        if(body.getLinearVelocity().len() > getSpeed()){
+            invulnerable = true;
+        }else invulnerable = false;
+
         checkIfDead();
         limitSpeed();
 

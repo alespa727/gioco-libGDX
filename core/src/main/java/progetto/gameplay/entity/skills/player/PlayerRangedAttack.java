@@ -3,10 +3,10 @@ package progetto.gameplay.entity.skills.player;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import progetto.gameplay.entity.skills.skillType.CombatSkill;
+import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.utils.KeyHandler;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
+import progetto.gameplay.manager.ManagerCamera;
 
 public class PlayerRangedAttack extends CombatSkill {
     final float speed;
@@ -38,7 +38,7 @@ public class PlayerRangedAttack extends CombatSkill {
     public void execute() {
         if (bullets > 0) {
             bullets--;
-            Vector3 mouse = CameraManager.getInstance().unproject(KeyHandler.mouse);
+            Vector3 mouse = ManagerCamera.getInstance().unproject(KeyHandler.mouse);
             Vector2 direction=new Vector2(mouse.x-entity.getPosition().x, mouse.y-entity.getPosition().y);
             direction.nor();
             Vector2 position=new Vector2(entity.getPosition()).add(direction);

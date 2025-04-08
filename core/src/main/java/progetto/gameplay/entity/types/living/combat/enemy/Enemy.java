@@ -5,10 +5,9 @@ import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.utils.Cooldown;
-import progetto.gameplay.entity.behaviors.manager.entity.behaviours.EnemyStates;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.manager.ManagerEntity;
 
 public abstract class Enemy extends Warriors {
 
@@ -19,17 +18,17 @@ public abstract class Enemy extends Warriors {
     private final Array<Warriors> inRange;
     protected final Cooldown attack;
 
-    public final DefaultStateMachine<Enemy, EnemyStates> statemachine;
+    public final DefaultStateMachine<Enemy, progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesEnemy> statemachine;
 
     // === COSTRUTTORI ===
-    public Enemy(EnemyInstance instance, EntityManager manager) {
+    public Enemy(EnemyInstance instance, ManagerEntity manager) {
         super(instance, manager);
 
         attack = new Cooldown(1.5f);
         attack.reset(0f);
 
         statemachine = new DefaultStateMachine<>(this);
-        statemachine.setInitialState(EnemyStates.PATROLLING);
+        statemachine.setInitialState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesEnemy.PATROLLING);
 
         viewDistance = instance.viewDistance;
         pursueMaxDistance = instance.pursueMaxDistance;
@@ -38,14 +37,14 @@ public abstract class Enemy extends Warriors {
         getSkillset().add(new EnemySwordAttack(this, "", "", 10));
     }
 
-    public Enemy(EntityConfig config, EntityManager manager, float attackcooldown) {
+    public Enemy(EntityConfig config, ManagerEntity manager, float attackcooldown) {
         super(config, manager);
 
         attack = new Cooldown(attackcooldown);
         attack.reset(0f);
 
         statemachine = new DefaultStateMachine<>(this);
-        statemachine.setInitialState(EnemyStates.PATROLLING);
+        statemachine.setInitialState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesEnemy.PATROLLING);
 
         viewDistance = 11f;
         pursueMaxDistance = 12f;

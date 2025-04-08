@@ -24,7 +24,7 @@ import progetto.CoreConfig;
 import progetto.Core;
 import progetto.utils.Cooldown;
 import progetto.gameplay.Game;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
+import progetto.gameplay.manager.ManagerCamera;
 
 public class PauseScreen implements Screen {
     final Core game;
@@ -58,7 +58,7 @@ public class PauseScreen implements Screen {
         viewport = gameScreen.viewport;
 
         stage = new Stage(new ScreenViewport());
-        viewport.setCamera(CameraManager.getInstance());
+        viewport.setCamera(ManagerCamera.getInstance());
         viewport.apply(false);
         Gdx.input.setInputProcessor(stage);
         root = new Table();
@@ -118,7 +118,7 @@ public class PauseScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        corners = CameraManager.getFrustumCorners();
+        corners = ManagerCamera.getFrustumCorners();
         drawBackground(delta);
     }
 
@@ -162,8 +162,8 @@ public class PauseScreen implements Screen {
 
         if (resume.isReady) {
             game.setScreen(gameScreen);
-            CameraManager.getInstance().position.set(gameScreen.getEntityManager().player().getPosition(), 0);
-            CameraManager.getInstance().update();
+            ManagerCamera.getInstance().position.set(gameScreen.getEntityManager().player().getPosition(), 0);
+            ManagerCamera.getInstance().update();
             resumeRequest = false;
             Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
         }
@@ -183,7 +183,7 @@ public class PauseScreen implements Screen {
         game.renderer.begin(ShapeRenderer.ShapeType.Filled);
         game.renderer.setColor(Color.BLACK.cpy().mul(this.alpha));
 
-        game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.renderer.rect(ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         game.renderer.end();
 
@@ -206,7 +206,7 @@ public class PauseScreen implements Screen {
         game.renderer.begin(ShapeRenderer.ShapeType.Filled);
         game.renderer.setColor(Color.BLACK.cpy().mul(alpha));
 
-        game.renderer.rect(CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.renderer.rect(ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         game.renderer.end();
 

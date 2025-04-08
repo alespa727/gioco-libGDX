@@ -1,10 +1,10 @@
-package progetto.gameplay.entity.factories;
+package progetto.factories;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
+import progetto.gameplay.manager.ManagerWorld;
 
-public class BodyBuilder {
+public class BodyFactory {
     public static BodyDef createBodyDef(BodyDef.BodyType type, float x, float y) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = type;
@@ -39,7 +39,7 @@ public class BodyBuilder {
     }
 
     public static Body createBody(Object userdata, BodyDef bodyDef, FixtureDef fixtureDef, Shape shape) {
-        Body body = WorldManager.getInstance().createBody(bodyDef);
+        Body body = ManagerWorld.getInstance().createBody(bodyDef);
         body.setTransform(bodyDef.position.x, bodyDef.position.y, 0f);
         body.createFixture(fixtureDef);
         body.setUserData(userdata);

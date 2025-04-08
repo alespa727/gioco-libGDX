@@ -7,12 +7,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
+import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.manager.ManagerEntity;
 
-public enum EnemyStates implements State<Enemy> {
+public enum StatesEnemy implements State<Enemy> {
 
     ATTACKING {
         Player player;
@@ -34,7 +34,7 @@ public enum EnemyStates implements State<Enemy> {
             entity.direzione().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
 
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-            WorldManager.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            ManagerWorld.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
             if (entity.direzione().x != 0f && (entity.direzione().x == 1f || entity.direzione().x == -1f)) {
                 entity.direzione().scl(0.5f, 1f);
@@ -86,7 +86,7 @@ public enum EnemyStates implements State<Enemy> {
                 player = entity.manager.player();
 
             RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-            WorldManager.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            ManagerWorld.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
 
             entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
 
@@ -122,7 +122,7 @@ public enum EnemyStates implements State<Enemy> {
             if (accumulator > 0.5f){
                 accumulator = 0f;
                 RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-                WorldManager.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+                ManagerWorld.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
             }
 
 
@@ -164,7 +164,7 @@ public enum EnemyStates implements State<Enemy> {
                     return -1;
                 }
 
-                if (userData instanceof Player && filter.categoryBits != EntityManager.RANGE) {
+                if (userData instanceof Player && filter.categoryBits != ManagerEntity.RANGE) {
                     if (start.dst(end) > entity.rangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
                         entity.statemachine.changeState(PURSUE);
                         return fraction;

@@ -2,13 +2,9 @@ package progetto.gameplay.entity.skills.boss;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
-import progetto.gameplay.entity.skills.Skill;
-import progetto.gameplay.entity.skills.skillType.CombatSkill;
+import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.utils.KeyHandler;
 
 public class LichFireball extends CombatSkill {
     private final float speed;

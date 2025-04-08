@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import progetto.CoreConfig;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.entity.behaviors.manager.map.MapManager;
+import progetto.gameplay.map.MapManager;
 
 public class ChangeMapEvent extends MapEvent {
     // Gestore mappa

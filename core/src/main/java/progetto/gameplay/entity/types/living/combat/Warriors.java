@@ -6,10 +6,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.entity.factories.BodyBuilder;
+import progetto.factories.BodyFactory;
 import progetto.utils.Cooldown;
 import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.manager.ManagerEntity;
 
 public abstract class Warriors extends Humanoid {
 
@@ -33,13 +33,13 @@ public abstract class Warriors extends Humanoid {
 
     // === COSTRUTTORI ===
 
-    public Warriors(HumanoidInstances instance, EntityManager entityManager) {
-        super(instance, entityManager);
+    public Warriors(HumanoidInstances instance, ManagerEntity managerEntity) {
+        super(instance, managerEntity);
         initCombatState();
         createRange(1.5f);
     }
 
-    public Warriors(EntityConfig config, EntityManager manager) {
+    public Warriors(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
         initCombatState();
     }
@@ -56,7 +56,7 @@ public abstract class Warriors extends Humanoid {
     public void createRange(float radius) {
         this.rangeRadius = radius;
 
-        bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.KinematicBody, 0, 0);
+        bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.KinematicBody, 0, 0);
 
         shape = new PolygonShape();
         Vector2[] vertices = new Vector2[5];
@@ -75,7 +75,7 @@ public abstract class Warriors extends Humanoid {
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = EntityManager.RANGE;
+        fixtureDef.filter.categoryBits = ManagerEntity.RANGE;
     }
 
     public void adjustRange() {
@@ -97,9 +97,11 @@ public abstract class Warriors extends Humanoid {
     public abstract void attack();
 
     public void hit(Entity entity, float damage, float hitForce) {
-        hitDirection = new Vector2(entity.body.getPosition()).sub(body.getPosition()).nor().scl(-1*hitForce);
-        inflictDamage(damage);
-        knockback.reset();
+        if (!invulnerable){
+            hitDirection = new Vector2(entity.body.getPosition()).sub(body.getPosition()).nor().scl(-1*hitForce);
+            inflictDamage(damage);
+            knockback.reset();
+        }
     }
 
     public void knockback(Vector2 force) {

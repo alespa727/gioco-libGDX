@@ -7,25 +7,23 @@ import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.entity.behaviors.EntityManager;
-import progetto.gameplay.entity.behaviors.manager.entity.behaviours.LichStates;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
-import progetto.utils.Cooldown;
+import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
 
 public class Lich extends Boss{
 
-    private final DefaultStateMachine<Lich, LichStates> stateMachine;
+    private final DefaultStateMachine<Lich, progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich> stateMachine;
 
-    public Lich(HumanoidInstances instance, EntityManager entityManager) {
-        super(instance, entityManager);
+    public Lich(HumanoidInstances instance, ManagerEntity managerEntity) {
+        super(instance, managerEntity);
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(LichStates.PURSUE);
+        stateMachine.changeState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich.PURSUE);
     }
 
-    public Lich(EntityConfig config, EntityManager entityManager) {
-        super(config, entityManager);
+    public Lich(EntityConfig config, ManagerEntity managerEntity) {
+        super(config, managerEntity);
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(LichStates.PURSUE);
+        stateMachine.changeState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich.PURSUE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
@@ -59,8 +57,8 @@ public class Lich extends Boss{
         manager.removeEntity(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
-        Gdx.app.postRunnable(() -> WorldManager.getInstance().destroyBody(body));
-        Gdx.app.postRunnable(() -> WorldManager.getInstance().destroyBody(directionalRange));
+        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(body));
+        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(directionalRange));
 
         return null;
     }
@@ -77,7 +75,7 @@ public class Lich extends Boss{
         getSkillset().execute(LichFireDomain.class);
     }
 
-    public DefaultStateMachine<Lich, LichStates> getStateMachine(){
+    public DefaultStateMachine<Lich, progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich> getStateMachine(){
         return stateMachine;
     }
 }

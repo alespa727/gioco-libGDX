@@ -1,14 +1,13 @@
-package progetto.gameplay.entity.behaviors.manager.camera;
+package progetto.gameplay.manager;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.utils.Cooldown;
-import progetto.gameplay.entity.behaviors.EntityManager;
 import progetto.gameplay.map.Map;
 
-public class CameraManager {
+public class ManagerCamera {
     private static OrthographicCamera camera;
     private static Vector3[] frustumCorners;
 
@@ -35,7 +34,7 @@ public class CameraManager {
 
     public static void shakeTheCamera(float time, float shakeForce) {
         cooldown.reset(time);
-        CameraManager.shakeForce = shakeForce;
+        ManagerCamera.shakeForce = shakeForce;
     }
 
     public static boolean isWithinFrustumBounds(float x, float y) {
@@ -72,7 +71,7 @@ public class CameraManager {
      * aggiorna cosa la telecamera deve seguire/modalità della telecamera
      */
 
-    public static void update(EntityManager entities, FitViewport viewport, float delta, boolean boundaries) {
+    public static void update(ManagerEntity entities, FitViewport viewport, float delta, boolean boundaries) {
 
         float x = camera.viewportWidth / 2;
         float y = camera.viewportHeight / 2;

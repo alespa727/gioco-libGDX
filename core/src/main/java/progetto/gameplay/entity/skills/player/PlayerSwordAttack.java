@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-import progetto.gameplay.entity.skills.skillType.CombatSkill;
+import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
+import progetto.gameplay.manager.ManagerCamera;
 
 public class PlayerSwordAttack extends CombatSkill {
 
@@ -47,7 +47,7 @@ public class PlayerSwordAttack extends CombatSkill {
 
     @Override
     public void execute() {
-        CameraManager.shakeTheCamera(0.1f, 0.01f);
+        ManagerCamera.shakeTheCamera(0.1f, 0.01f);
         entity.manager.gameInfo.screen.setTimeScale(1f, 1f);
         cooldown.reset();
         Array<Warriors> inRange = ((Player) entity).getInRange();

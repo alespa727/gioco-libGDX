@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.entity.types.living.HumanoidTextures;
-import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.node.Node;
-import progetto.gameplay.entity.factories.BodyBuilder;
+import progetto.factories.BodyFactory;
 
 // Classe astratta Entity
 public abstract class Entity {
@@ -29,7 +29,7 @@ public abstract class Entity {
     public BodyDef bodyDef;
     public FixtureDef fixtureDef;
     public Shape shape;
-    public final EntityManager manager;
+    public final ManagerEntity manager;
     float width, height;
 
     // === Stato e gestione ===
@@ -43,7 +43,7 @@ public abstract class Entity {
     private boolean immortality;
 
     // === Costruttori ===
-    public Entity(EntityInstance instance, EntityManager manager) {
+    public Entity(EntityInstance instance, ManagerEntity manager) {
         this.config = instance.config;
         this.manager = manager;
         this.nome = instance.nome;
@@ -58,7 +58,7 @@ public abstract class Entity {
         isAlive = true;
     }
 
-    public Entity(EntityConfig config, EntityManager manager) {
+    public Entity(EntityConfig config, ManagerEntity manager) {
         this.config = config;
         this.manager = manager;
         this.nome = config.nome;
@@ -83,21 +83,21 @@ public abstract class Entity {
     public void createBody() {
         this.width = config.width;
         this.height = config.height;
-        bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.DynamicBody, config.x, config.y);
-        shape = BodyBuilder.createCircle(config.width);
-        fixtureDef = BodyBuilder.createFixtureDef(shape, 25f, .8f, .1f);
+        bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.DynamicBody, config.x, config.y);
+        shape = BodyFactory.createCircle(config.width);
+        fixtureDef = BodyFactory.createFixtureDef(shape, 25f, .8f, .1f);
     }
 
     public void createBody(float x, float y) {
         this.width = config.width;
         this.height = config.height;
-        bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.DynamicBody, x, y);
-        shape = BodyBuilder.createCircle(config.width);
-        fixtureDef = BodyBuilder.createFixtureDef(shape, 25f, .8f, .1f);
+        bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.DynamicBody, x, y);
+        shape = BodyFactory.createCircle(config.width);
+        fixtureDef = BodyFactory.createFixtureDef(shape, 25f, .8f, .1f);
     }
 
     public void initBody() {
-        body = BodyBuilder.createBody(this, bodyDef, fixtureDef, shape);
+        body = BodyFactory.createBody(this, bodyDef, fixtureDef, shape);
         body.setAngularDamping(5f);
         body.setLinearDamping(5f);
     }

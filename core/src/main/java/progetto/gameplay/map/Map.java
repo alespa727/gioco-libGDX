@@ -11,15 +11,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
-import progetto.gameplay.entity.behaviors.EntityManager;
-import progetto.gameplay.entity.behaviors.manager.map.MapManager;
+import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.EventListener;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
-import progetto.gameplay.entity.factories.BodyBuilder;
+import progetto.factories.BodyFactory;
 
 public class Map implements Disposable {
     public final String nome;
@@ -35,13 +34,13 @@ public class Map implements Disposable {
     private final TiledMapTileLayer collisionLayer;
     private final MapLayer eventLayer;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final EntityManager entityManager;
+    private final ManagerEntity managerEntity;
     private final MapManager mapManager;
 
     private final Array<MapEvent> events;
 
     /* Creazione nuova mappa */
-    public Map(String name, EntityManager manager, MapManager mapManager, float x, float y) {
+    public Map(String name, ManagerEntity manager, MapManager mapManager, float x, float y) {
 
         this.nome = name;
 
@@ -51,14 +50,14 @@ public class Map implements Disposable {
         events = new Array<>(); // Array di eventi
 
         this.mapManager = mapManager;
-        this.entityManager = manager;
+        this.managerEntity = manager;
 
         this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni"); // Layer collisioni
         this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
 
-        Gdx.app.postRunnable(() -> entityManager.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
-        CameraManager.getInstance().position.set(entityManager.player().getPosition(), 0);
-        CameraManager.getInstance().update();
+        Gdx.app.postRunnable(() -> managerEntity.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+        ManagerCamera.getInstance().position.set(managerEntity.player().getPosition(), 0);
+        ManagerCamera.getInstance().update();
 
         // Salvataggio grandezza mappa
         width = (Integer) map.getProperties().get("width");
@@ -140,18 +139,18 @@ public class Map implements Disposable {
             for (int j = 0; j < height; j++) {
                 if (collisions[i][j]) {
                     // Definizione del blocco
-                    BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.StaticBody, i+0.5f, j+0.5f);
+                    BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, i+0.5f, j+0.5f);
 
                     // Definizione della forma
-                    Shape boxShape = BodyBuilder.createPolygonShape(0.5f, 0.5f);
+                    Shape boxShape = BodyFactory.createPolygonShape(0.5f, 0.5f);
 
                     // Definizione delle proprietà fisiche
-                    FixtureDef fixtureDef = BodyBuilder.createFixtureDef(boxShape, 1f, 0, 0);
+                    FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0, 0);
 
                     // Creazione del blocco
-                    BodyBuilder.createBody("map", bodyDef, fixtureDef, boxShape);
+                    BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
 
-                    fixtureDef.filter.groupIndex = EntityManager.WALL;
+                    fixtureDef.filter.groupIndex = ManagerEntity.WALL;
                 }
             }
         }
@@ -173,16 +172,16 @@ public class Map implements Disposable {
         bordi[4] = new Vector2(4, 4);
 
         // Definizione della forma
-        Shape chainShape = BodyBuilder.createChainShape(bordi);
+        Shape chainShape = BodyFactory.createChainShape(bordi);
 
         // Definizione del corpo
-        BodyDef bodyDef = BodyBuilder.createBodyDef(BodyDef.BodyType.StaticBody, 0, 0);
+        BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, 0, 0);
 
         // Definizione delle caratteristiche fisiche
-        FixtureDef fixtureDef = BodyBuilder.createFixtureDef(chainShape, 1f, 0, 0);
+        FixtureDef fixtureDef = BodyFactory.createFixtureDef(chainShape, 1f, 0, 0);
 
         // Creazione del corpo
-        BodyBuilder.createBody("map", bodyDef, fixtureDef, chainShape);
+        BodyFactory.createBody("map", bodyDef, fixtureDef, chainShape);
     }
 
     /**
@@ -206,11 +205,11 @@ public class Map implements Disposable {
         }
         EventListener listener = new EventListener();
 
-        WorldManager.getInstance().setContactListener(listener);
+        ManagerWorld.getInstance().setContactListener(listener);
     }
 
     @Override
     public void dispose() {
-        WorldManager.clearMap();
+        ManagerWorld.clearMap();
     }
 }

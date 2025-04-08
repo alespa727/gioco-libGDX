@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.utils.Cooldown;
 
-public enum LichStates implements State<Lich> {
+public enum StatesLich implements State<Lich> {
 
     PURSUE {
         Cooldown prepareToFireball = new Cooldown(2f);

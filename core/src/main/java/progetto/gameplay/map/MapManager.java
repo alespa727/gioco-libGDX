@@ -1,10 +1,9 @@
-package progetto.gameplay.entity.behaviors.manager.map;
+package progetto.gameplay.map;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.behaviors.EntityManager;
-import progetto.gameplay.map.Map;
+import progetto.gameplay.manager.ManagerEntity;
 
 import java.util.HashMap;
 
@@ -17,7 +16,7 @@ public class MapManager {
     // Mappa default
     private final int defaultMap = 0;
     // Reference utili
-    private final EntityManager entityManager;
+    private final ManagerEntity managerEntity;
     private final FitViewport viewport;
     // Mappa attuale
     private Map currentMap;
@@ -29,9 +28,9 @@ public class MapManager {
     /**
      * Creazione manager delle mappe
      */
-    public MapManager(FitViewport viewport, EntityManager manager, int startingMap) {
+    public MapManager(FitViewport viewport, ManagerEntity manager, int startingMap) {
         // Inizializzazione
-        this.entityManager = manager;
+        this.managerEntity = manager;
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
@@ -52,7 +51,7 @@ public class MapManager {
      */
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
-            mapEntityInstances.put(currentMap.nome, entityManager.despawnEveryone()); // Salva le entità in una hashmap
+            mapEntityInstances.put(currentMap.nome, managerEntity.despawnEveryone()); // Salva le entità in una hashmap
             currentMap.dispose(); // Cancellazione mappa precedente
         }
 
@@ -80,7 +79,7 @@ public class MapManager {
         currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, entityManager, this, x, y).createCollision();
+        currentMap = new Map(nome, managerEntity, this, x, y).createCollision();
 
         // Applico la telecamera
         viewport.apply();
@@ -89,7 +88,7 @@ public class MapManager {
     public void spawnInstances(){
         if(mapEntityInstances.containsKey(nome)) {
             Array<EntityInstance> instances = mapEntityInstances.get(nome);
-            entityManager.summon(instances);
+            managerEntity.summon(instances);
         }
     }
 

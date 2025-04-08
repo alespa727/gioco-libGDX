@@ -1,7 +1,6 @@
-package progetto.gameplay.entity.skills.skillType;
+package progetto.gameplay.entity.skills;
 
 import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.entity.skills.Skill;
 
 public abstract class CombatSkill extends Skill {
     public final float damage;

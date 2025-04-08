@@ -1,11 +1,8 @@
 package progetto.gameplay.entity.skills.boss;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
-import progetto.gameplay.entity.skills.Skill;
-import progetto.gameplay.entity.skills.skillType.CombatSkill;
-import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
 
 public class LichFireDomain extends CombatSkill {

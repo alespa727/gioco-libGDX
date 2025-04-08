@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.behaviors.manager.entity.movement;
+package progetto.gameplay.entity.behaviors;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.entity.behaviors.manager.map.MapManager;
+import progetto.gameplay.map.MapManager;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.HeuristicDistance;
 import progetto.gameplay.map.graph.node.Node;

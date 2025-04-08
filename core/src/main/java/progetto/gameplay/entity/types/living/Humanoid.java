@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.behaviors.manager.entity.movement.EntityPathFinder;
+import progetto.gameplay.entity.behaviors.EntityPathFinder;
 import progetto.gameplay.entity.skills.Skill;
 import progetto.gameplay.entity.skills.SkillSet;
-import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.entity.behaviors.manager.entity.movement.EntityMovementManager;
 
 public abstract class Humanoid extends Entity {
@@ -24,9 +24,11 @@ public abstract class Humanoid extends Entity {
     private boolean hasBeenHit = false;
     private boolean hasAnyBuff = false;
 
+    protected boolean invulnerable = false;
 
-    public Humanoid(HumanoidInstances instance, EntityManager entityManager) {
-        super(instance, entityManager);
+
+    public Humanoid(HumanoidInstances instance, ManagerEntity managerEntity) {
+        super(instance, managerEntity);
         skillset = new SkillSet();
         movement = new EntityMovementManager(this);
 
@@ -39,7 +41,7 @@ public abstract class Humanoid extends Entity {
     }
 
     // --- COSTRUTTORE ---
-    public Humanoid(EntityConfig config, EntityManager manager) {
+    public Humanoid(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
         skillset = new SkillSet();
         movement = new EntityMovementManager(this);

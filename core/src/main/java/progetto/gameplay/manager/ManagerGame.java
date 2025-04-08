@@ -1,16 +1,15 @@
-package progetto.gameplay.entity.behaviors.manager;
+package progetto.gameplay.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import progetto.CoreConfig;
 import progetto.gameplay.Game;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
 import progetto.menu.PauseScreen;
 
 import static progetto.gameplay.Game.STEP;
 
-public enum GameManager implements State<Game> {
+public enum ManagerGame implements State<Game> {
 
     PLAYING {
         @Override
@@ -31,7 +30,7 @@ public enum GameManager implements State<Game> {
                 float scaledTime = STEP * screen.getTimeScale();
                 screen.update(scaledTime);
                 screen.accumulator -= STEP;
-                WorldManager.getInstance().step(scaledTime, 5, 5);
+                ManagerWorld.getInstance().step(scaledTime, 5, 5);
             }
 
 

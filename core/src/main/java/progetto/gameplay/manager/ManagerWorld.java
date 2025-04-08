@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.behaviors.manager.map;
+package progetto.gameplay.manager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.gameplay.map.events.MapEvent;
 
-public class WorldManager{
+public class ManagerWorld {
     private static World instance;
     private static Queue<BodyDef> bodyToCreate;
     private static Queue<FixtureDef> fixtureToCreate;

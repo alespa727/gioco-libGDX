@@ -16,13 +16,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.Core;
+import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.ManagerGame;
+import progetto.gameplay.manager.ManagerWorld;
 import progetto.utils.Cooldown;
 import progetto.utils.KeyHandler;
-import progetto.gameplay.entity.behaviors.manager.GameManager;
-import progetto.gameplay.entity.behaviors.manager.map.WorldManager;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
-import progetto.gameplay.entity.behaviors.EntityManager;
-import progetto.gameplay.entity.behaviors.manager.map.MapManager;
+import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.map.MapManager;
 
 public class Game implements Screen {
 
@@ -31,7 +31,7 @@ public class Game implements Screen {
 
     // Variabili principali per la gestione dello stato di gioco e del tempo
     private final GameInfo gameInfo;
-    private final DefaultStateMachine<Game, GameManager> gameState;
+    private final DefaultStateMachine<Game, ManagerGame> gameState;
     public boolean loaded = false;
     public float delta;
     public float accumulator = 0f;
@@ -52,10 +52,10 @@ public class Game implements Screen {
     // Costruttore
     public Game(Core game) {
         // Inizializza variabili
-        WorldManager.init();
+        ManagerWorld.init();
         Box2D.init();
         this.gameState = new DefaultStateMachine<>(this);
-        this.gameState.changeState(GameManager.PLAYING);
+        this.gameState.changeState(ManagerGame.PLAYING);
         this.gameInfo = new GameInfo();
         this.gameInfo.game = game;
         this.gameInfo.screen = this;
@@ -102,12 +102,12 @@ public class Game implements Screen {
         this.stage.addActor(root);
 
         // Imposta la visualizzazione
-        this.viewport = new FitViewport(16f, 9f, CameraManager.getInstance());
+        this.viewport = new FitViewport(16f, 9f, ManagerCamera.getInstance());
         this.viewport.apply();
 
         // Inizializza i manager di entità e mappa
-        this.gameInfo.entityManager = new EntityManager(this.gameInfo);
-        this.gameInfo.mapManager = new MapManager(viewport, this.gameInfo.entityManager, 1);
+        this.gameInfo.managerEntity = new ManagerEntity(this.gameInfo);
+        this.gameInfo.mapManager = new MapManager(viewport, this.gameInfo.managerEntity, 1);
 
         this.loaded = true;
     }
@@ -130,12 +130,12 @@ public class Game implements Screen {
         }
 
         // Se il giocatore è morto, lo fa respawnare
-        if (!this.gameInfo.entityManager.player().isAlive()) {
-            this.gameInfo.entityManager.player().respawn();
+        if (!this.gameInfo.managerEntity.player().isAlive()) {
+            this.gameInfo.managerEntity.player().respawn();
         }
 
-        CameraManager.getInstance().position.set(this.gameInfo.entityManager.player().getPosition(), 0);
-        CameraManager.getInstance().update();
+        ManagerCamera.getInstance().position.set(this.gameInfo.managerEntity.player().getPosition(), 0);
+        ManagerCamera.getInstance().update();
 
 
         // Inizializza il renderer di debug di Box2D
@@ -167,7 +167,7 @@ public class Game implements Screen {
     public void resize(int width, int height) {
         // Gestisce il ridimensionamento della finestra
         viewport.update(width, height, true);
-        CameraManager.getInstance().update();
+        ManagerCamera.getInstance().update();
     }
 
     @Override
@@ -196,7 +196,7 @@ public class Game implements Screen {
     public void update(float delta) {
         // Aggiorna la logica di gioco
         elapsedTime += delta;
-        this.gameInfo.entityManager.render(delta);
+        this.gameInfo.managerEntity.render(delta);
         boolean ambiente = getMapManager().getAmbiente();
         updateCamera(ambiente);
     }
@@ -211,7 +211,7 @@ public class Game implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         this.gameInfo.game.batch.begin();
         this.gameInfo.game.batch.setShader(null);
-        this.gameInfo.game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
+        this.gameInfo.game.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
         this.gameInfo.game.batch.end();
         fbo2.end();
 
@@ -221,20 +221,20 @@ public class Game implements Screen {
         fboTextReg.flip(false, true);
 
         this.gameInfo.game.batch.begin();
-        this.gameInfo.game.batch.draw(fboTextReg, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
+        this.gameInfo.game.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
         this.gameInfo.game.batch.end();
     }
 
     private void Box2DDebugRender() {
         // Renderizza il debug di Box2D
-        debugRenderer.render(WorldManager.getInstance(), CameraManager.getInstance().combined);
+        debugRenderer.render(ManagerWorld.getInstance(), ManagerCamera.getInstance().combined);
     }
 
     public void draw() {
         // Renderizza gli oggetti sulla mappa e l'entità del giocatore
-        this.gameInfo.mapManager.getMap().getMapRenderer().setView(CameraManager.getInstance());
+        this.gameInfo.mapManager.getMap().getMapRenderer().setView(ManagerCamera.getInstance());
         this.gameInfo.mapManager.getMap().getMapRenderer().render();
-        this.gameInfo.entityManager.draw(elapsedTime);
+        this.gameInfo.managerEntity.draw(elapsedTime);
 
         // Se l'ambiente è attivo, disegna l'interfaccia grafica
         if (getMapManager().getAmbiente()) drawGUI();
@@ -249,14 +249,14 @@ public class Game implements Screen {
 
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
-        CameraManager.update(gameInfo.entityManager, viewport, delta, boundaries);
-        this.gameInfo.game.batch.setProjectionMatrix(CameraManager.getInstance().combined);
-        this.gameInfo.game.renderer.setProjectionMatrix(CameraManager.getInstance().combined);
+        ManagerCamera.update(gameInfo.managerEntity, viewport, delta, boundaries);
+        this.gameInfo.game.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
+        this.gameInfo.game.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
     }
 
     // Getter per variabili principali
-    public EntityManager getEntityManager() {
-        return this.gameInfo.entityManager;
+    public ManagerEntity getEntityManager() {
+        return this.gameInfo.managerEntity;
     }
 
     public MapManager getMapManager() {
@@ -272,7 +272,7 @@ public class Game implements Screen {
     }
 
     @SuppressWarnings("unused")
-    public DefaultStateMachine<Game, GameManager> gameState() {
+    public DefaultStateMachine<Game, ManagerGame> gameState() {
         return gameState;
     }
 

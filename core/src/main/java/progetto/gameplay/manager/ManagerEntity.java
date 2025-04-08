@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.behaviors;
+package progetto.gameplay.manager;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.Core;
 import progetto.gameplay.GameInfo;
-import progetto.gameplay.entity.factories.EntityConfigFactory;
+import progetto.factories.EntityConfigFactory;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.entity.types.living.combat.Warriors;
@@ -16,17 +16,15 @@ import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.map.events.SpawnEntityEvent;
 import progetto.menu.DefeatScreen;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.entity.factories.EntityFactory;
-import progetto.gameplay.entity.factories.BodyBuilder;
-import progetto.gameplay.entity.behaviors.manager.camera.CameraManager;
+import progetto.factories.EntityFactory;
+import progetto.factories.BodyFactory;
 
 import java.util.Comparator;
 
-public final class EntityManager {
+public final class ManagerEntity {
 
     public final GameInfo gameInfo;
 
@@ -44,7 +42,7 @@ public final class EntityManager {
 
     public Array<EntityInstance> instances;
 
-    public EntityManager(GameInfo gameInfo) {
+    public ManagerEntity(GameInfo gameInfo) {
 
         this.gameInfo = gameInfo;
         comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
@@ -117,7 +115,7 @@ public final class EntityManager {
         gameInfo.game.batch.begin();
         entityArray.sort(comparator);
         for (Entity e : entityArray) {
-            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
+            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
                     e.draw(gameInfo.game.batch, elapsedTime);
                 } catch (Exception ex) {
@@ -126,7 +124,7 @@ public final class EntityManager {
             }
         }
         for (Entity e : entityArray) {
-            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
+            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
                 try {
                     ((Humanoid) e).getSkillset().draw(gameInfo.game.batch, elapsedTime);
                 } catch (Exception ex) {
@@ -142,7 +140,7 @@ public final class EntityManager {
             entityArray.add(entityQueue.last());
             entityQueue.last().initBody();
             if (entityQueue.last() instanceof Warriors ce) {
-                ce.directionalRange = BodyBuilder.createBody(ce, ce.bodyDef, ce.fixtureDef, ce.shape);
+                ce.directionalRange = BodyFactory.createBody(ce, ce.bodyDef, ce.fixtureDef, ce.shape);
             }
             entityQueue.last().create();
             entityQueue.removeLast().isLoaded = true;
@@ -153,7 +151,7 @@ public final class EntityManager {
         }
 
         for (Entity e : entityArray) {
-            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
+            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
                 e.render(delta);
                 e.setRendered(true);
                 e.updateNode();
@@ -168,7 +166,7 @@ public final class EntityManager {
                 continue;
             }
             if (e instanceof Enemy enemy) {
-                if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
+                if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
                     enemy.drawPath(gameInfo.game.renderer);
             }
 

@@ -3,19 +3,19 @@
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.entity.types.living.combat.Warriors;
-import progetto.gameplay.entity.behaviors.EntityManager;
+import progetto.gameplay.manager.ManagerEntity;
 
  public abstract class Boss extends Warriors {
 
     protected int phase=0;
 
-    public Boss(HumanoidInstances instance, EntityManager entityManager) {
-        super(instance, entityManager);
+    public Boss(HumanoidInstances instance, ManagerEntity managerEntity) {
+        super(instance, managerEntity);
         createRange(1.5f);
     }
 
-    public Boss(EntityConfig config, EntityManager entityManager) {
-        super(config, entityManager);
+    public Boss(EntityConfig config, ManagerEntity managerEntity) {
+        super(config, managerEntity);
         createRange(1.5f);
     }
 }
