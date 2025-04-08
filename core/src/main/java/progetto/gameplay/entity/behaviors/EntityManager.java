@@ -86,6 +86,10 @@ public final class EntityManager {
         return instances;
     }
 
+    public void clearQueue() {
+        entityQueue.clear();
+    }
+
     public void summon(Array<EntityInstance> instances) {
         for (EntityInstance instance : instances) {
             if (instance!=null)

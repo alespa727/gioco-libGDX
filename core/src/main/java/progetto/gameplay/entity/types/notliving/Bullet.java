@@ -46,7 +46,7 @@ public class Bullet extends Entity {
 
     @Override
     public void create() {
-        System.out.println("Proiettile creato");
+        //System.out.println("Proiettile creato");
     }
 
     @Override

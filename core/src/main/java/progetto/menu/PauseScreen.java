@@ -60,8 +60,6 @@ public class PauseScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         viewport.setCamera(CameraManager.getInstance());
         viewport.apply(false);
-        background = new Texture("pause.png");
-        overlay = new Texture("pause_overlay.png");
         Gdx.input.setInputProcessor(stage);
         root = new Table();
         root.setFillParent(true);

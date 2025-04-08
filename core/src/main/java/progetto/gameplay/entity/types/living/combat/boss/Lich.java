@@ -2,6 +2,7 @@ package progetto.gameplay.entity.types.living.combat.boss;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import progetto.gameplay.entity.skills.boss.LichFireDomain;
 import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
@@ -18,14 +19,15 @@ public class Lich extends Boss{
     public Lich(HumanoidInstances instance, EntityManager entityManager) {
         super(instance, entityManager);
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(LichStates.PURSUE1);
+        stateMachine.changeState(LichStates.PURSUE);
     }
 
     public Lich(EntityConfig config, EntityManager entityManager) {
         super(config, entityManager);
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(LichStates.PURSUE1);
+        stateMachine.changeState(LichStates.PURSUE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
+        getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
 
     @Override
@@ -69,6 +71,10 @@ public class Lich extends Boss{
 
     public void fireball() {
         getSkillset().execute(LichFireball.class);
+    }
+
+    public void fireDomain() {
+        getSkillset().execute(LichFireDomain.class);
     }
 
     public DefaultStateMachine<Lich, LichStates> getStateMachine(){
