@@ -2,6 +2,7 @@ package progetto.gameplay.entity.behaviors.manager.entity.behaviours;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.math.MathUtils;
 import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.utils.Cooldown;
 
@@ -10,6 +11,8 @@ public enum LichStates implements State<Lich> {
         Cooldown prepareToFireball = new Cooldown(2f);
         Cooldown useFireball = new Cooldown(0.6f);
 
+        Cooldown prepareFireDomain = new Cooldown(0);
+
         boolean isPrepareToFireball = false;
 
         @Override
@@ -17,10 +20,20 @@ public enum LichStates implements State<Lich> {
             System.out.println("LichStates.PURSUE");
             useFireball.reset();
             prepareToFireball.reset();
+            prepareFireDomain.reset(MathUtils.random(14, 20));
         }
 
         @Override
         public void update(Lich entity) {
+
+            prepareFireDomain.update(entity.delta);
+
+            // ATTACCO AD AREA SPARANDO PROIETTILI IN TUTTE LE DIREZIONI
+            if (prepareFireDomain.isReady){
+                System.out.println("FireDomain ready");
+                return;
+            }
+
 
             // AGGIORNAMENTO MOVEMENT
             if (!isPrepareToFireball){
@@ -42,6 +55,8 @@ public enum LichStates implements State<Lich> {
                     prepareToFireball.reset();
                 }
             }
+
+
 
             if (!entity.pathfinder().success) entity.getStateMachine().changeState(IDLE1);
         }
