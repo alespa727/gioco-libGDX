@@ -13,7 +13,7 @@ public enum StatesLich implements State<Lich> {
         Cooldown useFireball = new Cooldown(0.6f);
 
         Cooldown prepareFireDomain = new Cooldown(0);
-        Cooldown useFireDomain = new Cooldown(5f);
+        Cooldown useFireDomain = new Cooldown(0);
 
         boolean isPrepareToFireball = false;
         boolean isPreparedToFireDomain = false;
@@ -21,8 +21,8 @@ public enum StatesLich implements State<Lich> {
         @Override
         public void enter(Lich entity) {
             System.out.println("LichStates.PURSUE");
-            useFireball.reset();
-            prepareToFireball.reset();
+            useFireball.reset(MathUtils.random(0.4f, 1f));
+            prepareToFireball.reset(MathUtils.random(2f, 3f));
             prepareFireDomain.reset(MathUtils.random(14, 20));
             useFireDomain.reset(MathUtils.random(4f, 5f));
         }
@@ -70,8 +70,8 @@ public enum StatesLich implements State<Lich> {
             isPrepareToFireball = false;
             System.out.println("FIREBALL");
             entity.fireball();
-            useFireball.reset();
-            prepareToFireball.reset();
+            useFireball.reset(MathUtils.random(0.4f, 1f));
+            prepareToFireball.reset(MathUtils.random(2f, 3f));
         }
 
         public void preparedToFireDomain(Lich entity){
@@ -94,7 +94,7 @@ public enum StatesLich implements State<Lich> {
 
         public void prepareToFireBall(Lich entity) {
             if (prepareToFireball.isReady){
-                useFireball.reset();
+                useFireball.reset(MathUtils.random(0.4f, 1f));
                 isPrepareToFireball = true;
             }
         }

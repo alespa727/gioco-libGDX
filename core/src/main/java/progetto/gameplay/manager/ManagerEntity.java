@@ -87,7 +87,6 @@ public final class ManagerEntity {
     public void clearQueue() {
         entityQueue.clear();
     }
-
     public void summon(Array<EntityInstance> instances) {
         for (EntityInstance instance : instances) {
             if (instance!=null)
