@@ -10,6 +10,7 @@ import progetto.Core;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
+import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.factories.BodyFactory;
@@ -32,6 +33,8 @@ public class Bullet extends Entity {
         this.owner = owner;
         this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
     }
+
+    //METODO HIT PER DIFFERENZIARE I DIVERSI TIPI DI PROIETTILI
 
     public Entity getOwner() {
         return owner;

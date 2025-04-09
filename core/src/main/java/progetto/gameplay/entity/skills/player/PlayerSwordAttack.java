@@ -25,8 +25,8 @@ public class PlayerSwordAttack extends CombatSkill {
     @Override
     public void update() {
         if (isBeingUsed) {
-            elapsedTime += entity.delta;
-            cooldown.update(entity.delta);
+            elapsedTime += owner.delta;
+            cooldown.update(owner.delta);
             if (cooldown.isReady){
                 isBeingUsed=false;
                 elapsedTime = 0;
@@ -37,8 +37,8 @@ public class PlayerSwordAttack extends CombatSkill {
     @Override
     public void draw(SpriteBatch batch) {
         batch.draw(animation.getKeyFrame(elapsedTime),
-            entity.getPosition().x + direction.x - 1f,
-            entity.getPosition().y + direction.y - 1f,
+            owner.getPosition().x + direction.x - 1f,
+            owner.getPosition().y + direction.y - 1f,
             1f, 1f, // Origin for rotation
             2f, 2f, // Width and height
             1f, 1f, // Scaling factors
@@ -48,14 +48,14 @@ public class PlayerSwordAttack extends CombatSkill {
     @Override
     public void execute() {
         ManagerCamera.shakeTheCamera(0.1f, 0.01f);
-        entity.manager.gameInfo.screen.setTimeScale(1f, 1f);
+        owner.manager.gameInfo.screen.setTimeScale(1f, 1f);
         cooldown.reset();
-        Array<Warriors> inRange = ((Player) entity).getInRange();
+        Array<Warriors> inRange = ((Player) owner).getInRange();
         for (Warriors warriors : inRange) {
-            warriors.hit((Warriors) entity, damage, 2);
+            warriors.hit((Warriors) owner, damage, 2);
         }
-        direction.set(entity.direzione().x, entity.direzione().y).setLength(((Player) entity).rangeRadius());
-        angle = entity.direzione().angleDeg()-90;
+        direction.set(owner.direzione().x, owner.direzione().y).setLength(((Player) owner).rangeRadius());
+        angle = owner.direzione().angleDeg()-90;
         isBeingUsed=true;
     }
 

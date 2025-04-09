@@ -19,10 +19,10 @@ public class PlayerDash extends Skill {
     @Override
     public void update() {
         if (isBeingUsed) {
-            elapsedTime += entity.delta;
-            cooldown.update(entity.delta);
-            if (((Player) entity).getInRange().size > 0){
-                entity.manager.gameInfo.screen.setTimeScale(0.1f, 1f);
+            elapsedTime += owner.delta;
+            cooldown.update(owner.delta);
+            if (((Player) owner).getInRange().size > 0){
+                owner.manager.gameInfo.screen.setTimeScale(0.1f, 1f);
                 isBeingUsed = false;
             }
             if (cooldown.isReady){
@@ -40,8 +40,8 @@ public class PlayerDash extends Skill {
 
     @Override
     public void execute() {
-        entity.body.setLinearVelocity(entity.body.getLinearVelocity().x * dodgeSpeed, entity.body.getLinearVelocity().y * dodgeSpeed);
+        owner.body.setLinearVelocity(owner.body.getLinearVelocity().x * dodgeSpeed, owner.body.getLinearVelocity().y * dodgeSpeed);
         cooldown.reset(0.5f);
-        if (((Player) entity).getInRange().size == 0) setBeingUsed(true);
+        if (((Player) owner).getInRange().size == 0) setBeingUsed(true);
     }
 }

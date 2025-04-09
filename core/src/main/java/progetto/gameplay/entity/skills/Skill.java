@@ -17,7 +17,7 @@ public abstract class Skill {
 
     public final String name;                  // Nome della skill
     public final String description;           // Descrizione della skill
-    protected final Humanoid entity;        // Entità che possiede la skill
+    protected final Humanoid owner;        // Entità che possiede la skill
 
     protected boolean isBeingUsed = false;     // Flag per verificare se la skill è in uso
     protected Cooldown cooldown;               // Gestore del cooldown per la skill
@@ -26,8 +26,8 @@ public abstract class Skill {
 
     // === COSTRUTTORE ===
 
-    public Skill(Humanoid entity, String name, String description) {
-        this.entity = entity;
+    public Skill(Humanoid owner, String name, String description) {
+        this.owner = owner;
         this.name = name;
         this.description = description;
     }

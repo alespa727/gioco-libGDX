@@ -51,7 +51,7 @@ public class EntityConfigFactory {
         lich.isAlive = true;
         lich.inCollisione = false;
         lich.isMoving = false;
-        lich.hp = 10;
+        lich.hp = 400;
         lich.speed = 1.25f;
         lich.attackdmg = 20;
         lich.imageHeight = 5f;

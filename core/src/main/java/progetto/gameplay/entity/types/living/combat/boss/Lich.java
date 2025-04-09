@@ -42,6 +42,7 @@ public class Lich extends Boss{
         damageCooldown(delta);
         prepareToChangeStates.update(delta);
         stateMachine.update();
+        checkIfDead();
     }
 
 

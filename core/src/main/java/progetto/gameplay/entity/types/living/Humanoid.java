@@ -54,6 +54,10 @@ public abstract class Humanoid extends Entity {
         this.entityPathFinder = new EntityPathFinder(this);
     }
 
+    public boolean isInvulnerable() {
+        return invulnerable;
+    }
+
     public void move(){
         movement.update();
     }

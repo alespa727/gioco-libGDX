@@ -55,11 +55,13 @@ public class EventListener implements ContactListener {
 
         if (dataA instanceof Warriors && !isRangeA && dataB instanceof Bullet) {
             if (((Bullet) dataB).getOwner() == dataA) return;
+            if(((Warriors) dataA).isInvulnerable()) return;
             ((Warriors) dataA).hit((Entity) dataB, ((Bullet) dataB).damage,2);
             ((Bullet) dataB).despawn();
         }
         if (dataB instanceof Warriors && !isRangeA && dataA instanceof Bullet) {
             if (((Bullet) dataA).getOwner() == dataB) return;
+            if(((Warriors) dataB).isInvulnerable()) return;
             ((Warriors) dataB).hit((Entity) dataA, ((Bullet) dataA).damage, 2);
             ((Bullet) dataA).despawn();
         }
