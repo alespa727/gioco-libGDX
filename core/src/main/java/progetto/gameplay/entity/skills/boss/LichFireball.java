@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.map.events.SpawnEnemyEvent;
 
 public class LichFireball extends CombatSkill {
     private final float speed;

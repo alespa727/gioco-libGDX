@@ -21,10 +21,8 @@ public class EntityConfigFactory {
         config.descrizione = "Nemico pericoloso";
         config.x = x;
         config.y = y;
-        config.img = Core.assetManager.get("entities/nemico.png", Texture.class);
-        config.width = 25 / 32f;
-        config.offsetX = 0;
-        config.offsetY = -0.25f;
+        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
+        config.width = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;
         config.inCollisione = false;
@@ -32,8 +30,8 @@ public class EntityConfigFactory {
         config.hp = 100;
         config.speed = 1.25f;
         config.attackdmg = 20;
-        config.imageHeight = 5f;
-        config.imageWidth = 5f;
+        config.imageHeight = 2f;
+        config.imageWidth = 2f;
         return config;
     }
 
@@ -45,8 +43,6 @@ public class EntityConfigFactory {
         lich.y = y;
         lich.img = Core.assetManager.get("entities/nemico.png", Texture.class);
         lich.width = 25 / 32f;
-        lich.offsetX = 0;
-        lich.offsetY = -0.25f;
         lich.direzione = new Vector2(0, -0.5f);
         lich.isAlive = true;
         lich.inCollisione = false;
@@ -65,8 +61,6 @@ public class EntityConfigFactory {
         player.nome = "player";
         player.img = Core.assetManager.get("entities/Finn.png", Texture.class);
         player.width = 10 / 32f;
-        player.offsetX = 0;
-        player.offsetY = -0.25f;
         player.direzione = new Vector2(0, -0.5f);
         player.isAlive = true;
         player.inCollisione = false;

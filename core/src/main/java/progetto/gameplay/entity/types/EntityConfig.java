@@ -12,7 +12,6 @@ public class EntityConfig {
     // === Posizione e dimensioni ===
     public float x, y;
     public float width, height;
-    public float offsetX, offsetY;
     public Vector2 direzione;
 
     // === Stato e comportamento ===
@@ -44,8 +43,6 @@ public class EntityConfig {
         this.nome = config.nome;
         this.descrizione = config.descrizione;
         this.isAlive = config.isAlive;
-        this.offsetX = config.offsetX;
-        this.offsetY = config.offsetY;
         this.inCollisione = config.inCollisione;
         this.isMoving = config.isMoving;
         this.hp = config.hp;
