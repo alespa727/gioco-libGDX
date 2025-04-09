@@ -66,10 +66,6 @@ public class Player extends Warriors {
 
     // === COMBATTIMENTO ===
 
-    @Override
-    public void attack() {
-    }
-
     public void useBow(){
         if(attackCooldown.isReady) {
             getSkill(PlayerRangedAttack.class).execute();

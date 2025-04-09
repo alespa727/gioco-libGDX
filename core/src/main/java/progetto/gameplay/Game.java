@@ -3,6 +3,7 @@ package progetto.gameplay;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -118,6 +119,7 @@ public class Game implements Screen {
         // Carica gli asset necessari all'inizio
 
         Core.assetManager.load("entities/Finn.png", Texture.class);
+        Core.assetManager.load("entities/circle.png", Texture.class);
         Core.assetManager.finishLoading();
 
         // Crea e imposta gli shader e i framebuffer
@@ -151,22 +153,15 @@ public class Game implements Screen {
         KeyHandler.input();
         updateDeltaTime(delta);
 
-        // Inizio della renderizzazione con il primo FBO
-        fbo1.begin();
-        ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo
+        ScreenUtils.clear(1, 0, 0, 1); // Pulisce lo schermo
         gameState.update();  // Aggiorna lo stato del gioco
         if (KeyHandler.debug) Box2DDebugRender();  // Renderizza il debug di Box2D se attivato
-        fbo1.end();
-
-        // Applica gli shader per gli effetti grafici
-        applyShader();
     }
 
     @Override
     public void resize(int width, int height) {
         // Gestisce il ridimensionamento della finestra
-        viewport.update(width, height, true);
-        ManagerCamera.getInstance().update();
+        viewport.update(width, height, false);
     }
 
     @Override
@@ -195,7 +190,8 @@ public class Game implements Screen {
     public void update(float delta) {
         // Aggiorna la logica di gioco
         elapsedTime += delta;
-        this.gameInfo.managerEntity.render(delta);
+        getEntityManager().render(delta);
+        getMapManager().render();
         boolean ambiente = getMapManager().getAmbiente();
         updateCamera(ambiente);
     }
@@ -249,6 +245,17 @@ public class Game implements Screen {
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
         ManagerCamera.update(gameInfo.managerEntity, viewport, delta, boundaries);
+        float PPM = 256f;
+        OrthographicCamera camera = ManagerCamera.getInstance();
+
+        // Dopo averla spostata
+        camera.position.set(
+            Math.round(camera.position.x * PPM) / PPM,
+            Math.round(camera.position.y * PPM) / PPM,
+            0
+        );
+        camera.update();
+
         this.gameInfo.game.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
         this.gameInfo.game.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
     }

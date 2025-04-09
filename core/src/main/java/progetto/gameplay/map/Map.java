@@ -1,6 +1,8 @@
 package progetto.gameplay.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -44,7 +46,12 @@ public class Map implements Disposable {
 
         this.nome = name;
 
-        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
+
+        TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
+        params.textureMinFilter = Texture.TextureFilter.Nearest;
+        params.textureMagFilter = Texture.TextureFilter.Nearest;
+
+        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx"), params); // Carico il file dalla memoria
         mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE); // Inizializzazione map renderer
 
         events = new Array<>(); // Array di eventi
@@ -77,6 +84,7 @@ public class Map implements Disposable {
 
         // Crezione eventi
         createEvents();
+
     }
 
     /**

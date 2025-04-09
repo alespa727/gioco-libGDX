@@ -85,6 +85,10 @@ public class MapManager {
         viewport.apply();
     }
 
+    public void render(){
+        currentMap.render();
+    }
+
     public void spawnInstances(){
         if(mapEntityInstances.containsKey(nome)) {
             Array<EntityInstance> instances = mapEntityInstances.get(nome);

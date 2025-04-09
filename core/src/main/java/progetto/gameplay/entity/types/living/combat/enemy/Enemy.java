@@ -3,6 +3,7 @@ package progetto.gameplay.entity.types.living.combat.enemy;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Array;
 
+import progetto.gameplay.entity.behaviors.states.StatesEnemy;
 import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.utils.Cooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
@@ -18,7 +19,7 @@ public abstract class Enemy extends Warriors {
     private final Array<Warriors> inRange;
     protected final Cooldown attack;
 
-    public final DefaultStateMachine<Enemy, progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesEnemy> statemachine;
+    public final DefaultStateMachine<Enemy, StatesEnemy> statemachine;
 
     // === COSTRUTTORI ===
     public Enemy(EnemyInstance instance, ManagerEntity manager) {
@@ -28,7 +29,7 @@ public abstract class Enemy extends Warriors {
         attack.reset(0f);
 
         statemachine = new DefaultStateMachine<>(this);
-        statemachine.setInitialState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesEnemy.PATROLLING);
+        statemachine.setInitialState(StatesEnemy.PATROLLING);
 
         viewDistance = instance.viewDistance;
         pursueMaxDistance = instance.pursueMaxDistance;
@@ -44,7 +45,7 @@ public abstract class Enemy extends Warriors {
         attack.reset(0f);
 
         statemachine = new DefaultStateMachine<>(this);
-        statemachine.setInitialState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesEnemy.PATROLLING);
+        statemachine.setInitialState(StatesEnemy.PATROLLING);
 
         viewDistance = 11f;
         pursueMaxDistance = 12f;

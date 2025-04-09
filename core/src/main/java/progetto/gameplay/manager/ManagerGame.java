@@ -28,11 +28,10 @@ public enum ManagerGame implements State<Game> {
             // Aggiorna il gioco finché necessario
             while (screen.accumulator >= STEP) {
                 float scaledTime = STEP * screen.getTimeScale();
+                ManagerWorld.getInstance().step(scaledTime, 8, 8);
                 screen.update(scaledTime);
                 screen.accumulator -= STEP;
-                ManagerWorld.getInstance().step(scaledTime, 5, 5);
             }
-
 
             // Disegna il gioco
             screen.draw();

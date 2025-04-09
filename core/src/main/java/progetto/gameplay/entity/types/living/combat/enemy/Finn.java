@@ -1,6 +1,7 @@
 package progetto.gameplay.entity.types.living.combat.enemy;
 
 import com.badlogic.gdx.Gdx;
+import progetto.gameplay.entity.behaviors.states.StatesEnemy;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
@@ -31,7 +32,7 @@ public final class Finn extends Enemy {
         System.out.println("Finn n." + id() + " creato");
 
         // Imposta lo stato iniziale
-        statemachine.changeState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesEnemy.PATROLLING);
+        statemachine.changeState(StatesEnemy.PATROLLING);
 
         // Aggiungi le skill
         getSkillset().add(new EnemySwordAttack(this, "pugno", "un pugno molto forte!", 20));

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
+import progetto.Core;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
@@ -29,7 +30,7 @@ public class Bullet extends Entity {
         this.damage = damage;
         this.radius = radius;
         this.owner = owner;
-        this.texture = new Texture(Gdx.files.internal("entities/circle.png"));
+        this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
     }
 
     public Entity getOwner() {
@@ -74,7 +75,6 @@ public class Bullet extends Entity {
 
     @Override
     public EntityInstance despawn() {
-        System.out.println("Entità id " + id() + " despawnata");
         manager.removeEntity(this);
         Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(body));
         return null;

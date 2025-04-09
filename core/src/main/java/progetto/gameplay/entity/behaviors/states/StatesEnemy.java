@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.behaviors.manager.entity.behaviours;
+package progetto.gameplay.entity.behaviors.states;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
@@ -28,8 +28,7 @@ public enum StatesEnemy implements State<Enemy> {
                 player = entity.manager.player();
 
             entity.attack();
-
-            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
+            entity.searchPath(player);
 
             entity.direzione().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
 

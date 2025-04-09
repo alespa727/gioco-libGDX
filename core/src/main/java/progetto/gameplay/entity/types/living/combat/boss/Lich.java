@@ -2,6 +2,7 @@ package progetto.gameplay.entity.types.living.combat.boss;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import progetto.gameplay.entity.behaviors.states.StatesLich;
 import progetto.gameplay.entity.skills.boss.LichFireDomain;
 import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.types.EntityConfig;
@@ -9,15 +10,20 @@ import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
+import progetto.utils.Cooldown;
 
 public class Lich extends Boss{
 
-    private final DefaultStateMachine<Lich, progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich> stateMachine;
+    public Cooldown prepareToFireball = new Cooldown(2f);
+    public Cooldown prepareFireDomain = new Cooldown(0);
+    public Cooldown prepareToChangeStates = new Cooldown(0.5f);
+
+    private final DefaultStateMachine<Lich, StatesLich> stateMachine;
 
     public Lich(HumanoidInstances instance, ManagerEntity managerEntity) {
         super(instance, managerEntity);
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich.PURSUE);
+        stateMachine.changeState(StatesLich.LONG_RANGE_ATTACKS);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
@@ -25,7 +31,7 @@ public class Lich extends Boss{
     public Lich(EntityConfig config, ManagerEntity managerEntity) {
         super(config, managerEntity);
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich.PURSUE);
+        stateMachine.changeState(StatesLich.LONG_RANGE_ATTACKS);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
@@ -34,7 +40,7 @@ public class Lich extends Boss{
     public void updateEntityType(float delta) {
 
         damageCooldown(delta);
-
+        prepareToChangeStates.update(delta);
         stateMachine.update();
     }
 
@@ -65,10 +71,6 @@ public class Lich extends Boss{
         return new BossInstance(this);
     }
 
-    @Override
-    public void attack() {
-    }
-
     public void fireball() {
         getSkillset().execute(LichFireball.class);
     }
@@ -77,7 +79,7 @@ public class Lich extends Boss{
         getSkillset().execute(LichFireDomain.class);
     }
 
-    public DefaultStateMachine<Lich, progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich> getStateMachine(){
+    public DefaultStateMachine<Lich,StatesLich> getStateMachine(){
         return stateMachine;
     }
 }

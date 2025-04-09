@@ -58,6 +58,10 @@ public abstract class Humanoid extends Entity {
         movement.update();
     }
 
+    public void searchPath(Entity target){
+        pathfinder().renderPath(target.getPosition().x, target.getPosition().y, delta);
+    }
+
     // --- GESTIONE SALUTE ---
     public void checkIfHaveBuff(){
         hasAnyBuff = health < maxHealth;

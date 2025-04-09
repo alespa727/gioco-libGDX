@@ -29,7 +29,7 @@ public class EntityConfigFactory {
         config.isAlive = true;
         config.inCollisione = false;
         config.isMoving = false;
-        config.hp = 200;
+        config.hp = 100;
         config.speed = 1.25f;
         config.attackdmg = 20;
         config.imageHeight = 5f;
@@ -51,7 +51,7 @@ public class EntityConfigFactory {
         lich.isAlive = true;
         lich.inCollisione = false;
         lich.isMoving = false;
-        lich.hp = 200;
+        lich.hp = 10;
         lich.speed = 1.25f;
         lich.attackdmg = 20;
         lich.imageHeight = 5f;

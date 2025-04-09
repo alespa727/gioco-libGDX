@@ -92,9 +92,6 @@ public abstract class Warriors extends Humanoid {
     }
 
     // === COMBATTIMENTO ===
-
-    public abstract void attack();
-
     public void hit(Entity entity, float damage, float hitForce) {
         if (!invulnerable){
             hitDirection = new Vector2(entity.body.getPosition()).sub(body.getPosition()).nor().scl(-1*hitForce);
