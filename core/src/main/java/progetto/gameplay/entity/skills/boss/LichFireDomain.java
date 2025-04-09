@@ -35,11 +35,10 @@ public class LichFireDomain extends CombatSkill {
     @Override
     public void execute() {
         for (int i = 0; i < 10; i++) {
-            float angle = (float)(2 * Math.PI * i / 10) +offset; // da 0 a 2π in 15 passi
-            offset+=0.3f;
+            float angle = (float)(2 * Math.PI * i / 10); // da 0 a 2π in 15 passi
             Vector2 direction = new Vector2((float)Math.cos(angle), (float)Math.sin(angle)).nor(); // vettore normalizzato
-
-            entity.manager.createBullet(entity.getPosition().x, entity.getPosition().y, direction, 0.1f, 2f, 10, entity);
+            entity.manager.createBullet(entity.getPosition().x+direction.x, entity.getPosition().y+direction.y, direction, 0.1f, 2f, 10, entity);
         }
+
     }
 }

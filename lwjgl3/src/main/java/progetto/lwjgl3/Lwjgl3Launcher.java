@@ -23,7 +23,7 @@ public class Lwjgl3Launcher {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         // Titolo del frame
         configuration.setTitle("Game");
-        configuration.setDecorated(true);
+        configuration.setDecorated(false);
         // V-sync
         configuration.useVsync(true);
         // RefreshRate adattato agli hz del monitor

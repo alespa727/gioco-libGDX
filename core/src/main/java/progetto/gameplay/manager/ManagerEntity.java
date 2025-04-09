@@ -9,6 +9,7 @@ import progetto.Core;
 import progetto.gameplay.GameInfo;
 import progetto.factories.EntityConfigFactory;
 import progetto.gameplay.entity.types.EntityInstance;
+import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.gameplay.entity.types.living.Humanoid;
@@ -66,8 +67,8 @@ public final class ManagerEntity {
             e.id = nextEntityId;
             summon(EntityFactory.createEnemy("Finn", e, this, 1.5f));
         }
-
-        summon(new Lich(EntityConfigFactory.createEntityConfig("Lich", 10, 12),this));
+        e = EntityConfigFactory.createEntityConfig("Lich", 12, 12);
+        summon(EntityFactory.createBoss("Lich", e, this));
     }
 
     public Array<EntityInstance> despawnEveryone() {
@@ -89,8 +90,10 @@ public final class ManagerEntity {
     }
     public void summon(Array<EntityInstance> instances) {
         for (EntityInstance instance : instances) {
-            if (instance!=null)
-                summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
+            if (instance==null) continue;
+
+            if (instance instanceof EnemyInstance) summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
+            if (instance instanceof BossInstance) summon(EntityFactory.createBoss(instance.type, (BossInstance) instance, this));
         }
     }
 

@@ -1,6 +1,8 @@
 package progetto.gameplay.entity.types.notliving;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
@@ -18,6 +20,7 @@ public class Bullet extends Entity {
     private final float velocity;
     private final float radius;
     private final Entity owner;
+    private final Texture texture;
 
     // === Costruttore ===
     public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity owner) {
@@ -26,6 +29,7 @@ public class Bullet extends Entity {
         this.damage = damage;
         this.radius = radius;
         this.owner = owner;
+        this.texture = new Texture(Gdx.files.internal("entities/circle.png"));
     }
 
     public Entity getOwner() {
@@ -86,6 +90,9 @@ public class Bullet extends Entity {
 
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        // Rendering del proiettile (non implementato)
+        Sprite sprite = new Sprite(texture);
+        sprite.setSize(radius*2, radius*2);
+        sprite.setPosition(getPosition().x- sprite.getWidth()/2, getPosition().y- sprite.getHeight()/2);
+        sprite.draw(batch);
     }
 }

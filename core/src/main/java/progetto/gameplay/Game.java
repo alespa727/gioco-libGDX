@@ -155,7 +155,6 @@ public class Game implements Screen {
         fbo1.begin();
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo
         gameState.update();  // Aggiorna lo stato del gioco
-        this.gameInfo.mapManager.getMap().render();  // Renderizza la mappa
         if (KeyHandler.debug) Box2DDebugRender();  // Renderizza il debug di Box2D se attivato
         fbo1.end();
 

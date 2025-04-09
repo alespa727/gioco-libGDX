@@ -48,7 +48,6 @@ public abstract class Warriors extends Humanoid {
         hitDirection.setZero();
         knockback.reset();
         damage.reset();
-        setInvulnerability(false);
     }
 
     // === RANGE ===

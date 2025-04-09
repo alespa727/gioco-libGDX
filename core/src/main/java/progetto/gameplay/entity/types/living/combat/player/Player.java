@@ -68,8 +68,18 @@ public class Player extends Warriors {
 
     @Override
     public void attack() {
-        if (attackCooldown.isReady) {
+    }
+
+    public void useBow(){
+        if(attackCooldown.isReady) {
             getSkill(PlayerRangedAttack.class).execute();
+            attackCooldown.reset();
+        }
+    }
+
+    public void useSword(){
+        if(attackCooldown.isReady) {
+            getSkill(PlayerSwordAttack.class).execute();
             attackCooldown.reset();
         }
     }
@@ -122,7 +132,11 @@ public class Player extends Warriors {
         limitSpeed();
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
-            attack();
+            useSword();
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.Q)){
+            useBow();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.F)) {

@@ -67,9 +67,9 @@ public class MapManager {
             }
 
             default -> {
-                nome = "stanza";
+                nome = "bossroom";
                 ambienteAperto = false;
-                viewport.setWorldSize(16f, 16f * 9 / 16f);
+                viewport.setWorldSize(19f, 19f * 9 / 16f);
             }
         }
 

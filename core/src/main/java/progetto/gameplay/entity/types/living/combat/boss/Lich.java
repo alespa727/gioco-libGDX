@@ -18,6 +18,8 @@ public class Lich extends Boss{
         super(instance, managerEntity);
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(progetto.gameplay.entity.behaviors.manager.entity.behaviours.StatesLich.PURSUE);
+        getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
+        getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
 
     public Lich(EntityConfig config, ManagerEntity managerEntity) {
@@ -60,7 +62,7 @@ public class Lich extends Boss{
         Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(body));
         Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(directionalRange));
 
-        return null;
+        return new BossInstance(this);
     }
 
     @Override

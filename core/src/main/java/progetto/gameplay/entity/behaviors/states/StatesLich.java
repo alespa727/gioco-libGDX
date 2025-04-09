@@ -108,7 +108,8 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-
+            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
+            if (entity.pathfinder().success) entity.getStateMachine().changeState(PURSUE);
         }
 
         @Override

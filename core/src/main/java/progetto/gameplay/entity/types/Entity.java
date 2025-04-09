@@ -40,7 +40,6 @@ public abstract class Entity {
     private float atkCooldown = 0;
     public boolean isLoaded = false;
     private boolean isAlive;
-    private boolean immortality;
 
     // === Costruttori ===
     public Entity(EntityInstance instance, ManagerEntity manager) {
@@ -54,7 +53,6 @@ public abstract class Entity {
         this.isRendered = false;
         this.direzione = new Vector2(instance.direzione);
         textures = new HumanoidTextures(config.img);
-        immortality = false;
         isAlive = true;
     }
 
@@ -69,7 +67,6 @@ public abstract class Entity {
         this.isRendered = false;
         this.direzione = new Vector2(config.direzione);
         textures = new HumanoidTextures(config.img);
-        immortality = false;
         isAlive = true;
     }
 
@@ -105,14 +102,10 @@ public abstract class Entity {
     // === Rendering ===
     public void draw(SpriteBatch batch, float elapsedTime) {
         this.elapsedTime = elapsedTime;
-        batch.draw(textures.getAnimation(this).getKeyFrame(elapsedTime, true), getX(), getY(), config.imageWidth, config.imageHeight);
+        batch.draw(textures.getAnimation(this).getKeyFrame(elapsedTime, true), getPosition().x - config.imageWidth/2, getPosition().y - config.imageWidth/2, config.imageWidth, config.imageHeight);
         batch.setColor(Color.WHITE);
     }
 
-    public void drawShadow(ShapeRenderer renderer) {
-        renderer.setColor(Color.BLACK);
-        renderer.ellipse(getX(), getY() - 1f, 1f, 1f);
-    }
 
     // === Logica di gioco ===
     public void render(float delta) {
@@ -120,7 +113,6 @@ public abstract class Entity {
             this.delta = delta;
             updateEntityType(delta);
             updateEntity(delta);
-            setCoordinate(body.getPosition().x, body.getPosition().y);
         }
     }
 
@@ -148,23 +140,10 @@ public abstract class Entity {
     public final String descrizione() { return descrizione; }
     public final Vector2 direzione() { return this.direzione; }
 
-    public final void setCoordinate(float x, float y) {
-        this.coordinate.x = x - config().imageWidth / 2;
-        this.coordinate.y = y - config().imageHeight / 2;
-    }
-
     public final Vector2 getPosition() {
         if (body != null) return body.getPosition();
         return coordinate;
     }
-
-    public final float getX() { return coordinate.x; }
-    public final void setX(float x) { this.coordinate.x = x; }
-    public final float getY() { return coordinate.y; }
-    public final void setY(float y) { this.coordinate.y = y; }
-
-    public float atkCooldown() { return atkCooldown; }
-    public void setAtkCooldown(float atkCooldown) { this.atkCooldown = atkCooldown; }
 
     public void setDirezione(Vector2 direzione) {
         this.direzione.set(direzione);
@@ -183,7 +162,4 @@ public abstract class Entity {
     public boolean isAlive() { return isAlive; }
     public void setAlive() { isAlive = true; }
     public void setDead() { isAlive = false; }
-
-    public boolean isInvulnerable() { return immortality; }
-    public void setInvulnerability(boolean invul) { immortality = invul; }
 }

@@ -139,7 +139,7 @@ public abstract class Humanoid extends Entity {
     }
 
     public void kill() {
-        if (!isInvulnerable()){
+        if (!invulnerable){
             inflictDamage(maxHealth);
             setDead();
         }
@@ -167,7 +167,7 @@ public abstract class Humanoid extends Entity {
         if (hasBeenHit) {
             batch.setColor(1, 0, 0, 0.6f);
         }
-        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true), getX(), getY(), config().imageWidth, config().imageHeight);
+        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true), getPosition().x - config().imageWidth/2, getPosition().y - config().imageHeight/2, config().imageWidth, config().imageHeight);
         batch.setColor(Color.WHITE);
     }
 
