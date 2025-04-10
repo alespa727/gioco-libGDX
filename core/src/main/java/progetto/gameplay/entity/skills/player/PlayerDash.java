@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import progetto.gameplay.entity.skills.Skill;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 
 public class PlayerDash extends Skill {
     private final float dodgeSpeed;

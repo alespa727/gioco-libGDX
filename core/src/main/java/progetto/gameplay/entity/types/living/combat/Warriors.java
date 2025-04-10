@@ -7,7 +7,7 @@ import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.entity.types.Entity;
 import progetto.factories.BodyFactory;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.manager.entity.ManagerEntity;
 
@@ -98,7 +98,7 @@ public abstract class Warriors extends Humanoid {
     public void hit(Entity entity, float damage, float hitForce) {
         Body bodyThatHits = entity.getPhysics().getBody();
         Body bodyToHit = getPhysics().getBody();
-        if (!invulnerable){
+        if (!getStates().isInvulnerable()){
             hitDirection = new Vector2(bodyThatHits.getPosition()).sub(bodyToHit.getPosition()).nor().scl(-1*hitForce);
             inflictDamage(damage);
             knockback.reset();

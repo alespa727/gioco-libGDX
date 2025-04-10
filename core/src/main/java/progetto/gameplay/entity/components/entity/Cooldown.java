@@ -1,4 +1,6 @@
-package progetto.utils;
+package progetto.gameplay.entity.components.entity;
+
+import progetto.gameplay.entity.components.IteratableComponent;
 
 /**
  * Classe che gestisce un cooldown, ovvero un timer che impedisce l'esecuzione
@@ -7,7 +9,7 @@ package progetto.utils;
  *
  * @author alesp
  */
-public class Cooldown {
+public class Cooldown extends IteratableComponent {
     public float time; // Tempo rimanente per il cooldown
     public final float maxTime; // Tempo massimo (durata del cooldown)
     public boolean isReady; // Indica se il cooldown è pronto per essere resettato
@@ -30,6 +32,7 @@ public class Cooldown {
      *
      * @param delta Tempo trascorso dall'ultimo aggiornamento
      */
+    @Override
     public void update(float delta) {
         if (!isReady) { // Se il cooldown non è pronto
             time -= delta; // Diminuisci il tempo rimanente in base al delta

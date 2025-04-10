@@ -77,6 +77,7 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void enter(Enemy entity) {
+            entity.movement().setAwake(true);
         }
 
         @Override
@@ -90,15 +91,13 @@ public enum StatesEnemy implements State<Enemy> {
             RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
             ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());
 
-            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
-
-            entity.move();
-
-            if (!entity.pathfinder().success) entity.statemachine.changeState(PATROLLING);
+            entity.getPathFinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
+            if (!entity.getPathFinder().success) entity.statemachine.changeState(PATROLLING);
         }
 
         @Override
         public void exit(Enemy entity) {
+            entity.movement().setAwake(false);
         }
 
         @Override

@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.CoreConfig;
 import progetto.Core;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.Game;
 import progetto.gameplay.manager.ManagerCamera;
 

@@ -1,6 +1,8 @@
-package progetto.gameplay.entity.components;
+package progetto.gameplay.entity.components.entity;
 
-public class StateComponent {
+import progetto.gameplay.entity.components.Component;
+
+public class StateComponent extends Component {
 
     private boolean isAlive;
     private boolean isLoaded;

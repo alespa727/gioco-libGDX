@@ -2,8 +2,9 @@ package progetto.gameplay.entity.skills;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import progetto.gameplay.entity.components.IteratableComponent;
 
-public class SkillSet {
+public class SkillSet extends IteratableComponent {
 
     // === CAMPi ===
 
@@ -23,7 +24,8 @@ public class SkillSet {
      * Aggiorna lo stato di tutte le skill nel set.
      * Viene chiamato ogni frame per aggiornare il comportamento delle skill.
      */
-    public void update() {
+    @Override
+    public void update(float delta) {
         for (Skill skill : skillList) {
             skill.update(); // Aggiorna ogni skill
         }

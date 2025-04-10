@@ -4,8 +4,9 @@ import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entity.behaviors.states.StatesEnemy;
+import progetto.gameplay.entity.components.humanoid.DeathController;
 import progetto.gameplay.entity.types.living.combat.Warriors;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.manager.entity.ManagerEntity;
@@ -24,6 +25,7 @@ public abstract class Enemy extends Warriors {
     // === COSTRUTTORI ===
     public Enemy(EnemyInstance instance, ManagerEntity manager) {
         super(instance, manager);
+        addComponent(new DeathController(this));
 
         attack = new Cooldown(1.5f);
         attack.reset(0f);
@@ -71,7 +73,6 @@ public abstract class Enemy extends Warriors {
     // === AGGIORNAMENTO E GESTIONE STATO ===
     @Override
     public void updateEntityType(float delta) {
-        checkIfDead();
         statemachine.update();
     }
 

@@ -3,189 +3,294 @@ package progetto.gameplay.entity.types.living;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.physics.box2d.Body;
+import progetto.gameplay.entity.components.humanoid.*;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.behaviors.EntityPathFinder;
 import progetto.gameplay.entity.skills.Skill;
 import progetto.gameplay.entity.skills.SkillSet;
 import progetto.gameplay.manager.entity.ManagerEntity;
-import progetto.gameplay.entity.behaviors.manager.entity.movement.EntityMovementManager;
 
+/**
+ * Classe astratta che rappresenta un'entità umanoide nel gioco.
+ * Estende {@link Entity} e implementa la logica per la gestione del movimento, combattimento,
+ * salute e interazione con altre entità.
+ */
 public abstract class Humanoid extends Entity {
 
-    // --- ATTRIBUTI PRINCIPALI ---
-    private final SkillSet skillset;
-    private final float speed, maxHealth;
-    private final EntityPathFinder entityPathFinder;
-    private final EntityMovementManager movement;
-    private float health;
-    private float speedMultiplier;
-    private boolean hasBeenHit = false;
-    private boolean hasAnyBuff = false;
-
-    protected boolean invulnerable = false;
-
-
+    /**
+     * Costruttore per creare un entità umanoide utilizzando un'istanza preconfigurata.
+     * Aggiunge i componenti necessari per la gestione del movimento, salute, abilità e velocità.
+     *
+     * @param instance L'istanza dell'umanoide da usare per la configurazione.
+     * @param managerEntity Il gestore delle entità del gioco.
+     */
     public Humanoid(HumanoidInstances instance, ManagerEntity managerEntity) {
         super(instance, managerEntity);
-        skillset = new SkillSet();
-        movement = new EntityMovementManager(this);
-
-        speed = instance.speed;
-        maxHealth = instance.maxHealth;
-        health = maxHealth;
-        speedMultiplier = 1f;
-
-        this.entityPathFinder = new EntityPathFinder(this);
+        addComponent(new EntityMovementManager(this));
+        addComponent(new HumanStatsComponent(instance.speed, instance.maxHealth));
+        addComponent(new EntityPathFinder(this));
+        addComponent(new SkillSet());
+        addComponent(new SpeedLimiter(this));
+        addComponent(new HumanStatesComponent(this));
     }
 
-    // --- COSTRUTTORE ---
+    /**
+     * Costruttore per creare un'entità umanoide utilizzando una configurazione di entità.
+     * Aggiunge i componenti necessari per la gestione del movimento, salute, abilità e velocità.
+     *
+     * @param config La configurazione dell'umanoide (velocità, salute, ecc.).
+     * @param manager Il gestore delle entità del gioco.
+     */
     public Humanoid(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
-        skillset = new SkillSet();
-        movement = new EntityMovementManager(this);
-
-        speed = config.speed;
-        maxHealth = config.hp;
-        health = maxHealth;
-        speedMultiplier = 1f;
-
-        this.entityPathFinder = new EntityPathFinder(this);
+        addComponent(new EntityMovementManager(this));
+        getComponent(EntityMovementManager.class).setAwake(false);
+        addComponent(new HumanStatsComponent(config.speed, config.hp));
+        addComponent(new EntityPathFinder(this));
+        addComponent(new SkillSet());
+        addComponent(new SpeedLimiter(this));
+        addComponent(new HumanStatesComponent(this));
     }
 
+    // --- METODI DI ACCESSO AI COMPONENTI ---
+
+    /**
+     * Restituisce il set di abilità associato all'umanoide.
+     *
+     * @return Il {@link SkillSet} dell'umanoide.
+     */
+    public final SkillSet getSkillset() {
+        return getComponent(SkillSet.class);
+    }
+
+    /**
+     * Restituisce una skill specifica dal set di abilità.
+     *
+     * @param skillclass La classe dell'abilità desiderata.
+     * @return La skill richiesta.
+     */
+    public Skill getSkill(Class<? extends Skill> skillclass) {
+        return getComponent(SkillSet.class).getSkill(skillclass);
+    }
+
+    public HumanStatesComponent getStates() {
+        return getComponent(HumanStatesComponent.class);
+    }
+
+    /**
+     * Verifica se l'umanoide è invulnerabile.
+     *
+     * @return true se l'umanoide è invulnerabile, false altrimenti.
+     */
     public boolean isInvulnerable() {
-        return invulnerable;
+        return getStates().isInvulnerable();
     }
 
-    public void move(){
-        movement.update();
-    }
-
-    public void searchPath(Entity target){
-        pathfinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
+    /**
+     * Inizia a cercare il percorso verso un obiettivo (un'altra entità).
+     *
+     * @param target L'entità target verso cui l'umanoide deve dirigersi.
+     */
+    public void searchPath(Entity target) {
+        getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
     }
 
     // --- GESTIONE SALUTE ---
-    public void checkIfHaveBuff(){
-        hasAnyBuff = health < maxHealth;
+
+    /**
+     * Restituisce il componente che gestisce le statistiche di salute dell'umanoide.
+     *
+     * @return Il componente {@link HumanStatsComponent} dell'umanoide.
+     */
+    public HumanStatsComponent getStats() {
+        return getComponent(HumanStatsComponent.class);
     }
 
+    /**
+     * Imposta un buff di salute che moltiplica la salute massima.
+     *
+     * @param multiplier Il moltiplicatore per la salute massima.
+     */
     public void setHealthBuff(float multiplier) {
-        this.health = maxHealth*multiplier;
+        getStats().setHealth(getMaxHealth() * multiplier);
     }
 
-    public boolean hasAnyHealthBuff(){
-        return hasAnyBuff;
+    /**
+     * Verifica se l'umanoide ha un buff di salute attivo.
+     *
+     * @return true se ci sono buff di salute, false altrimenti.
+     */
+    public boolean hasAnyHealthBuff() {
+        return getStates().hasAnyBuffs();
     }
 
+    /**
+     * Restituisce la salute attuale dell'umanoide.
+     *
+     * @return La salute dell'umanoide.
+     */
     public float getHealth() {
-        return health;
+        return getStats().getHealth();
     }
 
-    public float getMaxHealth(){
-        return maxHealth;
+    /**
+     * Restituisce la salute massima dell'umanoide.
+     *
+     * @return La salute massima dell'umanoide.
+     */
+    public float getMaxHealth() {
+        return getStats().getMaxHealth();
     }
 
+    /**
+     * Rigenera la salute dell'umanoide a un valore specificato.
+     *
+     * @param amount La quantità di salute da ripristinare.
+     */
     public void regenHealthTo(float amount) {
-        health = amount;
+        getStats().setHealth(amount);
     }
 
-    public void regenHealth() {
-        health = maxHealth;
-    }
-
+    /**
+     * Infligge danno all'umanoide, riducendo la sua salute.
+     *
+     * @param damage Il danno da infliggere.
+     */
     public void inflictDamage(float damage) {
-        hasBeenHit = true;
-        this.health -= damage;
+        getStates().setHasBeenHit(true);
+        getStats().setHealth(getStats().getHealth() - damage);
     }
 
+    /**
+     * Verifica se l'umanoide è stato colpito.
+     *
+     * @return true se l'umanoide è stato colpito, false altrimenti.
+     */
     public boolean hasBeenHit() {
-        return hasBeenHit;
+        return getStates().hasBeenHit();
     }
 
+    /**
+     * Imposta lo stato di "colpito" dell'umanoide.
+     *
+     * @param hasBeenHit true se l'umanoide è stato colpito, false altrimenti.
+     */
     public void setHasBeenHit(boolean hasBeenHit) {
-        this.hasBeenHit = hasBeenHit;
+        getStates().hasBeenHit();
     }
 
     // --- GESTIONE MOVIMENTO ---
+
+    /**
+     * Restituisce la velocità attuale dell'umanoide.
+     *
+     * @return La velocità dell'umanoide.
+     */
     public float getSpeed() {
-        return speed * speedMultiplier;
+        return getStats().getMaxSpeed();
     }
 
+    /**
+     * Imposta un moltiplicatore per la velocità dell'umanoide.
+     *
+     * @param speedMultiplier Il moltiplicatore della velocità.
+     */
     public void setSpeedMultiplier(float speedMultiplier) {
-        this.speedMultiplier = speedMultiplier;
+        getStats().setSpeedMultiplier(speedMultiplier);
     }
 
+    /**
+     * Restituisce il gestore del movimento dell'umanoide.
+     *
+     * @return Il componente {@link EntityMovementManager} dell'umanoide.
+     */
     public EntityMovementManager movement() {
-        return movement;
-    }
-
-    public void limitSpeed() {
-        Body body = getPhysics().getBody();
-        if (body.getLinearVelocity().len() > speed) {
-            body.applyLinearImpulse(body.getLinearVelocity().scl(-1), body.getWorldCenter(), true);
-        }
+        return getComponent(EntityMovementManager.class);
     }
 
     // --- GESTIONE COMBATTIMENTO ---
+
+    /**
+     * Metodo astratto per la gestione dei cooldown delle abilità.
+     *
+     * @param delta Il delta di tempo.
+     */
     public abstract void cooldown(float delta);
 
-    public final SkillSet getSkillset() {
-        return skillset;
-    }
-
-    public Skill getSkill(Class<? extends Skill> skillclass) {
-        return skillset.getSkill(skillclass);
-    }
-
     // --- GESTIONE VITA & MORTE ---
-    public void checkIfDead() {
-        if (health <= 0) {
-            setDead();
-            despawn();
-        }
-    }
 
+    /**
+     * Uccide l'umanoide, infliggendo danno pari alla sua salute massima.
+     */
     public void kill() {
-        if (!invulnerable){
-            inflictDamage(maxHealth);
-            setDead();
-        }
+        inflictDamage(getMaxHealth());
+        setDead();
     }
 
+    /**
+     * Fa resuscitare l'umanoide, ripristinando la sua salute e stato.
+     */
     public void respawn() {
         setAlive();
-        hasBeenHit = false;
+        getStates().setHasBeenHit(false);
     }
 
+    /**
+     * Metodo astratto per gestire la scomparsa dell'umanoide dal gioco.
+     *
+     * @return L'istanza dell'entità che si sta rimuovendo.
+     */
     public abstract EntityInstance despawn();
 
     // --- METODI DI AGGIORNAMENTO ---
+
+    /**
+     * Metodo chiamato per aggiornare lo stato dell'umanoide.
+     * Viene eseguito ogni frame.
+     *
+     * @param delta Il delta di tempo.
+     */
     @Override
     public void updateEntity(float delta) {
         cooldown(delta);
-        limitSpeed();
-        skillset.update();
-        checkIfHaveBuff();
     }
 
     // --- METODI DI RENDERING ---
+
+    /**
+     * Disegna l'umanoide sullo schermo utilizzando il batch.
+     *
+     * @param batch Il batch di disegno.
+     * @param elapsedTime Il tempo trascorso dall'ultimo frame.
+     */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        if (hasBeenHit) {
+        if (getStates().hasBeenHit()) {
             batch.setColor(1, 0, 0, 0.6f);
         }
-        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true), getPosition().x - getConfig().imageWidth/2, getPosition().y - getConfig().imageHeight/2, getConfig().imageWidth, getConfig().imageHeight);
+        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true),
+            getPosition().x - getConfig().imageWidth / 2,
+            getPosition().y - getConfig().imageHeight / 2,
+            getConfig().imageWidth, getConfig().imageHeight);
         batch.setColor(Color.WHITE);
     }
 
-    public EntityPathFinder pathfinder() {
-        return entityPathFinder;
+    /**
+     * Restituisce il gestore del percorso dell'umanoide.
+     *
+     * @return Il componente {@link EntityPathFinder} dell'umanoide.
+     */
+    public EntityPathFinder getPathFinder() {
+        return getComponent(EntityPathFinder.class);
     }
 
+    /**
+     * Disegna il percorso dell'umanoide.
+     *
+     * @param shapeRenderer Il renderer delle forme per disegnare il percorso.
+     */
     public void drawPath(ShapeRenderer shapeRenderer) {
-        entityPathFinder.drawPath(shapeRenderer);
+        getPathFinder().drawPath(shapeRenderer);
     }
 }

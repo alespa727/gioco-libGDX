@@ -10,7 +10,7 @@ import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 
 public class Lich extends Boss{
 

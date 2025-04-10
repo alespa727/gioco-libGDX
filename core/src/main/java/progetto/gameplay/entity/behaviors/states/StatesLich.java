@@ -4,7 +4,8 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import progetto.gameplay.entity.types.living.combat.boss.Lich;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
+import progetto.gameplay.entity.types.living.combat.player.Player;
 
 public enum StatesLich implements State<Lich> {
     FIREDOMAIN{
@@ -77,6 +78,7 @@ public enum StatesLich implements State<Lich> {
     LONG_RANGE_ATTACKS {
         @Override
         public void enter(Lich entity) {
+            entity.movement().setAwake(true);
         }
 
         @Override
@@ -92,13 +94,13 @@ public enum StatesLich implements State<Lich> {
             entity.prepareToFireball.update(entity.manager.delta);
             initiateFireball(entity);
 
-            entity.searchPath(entity.manager.player());
-            entity.move();
+            Player player = entity.manager.player();
+            entity.searchPath(player);
         }
 
         @Override
         public void exit(Lich entity) {
-
+            entity.movement().setAwake(false);
         }
 
         @Override
@@ -145,7 +147,7 @@ public enum StatesLich implements State<Lich> {
         @Override
         public void enter(Lich entity) {
             if (!entity.prepareToChangeStates.isReady){
-                if(!entity.pathfinder().success){
+                if(!entity.getPathFinder().success){
                     entity.getStateMachine().changeState(StatesLich.IDLE);
                 }
 
@@ -186,8 +188,8 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
-            if(entity.pathfinder().success){
+            entity.getPathFinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
+            if(entity.getPathFinder().success){
                 entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
             }
         }

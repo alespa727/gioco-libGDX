@@ -92,8 +92,8 @@ public class EntityRenderer {
         for (Entity e : entities) {
             if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
                 e.render(this.deltaTime);
+                e.updateComponents(this.deltaTime);
                 e.setShouldRender(true);
-                e.updateNode();
             } else e.setShouldRender(false);
         }
     }

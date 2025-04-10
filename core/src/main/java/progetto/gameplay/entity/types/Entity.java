@@ -4,10 +4,12 @@ package progetto.gameplay.entity.types;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import progetto.gameplay.entity.components.DirectionComponent;
-import progetto.gameplay.entity.components.NodeTracker;
-import progetto.gameplay.entity.components.PhysicsComponent;
-import progetto.gameplay.entity.components.StateComponent;
+import com.badlogic.gdx.utils.ArrayMap;
+import progetto.gameplay.entity.components.*;
+import progetto.gameplay.entity.components.entity.DirectionComponent;
+import progetto.gameplay.entity.components.entity.NodeTracker;
+import progetto.gameplay.entity.components.entity.PhysicsComponent;
+import progetto.gameplay.entity.components.entity.StateComponent;
 import progetto.gameplay.entity.types.living.HumanoidTextures;
 import progetto.gameplay.manager.entity.ManagerEntity;
 
@@ -24,10 +26,8 @@ public abstract class Entity {
     private final EntityConfig config;
 
     // Componenti principali dell'entità
-    protected final PhysicsComponent physics;      // Gestisce posizione e corpo fisico
-    protected final DirectionComponent direction;  // Direzione di movimento
-    protected final StateComponent state;          // Informazioni come "è vivo", "va disegnato", ecc.
-    protected final NodeTracker nodeTracker;       // Tiene traccia del nodo della mappa (per pathfinding)
+    private final ArrayMap<Class<? extends Component>, Component> components;
+    protected boolean awake = true;
     private final HumanoidTextures textures;       // Gestisce immagini e animazioni
 
     /**
@@ -38,12 +38,15 @@ public abstract class Entity {
     public Entity(EntityInstance instance, ManagerEntity manager) {
         this.config = instance.config;
         this.manager = manager;
-        this.physics = new PhysicsComponent(this, instance.coordinate);
-        this.nodeTracker = new NodeTracker(this);
-        this.physics.createBody();
-        this.direction = new DirectionComponent(config.direzione);
-        this.state = new StateComponent();
         this.textures = new HumanoidTextures(config.img);
+
+        components = new ArrayMap<>();
+        addComponent(new StateComponent());
+        addComponent(new PhysicsComponent(this, instance.coordinate));
+        addComponent(new NodeTracker(this));
+        addComponent(new DirectionComponent(config.direzione));
+
+        getComponent(PhysicsComponent.class).createBody();
     }
 
     /**
@@ -54,12 +57,45 @@ public abstract class Entity {
     public Entity(EntityConfig config, ManagerEntity manager) {
         this.config = config;
         this.manager = manager;
-        this.physics = new PhysicsComponent(this);
-        this.nodeTracker = new NodeTracker(this);
-        this.physics.createBody();
-        this.direction = new DirectionComponent(config.direzione);
-        this.state = new StateComponent();
         this.textures = new HumanoidTextures(config.img);
+
+        components = new ArrayMap<>();
+        addComponent(new StateComponent());
+        addComponent(new PhysicsComponent(this));
+        addComponent(new NodeTracker(this));
+        addComponent(new DirectionComponent(config.direzione));
+
+        getComponent(PhysicsComponent.class).createBody();
+    }
+
+    /**
+     * @param component componente da aggiungere {@link Component}
+     */
+    public void addComponent(Component component) {
+        Class<? extends Component> componentClass = component.getClass();
+        components.put(componentClass, component);
+    }
+
+    /**
+     * @param componentClass classe del componente che si vuole {@link Class}
+     * @return componete richiesto {@link Component}
+     * @param <T> tipo di componente trovato
+     */
+    public <T extends Component> T getComponent(Class<T> componentClass) {
+        Component component = components.get(componentClass);
+        if (component == null) {
+            throw new IllegalArgumentException("Component " + componentClass.getSimpleName() + " non trovato");
+        }
+        return componentClass.cast(component);
+    }
+
+    /**
+     *
+     * @param componentClass componente da rimuovere {@link Component}
+     * @param <T> tipo di componente da rimuovere
+     */
+    public <T extends Component> void removeComponent(Class<T> componentClass) {
+        components.removeKey(componentClass);
     }
 
     /**
@@ -89,7 +125,7 @@ public abstract class Entity {
      * Imposta l'entità come "caricata", permettendole di aggiornarsi.
      */
     public void load() {
-        state.setLoaded(true);
+        getState().setLoaded(true);
     }
 
     /**
@@ -105,7 +141,7 @@ public abstract class Entity {
      * @return fisica {@link PhysicsComponent}
      */
     public PhysicsComponent getPhysics() {
-        return physics;
+        return getComponent(PhysicsComponent.class);
     }
 
     /**
@@ -113,7 +149,7 @@ public abstract class Entity {
      * @return direzione {@link DirectionComponent}
      */
     public final Vector2 getDirection() {
-        return direction.getDirection();
+        return getComponent(DirectionComponent.class).getDirection();
     }
 
     /**
@@ -121,7 +157,7 @@ public abstract class Entity {
      * @return stato {@link StateComponent}
      */
     public final StateComponent getState() {
-        return state;
+        return getComponent(StateComponent.class);
     }
 
     /**
@@ -129,7 +165,7 @@ public abstract class Entity {
      * @return posizione corrente
      */
     public Vector2 getPosition() {
-        return physics.getPosition();
+        return getPhysics().getPosition();
     }
 
     /**
@@ -137,14 +173,7 @@ public abstract class Entity {
      * @param position nuova posizione
      */
     public void teleport(Vector2 position) {
-        physics.teleport(position);
-    }
-
-    /**
-     * Aggiorna il nodo corrente nella mappa (utile per il pathfinding).
-     */
-    public void updateNode() {
-        nodeTracker.updateNode();
+        getPhysics().teleport(position);
     }
 
     /**
@@ -176,9 +205,19 @@ public abstract class Entity {
      * @param delta tempo trascorso dall’ultimo frame
      */
     public void render(float delta) {
-        if (state.isLoaded()) {
+        if (getState().isLoaded()) {
             updateEntityType(delta);
             updateEntity(delta);
+        }
+    }
+
+    public void updateComponents(float delta) {
+        if (awake) {
+            for (Component component : components.values()) {
+                if (component instanceof IteratableComponent && component.isAwake()) {
+                    ((IteratableComponent) component).update(delta);
+                }
+            }
         }
     }
 
@@ -187,7 +226,7 @@ public abstract class Entity {
      * @return true se va disegnata
      */
     public boolean shouldRender() {
-        return state.shouldRender();
+        return getState().shouldRender();
     }
 
     /**
@@ -195,22 +234,22 @@ public abstract class Entity {
      * @param shouldRender true per disegnarla
      */
     public void setShouldRender(boolean shouldRender) {
-        physics.setActive(shouldRender);
-        state.setShouldRender(shouldRender);
+        getPhysics().setActive(shouldRender);
+        getState().setShouldRender(shouldRender);
     }
 
     /**
      * Imposta l’entità come viva.
      */
     public void setAlive() {
-        state.setAlive(true);
+        getState().setAlive(true);
     }
 
     /**
      * Imposta l’entità come morta.
      */
     public void setDead() {
-        state.setAlive(false);
+        getState().setAlive(false);
     }
 
     @Override

@@ -20,7 +20,7 @@ import progetto.gameplay.manager.ManagerGame;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.map.Map;
 import progetto.menu.DefeatScreen;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.utils.KeyHandler;
 import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.map.MapManager;

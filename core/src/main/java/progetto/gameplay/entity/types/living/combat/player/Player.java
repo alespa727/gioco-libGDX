@@ -14,7 +14,7 @@ import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.entity.behaviors.manager.entity.movement.PlayerMovementManager;
 import progetto.gameplay.manager.ManagerCamera;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 
 public class Player extends Warriors {
 
@@ -95,7 +95,6 @@ public class Player extends Warriors {
 
     // === GESTIONE VITA ===
 
-    @Override
     public void checkIfDead() {
         if (getHealth() <= 0) {
             setDead();
@@ -122,12 +121,10 @@ public class Player extends Warriors {
         movement.update(this);
 
         Body body = getPhysics().getBody();
-        if(body.getLinearVelocity().len() > getSpeed()){
-            invulnerable = true;
-        }else invulnerable = false;
+
+        getStates().setInvulnerable(body.getLinearVelocity().len() > getSpeed());
 
         checkIfDead();
-        limitSpeed();
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             useSword();

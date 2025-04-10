@@ -1,16 +1,17 @@
-package progetto.gameplay.entity.behaviors.manager.entity.movement;
+package progetto.gameplay.entity.components.humanoid;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.IteratableComponent;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.node.Node;
 
-public class EntityMovementManager {
+public class EntityMovementManager extends IteratableComponent {
 
     final Humanoid owner;
     final Array<Vector2> path;
@@ -41,7 +42,8 @@ public class EntityMovementManager {
         this.isReady = false;
     }
 
-    public void update() {
+    @Override
+    public void update(float delta) {
         cooldown.update(owner.manager.delta);
         if (steps > path.size - 1 || cooldown.isReady) {
             steps = 0;

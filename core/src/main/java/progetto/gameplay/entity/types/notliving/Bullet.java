@@ -8,12 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import progetto.Core;
+import progetto.gameplay.entity.components.entity.NodeTracker;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.utils.Cooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 
 /**
  * Rappresenta un proiettile nel gioco.
@@ -37,13 +38,6 @@ public class Bullet extends Entity {
 
     /** Texture del proiettile */
     private final Texture texture;
-
-    /** Gestore del cooldown del proiettile ({@link Cooldown}) */
-    private final Cooldown cooldown;
-
-    /** Stato del cooldown (indica se il cooldown è attivo o meno) */
-    private boolean cooldownActive;
-
     /** Flag per determinare se il proiettile è stato lanciato */
     private boolean flag = false;
 
@@ -66,10 +60,12 @@ public class Bullet extends Entity {
         this.radius = radius;
         this.owner = owner;
         this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
-        this.cooldownActive = false;
-        this.cooldown = new Cooldown(2); // Durata del cooldown
-        this.cooldown.reset();
-        this.direction.getDirection().set(config.direzione); // Imposta la direzione
+        this.getDirection().set(config.direzione); // Imposta la direzione
+
+        removeComponent(NodeTracker.class);
+        addComponent(new Cooldown(2));
+        getComponent(Cooldown.class).reset();
+        getComponent(Cooldown.class).setAwake(false);
     }
 
     /**
@@ -78,8 +74,8 @@ public class Bullet extends Entity {
      * @param time durata del cooldown in secondi
      */
     public void startCooldown(float time) {
-        cooldownActive = true;
-        this.cooldown.reset(time);
+        getComponent(Cooldown.class).reset(time);
+        getComponent(Cooldown.class).setAwake(true);
     }
 
     /**
@@ -100,12 +96,10 @@ public class Bullet extends Entity {
      */
     @Override
     public void updateEntity(float delta) {
-        if (cooldownActive) {
-            cooldown.update(delta); // Aggiorna il cooldown
-        }
+        Cooldown cooldown = getComponent(Cooldown.class);
         if (cooldown.isReady) {
-            despawn(); // Distrugge il proiettile quando il cooldown è finito
-            System.out.println("DESPAWN");
+            cooldown.isReady = false;
+            despawn();
         }
     }
 
@@ -125,10 +119,10 @@ public class Bullet extends Entity {
      */
     @Override
     public void create() {
-        physics.getBody().setLinearDamping(0f); // Impedisce rallentamenti
-        physics.getBody().setLinearVelocity(new Vector2(getDirection()).scl(velocity)); // Imposta la velocità
-        physics.getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
-        physics.getBody().setUserData(this); // Associa il proiettile al corpo fisico
+        getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
+        getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(velocity)); // Imposta la velocità
+        getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
+        getPhysics().getBody().setUserData(this); // Associa il proiettile al corpo fisico
     }
 
     /**

@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.behaviors;
+package progetto.gameplay.entity.components.humanoid;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
@@ -6,13 +6,14 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
+import progetto.gameplay.entity.components.Component;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.map.MapManager;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.HeuristicDistance;
 import progetto.gameplay.map.graph.node.Node;
 
-public class EntityPathFinder implements Disposable {
+public class EntityPathFinder extends Component implements Disposable {
     private final Humanoid entity;
     private final DefaultGraphPath<Node> path;
 
@@ -32,7 +33,6 @@ public class EntityPathFinder implements Disposable {
 
     public void renderPath(float x, float y, float delta) {
         //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
-
         if (Map.isGraphLoaded && map != MapManager.getMapIndex()) {
             map = MapManager.getMapIndex();
             pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
@@ -41,7 +41,6 @@ public class EntityPathFinder implements Disposable {
         if (entity.movement().isReady()){
             search(x, y);
         }
-
     }
 
 
