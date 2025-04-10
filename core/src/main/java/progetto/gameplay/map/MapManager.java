@@ -34,7 +34,7 @@ public class MapManager {
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
-        float defaultx = 11, defaulty = 11;
+        float defaultx = 42, defaulty = 27;
 
         this.changeMap(defaultMap, defaultx, defaulty); // Cambio mappa
     }
