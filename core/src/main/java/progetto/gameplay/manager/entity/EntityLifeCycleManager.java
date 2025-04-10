@@ -31,10 +31,8 @@ public class EntityLifeCycleManager {
         }
         for (Entity e : entities) {
             if (e instanceof Player) continue;
-            if (e instanceof Bullet) System.out.println("PROIETTILE");
-            instances.add(e.despawn());
+            else instances.add(e.despawn());
         }
-        System.out.println(instances.size);
         return instances;
     }
 

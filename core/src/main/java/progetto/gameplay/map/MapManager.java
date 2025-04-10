@@ -1,5 +1,6 @@
 package progetto.gameplay.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.entity.types.EntityInstance;
@@ -84,7 +85,9 @@ public class MapManager {
         currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, managerEntity, this, x, y).createCollision();
+        currentMap = new Map(nome, managerEntity, this, x, y);
+        currentMap.createCollision();
+
 
         // Applico la telecamera
         viewport.apply();

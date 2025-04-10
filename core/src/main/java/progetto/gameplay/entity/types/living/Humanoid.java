@@ -7,7 +7,6 @@ import progetto.gameplay.entity.components.humanoid.*;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.skills.Skill;
 import progetto.gameplay.entity.skills.SkillSet;
 import progetto.gameplay.manager.entity.ManagerEntity;
 
@@ -53,6 +52,23 @@ public abstract class Humanoid extends Entity {
         addComponent(new HumanStatesComponent(this));
     }
 
+    // METODI ASTRATTI
+
+    /**
+     * Metodo astratto per la gestione dei cooldown delle abilità.
+     *
+     * @param delta Il delta di tempo.
+     */
+    public abstract void cooldown(float delta);
+
+    /**
+     * Metodo astratto per gestire la scomparsa dell'umanoide dal gioco.
+     *
+     * @return L'istanza dell'entità che si sta rimuovendo.
+     */
+    public abstract EntityInstance despawn();
+
+
     // --- METODI DI ACCESSO AI COMPONENTI ---
 
     /**
@@ -65,26 +81,21 @@ public abstract class Humanoid extends Entity {
     }
 
     /**
-     * Restituisce una skill specifica dal set di abilità.
+     * Restituisce il componente che gestisce gli stati dell'umanoide.
      *
-     * @param skillclass La classe dell'abilità desiderata.
-     * @return La skill richiesta.
+     * @return Il componente {@link HumanStatesComponent} dell'umanoide.
      */
-    public Skill getSkill(Class<? extends Skill> skillclass) {
-        return getComponent(SkillSet.class).getSkill(skillclass);
-    }
-
-    public HumanStatesComponent getStates() {
+    public HumanStatesComponent getHumanStates() {
         return getComponent(HumanStatesComponent.class);
     }
 
     /**
-     * Verifica se l'umanoide è invulnerabile.
+     * Restituisce il componente che gestisce le statistiche di salute dell'umanoide.
      *
-     * @return true se l'umanoide è invulnerabile, false altrimenti.
+     * @return Il componente {@link HumanStatsComponent} dell'umanoide.
      */
-    public boolean isInvulnerable() {
-        return getStates().isInvulnerable();
+    public HumanStatsComponent getStats() {
+        return getComponent(HumanStatsComponent.class);
     }
 
     /**
@@ -97,33 +108,6 @@ public abstract class Humanoid extends Entity {
     }
 
     // --- GESTIONE SALUTE ---
-
-    /**
-     * Restituisce il componente che gestisce le statistiche di salute dell'umanoide.
-     *
-     * @return Il componente {@link HumanStatsComponent} dell'umanoide.
-     */
-    public HumanStatsComponent getStats() {
-        return getComponent(HumanStatsComponent.class);
-    }
-
-    /**
-     * Imposta un buff di salute che moltiplica la salute massima.
-     *
-     * @param multiplier Il moltiplicatore per la salute massima.
-     */
-    public void setHealthBuff(float multiplier) {
-        getStats().setHealth(getMaxHealth() * multiplier);
-    }
-
-    /**
-     * Verifica se l'umanoide ha un buff di salute attivo.
-     *
-     * @return true se ci sono buff di salute, false altrimenti.
-     */
-    public boolean hasAnyHealthBuff() {
-        return getStates().hasAnyBuffs();
-    }
 
     /**
      * Restituisce la salute attuale dell'umanoide.
@@ -143,44 +127,6 @@ public abstract class Humanoid extends Entity {
         return getStats().getMaxHealth();
     }
 
-    /**
-     * Rigenera la salute dell'umanoide a un valore specificato.
-     *
-     * @param amount La quantità di salute da ripristinare.
-     */
-    public void regenHealthTo(float amount) {
-        getStats().setHealth(amount);
-    }
-
-    /**
-     * Infligge danno all'umanoide, riducendo la sua salute.
-     *
-     * @param damage Il danno da infliggere.
-     */
-    public void inflictDamage(float damage) {
-        getStates().setHasBeenHit(true);
-        getStats().setHealth(getStats().getHealth() - damage);
-    }
-
-    /**
-     * Verifica se l'umanoide è stato colpito.
-     *
-     * @return true se l'umanoide è stato colpito, false altrimenti.
-     */
-    public boolean hasBeenHit() {
-        return getStates().hasBeenHit();
-    }
-
-    /**
-     * Imposta lo stato di "colpito" dell'umanoide.
-     *
-     * @param hasBeenHit true se l'umanoide è stato colpito, false altrimenti.
-     */
-    public void setHasBeenHit(boolean hasBeenHit) {
-        getStates().hasBeenHit();
-    }
-
-    // --- GESTIONE MOVIMENTO ---
 
     /**
      * Restituisce la velocità attuale dell'umanoide.
@@ -188,37 +134,28 @@ public abstract class Humanoid extends Entity {
      * @return La velocità dell'umanoide.
      */
     public float getSpeed() {
+        return getPhysics().getBody().getLinearVelocity().len();
+    }
+
+    /**
+     * Restituisce la velocità massima dell'umanoide.
+     *
+     * @return La velocità dell'umanoide.
+     */
+    public float getMaxSpeed() {
         return getStats().getMaxSpeed();
     }
 
+
     /**
-     * Imposta un moltiplicatore per la velocità dell'umanoide.
+     * Infligge danno all'umanoide, riducendo la sua salute.
      *
-     * @param speedMultiplier Il moltiplicatore della velocità.
+     * @param damage Il danno da infliggere.
      */
-    public void setSpeedMultiplier(float speedMultiplier) {
-        getStats().setSpeedMultiplier(speedMultiplier);
+    public void inflictDamage(float damage) {
+        getHumanStates().setHasBeenHit(true);
+        getStats().setHealth(getStats().getHealth() - damage);
     }
-
-    /**
-     * Restituisce il gestore del movimento dell'umanoide.
-     *
-     * @return Il componente {@link EntityMovementManager} dell'umanoide.
-     */
-    public EntityMovementManager movement() {
-        return getComponent(EntityMovementManager.class);
-    }
-
-    // --- GESTIONE COMBATTIMENTO ---
-
-    /**
-     * Metodo astratto per la gestione dei cooldown delle abilità.
-     *
-     * @param delta Il delta di tempo.
-     */
-    public abstract void cooldown(float delta);
-
-    // --- GESTIONE VITA & MORTE ---
 
     /**
      * Uccide l'umanoide, infliggendo danno pari alla sua salute massima.
@@ -233,15 +170,47 @@ public abstract class Humanoid extends Entity {
      */
     public void respawn() {
         setAlive();
-        getStates().setHasBeenHit(false);
+        getHumanStates().setHasBeenHit(false);
     }
 
     /**
-     * Metodo astratto per gestire la scomparsa dell'umanoide dal gioco.
+     * Restituisce il gestore del movimento dell'umanoide.
      *
-     * @return L'istanza dell'entità che si sta rimuovendo.
+     * @return Il componente {@link EntityMovementManager} dell'umanoide.
      */
-    public abstract EntityInstance despawn();
+    public EntityMovementManager getMovementManager() {
+        return getComponent(EntityMovementManager.class);
+    }
+
+    /**
+     * Restituisce il gestore del percorso dell'umanoide.
+     *
+     * @return Il componente {@link EntityPathFinder} dell'umanoide.
+     */
+    public EntityPathFinder getPathFinder() {
+        return getComponent(EntityPathFinder.class);
+    }
+
+    // --- METODI DI RENDERING ---
+
+    /**
+     * Disegna l'umanoide sullo schermo utilizzando il batch.
+     *
+     * @param batch Il batch di disegno.
+     * @param elapsedTime Il tempo trascorso dall'ultimo frame.
+     */
+    @Override
+    public void draw(SpriteBatch batch, float elapsedTime) {
+        if (getHumanStates().hasBeenHit()) {
+            batch.setColor(1, 0, 0, 0.6f);
+        }
+        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true),
+            getPosition().x - getConfig().imageWidth / 2,
+            getPosition().y - getConfig().imageHeight / 2,
+            getConfig().imageWidth, getConfig().imageHeight);
+        batch.setColor(Color.WHITE);
+    }
+
 
     // --- METODI DI AGGIORNAMENTO ---
 
@@ -256,34 +225,7 @@ public abstract class Humanoid extends Entity {
         cooldown(delta);
     }
 
-    // --- METODI DI RENDERING ---
-
-    /**
-     * Disegna l'umanoide sullo schermo utilizzando il batch.
-     *
-     * @param batch Il batch di disegno.
-     * @param elapsedTime Il tempo trascorso dall'ultimo frame.
-     */
-    @Override
-    public void draw(SpriteBatch batch, float elapsedTime) {
-        if (getStates().hasBeenHit()) {
-            batch.setColor(1, 0, 0, 0.6f);
-        }
-        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true),
-            getPosition().x - getConfig().imageWidth / 2,
-            getPosition().y - getConfig().imageHeight / 2,
-            getConfig().imageWidth, getConfig().imageHeight);
-        batch.setColor(Color.WHITE);
-    }
-
-    /**
-     * Restituisce il gestore del percorso dell'umanoide.
-     *
-     * @return Il componente {@link EntityPathFinder} dell'umanoide.
-     */
-    public EntityPathFinder getPathFinder() {
-        return getComponent(EntityPathFinder.class);
-    }
+    // --- METODI DI DEBUG ---
 
     /**
      * Disegna il percorso dell'umanoide.

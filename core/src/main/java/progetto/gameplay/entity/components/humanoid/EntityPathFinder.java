@@ -38,7 +38,7 @@ public class EntityPathFinder extends Component implements Disposable {
             pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
         }
 
-        if (entity.movement().isReady()){
+        if (entity.getMovementManager().isReady()){
             search(x, y);
         }
     }
@@ -64,7 +64,7 @@ public class EntityPathFinder extends Component implements Disposable {
 
         success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
 
-        entity.movement().setPath(path);
+        entity.getMovementManager().setPath(path);
     }
 
     public void drawPath(ShapeRenderer shapeRenderer) {

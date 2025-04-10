@@ -78,7 +78,7 @@ public enum StatesLich implements State<Lich> {
     LONG_RANGE_ATTACKS {
         @Override
         public void enter(Lich entity) {
-            entity.movement().setAwake(true);
+            entity.getMovementManager().setAwake(true);
         }
 
         @Override
@@ -100,7 +100,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void exit(Lich entity) {
-            entity.movement().setAwake(false);
+            entity.getMovementManager().setAwake(false);
         }
 
         @Override

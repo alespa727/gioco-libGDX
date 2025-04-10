@@ -5,13 +5,13 @@ import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.entity.types.living.Humanoid;
 
 public class HumanStatesComponent extends IteratableComponent {
-    private Humanoid humanoid;
+    private final Humanoid humanoid;
 
     private boolean hasBeenHit = false;
     private boolean hasAnyBuff = false;
     private boolean invulnerable = false;
 
-    private Cooldown cooldown;
+    private final Cooldown cooldown;
 
     public HumanStatesComponent(Humanoid humanoid) {
         this.humanoid = humanoid;
@@ -19,6 +19,11 @@ public class HumanStatesComponent extends IteratableComponent {
         this.cooldown.reset();
     }
 
+    /**
+     * Verifica se l'umano è stato colpito.
+     *
+     * @return true se l'umano è stato colpito, false altrimenti.
+     */
     public boolean hasBeenHit() {
         return hasBeenHit;
     }

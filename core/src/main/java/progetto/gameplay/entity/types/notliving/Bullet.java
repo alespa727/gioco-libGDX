@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import progetto.Core;
+import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.components.entity.NodeTracker;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
@@ -27,20 +28,9 @@ public class Bullet extends Entity {
     /** Proprietario del proiettile, ovvero l'entità che lo ha sparato ({@link Entity}) */
     private final Entity owner;
 
-    /** Danno che il proiettile infligge alle altre entità */
-    public final float damage;
-
-    /** Velocità di movimento del proiettile */
-    public final float velocity;
-
-    /** Raggio del proiettile */
-    public final float radius;
-
     /** Texture del proiettile */
     private final Texture texture;
-    /** Flag per determinare se il proiettile è stato lanciato */
-    private boolean flag = false;
-
+    
     // === Costruttore ===
     /**
      * Costruttore del proiettile.
@@ -55,14 +45,12 @@ public class Bullet extends Entity {
      */
     public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity owner) {
         super(config, manager);
-        this.velocity = velocity;
-        this.damage = damage;
-        this.radius = radius;
         this.owner = owner;
         this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
-        removeComponent(NodeTracker.class);
+        addComponent(new BulletComponent(damage, velocity, radius));
+        getComponent(NodeTracker.class).setAwake(false);
         addComponent(new Cooldown(2));
         getComponent(Cooldown.class).reset();
         getComponent(Cooldown.class).setAwake(false);
@@ -120,7 +108,7 @@ public class Bullet extends Entity {
     @Override
     public void create() {
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
-        getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(velocity)); // Imposta la velocità
+        getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
         getPhysics().getBody().setUserData(this); // Associa il proiettile al corpo fisico
     }
@@ -160,6 +148,7 @@ public class Bullet extends Entity {
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
+        float radius = getComponent(BulletComponent.class).radius;
         Sprite sprite = new Sprite(texture); // Crea uno sprite per il proiettile
         sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio
         sprite.setPosition(getPosition().x - sprite.getWidth() / 2, getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite

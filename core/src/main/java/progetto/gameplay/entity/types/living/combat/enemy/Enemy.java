@@ -5,19 +5,19 @@ import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entity.behaviors.states.StatesEnemy;
 import progetto.gameplay.entity.components.humanoid.DeathController;
-import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.manager.entity.ManagerEntity;
 
-public abstract class Enemy extends Warriors {
+public abstract class Enemy extends Warrior {
 
     // === ATTRIBUTI ===
     public final float viewDistance;
     public final float pursueMaxDistance;
 
-    private final Array<Warriors> inRange;
+    private final Array<Warrior> inRange;
     protected final Cooldown attack;
 
     public final DefaultStateMachine<Enemy, StatesEnemy> statemachine;
@@ -57,16 +57,16 @@ public abstract class Enemy extends Warriors {
     }
 
     // === METODI DI ACCESSO ===
-    public Array<Warriors> getInRange() {
+    public Array<Warrior> getInRange() {
         return inRange;
     }
 
     // === GESTIONE ENTITÀ IN RANGE ===
-    public void addEntity(Warriors entity) {
+    public void addEntity(Warrior entity) {
         inRange.add(entity);
     }
 
-    public void removeEntity(Warriors entity) {
+    public void removeEntity(Warrior entity) {
         inRange.removeValue(entity, false);
     }
 
@@ -79,7 +79,6 @@ public abstract class Enemy extends Warriors {
     // === COOLDOWN ===
     @Override
     public void cooldown(float delta) {
-        damageCooldown(delta);
     }
 
     // === ATTACCO ===

@@ -15,13 +15,11 @@ public final class Finn extends Enemy {
     // Costruttore con EnemyInstance
     public Finn(EnemyInstance instance, ManagerEntity manager) {
         super(instance, manager);
-        createRange(1.5f);
     }
 
     // Costruttore con EntityConfig
     public Finn(EntityConfig config, ManagerEntity manager, Float attackcooldown) {
         super(config, manager, attackcooldown);
-        createRange(1.5f);
     }
 
     // === METODI ===
@@ -58,7 +56,7 @@ public final class Finn extends Enemy {
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
         Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getPhysics().getBody()));
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(directionalRange));
+        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getDirectionalRange()));
 
         return new EnemyInstance(this);
     }

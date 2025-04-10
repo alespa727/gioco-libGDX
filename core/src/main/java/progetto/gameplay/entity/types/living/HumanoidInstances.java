@@ -15,6 +15,6 @@ public class HumanoidInstances extends EntityInstance {
         super(e);
         this.skillset = e.getSkillset();
         this.maxHealth = e.getMaxHealth();
-        this.speed = e.getSpeed();
+        this.speed = e.getMaxSpeed();
     }
 }

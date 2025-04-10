@@ -5,24 +5,25 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 
+import progetto.gameplay.entity.components.warrior.DirectionalRange;
 import progetto.gameplay.entity.skills.player.PlayerSwordAttack;
 import progetto.gameplay.entity.skills.player.PlayerDash;
 import progetto.gameplay.entity.skills.player.PlayerRangedAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.entity.behaviors.manager.entity.movement.PlayerMovementManager;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.entity.components.entity.Cooldown;
 
-public class Player extends Warriors {
+public class Player extends Warrior {
 
     // === ATTRIBUTI ===
     private final PlayerMovementManager movement;
     private final Cooldown attackCooldown;
     private final Cooldown dashCooldown;
-    private final Array<Warriors> inRange;
+    private final Array<Warrior> inRange;
 
     // === COSTRUTTORE ===
     public Player(EntityConfig config, ManagerEntity manager) {
@@ -42,7 +43,6 @@ public class Player extends Warriors {
         getSkillset().add(new PlayerSwordAttack(this, "", "",10));
         getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
 
-        createRange(1.6f);
     }
 
     // === METODI DI ACCESSO ===
@@ -51,17 +51,17 @@ public class Player extends Warriors {
         return movement;
     }
 
-    public Array<Warriors> getInRange() {
+    public Array<Warrior> getInRange() {
         return inRange;
     }
 
     // === GESTIONE ENTITÀ IN RANGE ===
 
-    public void addEntity(Warriors entity) {
+    public void addEntity(Warrior entity) {
         inRange.add(entity);
     }
 
-    public void removeEntity(Warriors entity) {
+    public void removeEntity(Warrior entity) {
         inRange.removeValue(entity, false);
     }
 
@@ -69,26 +69,26 @@ public class Player extends Warriors {
 
     public void useBow(){
         if(attackCooldown.isReady) {
-            getSkill(PlayerRangedAttack.class).execute();
+            getSkillset().getSkill(PlayerRangedAttack.class).execute();
             attackCooldown.reset();
         }
     }
 
     public void useSword(){
         if(attackCooldown.isReady) {
-            getSkill(PlayerSwordAttack.class).execute();
+            getSkillset().getSkill(PlayerSwordAttack.class).execute();
             attackCooldown.reset();
         }
     }
 
     public void dash() {
         if (dashCooldown.isReady) {
-            getSkill(PlayerDash.class).execute();
+            getSkillset().getSkill(PlayerDash.class).execute();
             dashCooldown.reset();
         }
     }
 
-    public void hit(Warriors entity, float damage, float hitForce) {
+    public void hit(Warrior entity, float damage, float hitForce) {
         super.hit(entity, damage, hitForce);
         ManagerCamera.shakeTheCamera(0.1f, 0.025f);
     }
@@ -100,7 +100,7 @@ public class Player extends Warriors {
             setDead();
             System.out.println("Il giocatore è morto");
             System.out.println("Rianimazione..");
-            regenHealthTo(100);
+            getStats().setHealth(100);
         }
     }
 
@@ -118,11 +118,12 @@ public class Player extends Warriors {
 
     @Override
     public void updateEntityType(float delta) {
+
         movement.update(this);
 
         Body body = getPhysics().getBody();
 
-        getStates().setInvulnerable(body.getLinearVelocity().len() > getSpeed());
+        getHumanStates().setInvulnerable(body.getLinearVelocity().len() > getMaxSpeed());
 
         checkIfDead();
 
@@ -143,7 +144,6 @@ public class Player extends Warriors {
 
     @Override
     public void cooldown(float delta) {
-        damageCooldown(delta);
         dashCooldown.update(delta);
         attackCooldown.update(delta);
     }

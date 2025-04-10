@@ -105,8 +105,8 @@ public class PlayerMovementManager {
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
         Body body = player.getPhysics().getBody();
         if (diagonale) {
-            return new Vector2(player.getDirection()).scl(body.getMass() * player.getSpeed() * 1 / 1.41f).scl(1 / 1.41f);
+            return new Vector2(player.getDirection()).scl(body.getMass() * player.getMaxSpeed() * 1 / 1.41f).scl(1 / 1.41f);
         }
-        return new Vector2(player.getDirection()).scl(player.getSpeed()).scl(body.getMass());
+        return new Vector2(player.getDirection()).scl(player.getMaxSpeed()).scl(body.getMass());
     }
 }

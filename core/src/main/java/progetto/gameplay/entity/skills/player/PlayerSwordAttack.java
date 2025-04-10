@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entity.skills.CombatSkill;
-import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
@@ -50,21 +50,21 @@ public class PlayerSwordAttack extends CombatSkill {
         ManagerCamera.shakeTheCamera(0.1f, 0.01f);
         owner.manager.info.screen.setTimeScale(1f, 1f);
         cooldown.reset();
-        Array<Warriors> inRange = ((Player) owner).getInRange();
-        for (Warriors warriors : inRange) {
-            warriors.hit((Warriors) owner, damage, 2);
+        Array<Warrior> inRange = ((Player) owner).getInRange();
+        for (Warrior warrior : inRange) {
+            warrior.hit((Warrior) owner, damage, 2);
         }
-        direction.set(owner.getDirection().x, owner.getDirection().y).setLength(((Player) owner).rangeRadius());
+        direction.set(owner.getDirection().x, owner.getDirection().y).setLength(((Player) owner).getRangeRadius());
         angle = owner.getDirection().angleDeg()-90;
         isBeingUsed=true;
     }
 
-    public Vector2 attackDirection(Entity player, Array<Warriors> entities) {
+    public Vector2 attackDirection(Entity player, Array<Warrior> entities) {
         float sommax=0, sommay=0, count=0;
-        for (Warriors warriors : entities) {
+        for (Warrior warrior : entities) {
             count++;
-            sommax += warriors.getPosition().x;
-            sommay += warriors.getPosition().y;
+            sommax += warrior.getPosition().x;
+            sommay += warrior.getPosition().y;
         }
         Vector2 media = new Vector2(sommax/count, sommay/count);
         return media.sub(player.getPosition());

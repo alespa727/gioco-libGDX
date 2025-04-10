@@ -1,138 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="11">
- <tileset firstgid="1" name="4BigSet" tilewidth="16" tileheight="16" tilecount="216" columns="8">
-  <image source="4BigSet.png" width="128" height="432"/>
-  <tile id="144">
+ <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
+  <image source="CustomTileset.png" width="160" height="160"/>
+  <tile id="0">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="145">
+  <tile id="1">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="146">
+  <tile id="2">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="147">
+  <tile id="3">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="148">
+  <tile id="4">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="149">
+  <tile id="5">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="150">
+  <tile id="6">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="152">
+  <tile id="8">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="154">
+  <tile id="10">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="155">
+  <tile id="11">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="157">
+  <tile id="12">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="160">
+  <tile id="13">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="161">
+  <tile id="14">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="162">
+  <tile id="16">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="163">
+  <tile id="17">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="164">
+  <tile id="18">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="165">
+  <tile id="19">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="166">
+  <tile id="20">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="168">
+  <tile id="21">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="169">
+  <tile id="22">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="170">
+  <tile id="24">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="171">
+  <tile id="25">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="172">
+  <tile id="26">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="173">
+  <tile id="27">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="174">
+  <tile id="28">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="175">
+  <tile id="29">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="178">
+  <tile id="30">
+   <properties>
+    <property name="solido" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="solido" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="solido" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="solido" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="35">
+   <properties>
+    <property name="solido" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="solido" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="37">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
@@ -140,26 +170,26 @@
  </tileset>
  <layer id="2" name="sfondo" width="20" height="20">
   <data encoding="csv">
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,
-152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152,152
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="3" name="pavimento" width="20" height="20">
@@ -170,13 +200,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,154,154,154,154,154,154,154,154,154,0,0,0,0,0,
-0,0,0,0,0,0,154,154,154,154,154,154,154,154,154,0,0,0,0,0,
-0,0,0,0,0,0,154,154,154,154,154,154,154,154,154,0,0,0,0,0,
-0,0,0,0,0,0,154,154,154,154,154,154,154,154,154,0,0,0,0,0,
-0,0,0,0,0,0,154,154,154,154,154,154,154,154,154,0,0,0,0,0,
-0,0,0,0,0,0,154,154,154,154,154,154,154,154,154,0,0,0,0,0,
-0,0,0,0,0,0,154,154,154,154,154,154,154,154,154,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,0,0,0,0,
+0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,0,0,0,0,
+0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,0,0,0,0,
+0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,0,0,0,0,
+0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,0,0,0,0,
+0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -194,13 +224,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,145,146,146,146,146,146,146,146,147,0,0,0,0,0,
-0,0,0,0,0,0,153,0,0,0,0,0,0,0,155,0,0,0,0,0,
-0,0,0,0,0,0,153,0,0,0,0,0,0,0,155,0,0,0,0,0,
-0,0,0,0,0,0,153,0,0,0,0,0,0,0,155,0,0,0,0,0,
-0,0,0,0,0,0,153,0,0,0,0,0,0,0,155,0,0,0,0,0,
-0,0,0,0,0,0,153,0,0,0,0,0,0,0,155,0,0,0,0,0,
-0,0,0,0,0,0,161,162,162,179,162,162,162,162,163,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,3,0,0,0,0,
+0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,11,0,0,0,0,
+0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,11,0,0,0,0,
+0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,11,0,0,0,0,
+0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,11,0,0,0,0,
+0,0,0,0,0,17,18,18,18,35,18,18,18,18,18,19,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

@@ -1,13 +1,13 @@
 package progetto.gameplay.entity.skills.enemy;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 
 public class EnemySwordAttack extends CombatSkill {
 
-    public EnemySwordAttack(Warriors entity, String name, String description, float damage) {
+    public EnemySwordAttack(Warrior entity, String name, String description, float damage) {
         super(entity, name, description,  damage);
     }
 
@@ -26,7 +26,7 @@ public class EnemySwordAttack extends CombatSkill {
     @Override
     public void execute() {
         if (((Enemy) owner).getInRange().size>0){
-            owner.manager.player().hit((Warriors) owner, damage, 2);
+            owner.manager.player().hit((Warrior) owner, damage, 2);
         }
     }
 

@@ -1,13 +1,15 @@
 package progetto.gameplay.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.types.living.combat.boss.Boss;
 import progetto.gameplay.entity.types.notliving.Bullet;
-import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
 
 public class ManagerEvent implements ContactListener {
@@ -32,10 +34,10 @@ public class ManagerEvent implements ContactListener {
         // Gestione del range del player
         // ---------------------------------------------
         if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
-            ((Player) dataA).addEntity((Warriors) dataB);
+            ((Player) dataA).addEntity((Warrior) dataB);
         }
         if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
-            ((Player) dataB).addEntity((Warriors) dataA);
+            ((Player) dataB).addEntity((Warrior) dataA);
         }
 
         // ---------------------------------------------
@@ -51,16 +53,16 @@ public class ManagerEvent implements ContactListener {
             ((Enemy) dataA).addEntity((Player) dataB);
         }
 
-        if (dataA instanceof Warriors && !isRangeA && dataB instanceof Bullet) {
+        if (dataA instanceof Warrior && !isRangeA && dataB instanceof Bullet) {
             if (((Bullet) dataB).getOwner() == dataA) return;
-            if(((Warriors) dataA).isInvulnerable()) return;
-            ((Warriors) dataA).hit((Entity) dataB, ((Bullet) dataB).damage,2);
+            if(((Warrior) dataA).getHumanStates().isInvulnerable()) return;
+            ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).getComponent(BulletComponent.class).damage,2);
             ((Bullet) dataB).despawn();
         }
-        if (dataB instanceof Warriors && !isRangeA && dataA instanceof Bullet) {
+        if (dataB instanceof Warrior && !isRangeA && dataA instanceof Bullet) {
             if (((Bullet) dataA).getOwner() == dataB) return;
-            if(((Warriors) dataB).isInvulnerable()) return;
-            ((Warriors) dataB).hit((Entity) dataA, ((Bullet) dataA).damage, 2);
+            if(((Warrior) dataB).getHumanStates().isInvulnerable()) return;
+            ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).getComponent(BulletComponent.class).damage, 2);
             ((Bullet) dataA).despawn();
         }
 
@@ -88,10 +90,10 @@ public class ManagerEvent implements ContactListener {
         // Se dataA è un Player e dataB è un CombatEntity (ma non un Player)
         // e se il filtro del fixtureB non indica RANGE, rimuovo la CombatEntity dal Player.
         if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
-            ((Player) dataA).removeEntity((Warriors) dataB);
+            ((Player) dataA).removeEntity((Warrior) dataB);
         }
         if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
-            ((Player) dataB).removeEntity((Warriors) dataA);
+            ((Player) dataB).removeEntity((Warrior) dataA);
         }
 
         // ----------------------------------------------------
@@ -111,11 +113,14 @@ public class ManagerEvent implements ContactListener {
         // e disattivo il MapEvent
 
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
-        if (dataA instanceof Entity && dataB instanceof MapEvent) {
+        if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {
             ((MapEvent) dataB).setActive(false);
-        } else if (dataB instanceof Entity && dataA instanceof MapEvent) {
+            return;
+        } else if (dataB instanceof Player && dataA instanceof ChangeMapEvent) {
             ((MapEvent) dataA).setActive(false);
+            return;
         }
+
     }
 
     @Override

@@ -13,8 +13,6 @@ public class HumanStatsComponent extends Component {
         health = maxHealth;
     }
 
-
-
     public float getSpeedMultiplier() {
         return speedMultiplier;
     }

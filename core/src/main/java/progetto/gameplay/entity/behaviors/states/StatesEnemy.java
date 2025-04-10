@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.gameplay.entity.components.warrior.DirectionalRange;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.living.combat.player.Player;
@@ -76,7 +77,7 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void enter(Enemy entity) {
-            entity.movement().setAwake(true);
+            entity.getMovementManager().setAwake(true);
         }
 
         @Override
@@ -96,7 +97,7 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void exit(Enemy entity) {
-            entity.movement().setAwake(false);
+            entity.getMovementManager().setAwake(false);
         }
 
         @Override
@@ -168,11 +169,12 @@ public enum StatesEnemy implements State<Enemy> {
                 }
 
                 if (userData instanceof Player && filter.categoryBits != ManagerEntity.RANGE) {
-                    if (start.dst(end) > entity.rangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
+                    DirectionalRange a = entity.getComponent(DirectionalRange.class);
+                    if (start.dst(end) > a.getRangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
                         entity.statemachine.changeState(PURSUE);
                         return fraction;
                     }
-                    if (start.dst(end) < entity.rangeRadius() && entity.statemachine.getCurrentState() != ATTACKING) {
+                    if (start.dst(end) < a.getRangeRadius() && entity.statemachine.getCurrentState() != ATTACKING) {
                         entity.statemachine.changeState(ATTACKING);
                         return fraction;
                     }

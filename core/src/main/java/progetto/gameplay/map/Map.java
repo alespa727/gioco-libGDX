@@ -2,6 +2,7 @@ package progetto.gameplay.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -45,12 +46,7 @@ public class Map implements Disposable {
 
         this.nome = name;
 
-
-        TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
-        params.textureMinFilter = Texture.TextureFilter.Nearest;
-        params.textureMagFilter = Texture.TextureFilter.Nearest;
-
-        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx"), params); // Carico il file dalla memoria
+        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
         mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE); // Inizializzazione map renderer
 
         events = new Array<>(); // Array di eventi
@@ -138,32 +134,30 @@ public class Map implements Disposable {
         }
     }
 
-    /**
-     * Crea i corpi delle collisioni
-     */
     public Map createCollision() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (collisions[i][j]) {
-                    // Definizione del blocco
-                    BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, i+0.5f, j+0.5f);
+                    final int x = i;
+                    final int y = j;
 
-                    // Definizione della forma
+
+                    // Crea oggetti nuovi per ogni Runnable
+                    BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x + 0.5f, y + 0.5f);
                     Shape boxShape = BodyFactory.createPolygonShape(0.5f, 0.5f);
 
-                    // Definizione delle proprietà fisiche
-                    FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0, 0);
-
-                    // Creazione del blocco
-                    Gdx.app.postRunnable(()-> BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape));
-
+                    FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                     fixtureDef.filter.groupIndex = ManagerEntity.WALL;
+
+                    BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
+
                 }
             }
         }
         createBorders();
         return this;
     }
+
 
     /**
      * Crea bordi della mappa
@@ -208,11 +202,7 @@ public class Map implements Disposable {
                 events.add(new ChangeMapEvent(new Vector2(x, y), radius, this.mapManager, map, spawnx, spawny));
                 System.out.println("evento aggiunto");
             }
-
         }
-        ManagerEvent listener = new ManagerEvent();
-
-        ManagerWorld.getInstance().setContactListener(listener);
     }
 
     @Override

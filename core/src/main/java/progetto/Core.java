@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.audio.AudioManager;
 import progetto.gameplay.Game;
 import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.ManagerWorld;
 import progetto.menu.MainScreen;
 
 // Classe principale del gioco, estende Game di libGDX
@@ -31,6 +32,7 @@ public class Core extends com.badlogic.gdx.Game {
 
     @Override
     public void dispose() {
+        ManagerWorld.getInstance().dispose();
         batch.dispose();          // Libera risorse grafiche
         renderer.dispose();
         assetManager.dispose();   // Libera le risorse caricate

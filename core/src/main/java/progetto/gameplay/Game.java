@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.Core;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.ManagerEvent;
 import progetto.gameplay.manager.ManagerGame;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.map.Map;
@@ -68,6 +69,8 @@ public class Game implements Screen {
         this.gameLoader = new GameLoader();
         this.gameLoader.loadWorld();
         this.loadGame(core);
+        ManagerEvent listener = new ManagerEvent();
+        ManagerWorld.getInstance().setContactListener(listener);
     }
 
     /**
@@ -127,6 +130,8 @@ public class Game implements Screen {
         if (!player.getState().isAlive()) {
             info.core.setScreen(new DefeatScreen(info.core));
         }
+        timeScaleCooldown.update(delta);
+        if (timeScaleCooldown.isReady) timeScale = 1f;
 
         ScreenUtils.clear(0, 0, 0, 1);
         this.delta = delta;

@@ -13,6 +13,7 @@ import progetto.gameplay.map.MapManager;
  */
 public class ChangeMapEvent extends MapEvent {
     // Gestore mappa
+    private Entity lastEntity;
     private final MapManager mapManager;
 
     // Coordinate della prossima mappa

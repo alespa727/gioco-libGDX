@@ -111,7 +111,7 @@ public class PauseScreen implements Screen {
         pause = new Cooldown(0.7f);
         pause.reset();
         resume.reset();
-        gameScreen.getEntityManager().player().setHasBeenHit(false);
+        gameScreen.getEntityManager().player().getHumanStates().setHasBeenHit(false);
 
         stage.setDebugAll(true);
     }

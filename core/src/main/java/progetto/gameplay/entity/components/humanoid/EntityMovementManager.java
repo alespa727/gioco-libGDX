@@ -83,7 +83,7 @@ public class EntityMovementManager extends IteratableComponent {
         }
 
         Vector2 movementDirection = new Vector2(target).sub(owner.getPosition()).nor();
-        float speed = owner.getSpeed();
+        float speed = owner.getMaxSpeed();
         Vector2 movement = movementDirection.scl(speed);
         Vector2 force = new Vector2(movement).scl(speed).scl(body.getMass());
         body.applyForceToCenter(force.scl(2f), true);

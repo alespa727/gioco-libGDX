@@ -42,8 +42,6 @@ public class Lich extends Boss{
 
     @Override
     public void updateEntityType(float delta) {
-
-        damageCooldown(delta);
         prepareToChangeStates.update(delta);
         stateMachine.update();
     }
@@ -70,7 +68,7 @@ public class Lich extends Boss{
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
         Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getPhysics().getBody()));
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(directionalRange));
+        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getDirectionRangeComponent().getDirectionalRange()));
 
         return new BossInstance(this);
     }

@@ -4,9 +4,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.GameInfo;
+import progetto.gameplay.entity.components.warrior.DirectionalRange;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.entity.types.living.combat.Warriors;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
 
@@ -105,8 +106,9 @@ public class EntityRenderer {
         if(!queue.isEmpty()){
             entities.add(queue.last());
             queue.last().getPhysics().initBody();
-            if (queue.last() instanceof Warriors ce) {
-                ce.directionalRange = BodyFactory.createBody(ce, ce.bodyDef, ce.fixtureDef, ce.shape);
+            if (queue.last() instanceof Warrior ce) {
+                DirectionalRange a = ce.getDirectionRangeComponent();
+                ce.setDirectionalRange(BodyFactory.createBody(ce, a.getBodyDef(), a.getFixtureDef(), a.getShape()));
             }
             queue.last().create();
             queue.removeLast().load();
