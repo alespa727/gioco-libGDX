@@ -9,13 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.Core;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.manager.ManagerGame;
@@ -27,63 +24,60 @@ import progetto.gameplay.map.MapManager;
 
 public class Game implements Screen {
 
+    GameLoader gameLoader;
+
     // Costante per il passo fisico (60Hz)
     public static final float STEP = 1 / 60f;
 
     // Variabili principali per la gestione dello stato di gioco e del tempo
-    private final GameInfo gameInfo;
-    private final DefaultStateMachine<Game, ManagerGame> gameState;
-    public boolean loaded = false;
-    public float delta;
-    public float accumulator = 0f;
-    private float elapsedTime;
-    private float timeScale = 1f;
-    private final Cooldown timeScaleCooldown;
+    private GameInfo info;
+    private DefaultStateMachine<Game, ManagerGame> state;
+    private Cooldown timeScaleCooldown;
 
-    // Variabili per la gestione della grafica e degli effetti
+    // Shaders
     private ShaderProgram shaderProgram;
     private FrameBuffer fbo1;
     private FrameBuffer fbo2;
-    private Box2DDebugRenderer debugRenderer;
-    private Gui rect;
-    private Stage stage;
-    private Table root;
+
+    // Ui e debug
+    private Box2DDebugRenderer debug;
+    private Gui gui;
+
+    // Viewport
     public FitViewport viewport;
 
-    // Costruttore
-    public Game(Core game) {
-        // Inizializza variabili
-        ManagerWorld.init();
-        Box2D.init();
-        this.gameState = new DefaultStateMachine<>(this);
-        this.gameState.changeState(ManagerGame.PLAYING);
-        this.gameInfo = new GameInfo();
-        this.gameInfo.game = game;
-        this.gameInfo.screen = this;
-        this.timeScaleCooldown = new Cooldown(0);
+    // Variabili di stato
+    public boolean flag = false;
+
+    // Gestori del tempo
+    public float delta;
+    public float accumulator = 0f;
+    private float tempoTrascorso;
+    private float timeScale = 1f;
+
+    /**
+     * Costruttore del gioco
+     * @param core gestore degli schermi
+     */
+    public Game(final Core core) {
+        this.gameLoader = new GameLoader();
+        this.gameLoader.loadWorld();
+        this.loadGame(core);
     }
 
-    // Imposta la velocità del tempo
-    public void setTimeScale(float timeScale, float time) {
-        this.timeScale = timeScale;
-        timeScaleCooldown.reset(time);
-    }
-
-    // Reset della velocità del tempo
-    public void resetTimeScale() {
-        timeScaleCooldown.update(delta);
-        if (timeScaleCooldown.isReady) {
-            timeScale = 1f;
-        }
-    }
-
-    // Metodi di inizializzazione per la grafica
-    private void buildFBO(int width, int height) {
-        // Crea due FrameBuffer per l'elaborazione grafica
+    /**
+     * Crea i frame buffer (posti in cui salvare tutto cio+ che è stato disegnato), per applicare la shader
+     * @param width larghezza schermo
+     * @param height altezza schermo
+     */
+    private void createFrameBuffer(int width, int height) {
         this.fbo1 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
         this.fbo2 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
     }
 
+    /**
+     * Crea le shader
+     */
     private void createShaderProgram() {
         // Carica e crea il programma shader (per effetti grafici avanzati)
         String vertexShader = Gdx.files.internal("shaders/vertex.glsl").readString();
@@ -91,29 +85,6 @@ public class Game implements Screen {
         this.shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
     }
 
-    // Metodo per caricare e inizializzare il gioco
-    private void load() {
-        System.out.println("GameScreen loaded");
-
-        // Crea e imposta la GUI (interfaccia utente)
-        this.rect = new Gui(this);
-        this.stage = new Stage(new ScreenViewport());
-        this.root = new Table();
-        this.root.setFillParent(true);
-        this.stage.addActor(root);
-
-        // Imposta la visualizzazione
-        this.viewport = new FitViewport(16f, 9f, ManagerCamera.getInstance());
-        this.viewport.apply();
-
-        // Inizializza i manager di entità e mappa
-        this.gameInfo.managerEntity = new ManagerEntity(this.gameInfo);
-        this.gameInfo.mapManager = new MapManager(viewport, this.gameInfo.managerEntity, 1);
-
-        this.loaded = true;
-    }
-
-    // Metodi della Screen Interface
     @Override
     public void show() {
         // Carica gli asset necessari all'inizio
@@ -122,80 +93,140 @@ public class Game implements Screen {
         Core.assetManager.load("entities/circle.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        // Crea e imposta gli shader e i framebuffer
-        createShaderProgram();
-        buildFBO(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Carica la scena di gioco se non è già stata caricata
-        if (!loaded){
-            load();
+        // Crea e imposta gli shader e i framebuffer
+        this.createShaderProgram();
+        this.createFrameBuffer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        if (!flag){
+            loadGameManagers();
         }
 
         // Se il giocatore è morto, lo fa respawnare
-        if (!this.gameInfo.managerEntity.player().isAlive()) {
-            this.gameInfo.managerEntity.player().respawn();
+        if (!this.info.managerEntity.player().isAlive()) {
+            this.info.managerEntity.player().respawn();
         }
 
-        ManagerCamera.getInstance().position.set(this.gameInfo.managerEntity.player().getPosition(), 0);
+        ManagerCamera.getInstance().position.set(this.info.managerEntity.player().getPosition(), 0);
         ManagerCamera.getInstance().update();
 
-
         // Inizializza il renderer di debug di Box2D
-        debugRenderer = new Box2DDebugRenderer();
-        debugRenderer.setDrawVelocities(true);
-
+        debug = new Box2DDebugRenderer();
+        debug.setDrawVelocities(true);
     }
 
     @Override
     public void render(float delta) {
-        // Gestione della velocità del tempo
-        resetTimeScale();
-        KeyHandler.input();
-        updateDeltaTime(delta);
-
-        ScreenUtils.clear(1, 0, 0, 1); // Pulisce lo schermo
-        gameState.update();  // Aggiorna lo stato del gioco
-        if (KeyHandler.debug) Box2DDebugRender();  // Renderizza il debug di Box2D se attivato
+        ScreenUtils.clear(0, 0, 0, 1);
+        this.delta = delta;
+        this.tempoTrascorso += delta;
+        this.state.update();
+        if (KeyHandler.debug) debug();  // Renderizza il debug di Box2D se attivato
     }
 
-    @Override
-    public void resize(int width, int height) {
-        // Gestisce il ridimensionamento della finestra
-        viewport.update(width, height, false);
-    }
-
-    @Override
-    public void pause() {}
-    @Override
-    public void resume() {
-
-    }
-    @Override
-    public void hide() {}
-
-    @Override
-    public void dispose() {
-        // Pulisce le risorse utilizzate
-        this.gameInfo.game.batch.dispose();
-        this.gameInfo.game.renderer.dispose();
-        stage.dispose();
-    }
-
-    // Metodi di aggiornamento e renderizzazione
-    private void updateDeltaTime(float deltaTime) {
-        // Aggiorna il delta tempo
-        this.delta = deltaTime;
-    }
-
+    /**
+     * Aggiorna lo stato di gioco
+     * @param delta tempo trascorso dall'ultimo frame
+     */
     public void update(float delta) {
         // Aggiorna la logica di gioco
-        elapsedTime += delta;
-        getEntityManager().render(delta);
-        getMapManager().render();
-        boolean ambiente = getMapManager().getAmbiente();
-        updateCamera(ambiente);
+        this.getEntityManager().render(delta);
+        this.getMapManager().render();
+        this.updateCamera(this.getMapManager().disegnaUI());
+
+        this.timeScaleCooldown.update(delta);
+        if (this.timeScaleCooldown.isReady) {
+            this.timeScale = 1f;
+        }
     }
 
+    /**
+     * Disegna il gioco (Mappa, entità, ui)
+     */
+    public void draw() {
+        // Renderizza gli oggetti sulla mappa e l'entità del giocatore
+        OrthogonalTiledMapRenderer mapRenderer = this.info.mapManager.getMap().getMapRenderer();
+        mapRenderer.setView(ManagerCamera.getInstance());
+        mapRenderer.render();
+
+        this.getEntityManager().draw(tempoTrascorso);
+
+        if (getMapManager().disegnaUI()) drawGUI();
+    }
+
+    /**
+     * Disegna la ui
+     */
+    private void drawGUI() {
+        // Disegna la GUI
+        gui.draw();
+    }
+
+    // Getter per variabili principali
+    public ManagerEntity getEntityManager() {
+        return this.info.managerEntity;
+    }
+
+    public MapManager getMapManager() {
+        return this.info.mapManager;
+    }
+
+    public float getTimeScale() {
+        return timeScale;
+    }
+
+    public GameInfo getInfo() {
+        return this.info;
+    }
+
+    /**
+     * Performance
+     */
+    @SuppressWarnings("unused")
+    public void performanceInfo() {
+        System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
+        System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB");
+        System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB");
+    }
+
+    /**
+     * Carica il gioco
+     * @param core core del programma, gestore degli schermi
+     */
+    public void loadGame(final Core core) {
+        this.state = new DefaultStateMachine<>(this);
+        this.state.changeState(ManagerGame.PLAYING);
+        this.info = new GameInfo();
+        this.info.core = core;
+        this.info.screen = this;
+        this.timeScaleCooldown = new Cooldown(0);
+        this.gui = new Gui(this);
+        this.viewport = new FitViewport(16f, 9f, ManagerCamera.getInstance());
+        this.viewport.apply();
+    }
+
+    /**
+     * Imposta la velocità del tempo
+     * @param timeScale velocità del tempo
+     * @param time per quanto tempo
+     */
+    public void setTimeScale(float timeScale, float time) {
+        this.timeScale = timeScale;
+        timeScaleCooldown.reset(time);
+    }
+
+    /**
+     * Carica il gioco
+     */
+    private void loadGameManagers() {
+        this.info.managerEntity = new ManagerEntity(this.info);
+        this.info.mapManager = new MapManager(viewport, this.info.managerEntity, 1);
+        this.flag = true;
+    }
+
+    /**
+     * Applica la shader ai framebuffer
+     */
     private void applyShader() {
         // Applica gli shader per l'effetto grafico
         Texture fboText = fbo1.getColorBufferTexture();
@@ -204,10 +235,10 @@ public class Game implements Screen {
 
         fbo2.begin();
         ScreenUtils.clear(0, 0, 0, 1);
-        this.gameInfo.game.batch.begin();
-        this.gameInfo.game.batch.setShader(null);
-        this.gameInfo.game.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
-        this.gameInfo.game.batch.end();
+        this.info.core.batch.begin();
+        this.info.core.batch.setShader(null);
+        this.info.core.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
+        this.info.core.batch.end();
         fbo2.end();
 
         // Renderizza il secondo FBO
@@ -215,36 +246,26 @@ public class Game implements Screen {
         fboTextReg = new TextureRegion(fboText);
         fboTextReg.flip(false, true);
 
-        this.gameInfo.game.batch.begin();
-        this.gameInfo.game.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
-        this.gameInfo.game.batch.end();
+        this.info.core.batch.begin();
+        this.info.core.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
+        this.info.core.batch.end();
     }
 
-    private void Box2DDebugRender() {
+    /**
+     * Disegna le hitbox di gioco
+     */
+    private void debug() {
         // Renderizza il debug di Box2D
-        debugRenderer.render(ManagerWorld.getInstance(), ManagerCamera.getInstance().combined);
+        debug.render(ManagerWorld.getInstance(), ManagerCamera.getInstance().combined);
     }
 
-    public void draw() {
-        // Renderizza gli oggetti sulla mappa e l'entità del giocatore
-        this.gameInfo.mapManager.getMap().getMapRenderer().setView(ManagerCamera.getInstance());
-        this.gameInfo.mapManager.getMap().getMapRenderer().render();
-        this.gameInfo.managerEntity.draw(elapsedTime);
-
-        // Se l'ambiente è attivo, disegna l'interfaccia grafica
-        if (getMapManager().getAmbiente()) drawGUI();
-    }
-
-    private void drawGUI() {
-        // Disegna la GUI
-        rect.draw();
-        stage.act();
-        stage.draw();
-    }
-
+    /**
+     * Aggiorna la telecamera
+     * @param boundaries richiesta di controllare i bordi della mappa
+     */
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
-        ManagerCamera.update(gameInfo.managerEntity, viewport, delta, boundaries);
+        ManagerCamera.update(info.managerEntity, viewport, delta, boundaries);
         float PPM = 256f;
         OrthographicCamera camera = ManagerCamera.getInstance();
 
@@ -256,37 +277,25 @@ public class Game implements Screen {
         );
         camera.update();
 
-        this.gameInfo.game.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
-        this.gameInfo.game.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
+        this.info.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
+        this.info.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
     }
 
-    // Getter per variabili principali
-    public ManagerEntity getEntityManager() {
-        return this.gameInfo.managerEntity;
+    @Override
+    public void pause() {}
+    @Override
+    public void resume() {}
+    @Override
+    public void hide() {}
+    @Override
+    public void resize(int width, int height) {
+        // Gestisce il ridimensionamento della finestra
+        viewport.update(width, height, false);
     }
-
-    public MapManager getMapManager() {
-        return this.gameInfo.mapManager;
-    }
-
-    public float getTimeScale() {
-        return timeScale;
-    }
-
-    public GameInfo getGameInfo() {
-        return this.gameInfo;
-    }
-
-    @SuppressWarnings("unused")
-    public DefaultStateMachine<Game, ManagerGame> gameState() {
-        return gameState;
-    }
-
-    // Debugging delle performance
-    @SuppressWarnings("unused")
-    public void performanceInfo() {
-        System.out.println(Gdx.graphics.getFramesPerSecond() + " fps");
-        System.out.println("Java Heap: " + Gdx.app.getJavaHeap() / (1024 * 1024) + " MB");
-        System.out.println("Native Heap: " + Gdx.app.getNativeHeap() / (1024 * 1024) + " MB");
+    @Override
+    public void dispose() {
+        // Pulisce le risorse utilizzate
+        this.info.core.batch.dispose();
+        this.info.core.renderer.dispose();
     }
 }

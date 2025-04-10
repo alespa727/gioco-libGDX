@@ -14,6 +14,7 @@ import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.factories.BodyFactory;
+import progetto.utils.Cooldown;
 
 public class Bullet extends Entity {
 
@@ -23,6 +24,8 @@ public class Bullet extends Entity {
     private final float radius;
     private final Entity owner;
     private final Texture texture;
+    private final Cooldown cooldown;
+    private boolean cooldownActive;
 
     // === Costruttore ===
     public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity owner) {
@@ -32,6 +35,12 @@ public class Bullet extends Entity {
         this.radius = radius;
         this.owner = owner;
         this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
+        this.cooldown = new Cooldown(0);
+    }
+
+    public void startCooldown(float time) {
+        cooldownActive = true;
+        this.cooldown.reset(time);
     }
 
     //METODO HIT PER DIFFERENZIARE I DIVERSI TIPI DI PROIETTILI
@@ -44,7 +53,10 @@ public class Bullet extends Entity {
 
     @Override
     public void updateEntity(float delta) {
-        // Logica di aggiornamento del proiettile (vuota per ora)
+        if(cooldownActive) {
+            cooldown.update(delta);
+        }
+        if (cooldown.isReady) despawn();
     }
 
     @Override
@@ -89,6 +101,7 @@ public class Bullet extends Entity {
         if (!rendered) {
             despawn();
         }
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import progetto.CoreConfig;
 import progetto.gameplay.Game;
 import progetto.menu.PauseScreen;
+import progetto.utils.KeyHandler;
 
 import static progetto.gameplay.Game.STEP;
 
@@ -19,8 +20,9 @@ public enum ManagerGame implements State<Game> {
 
         @Override
         public void update(Game screen) {
+            KeyHandler.input();
             if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
-                screen.getGameInfo().game.setScreen(new PauseScreen(screen.getGameInfo().game, screen));
+                screen.getInfo().core.setScreen(new PauseScreen(screen.getInfo().core, screen));
             }
 
             screen.accumulator += screen.delta;

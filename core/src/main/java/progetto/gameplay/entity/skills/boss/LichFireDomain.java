@@ -34,6 +34,7 @@ public class LichFireDomain extends CombatSkill {
      */
     @Override
     public void execute() {
+        owner.manager.createBullet(owner.getPosition().x, owner.getPosition().y, new Vector2(0,0), 3, 0, 20, owner);
         for (int i = 0; i < 10; i++) {
             float angle = (float)(2 * Math.PI * i / 10); // da 0 a 2π in 15 passi
             Vector2 direction = new Vector2((float)Math.cos(angle), (float)Math.sin(angle)).nor(); // vettore normalizzato

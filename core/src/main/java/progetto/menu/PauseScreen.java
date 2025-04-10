@@ -144,7 +144,7 @@ public class PauseScreen implements Screen {
 
     public void transitionOut(float delta) {
         resume.update(delta);
-        boolean boundaries = gameScreen.getMapManager().getAmbiente();
+        boolean boundaries = gameScreen.getMapManager().disegnaUI();
         gameScreen.updateCamera(boundaries);
         gameScreen.render(delta);
         gameScreen.draw();

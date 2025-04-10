@@ -37,7 +37,7 @@ public class Player extends Warriors {
 
         ManagerCamera.getInstance().position.set(getPosition().x, getPosition().y, 0);
 
-        getSkillset().add(new PlayerDash(this, "", "", 25f));
+        getSkillset().add(new PlayerDash(this, "", "", 12.5f));
         getSkillset().add(new PlayerSwordAttack(this, "", "",10));
         getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
 

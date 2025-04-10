@@ -13,7 +13,6 @@ import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.entity.types.living.combat.player.Player;
@@ -38,10 +37,9 @@ public final class ManagerEntity {
     private final Player player;
     private final Array<Entity> entityArray;
     private final Queue<Entity> entityQueue;
-
-    private int nextEntityId = 1;
-
     public Array<EntityInstance> instances;
+
+    private int entityId = 1;
 
     public ManagerEntity(GameInfo gameInfo) {
 
@@ -63,8 +61,8 @@ public final class ManagerEntity {
 
         int n = 0;
         for (int i = 0; i < n; i++) {
-            nextEntityId++;
-            e.id = nextEntityId;
+            entityId++;
+            e.id = entityId;
             summon(EntityFactory.createEnemy("Finn", e, this, 1.5f));
         }
         e = EntityConfigFactory.createEntityConfig("Lich", 12, 12);
@@ -97,11 +95,12 @@ public final class ManagerEntity {
         }
     }
 
-    public void summon(Entity e) {
+    public Entity summon(Entity e) {
         entityQueue.addFirst(e);
+        return entityQueue.first();
     }
 
-    public void createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Entity owner) {
+    public Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Entity owner) {
         EntityConfig config = new EntityConfig();
         config.nome = "Bullet";
         config.x = x;
@@ -110,16 +109,16 @@ public final class ManagerEntity {
         config.direzione = direction;
         config.isAlive = true;
         config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
-        summon(new Bullet(config, this, radius, speed, damage, owner));
+        return (Bullet) summon(new Bullet(config, this, radius, speed, damage, owner));
     }
 
     public void draw(float elapsedTime) {
-        gameInfo.game.batch.begin();
+        gameInfo.core.batch.begin();
         entityArray.sort(comparator);
         for (Entity e : entityArray) {
             if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
-                    e.draw(gameInfo.game.batch, elapsedTime);
+                    e.draw(gameInfo.core.batch, elapsedTime);
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.direzione());
                 }
@@ -128,13 +127,13 @@ public final class ManagerEntity {
         for (Entity e : entityArray) {
             if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
                 try {
-                    ((Humanoid) e).getSkillset().draw(gameInfo.game.batch, elapsedTime);
+                    ((Humanoid) e).getSkillset().draw(gameInfo.core.batch, elapsedTime);
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.direzione());
                 }
             }
         }
-        gameInfo.game.batch.end();
+        gameInfo.core.batch.end();
     }
 
     public void render(float delta) {
@@ -149,7 +148,7 @@ public final class ManagerEntity {
         }
 
         if (!player.isAlive()) {
-            gameInfo.game.setScreen(new DefeatScreen(gameInfo.game));
+            gameInfo.core.setScreen(new DefeatScreen(gameInfo.core));
         }
 
         for (Entity e : entityArray) {
@@ -162,18 +161,18 @@ public final class ManagerEntity {
     }
 
     public void drawPath() {
-        gameInfo.game.renderer.begin(ShapeRenderer.ShapeType.Filled);
+        gameInfo.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entityArray) {
             if (!e.isRendered()){
                 continue;
             }
             if (e instanceof Enemy enemy) {
                 if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y))
-                    enemy.drawPath(gameInfo.game.renderer);
+                    enemy.drawPath(gameInfo.core.renderer);
             }
 
         }
-        gameInfo.game.renderer.end();
+        gameInfo.core.renderer.end();
     }
 
     public void drawDebug() {

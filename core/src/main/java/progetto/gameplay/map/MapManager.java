@@ -106,7 +106,7 @@ public class MapManager {
     /**
      * Restituisce il tipo di ambiente
      */
-    public boolean getAmbiente() {
+    public boolean disegnaUI() {
         return ambienteAperto;
     }
 
