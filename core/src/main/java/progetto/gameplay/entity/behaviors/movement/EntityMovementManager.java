@@ -3,6 +3,7 @@ package progetto.gameplay.entity.behaviors.manager.entity.movement;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import progetto.utils.Cooldown;
 import progetto.gameplay.entity.types.living.Humanoid;
@@ -41,7 +42,7 @@ public class EntityMovementManager {
     }
 
     public void update() {
-        cooldown.update(owner.delta);
+        cooldown.update(owner.manager.delta);
         if (steps > path.size - 1 || cooldown.isReady) {
             steps = 0;
             this.isReady = true;
@@ -59,14 +60,15 @@ public class EntityMovementManager {
 
         direction = new Vector2(path.get(steps).x - path.get(steps - 1).x, path.get(steps).y - path.get(steps - 1).y);
         if (!direction.epsilonEquals(0, 0)) {
-            owner.setDirezione(direction);
+            owner.getDirection().set(direction);
         }
 
     }
 
     private void towards(Vector2 target) {
+        Body body = owner.getPhysics().getBody();
         if (owner.getPosition().dst(target) < 8/16f) {
-            owner.body.setLinearDamping(20f);
+            body.setLinearDamping(20f);
             steps++;
             for (Vector2 node: path){
                 if (!Map.getGraph().getClosestNode(node.x, node.y).isWalkable()){
@@ -75,14 +77,14 @@ public class EntityMovementManager {
                 }
             }
         } else {
-            owner.body.setLinearDamping(3f);
+            body.setLinearDamping(3f);
         }
 
         Vector2 movementDirection = new Vector2(target).sub(owner.getPosition()).nor();
         float speed = owner.getSpeed();
         Vector2 movement = movementDirection.scl(speed);
-        Vector2 force = new Vector2(movement).scl(speed).scl(owner.body.getMass());
-        owner.body.applyForceToCenter(force.scl(2f), true);
+        Vector2 force = new Vector2(movement).scl(speed).scl(body.getMass());
+        body.applyForceToCenter(force.scl(2f), true);
     }
 }
 

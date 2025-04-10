@@ -4,28 +4,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 import progetto.Core;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.types.living.combat.Warriors;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.factories.BodyFactory;
 import progetto.utils.Cooldown;
 
 public class Bullet extends Entity {
 
     // === Attributi specifici ===
-    public final float damage;
-    private final float velocity;
-    private final float radius;
     private final Entity owner;
+    public final float damage;
+    public final float velocity;
+    public final float radius;
+
     private final Texture texture;
     private final Cooldown cooldown;
     private boolean cooldownActive;
+
+    private boolean flag=false;
 
     // === Costruttore ===
     public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity owner) {
@@ -35,7 +37,10 @@ public class Bullet extends Entity {
         this.radius = radius;
         this.owner = owner;
         this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
-        this.cooldown = new Cooldown(0);
+        this.cooldownActive = false;
+        this.cooldown = new Cooldown(2);
+        this.cooldown.reset();
+        this.direction.getDirection().set(config.direzione);
     }
 
     public void startCooldown(float time) {
@@ -56,7 +61,11 @@ public class Bullet extends Entity {
         if(cooldownActive) {
             cooldown.update(delta);
         }
-        if (cooldown.isReady) despawn();
+        if (cooldown.isReady){
+            despawn();
+            System.out.println("DESPAWN");
+        }
+
     }
 
     @Override
@@ -66,42 +75,28 @@ public class Bullet extends Entity {
 
     @Override
     public void create() {
-        //System.out.println("Proiettile creato");
-    }
+        physics.getBody().setLinearDamping(0f);
+        physics.getBody().setLinearVelocity(new Vector2(getDirection()).scl(velocity));
+        physics.getBody().getFixtureList().get(0).setSensor(true);
+        physics.getBody().setUserData(this);
 
-    @Override
-    public void initBody() {
-        bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.KinematicBody, config().x, config().y);
-        bodyDef.fixedRotation = true;
-        bodyDef.position.set(config().x, config().y);
-
-        shape = BodyFactory.createCircle(radius);
-        fixtureDef = BodyFactory.createFixtureDef(shape, 1f, 0, 0);
-        fixtureDef.isSensor = true;
-
-        body = ManagerWorld.getInstance().createBody(bodyDef);
-        body.setUserData(this);
-        body.createFixture(fixtureDef);
-
-        shape.dispose();
-
-        body.setLinearVelocity(direzione().scl(velocity));
     }
 
     @Override
     public EntityInstance despawn() {
-        manager.removeEntity(this);
+        System.out.println("DESPAWN");
+        manager.remove(this);
+        Body body = getPhysics().getBody();
         Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(body));
-        return null;
+        return new EntityInstance(this);
     }
 
     @Override
-    public void setRendered(boolean rendered) {
-        super.setRendered(rendered);
+    public void setShouldRender(boolean rendered) {
+        super.setShouldRender(rendered);
         if (!rendered) {
             despawn();
         }
-
     }
 
     @Override

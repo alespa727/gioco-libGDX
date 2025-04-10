@@ -123,11 +123,6 @@ public class PauseScreen implements Screen {
     }
 
     public void drawBackground(float delta) {
-        if (!gameScreen.getEntityManager().player().isAlive()) {
-            game.setScreen(new DefeatScreen(game));
-            return;
-        }
-
         if (pauseRequest) {
             transitionIn(delta);
             return;

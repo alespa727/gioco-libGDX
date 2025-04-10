@@ -22,7 +22,7 @@ public class EntityConfigFactory {
         config.x = x;
         config.y = y;
         config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
-        config.width = 10 / 32f;
+        config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;
         config.inCollisione = false;
@@ -42,7 +42,7 @@ public class EntityConfigFactory {
         lich.x = x;
         lich.y = y;
         lich.img = Core.assetManager.get("entities/nemico.png", Texture.class);
-        lich.width = 25 / 32f;
+        lich.radius = 25 / 32f;
         lich.direzione = new Vector2(0, -0.5f);
         lich.isAlive = true;
         lich.inCollisione = false;
@@ -60,7 +60,7 @@ public class EntityConfigFactory {
         player.id = 0;
         player.nome = "player";
         player.img = Core.assetManager.get("entities/Finn.png", Texture.class);
-        player.width = 10 / 32f;
+        player.radius = 10 / 32f;
         player.direzione = new Vector2(0, -0.5f);
         player.isAlive = true;
         player.inCollisione = false;

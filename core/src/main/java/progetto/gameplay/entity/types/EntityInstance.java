@@ -2,33 +2,37 @@ package progetto.gameplay.entity.types;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Rappresenta una "fotografia" di un'entità in un certo momento.
+ * Utile per salvare lo stato o ricreare un'entità più tardi.
+ */
 public class EntityInstance {
 
-    // === Identificatore del tipo ===
+    /** Nome della classe dell'entità (es. "Player", "Enemy", ecc.) */
     public final String type;
 
-    // === Identificatori e descrizione ===
-    public final int id;
-    public final String nome;
-    public final String descrizione;
-
-    // === Configurazione e stato ===
+    /** {@link EntityConfig} contenente tutte le informazioni sull'entità (statistiche, immagine, stato, ecc.) */
     public final EntityConfig config;
-    public final Vector2 coordinate;
-    public final Vector2 direzione;
-    public final boolean isRendered;
 
-    // === Costruttore ===
+    /** Posizione corrente dell'entità nel mondo ({@link Vector2}) */
+    public final Vector2 coordinate;
+
+    /** Direzione verso cui l'entità è rivolta o si sta muovendo ({@link Vector2}) */
+    public final Vector2 direction;
+
+    /**
+     * Costruisce un'istanza a partire da una {@link Entity}.
+     * Salva tipo, configurazione, posizione e direzione.
+     *
+     * @param e entità da cui creare l'istanza
+     */
     public EntityInstance(Entity e) {
-        this.type = e.getClass().getSimpleName();
+        this.type = e.getClass().getSimpleName(); // Nome del tipo (classe)
         System.out.println(type); // Debug: stampa il tipo dell'entità
 
-        this.id = e.id;
-        this.nome = e.nome;
-        this.descrizione = e.descrizione;
-        this.config = e.config();
-        this.coordinate = e.getPosition();
-        this.direzione = e.direzione();
-        this.isRendered = e.isRendered();
+        this.config = e.getConfig();       // Clona la configurazione
+        this.coordinate = e.getPosition(); // Clona la posizione
+        this.direction = e.getDirection(); // Clona la direzione
     }
 }
+

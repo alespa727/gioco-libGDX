@@ -14,12 +14,15 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.Core;
+import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.manager.ManagerGame;
 import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.map.Map;
+import progetto.menu.DefeatScreen;
 import progetto.utils.Cooldown;
 import progetto.utils.KeyHandler;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.map.MapManager;
 
 public class Game implements Screen {
@@ -30,6 +33,8 @@ public class Game implements Screen {
     public static final float STEP = 1 / 60f;
 
     // Variabili principali per la gestione dello stato di gioco e del tempo
+    private Player player;
+
     private GameInfo info;
     private DefaultStateMachine<Game, ManagerGame> state;
     private Cooldown timeScaleCooldown;
@@ -102,9 +107,11 @@ public class Game implements Screen {
             loadGameManagers();
         }
 
+        player = this.info.managerEntity.player();
+
         // Se il giocatore è morto, lo fa respawnare
-        if (!this.info.managerEntity.player().isAlive()) {
-            this.info.managerEntity.player().respawn();
+        if (!player.getState().isAlive()) {
+            player.respawn();
         }
 
         ManagerCamera.getInstance().position.set(this.info.managerEntity.player().getPosition(), 0);
@@ -117,6 +124,10 @@ public class Game implements Screen {
 
     @Override
     public void render(float delta) {
+        if (!player.getState().isAlive()) {
+            info.core.setScreen(new DefeatScreen(info.core));
+        }
+
         ScreenUtils.clear(0, 0, 0, 1);
         this.delta = delta;
         this.tempoTrascorso += delta;
@@ -149,7 +160,9 @@ public class Game implements Screen {
         mapRenderer.setView(ManagerCamera.getInstance());
         mapRenderer.render();
 
-        this.getEntityManager().draw(tempoTrascorso);
+        Map.getGraph().drawNodes(info.core.renderer);
+
+        this.getEntityManager().draw();
 
         if (getMapManager().disegnaUI()) drawGUI();
     }
@@ -266,7 +279,7 @@ public class Game implements Screen {
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
         ManagerCamera.update(info.managerEntity, viewport, delta, boundaries);
-        float PPM = 256f;
+        float PPM = 128f;
         OrthographicCamera camera = ManagerCamera.getInstance();
 
         // Dopo averla spostata

@@ -3,7 +3,7 @@ package progetto.gameplay.map;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
 import java.util.HashMap;
 
@@ -51,7 +51,9 @@ public class MapManager {
      */
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
-            mapEntityInstances.put(currentMap.nome, managerEntity.despawnEveryone()); // Salva le entità in una hashmap
+            if (mapEntityInstances.get(currentMap.nome)!=null)
+                mapEntityInstances.get(currentMap.nome).clear();
+            mapEntityInstances.put(currentMap.nome, managerEntity.clear()); // Salva le entità in una hashmap
             currentMap.dispose(); // Cancellazione mappa precedente
         }
 
@@ -60,16 +62,16 @@ public class MapManager {
             case 1 -> {
                 nome = "corridoio"; // Nome file
                 ambienteAperto = true; // Tipo ambiente
-                viewport.setWorldSize(20f, 20f * 9 / 16f); // Grandezza telecamera
+                viewport.setWorldSize(16f, 16f * 9 / 16f); // Grandezza telecamera
             }
 
             case 2 -> {
             }
 
             default -> {
-                nome = "bossroom";
+                nome = "stanza";
                 ambienteAperto = false;
-                viewport.setWorldSize(19f, 19f * 9 / 16f);
+                viewport.setWorldSize(16f, 16f * 9 / 16f);
             }
         }
 

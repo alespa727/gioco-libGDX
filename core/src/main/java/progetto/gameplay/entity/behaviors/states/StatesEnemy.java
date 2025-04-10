@@ -4,13 +4,11 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
+import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
 public enum StatesEnemy implements State<Enemy> {
 
@@ -19,7 +17,7 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void enter(Enemy entity) {
-            entity.body.setLinearDamping(20f);
+            entity.getPhysics().getBody().setLinearDamping(20f);
         }
 
         @Override
@@ -27,19 +25,22 @@ public enum StatesEnemy implements State<Enemy> {
             if (player == null)
                 player = entity.manager.player();
 
+            Body enemyBody = entity.getPhysics().getBody();
+            Body playerBody = player.getPhysics().getBody();
+
             entity.attack();
             entity.searchPath(player);
 
-            entity.direzione().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
+            entity.getDirection().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
 
-            RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-            ManagerWorld.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
+            ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());
 
-            if (entity.direzione().x != 0f && (entity.direzione().x == 1f || entity.direzione().x == -1f)) {
-                entity.direzione().scl(0.5f, 1f);
+            if (entity.getDirection().x != 0f && (entity.getDirection().x == 1f || entity.getDirection().x == -1f)) {
+                entity.getDirection().scl(0.5f, 1f);
             }
-            if (entity.direzione().y != 0f && (entity.direzione().y == 1f || entity.direzione().y == -1f)) {
-                entity.direzione().scl(1f, 0.5f);
+            if (entity.getDirection().y != 0f && (entity.getDirection().y == 1f || entity.getDirection().y == -1f)) {
+                entity.getDirection().scl(1f, 0.5f);
             }
 
             entity.checkIfDead();
@@ -80,14 +81,16 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-            entity.body.setLinearDamping(3f);
+            Body enemyBody = entity.getPhysics().getBody();
+            Body playerBody = player.getPhysics().getBody();
+            enemyBody.setLinearDamping(3f);
             if (player == null)
                 player = entity.manager.player();
 
-            RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-            ManagerWorld.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+            RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
+            ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());
 
-            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
+            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
 
             entity.move();
 
@@ -117,15 +120,18 @@ public enum StatesEnemy implements State<Enemy> {
             if (player == null)
                 player = entity.manager.player();
 
-            accumulator+=player.delta;
+            Body enemyBody = entity.getPhysics().getBody();
+            Body playerBody = player.getPhysics().getBody();
+
+            accumulator+=entity.manager.delta;
             if (accumulator > 0.5f){
                 accumulator = 0f;
-                RayCastCallback callback = getRayCastCallback(entity, entity.body.getPosition(), player.body.getPosition());
-                ManagerWorld.getInstance().rayCast(callback, entity.body.getPosition(), player.body.getPosition());
+                RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
+                ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());
             }
 
 
-            Vector2 direction = entity.direzione();
+            Vector2 direction = entity.getDirection();
 
             if (direction.x == 1f || direction.x == -1f) {
                 direction.scl(0.5f, 1f);

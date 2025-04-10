@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.map.events.MapEvent;
 
 public class ManagerWorld {
@@ -35,6 +36,9 @@ public class ManagerWorld {
         for (Body body : bodies) {
             if ("map".equals(body.getUserData()) || body.getUserData() instanceof MapEvent) {
                 instance.destroyBody(body);
+            }
+            if (body.getUserData() instanceof Bullet){
+                ((Bullet) body.getUserData()).despawn();
             }
         }
 

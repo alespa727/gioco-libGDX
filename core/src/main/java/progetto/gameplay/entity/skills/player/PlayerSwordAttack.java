@@ -25,8 +25,8 @@ public class PlayerSwordAttack extends CombatSkill {
     @Override
     public void update() {
         if (isBeingUsed) {
-            elapsedTime += owner.delta;
-            cooldown.update(owner.delta);
+            elapsedTime += owner.manager.delta;
+            cooldown.update(owner.manager.delta);
             if (cooldown.isReady){
                 isBeingUsed=false;
                 elapsedTime = 0;
@@ -48,14 +48,14 @@ public class PlayerSwordAttack extends CombatSkill {
     @Override
     public void execute() {
         ManagerCamera.shakeTheCamera(0.1f, 0.01f);
-        owner.manager.gameInfo.screen.setTimeScale(1f, 1f);
+        owner.manager.info.screen.setTimeScale(1f, 1f);
         cooldown.reset();
         Array<Warriors> inRange = ((Player) owner).getInRange();
         for (Warriors warriors : inRange) {
             warriors.hit((Warriors) owner, damage, 2);
         }
-        direction.set(owner.direzione().x, owner.direzione().y).setLength(((Player) owner).rangeRadius());
-        angle = owner.direzione().angleDeg()-90;
+        direction.set(owner.getDirection().x, owner.getDirection().y).setLength(((Player) owner).rangeRadius());
+        angle = owner.getDirection().angleDeg()-90;
         isBeingUsed=true;
     }
 

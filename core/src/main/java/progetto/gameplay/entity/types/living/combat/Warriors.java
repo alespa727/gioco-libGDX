@@ -9,7 +9,7 @@ import progetto.gameplay.entity.types.Entity;
 import progetto.factories.BodyFactory;
 import progetto.utils.Cooldown;
 import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
 public abstract class Warriors extends Humanoid {
 
@@ -43,6 +43,8 @@ public abstract class Warriors extends Humanoid {
         super(config, manager);
         initCombatState();
     }
+
+
 
     private void initCombatState() {
         hitDirection.setZero();
@@ -78,8 +80,9 @@ public abstract class Warriors extends Humanoid {
     }
 
     public void adjustRange() {
+        Body body = getPhysics().getBody();
         if (directionalRange != null) {
-            directionalRange.setTransform(body.getPosition(), direzione().angleRad() - 60 *MathUtils.degreesToRadians);
+            directionalRange.setTransform(body.getPosition(), getDirection().angleRad() - 60 *MathUtils.degreesToRadians);
         }
     }
 
@@ -93,15 +96,18 @@ public abstract class Warriors extends Humanoid {
 
     // === COMBATTIMENTO ===
     public void hit(Entity entity, float damage, float hitForce) {
+        Body bodyThatHits = entity.getPhysics().getBody();
+        Body bodyToHit = getPhysics().getBody();
         if (!invulnerable){
-            hitDirection = new Vector2(entity.body.getPosition()).sub(body.getPosition()).nor().scl(-1*hitForce);
+            hitDirection = new Vector2(bodyThatHits.getPosition()).sub(bodyToHit.getPosition()).nor().scl(-1*hitForce);
             inflictDamage(damage);
             knockback.reset();
         }
     }
 
     public void knockback(Vector2 force) {
-        knockback.update(delta);
+        knockback.update(manager.delta);
+        Body body = getPhysics().getBody();
         if (!knockback.isReady) {
             body.applyLinearImpulse(force, body.getWorldCenter(), true);
         }

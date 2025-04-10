@@ -2,7 +2,6 @@ package progetto.gameplay.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -15,9 +14,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.map.events.ChangeMapEvent;
-import progetto.gameplay.map.events.EventListener;
+import progetto.gameplay.manager.ManagerEvent;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
 import progetto.factories.BodyFactory;
@@ -156,7 +155,7 @@ public class Map implements Disposable {
                     FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0, 0);
 
                     // Creazione del blocco
-                    BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
+                    Gdx.app.postRunnable(()-> BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape));
 
                     fixtureDef.filter.groupIndex = ManagerEntity.WALL;
                 }
@@ -189,7 +188,7 @@ public class Map implements Disposable {
         FixtureDef fixtureDef = BodyFactory.createFixtureDef(chainShape, 1f, 0, 0);
 
         // Creazione del corpo
-        BodyFactory.createBody("map", bodyDef, fixtureDef, chainShape);
+        Gdx.app.postRunnable(()->BodyFactory.createBody("map", bodyDef, fixtureDef, chainShape));
     }
 
     /**
@@ -211,7 +210,7 @@ public class Map implements Disposable {
             }
 
         }
-        EventListener listener = new EventListener();
+        ManagerEvent listener = new ManagerEvent();
 
         ManagerWorld.getInstance().setContactListener(listener);
     }

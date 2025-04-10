@@ -1,7 +1,7 @@
 package progetto.gameplay;
 
 import progetto.Core;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.map.MapManager;
 
 public class GameInfo {

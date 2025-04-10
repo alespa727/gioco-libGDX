@@ -3,13 +3,14 @@ package progetto.gameplay.entity.types.living;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.Body;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.behaviors.EntityPathFinder;
 import progetto.gameplay.entity.skills.Skill;
 import progetto.gameplay.entity.skills.SkillSet;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.entity.behaviors.manager.entity.movement.EntityMovementManager;
 
 public abstract class Humanoid extends Entity {
@@ -63,7 +64,7 @@ public abstract class Humanoid extends Entity {
     }
 
     public void searchPath(Entity target){
-        pathfinder().renderPath(target.getPosition().x, target.getPosition().y, delta);
+        pathfinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
     }
 
     // --- GESTIONE SALUTE ---
@@ -122,6 +123,7 @@ public abstract class Humanoid extends Entity {
     }
 
     public void limitSpeed() {
+        Body body = getPhysics().getBody();
         if (body.getLinearVelocity().len() > speed) {
             body.applyLinearImpulse(body.getLinearVelocity().scl(-1), body.getWorldCenter(), true);
         }
@@ -175,7 +177,7 @@ public abstract class Humanoid extends Entity {
         if (hasBeenHit) {
             batch.setColor(1, 0, 0, 0.6f);
         }
-        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true), getPosition().x - config().imageWidth/2, getPosition().y - config().imageHeight/2, config().imageWidth, config().imageHeight);
+        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true), getPosition().x - getConfig().imageWidth/2, getPosition().y - getConfig().imageHeight/2, getConfig().imageWidth, getConfig().imageHeight);
         batch.setColor(Color.WHITE);
     }
 

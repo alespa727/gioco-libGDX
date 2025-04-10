@@ -1,6 +1,7 @@
 package progetto.gameplay.entity.behaviors.manager.entity.movement;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 
@@ -27,10 +28,11 @@ public class PlayerMovementManager {
     }
 
     public void oppostoY() {
-        player.body.setLinearDamping(20f);
+        Body body = player.getPhysics().getBody();
+        body.setLinearDamping(20f);
         if (sinistra || destra) {
-            player.body.setLinearDamping(3f);
-            player.direzione().y = 0;
+            body.setLinearDamping(3f);
+            player.getDirection().y = 0;
             aggiornaDirezione();
 
             muoviAsseX();
@@ -40,10 +42,11 @@ public class PlayerMovementManager {
     }
 
     public void oppostoX() {
-        player.body.setLinearDamping(20f);
+        Body body = player.getPhysics().getBody();
+       body.setLinearDamping(20f);
         if (su || giu) {
-            player.body.setLinearDamping(3f);
-            player.direzione().x = 0;
+            body.setLinearDamping(3f);
+            player.getDirection().x = 0;
             aggiornaDirezione();
             muoviAsseY(); //MUOVE IL PLAYER SE PREME ALTRI TASTI
         } else {
@@ -52,7 +55,8 @@ public class PlayerMovementManager {
     }
 
     public void moving() {
-        player.body.setLinearDamping(3f);
+        Body body = player.getPhysics().getBody();
+        body.setLinearDamping(3f);
         aggiornaDirezione();
         muoviAsseY();
         aggiornaDirezione();
@@ -60,13 +64,14 @@ public class PlayerMovementManager {
     }
 
     public void notMoving() {
-        player.body.setLinearDamping(20f);
+        Body body = player.getPhysics().getBody();
+        body.setLinearDamping(20f);
         stopMovement();
     }
 
     private void stopMovement() {
-        if (player.direzione().x == 1f || player.direzione().x == -1f) player.direzione().scl(0.5f, 1f);
-        if (player.direzione().y == 1f || player.direzione().y == -1f) player.direzione().scl(1f, 0.5f);
+        if (player.getDirection().x == 1f || player.getDirection().x == -1f) player.getDirection().scl(0.5f, 1f);
+        if (player.getDirection().y == 1f || player.getDirection().y == -1f) player.getDirection().scl(1f, 0.5f);
     }
 
     private void aggiornaDirezione() {
@@ -77,28 +82,31 @@ public class PlayerMovementManager {
         if (su) dir.y += 1;
         if (giu) dir.y -= 1;
 
-        player.direzione().set(dir);
+        player.getDirection().set(dir);
     }
 
     private void muoviAsseX() {
         if (sinistra || destra) {
-            player.body.applyForceToCenter(getForce().scl(5), true);
-            player.body.setLinearDamping(3f);
+            Body body = player.getPhysics().getBody();
+            body.applyForceToCenter(getForce().scl(5), true);
+            body.setLinearDamping(3f);
         }
     }
 
     private void muoviAsseY() {
         if (su || giu) {
-            player.body.applyForceToCenter(getForce().scl(5), true);
-            player.body.setLinearDamping(3f);
+            Body body = player.getPhysics().getBody();
+            body.applyForceToCenter(getForce().scl(5), true);
+            body.setLinearDamping(3f);
         }
     }
 
     public Vector2 getForce() {
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
+        Body body = player.getPhysics().getBody();
         if (diagonale) {
-            return new Vector2(player.direzione()).scl(player.body.getMass() * player.getSpeed() * 1 / 1.41f).scl(1 / 1.41f);
+            return new Vector2(player.getDirection()).scl(body.getMass() * player.getSpeed() * 1 / 1.41f).scl(1 / 1.41f);
         }
-        return new Vector2(player.direzione()).scl(player.getSpeed()).scl(player.body.getMass());
+        return new Vector2(player.getDirection()).scl(player.getSpeed()).scl(body.getMass());
     }
 }

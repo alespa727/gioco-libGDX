@@ -8,7 +8,7 @@ import progetto.gameplay.entity.types.living.combat.Warriors;
 import progetto.utils.Cooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
 public abstract class Enemy extends Warriors {
 

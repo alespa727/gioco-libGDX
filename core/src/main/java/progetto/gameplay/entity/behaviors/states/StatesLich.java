@@ -17,7 +17,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-            useFireDomain.update(entity.delta);
+            useFireDomain.update(entity.manager.delta);
             fireDomain(entity);
         }
 
@@ -52,7 +52,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-            useFireball.update(entity.delta);
+            useFireball.update(entity.manager.delta);
             if (useFireball.isReady) fireball(entity);
         }
 
@@ -85,11 +85,11 @@ public enum StatesLich implements State<Lich> {
             entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
 
             // ATTACCO AD AREA SPARANDO PROIETTILI IN TUTTE LE DIREZIONI
-            entity.prepareFireDomain.update(entity.delta);
+            entity.prepareFireDomain.update(entity.manager.delta);
             initiateFireDomain(entity);
 
             // ATTACCO CON LA FIREBALL
-            entity.prepareToFireball.update(entity.delta);
+            entity.prepareToFireball.update(entity.manager.delta);
             initiateFireball(entity);
 
             entity.searchPath(entity.manager.player());
@@ -144,7 +144,7 @@ public enum StatesLich implements State<Lich> {
     CHOOSING_STATE{
         @Override
         public void enter(Lich entity) {
-            if (entity.prepareToChangeStates.isReady){
+            if (!entity.prepareToChangeStates.isReady){
                 if(!entity.pathfinder().success){
                     entity.getStateMachine().changeState(StatesLich.IDLE);
                 }
@@ -186,7 +186,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.delta);
+            entity.pathfinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
             if(entity.pathfinder().success){
                 entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
             }

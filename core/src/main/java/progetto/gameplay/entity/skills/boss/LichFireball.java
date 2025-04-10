@@ -2,6 +2,7 @@ package progetto.gameplay.entity.skills.boss;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import progetto.factories.EntityFactory;
 import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.player.Player;
@@ -33,7 +34,7 @@ public class LichFireball extends CombatSkill {
         direction.nor();
         Vector2 position = new Vector2(owner.getPosition()).add(direction);
 
-        owner.manager.createBullet(position.x, position.y, direction, 1f, this.speed, this.damage, owner);
+        owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 1f, this.speed, this.damage, owner));
     }
 
 

@@ -3,7 +3,7 @@
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.entity.types.living.combat.Warriors;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
  public abstract class Boss extends Warriors {
 

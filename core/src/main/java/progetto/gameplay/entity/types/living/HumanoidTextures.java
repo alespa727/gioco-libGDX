@@ -82,6 +82,6 @@ public class HumanoidTextures extends EntityTextures {
     /** Restituisce l'animazione corretta in base alla direzione dell'entità */
     @Override
     public Animation<TextureRegion> getAnimation(Entity e) {
-        return animations.get(e.direzione());
+        return animations.get(e.getDirection());
     }
 }
