@@ -62,16 +62,19 @@ public class MapManager {
             case 1 -> {
                 nome = "corridoio"; // Nome file
                 ambienteAperto = true; // Tipo ambiente
-                viewport.setWorldSize(16f, 16f * 9 / 16f); // Grandezza telecamera
+                viewport.setWorldSize(20f, 20f * 9 / 16f); // Grandezza telecamera
             }
 
             case 2 -> {
+                nome = "bossroom";
+                ambienteAperto = false;
+                viewport.setWorldSize(19f, 19f * 9 / 16f);
             }
 
             default -> {
-                nome = "stanza";
-                ambienteAperto = false;
-                viewport.setWorldSize(16f, 16f * 9 / 16f);
+                nome = "mappa_deserto"; // Nome file
+                ambienteAperto = true; // Tipo ambiente
+                viewport.setWorldSize(20f, 20f * 9 / 16f); // Grandezza telecamera
             }
         }
 
