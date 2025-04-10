@@ -3,6 +3,8 @@ package progetto.gameplay.entity.types.living.combat.boss;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import progetto.gameplay.entity.behaviors.states.StatesLich;
+import progetto.gameplay.entity.components.entity.DespawnCooldown;
+import progetto.gameplay.entity.components.humanoid.DeathController;
 import progetto.gameplay.entity.skills.boss.LichFireDomain;
 import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.types.EntityConfig;
@@ -22,6 +24,7 @@ public class Lich extends Boss{
 
     public Lich(HumanoidInstances instance, ManagerEntity managerEntity) {
         super(instance, managerEntity);
+        addComponent(new DeathController(this));
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.LONG_RANGE_ATTACKS);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
@@ -30,6 +33,7 @@ public class Lich extends Boss{
 
     public Lich(EntityConfig config, ManagerEntity managerEntity) {
         super(config, managerEntity);
+        addComponent(new DeathController(this));
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.LONG_RANGE_ATTACKS);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
@@ -42,7 +46,6 @@ public class Lich extends Boss{
         damageCooldown(delta);
         prepareToChangeStates.update(delta);
         stateMachine.update();
-        checkIfDead();
     }
 
 

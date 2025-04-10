@@ -43,7 +43,6 @@ public enum StatesEnemy implements State<Enemy> {
                 entity.getDirection().scl(1f, 0.5f);
             }
 
-            entity.checkIfDead();
         }
 
         @Override

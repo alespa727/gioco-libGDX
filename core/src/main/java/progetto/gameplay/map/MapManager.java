@@ -34,7 +34,7 @@ public class MapManager {
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
-        float defaultx = 42, defaulty = 27;
+        float defaultx = 11 , defaulty = 11;
 
         this.changeMap(defaultMap, defaultx, defaulty); // Cambio mappa
     }
@@ -72,7 +72,7 @@ public class MapManager {
             }
 
             default -> {
-                nome = "mappa_deserto"; // Nome file
+                nome = "stanza"; // Nome file
                 ambienteAperto = true; // Tipo ambiente
                 viewport.setWorldSize(20f, 20f * 9 / 16f); // Grandezza telecamera
             }
