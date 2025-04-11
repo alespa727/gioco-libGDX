@@ -20,7 +20,6 @@ public enum ManagerGame implements State<Game> {
 
         @Override
         public void update(Game screen) {
-            KeyHandler.input();
             if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
                 screen.getInfo().core.setScreen(new PauseScreen(screen.getInfo().core, screen));
             }
@@ -33,6 +32,7 @@ public enum ManagerGame implements State<Game> {
                 ManagerWorld.getInstance().step(scaledTime, 8, 8);
                 screen.update(scaledTime);
                 screen.accumulator -= STEP;
+                KeyHandler.input();
             }
 
             // Disegna il gioco

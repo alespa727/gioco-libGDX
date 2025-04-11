@@ -3,6 +3,7 @@ package progetto.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
+import progetto.Core;
 import progetto.CoreConfig;
 
 public class KeyHandler {
@@ -10,6 +11,8 @@ public class KeyHandler {
     // Stati dei tasti direzionali e azioni
     public static boolean su, giu, sinistra, destra, sprint, usa;
     public static boolean debug;
+
+    private static boolean usePressed = false;
 
     // Posizione del mouse sullo schermo
     public static final Vector3 mouse = new Vector3(0, 0, 0);
@@ -23,7 +26,9 @@ public class KeyHandler {
         sinistra = Gdx.input.isKeyPressed(CoreConfig.getDirezioneOvest());
         destra = Gdx.input.isKeyPressed(CoreConfig.getDirezioneEst());
         sprint = Gdx.input.isKeyPressed(CoreConfig.getCORRI());
-        usa = Gdx.input.isKeyPressed(CoreConfig.getUSA());
+
+        usa = Gdx.input.isKeyJustPressed(CoreConfig.getUSA());
+
 
         // Ottiene la posizione del mouse (in coordinate schermo)
         mouse.x = Gdx.input.getX();

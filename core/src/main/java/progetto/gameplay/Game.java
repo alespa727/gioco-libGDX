@@ -103,9 +103,6 @@ public class Game implements Screen {
         Core.assetManager.load("entities/circle.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        AudioManager.addSound("sounds/gunshot.mp3");
-        AudioManager.addSound("sounds/fireball.mp3");
-
         // Crea e imposta gli shader e i framebuffer
         this.createShaderProgram();
         this.createFrameBuffer(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

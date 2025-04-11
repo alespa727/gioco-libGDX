@@ -25,8 +25,6 @@ public class Core extends com.badlogic.gdx.Game {
         renderer = new ShapeRenderer();   // Per forme geometriche
         audioManager = new AudioManager(); // Manager per musica e suoni
         game = new Game(this);            // Istanzia il gioco
-        audioManager.addMusic("music/im_not_gay_but_20_is_20.mp3");
-        audioManager.playMusic(0);
         setScreen(new MainScreen(this));  // Mostra il menu principale
     }
 

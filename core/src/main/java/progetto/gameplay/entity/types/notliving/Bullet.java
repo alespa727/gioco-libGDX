@@ -108,8 +108,6 @@ public class Bullet extends Entity {
      */
     @Override
     public void create() {
-        AudioManager.playSound(0);
-        AudioManager.playSound(1);
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
         getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)

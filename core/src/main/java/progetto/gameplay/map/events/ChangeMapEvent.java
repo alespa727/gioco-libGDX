@@ -7,6 +7,7 @@ import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.map.MapManager;
+import progetto.utils.KeyHandler;
 
 /**
  * Evento di cambio mappa tramite {@link MapManager}
@@ -46,7 +47,7 @@ public class ChangeMapEvent extends MapEvent {
     @Override
     public void update() {
         if (isActive()) {
-            if (Gdx.input.isKeyJustPressed(CoreConfig.getUSA())) {
+            if (KeyHandler.usa) {
                 Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f));
                 isActive = false;
             }

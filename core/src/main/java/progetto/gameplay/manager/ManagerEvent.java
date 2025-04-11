@@ -26,10 +26,16 @@ public class ManagerEvent implements ContactListener {
         Object dataB = fixtureB.getBody().getUserData();
 
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
-        if (dataA instanceof Entity && dataB instanceof MapEvent) {
+        if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {
+            System.out.println("TRIGGERED");
+            ((MapEvent) dataB).setActive(true);
             ((MapEvent) dataB).trigger((Entity) dataA);
-        } else if (dataB instanceof Entity && dataA instanceof MapEvent) {
+            return;
+        } else if (dataB instanceof Player && dataA instanceof ChangeMapEvent) {
+            System.out.println("TRIGGERED");
+            ((MapEvent) dataA).setActive(true);
             ((MapEvent) dataA).trigger((Entity) dataB);
+            return;
         }
         // ---------------------------------------------
         // Gestione del range del player
