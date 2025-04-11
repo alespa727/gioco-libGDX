@@ -102,7 +102,7 @@ public class Game implements Screen {
         Core.assetManager.load("entities/Finn.png", Texture.class);
         Core.assetManager.load("entities/circle.png", Texture.class);
         Core.assetManager.finishLoading();
-        
+
         AudioManager.addSound("sounds/gunshot.mp3");
         AudioManager.addSound("sounds/fireball.mp3");
 
