@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import progetto.Core;
+import progetto.audio.AudioManager;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
@@ -101,7 +102,9 @@ public class Game implements Screen {
         Core.assetManager.load("entities/Finn.png", Texture.class);
         Core.assetManager.load("entities/circle.png", Texture.class);
         Core.assetManager.finishLoading();
-
+        
+        AudioManager.addSound("sounds/gunshot.mp3");
+        AudioManager.addSound("sounds/fireball.mp3");
 
         // Crea e imposta gli shader e i framebuffer
         this.createShaderProgram();

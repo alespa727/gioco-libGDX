@@ -33,7 +33,7 @@ public class LichFireball extends CombatSkill {
         Vector2 direction = new Vector2(player.getPosition().x - owner.getPosition().x, player.getPosition().y - owner.getPosition().y);
         direction.nor();
         Vector2 position = new Vector2(owner.getPosition()).add(direction);
-        owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.5f, this.speed, this.damage, owner));
+        owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner));
     }
 
 

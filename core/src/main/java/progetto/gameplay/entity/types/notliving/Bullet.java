@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import progetto.Core;
+import progetto.audio.AudioManager;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.entity.NodeTracker;
@@ -107,6 +108,8 @@ public class Bullet extends Entity {
      */
     @Override
     public void create() {
+        AudioManager.playSound(0);
+        AudioManager.playSound(1);
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
         getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
@@ -120,7 +123,6 @@ public class Bullet extends Entity {
      */
     @Override
     public EntityInstance despawn() {
-        System.out.println("DESPAWN");
         manager.remove(this); // Rimuove il proiettile dal gestore
         ManagerWorld.destroyBody(getPhysics().getBody());
         return new EntityInstance(this); // Ritorna l'istanza dell'entità

@@ -154,7 +154,7 @@ public class Map implements Disposable {
                 }
             }
         }
-        createBorders();
+        //createBorders();
         return this;
     }
 
