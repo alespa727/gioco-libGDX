@@ -8,14 +8,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import progetto.Core;
+import progetto.audio.AudioManager;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.entity.NodeTracker;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.entity.components.entity.Cooldown;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
 /**
  * Rappresenta un proiettile nel gioco.
@@ -111,6 +112,9 @@ public class Bullet extends Entity {
         getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
         getPhysics().getBody().setUserData(this); // Associa il proiettile al corpo fisico
+        AudioManager mng = new AudioManager();
+        mng.addSound("sounds/gunshot.mp3");
+        mng.playSound(0);
     }
 
     /**

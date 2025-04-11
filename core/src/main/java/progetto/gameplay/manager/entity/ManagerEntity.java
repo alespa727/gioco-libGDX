@@ -3,16 +3,17 @@ package progetto.gameplay.manager.entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+
 import progetto.Core;
-import progetto.gameplay.GameInfo;
 import progetto.factories.EntityConfigFactory;
+import progetto.factories.EntityFactory;
+import progetto.gameplay.GameInfo;
+import progetto.gameplay.entity.types.Entity;
+import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.entity.types.EntityConfig;
-import progetto.factories.EntityFactory;
 
 public final class ManagerEntity {
 
@@ -42,8 +43,12 @@ public final class ManagerEntity {
         this.summon(playerManager.getPlayer());
         Core.assetManager.load("entities/nemico.png", Texture.class);
         Core.assetManager.finishLoading();
-        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", 12, 12);
-        this.summon(EntityFactory.createBoss("Lich", e, this));
+        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", 5, 12);
+        for(int i = 0; i < 5; i++) {
+            e.y++;
+            e.y++;
+            this.summon(EntityFactory.createBoss("Lich", e, this));
+        }
         this.renderer = new EntityRenderer(this);
     }
 

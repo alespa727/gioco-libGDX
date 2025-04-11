@@ -2,17 +2,17 @@ package progetto.gameplay.entity.types.living.combat.boss;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+
 import progetto.gameplay.entity.behaviors.states.StatesLich;
-import progetto.gameplay.entity.components.entity.DespawnCooldown;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.humanoid.DeathController;
 import progetto.gameplay.entity.skills.boss.LichFireDomain;
 import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.entity.components.entity.Cooldown;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
 public class Lich extends Boss{
 
@@ -27,7 +27,7 @@ public class Lich extends Boss{
         addComponent(new DeathController(this));
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.LONG_RANGE_ATTACKS);
-        getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
+        getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
 
@@ -36,7 +36,7 @@ public class Lich extends Boss{
         addComponent(new DeathController(this));
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.LONG_RANGE_ATTACKS);
-        getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 2));
+        getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
 

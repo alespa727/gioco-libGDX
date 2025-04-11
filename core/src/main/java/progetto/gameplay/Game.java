@@ -13,18 +13,18 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import progetto.Core;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.types.living.combat.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.manager.ManagerEvent;
 import progetto.gameplay.manager.ManagerGame;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.map.Map;
-import progetto.menu.DefeatScreen;
-import progetto.gameplay.entity.components.entity.Cooldown;
-import progetto.utils.KeyHandler;
 import progetto.gameplay.manager.entity.ManagerEntity;
 import progetto.gameplay.map.MapManager;
+import progetto.menu.DefeatScreen;
+import progetto.utils.KeyHandler;
 
 public class Game implements Screen {
 
@@ -169,7 +169,7 @@ public class Game implements Screen {
         mapRenderer.setView(ManagerCamera.getInstance());
         mapRenderer.render();
 
-        Map.getGraph().drawNodes(info.core.renderer);
+        //Map.getGraph().drawNodes(info.core.renderer);
 
         this.getEntityManager().draw();
 

@@ -1,12 +1,12 @@
 package progetto.gameplay.map;
 
-import com.badlogic.gdx.Gdx;
+import java.util.HashMap;
+
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.manager.entity.ManagerEntity;
-
-import java.util.HashMap;
 
 public class MapManager {
 
@@ -73,7 +73,7 @@ public class MapManager {
             }
 
             default -> {
-                nome = "stanza"; // Nome file
+                nome = "mappa_deserto"; // Nome file
                 ambienteAperto = true; // Tipo ambiente
                 viewport.setWorldSize(20f, 20f * 9 / 16f); // Grandezza telecamera
             }

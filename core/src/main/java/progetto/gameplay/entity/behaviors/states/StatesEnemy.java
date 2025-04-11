@@ -82,11 +82,12 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
+            if (player == null)
+                player = entity.manager.player();
+
             Body enemyBody = entity.getPhysics().getBody();
             Body playerBody = player.getPhysics().getBody();
             enemyBody.setLinearDamping(3f);
-            if (player == null)
-                player = entity.manager.player();
 
             RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
             ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());

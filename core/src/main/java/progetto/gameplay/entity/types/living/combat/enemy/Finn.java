@@ -1,12 +1,14 @@
 package progetto.gameplay.entity.types.living.combat.enemy;
 
 import com.badlogic.gdx.Gdx;
+
 import progetto.gameplay.entity.behaviors.states.StatesEnemy;
-import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.types.EntityConfig;
+import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.entity.types.EntityConfig;
+import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.entity.ManagerEntity;
 
 public final class Finn extends Enemy {
 
@@ -34,6 +36,7 @@ public final class Finn extends Enemy {
 
         // Aggiungi le skill
         getSkillset().add(new EnemySwordAttack(this, "pugno", "un pugno molto forte!", 20));
+        getSkillset().add(new LichFireball(this, "", "", 10, 6));
     }
 
     @Override
@@ -41,7 +44,7 @@ public final class Finn extends Enemy {
         // Gestione dell'attacco con cooldown
         attack.update(manager.delta);
         if (attack.isReady) {
-            getSkillset().execute(EnemySwordAttack.class);
+            getSkillset().execute(LichFireball.class    );
             attack.reset();
         }
     }
