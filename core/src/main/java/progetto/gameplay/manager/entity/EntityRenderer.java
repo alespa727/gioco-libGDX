@@ -103,7 +103,7 @@ public class EntityRenderer {
      * Processa la coda, svuotandola e evocando entità dalla coda
      */
     private void processQueue() {
-        if(!queue.isEmpty()){
+        if(queue.size > 0){
             entities.add(queue.last());
             queue.last().getPhysics().initBody();
             if (queue.last() instanceof Warrior ce) {

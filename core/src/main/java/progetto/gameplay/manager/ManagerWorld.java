@@ -1,24 +1,25 @@
 package progetto.gameplay.manager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import progetto.factories.BodyFactory;
+import progetto.gameplay.entity.components.BodyComponent;
 import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.map.events.MapEvent;
 
 public class ManagerWorld {
     private static World instance;
-    private static Queue<BodyDef> bodyToCreate;
-    private static Queue<FixtureDef> fixtureToCreate;
+    private static Queue<BodyComponent> bodyToCreate;
+    private static Queue<Body> bodyToDestroy;
 
     public static void init(){
         if (instance == null) {
             instance = new World(new Vector2(0, 0), true);
             bodyToCreate = new Queue<>();
+            bodyToDestroy = new Queue<>();
         }
     }
 
@@ -26,6 +27,7 @@ public class ManagerWorld {
         if (instance == null) {
             instance = new World(new Vector2(0, 0), true);
             bodyToCreate = new Queue<>();
+            bodyToDestroy = new Queue<>();
         }
         return instance;
     }
@@ -41,12 +43,31 @@ public class ManagerWorld {
                 ((Bullet) body.getUserData()).despawn();
             }
         }
+    }
 
+    public static Body createBody(Object userdata, BodyDef bodyDef, FixtureDef fixtureDef, Shape shape) {
+        BodyComponent bodyComponent = new BodyComponent();
+
+        bodyComponent.bodyDef = bodyDef;
+        bodyComponent.fixtureDef = fixtureDef;
+        bodyComponent.shape = shape;
+        bodyComponent.userdata = userdata;
+
+        bodyToCreate.addFirst(bodyComponent);
+        return instance.createBody(bodyDef);
+    }
+
+    public static void destroyBody(Body body) {
+        bodyToDestroy.addFirst(body);
     }
 
     public static void update() {
-        if (bodyToCreate.notEmpty()){
-            instance.createBody(bodyToCreate.removeFirst()).createFixture(fixtureToCreate.removeFirst());
+        if (bodyToDestroy.size > 0) {
+           instance.destroyBody(bodyToDestroy.removeFirst());
+        }
+        if (bodyToCreate.size > 0) {
+            BodyComponent bodyComponent = bodyToCreate.removeFirst();
+            BodyFactory.createBody(bodyComponent.userdata, bodyComponent.bodyDef, bodyComponent.fixtureDef, bodyComponent.shape);
         }
     }
 }

@@ -90,6 +90,6 @@ public abstract class MapEvent {
      * Rimuove l'evento
      */
     public void destroy() {
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(body));
+        ManagerWorld.destroyBody(body);
     }
 }

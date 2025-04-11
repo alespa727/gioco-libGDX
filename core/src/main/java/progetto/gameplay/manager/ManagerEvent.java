@@ -1,5 +1,6 @@
 package progetto.gameplay.manager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.types.living.combat.boss.Boss;
@@ -57,13 +58,21 @@ public class ManagerEvent implements ContactListener {
             if (((Bullet) dataB).getOwner() == dataA) return;
             if(((Warrior) dataA).getHumanStates().isInvulnerable()) return;
             ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).getComponent(BulletComponent.class).damage,2);
-            ((Bullet) dataB).despawn();
+            Gdx.app.postRunnable(new Runnable() {
+                public void run() {
+                    ((Bullet) dataB).despawn();
+                }
+            });
         }
         if (dataB instanceof Warrior && !isRangeA && dataA instanceof Bullet) {
             if (((Bullet) dataA).getOwner() == dataB) return;
             if(((Warrior) dataB).getHumanStates().isInvulnerable()) return;
             ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).getComponent(BulletComponent.class).damage, 2);
-            ((Bullet) dataA).despawn();
+            Gdx.app.postRunnable(new Runnable() {
+                public void run() {
+                    ((Bullet) dataA).despawn();
+                }
+            });
         }
 
     }

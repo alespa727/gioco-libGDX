@@ -36,12 +36,14 @@ public class LichFireDomain extends CombatSkill {
      */
     @Override
     public void execute() {
-        owner.manager.summon(EntityFactory.createBullet(owner.getPosition().x, owner.getPosition().y, new Vector2(0,0), 3, 0, 20, owner));
+        System.out.println("Executing skill: " + name);
         for (int i = 0; i < 10; i++) {
-            float angle = (float)(2 * Math.PI * i / 10); // da 0 a 2π in 15 passi
-            Vector2 direction = new Vector2((float)Math.cos(angle), (float)Math.sin(angle)).nor(); // vettore normalizzato
-            owner.manager.summon(EntityFactory.createBullet(owner.getPosition().x+direction.x, owner.getPosition().y+direction.y, direction, 0.1f, 2f, 10, owner));
-        }
+            float angle = (float)(2 * Math.PI * i / 10);
+            Vector2 direction = new Vector2((float)Math.cos(angle), (float)Math.sin(angle)).nor();
 
+            System.out.println("Creating bullet " + i);
+            owner.manager.summon(EntityFactory.createBullet(owner.getPosition().x + direction.x, owner.getPosition().y + direction.y, direction, 0.1f, 2f, 10, owner));
+        }
+        System.out.println("Skill execution finished");
     }
 }

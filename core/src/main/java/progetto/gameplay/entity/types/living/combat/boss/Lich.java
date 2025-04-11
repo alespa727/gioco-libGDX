@@ -67,8 +67,8 @@ public class Lich extends Boss{
         manager.remove(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getPhysics().getBody()));
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getDirectionRangeComponent().getDirectionalRange()));
+        ManagerWorld.destroyBody(getPhysics().getBody());
+        ManagerWorld.destroyBody(getDirectionRangeComponent().getDirectionalRange());
 
         return new BossInstance(this);
     }

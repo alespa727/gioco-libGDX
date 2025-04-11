@@ -58,8 +58,8 @@ public final class Finn extends Enemy {
         manager.remove(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getPhysics().getBody()));
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(getDirectionalRange()));
+        ManagerWorld.destroyBody(getPhysics().getBody());
+        ManagerWorld.destroyBody(getDirectionalRange());
 
         return new EnemyInstance(this);
     }

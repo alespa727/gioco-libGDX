@@ -131,6 +131,7 @@ public class Game implements Screen {
         if (!player.getState().isAlive()) {
             info.core.setScreen(new DefeatScreen(info.core));
         }
+        ManagerWorld.update();
         timeScaleCooldown.update(delta);
         if (timeScaleCooldown.isReady) timeScale = 1f;
         fbo1.begin();

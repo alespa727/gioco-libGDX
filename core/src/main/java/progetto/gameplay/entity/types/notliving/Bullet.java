@@ -30,7 +30,7 @@ public class Bullet extends Entity {
 
     /** Texture del proiettile */
     private final Texture texture;
-    
+
     // === Costruttore ===
     /**
      * Costruttore del proiettile.
@@ -122,8 +122,7 @@ public class Bullet extends Entity {
     public EntityInstance despawn() {
         System.out.println("DESPAWN");
         manager.remove(this); // Rimuove il proiettile dal gestore
-        Body body = getPhysics().getBody(); // Ottiene il corpo fisico del proiettile
-        Gdx.app.postRunnable(() -> ManagerWorld.getInstance().destroyBody(body)); // Distrugge il corpo nel mondo fisico
+        ManagerWorld.destroyBody(getPhysics().getBody());
         return new EntityInstance(this); // Ritorna l'istanza dell'entità
     }
 
