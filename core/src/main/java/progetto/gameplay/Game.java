@@ -41,7 +41,7 @@ public class Game implements Screen {
     private Cooldown timeScaleCooldown;
 
     // Shaders
-    private ShaderProgram shaderProgram;
+    private ShaderProgram program;
     private FrameBuffer fbo1;
     private FrameBuffer fbo2;
 
@@ -90,7 +90,8 @@ public class Game implements Screen {
         // Carica e crea il programma shader (per effetti grafici avanzati)
         String vertexShader = Gdx.files.internal("shaders/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/fragment.glsl").readString();
-        this.shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
+        this.program = new ShaderProgram(vertexShader, fragmentShader);
+        ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
     }
 
     @Override
@@ -132,12 +133,15 @@ public class Game implements Screen {
         }
         timeScaleCooldown.update(delta);
         if (timeScaleCooldown.isReady) timeScale = 1f;
-
+        fbo1.begin();
         ScreenUtils.clear(0, 0, 0, 1);
         this.delta = delta;
         this.tempoTrascorso += delta;
         this.state.update();
         if (KeyHandler.debug) debug();  // Renderizza il debug di Box2D se attivato
+        fbo1.end();
+
+        applyShader();
     }
 
     /**
@@ -246,25 +250,16 @@ public class Game implements Screen {
      * Applica la shader ai framebuffer
      */
     private void applyShader() {
+        program.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         // Applica gli shader per l'effetto grafico
         Texture fboText = fbo1.getColorBufferTexture();
         TextureRegion fboTextReg = new TextureRegion(fboText);
         fboTextReg.flip(false, true);
 
-        fbo2.begin();
         ScreenUtils.clear(0, 0, 0, 1);
         this.info.core.batch.begin();
-        this.info.core.batch.setShader(null);
-        this.info.core.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
-        this.info.core.batch.end();
-        fbo2.end();
-
-        // Renderizza il secondo FBO
-        fboText = fbo2.getColorBufferTexture();
-        fboTextReg = new TextureRegion(fboText);
-        fboTextReg.flip(false, true);
-
-        this.info.core.batch.begin();
+        this.info.core.batch.setShader(program);
         this.info.core.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
         this.info.core.batch.end();
     }

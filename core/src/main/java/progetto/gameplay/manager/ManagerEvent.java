@@ -66,13 +66,6 @@ public class ManagerEvent implements ContactListener {
             ((Bullet) dataA).despawn();
         }
 
-        if ("map".equals(dataB) && dataA instanceof Bullet) {
-            ((Bullet) dataA).despawn();
-        }
-        if ("map".equals(dataA) && dataB instanceof Bullet) {
-            ((Bullet) dataB).despawn();
-        }
-
     }
 
     @Override

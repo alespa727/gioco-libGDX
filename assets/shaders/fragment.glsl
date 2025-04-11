@@ -1,16 +1,56 @@
-#ifdef GL_ES
-    precision mediump float;
-#endif
-
-varying vec4 v_color;
-varying vec2 v_texCoords;
+//texture 0
 uniform sampler2D u_texture;
-uniform mat4 u_projTrans;
+
+//our screen resolution, set from Java whenever the display is resized
+uniform vec2 resolution;
+
+//"in" attributes from our vertex shader
+varying vec4 vColor;
+varying vec2 vTexCoord;
+
+//RADIUS of our vignette, where 0.5 results in a circle fitting the screen
+const float RADIUS = 0.8;
+
+//softness of our vignette, between 0.0 and 1.0
+const float SOFTNESS = 0.3;
+
+//sepia colour, adjust to taste
+const vec3 SEPIA = vec3(1.0, 1.0, 1.0);
 
 void main() {
-        vec3 color = texture2D(u_texture, v_texCoords).rgb;
-        float gray = (color.r + color.g + color.b) / 3.0;
-        vec3 grayscale = vec3(gray);
+	//sample our texture
+	vec4 texColor = texture2D(u_texture, vTexCoord);
 
-        gl_FragColor = vec4(grayscale, 1.0);
+	//1. VIGNETTE
+
+	//determine center position
+	vec2 position = (gl_FragCoord.xy / resolution.xy) - vec2(0.5);
+
+	//determine the vector length of the center position
+	float len = length(position);
+
+	//use smoothstep to create a smooth vignette
+	float vignette = smoothstep(RADIUS, RADIUS-SOFTNESS, len);
+
+	//apply the vignette with 50% opacity
+	texColor.rgb = mix(texColor.rgb, texColor.rgb * vignette, 0.3);
+
+	//2. GRAYSCALE
+
+	//convert to grayscale using NTSC conversion weights
+	float gray = dot(texColor.rgb, vec3(0.299, 0.587, 0.114));
+
+	//3. SEPIA
+
+	//create our sepia tone from some constant value
+	vec3 sepiaColor = vec3(gray) * SEPIA;
+
+	//again we'll use mix so that the sepia effect is at 75%
+	texColor.rgb = mix(texColor.rgb, sepiaColor, 0.5);
+
+
+	texColor.rgb = clamp(texColor.rgb * 1.2, 0.0, 1.0);
+
+	//final colour, multiplied by vertex colour
+	gl_FragColor = texColor * vColor;
 }
