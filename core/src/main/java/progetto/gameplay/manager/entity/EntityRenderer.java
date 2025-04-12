@@ -1,12 +1,11 @@
 package progetto.gameplay.manager.entity;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.manager.ManagerEntity;
-import progetto.menu.DebugWindow;
+import progetto.utils.DebugWindow;
 import progetto.utils.GameInfo;
 import progetto.gameplay.entity.components.warrior.DirectionalRange;
 import progetto.gameplay.entity.types.Entity;

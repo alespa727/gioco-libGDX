@@ -23,7 +23,7 @@ import progetto.gameplay.manager.ManagerGame;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.MapManager;
-import progetto.menu.DebugWindow;
+import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
 

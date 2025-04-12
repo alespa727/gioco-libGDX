@@ -1,4 +1,4 @@
-package progetto.menu;
+package progetto.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.GameScreen;
 import progetto.gameplay.map.Map;
-import progetto.utils.TerminalCommand;
 
 public class DebugWindow extends Window {
 

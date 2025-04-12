@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.GameScreen;
-import progetto.menu.DebugWindow;
 
 import java.util.Scanner;
 
