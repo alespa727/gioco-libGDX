@@ -47,8 +47,9 @@ public final class ManagerEntity {
         this.summon(playerManager.getPlayer());
         Core.assetManager.load("entities/nemico.png", Texture.class);
         Core.assetManager.finishLoading();
-        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8, 12);
-        this.summon(EntityFactory.createBoss("Lich", e, this));
+        EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8, 12);
+        summon(EntityFactory.createEnemy("Finn", e, this, 1.5f));
+
         this.renderer = new EntityRenderer(this);
     }
 

@@ -6,8 +6,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
-import progetto.gameplay.entity.behaviors.movement.PlayerMovementManager;
+import progetto.gameplay.entity.components.player.DashInvulnerability;
+import progetto.gameplay.entity.components.player.PlayerDeathController;
+import progetto.gameplay.entity.components.player.PlayerMovementManager;
+import progetto.gameplay.entity.components.player.DashCooldown;
+import progetto.gameplay.entity.components.warrior.AttackCooldown;
 import progetto.gameplay.entity.skills.player.PlayerSwordAttack;
 import progetto.gameplay.entity.skills.player.PlayerDash;
 import progetto.gameplay.entity.skills.player.PlayerRangedAttack;
@@ -16,27 +19,24 @@ import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.entity.components.entity.Cooldown;
 
 public class Player extends Warrior {
 
-    // === ATTRIBUTI ===
-    private final PlayerMovementManager movement;
-    private final Cooldown attackCooldown;
-    private final Cooldown dashCooldown;
     private final Array<Warrior> inRange;
 
     // === COSTRUTTORE ===
     public Player(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
-
-        this.movement = new PlayerMovementManager(this);
         this.inRange = new Array<>();
-        this.attackCooldown = new Cooldown(0.8f);
-        this.dashCooldown = new Cooldown(1f);
 
-        attackCooldown.reset(0);
-        dashCooldown.reset(0);
+        addComponent(new PlayerDeathController(this));
+        addComponent(new DashInvulnerability(this));
+        addComponent(new PlayerMovementManager(this));
+        addComponent(new AttackCooldown(0.8f));
+        addComponent(new DashCooldown(1f));
+
+        getAttackCooldown().reset(0.8f);
+        getDashCooldown().reset(1f);
 
         ManagerCamera.getInstance().position.set(config.x, config.y, 0);
 
@@ -49,11 +49,19 @@ public class Player extends Warrior {
     // === METODI DI ACCESSO ===
 
     public PlayerMovementManager getMovement() {
-        return movement;
+        return getComponent(PlayerMovementManager.class);
     }
 
     public Array<Warrior> getInRange() {
         return inRange;
+    }
+
+    public AttackCooldown getAttackCooldown(){
+        return getComponent(AttackCooldown.class);
+    }
+
+    public DashCooldown getDashCooldown(){
+        return getComponent(DashCooldown.class);
     }
 
     // === GESTIONE ENTITÀ IN RANGE ===
@@ -69,38 +77,29 @@ public class Player extends Warrior {
     // === COMBATTIMENTO ===
 
     public void useBow(){
-        if(attackCooldown.isReady) {
+        if(getAttackCooldown().isReady) {
             getSkillset().getSkill(PlayerRangedAttack.class).execute();
-            attackCooldown.reset();
+            getAttackCooldown().reset();
         }
     }
 
     public void useSword(){
-        if(attackCooldown.isReady) {
+        if(getAttackCooldown().isReady) {
             getSkillset().getSkill(PlayerSwordAttack.class).execute();
-            attackCooldown.reset();
+            getAttackCooldown().reset();
         }
     }
 
     public void dash() {
-        if (dashCooldown.isReady) {
+        if (getDashCooldown().isReady) {
             getSkillset().getSkill(PlayerDash.class).execute();
-            dashCooldown.reset();
+            getDashCooldown().reset();
         }
     }
 
     public void hit(Warrior entity, float damage, float hitForce) {
         super.hit(entity, damage, hitForce);
         ManagerCamera.shakeTheCamera(0.1f, 0.025f);
-    }
-
-    // === GESTIONE VITA ===
-
-    public void checkIfDead() {
-        if (getHealth() <= 0) {
-            setDead();
-            getStats().setHealth(100);
-        }
     }
 
     // === GESTIONE ENTITY ===
@@ -117,14 +116,6 @@ public class Player extends Warrior {
 
     @Override
     public void updateEntityType(float delta) {
-
-        movement.update(this);
-
-        Body body = getPhysics().getBody();
-
-        getHumanStates().setInvulnerable(body.getLinearVelocity().len() > getMaxSpeed());
-
-        checkIfDead();
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             useSword();
@@ -143,7 +134,5 @@ public class Player extends Warrior {
 
     @Override
     public void cooldown(float delta) {
-        dashCooldown.update(delta);
-        attackCooldown.update(delta);
     }
 }

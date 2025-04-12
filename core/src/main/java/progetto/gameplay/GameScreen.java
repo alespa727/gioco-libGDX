@@ -24,7 +24,6 @@ import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.MapManager;
 import progetto.gameplay.player.inventoty.Inventory;
-import progetto.gameplay.player.inventoty.Item;
 import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
@@ -155,8 +154,8 @@ public class GameScreen implements Screen {
 
         // Disegna la finestra di debug
         debugWindow.updateDebugInfo(Gdx.graphics.getFramesPerSecond(), Gdx.app.getJavaHeap());
-        debugWindow.draw();
-        inventory.draw();
+        debugWindow.update();
+        inventory.update();
     }
 
     private void updateWorld() {

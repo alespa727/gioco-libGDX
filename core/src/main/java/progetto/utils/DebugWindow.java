@@ -1,6 +1,7 @@
 package progetto.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.GameScreen;
 import progetto.gameplay.map.Map;
-
-import javax.swing.plaf.nimbus.State;
 
 public class DebugWindow extends Window {
 
@@ -29,17 +28,13 @@ public class DebugWindow extends Window {
     public DebugWindow(GameScreen gameScreen, String title, Skin skin) {
         super(title, skin);
         setDebug(true);
+        setMovable(true);
         setKeepWithinStage(false);
         // Crea la viewport
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()));
         // Aggiunge la finestra
         stage.addActor(this);
 
-        // Impostazioni della finestra
-        setMovable(true);
-
-        // Posiziona la finestra in basso (spazio per il titolo) e dai un margine
-        int marginTop = 50;  // Distanza dal bordo superiore per il titolo
         setPosition(0, 0); // Aggiungi spazio sopra
 
         // Crea i TextField, TextButton e Label
@@ -127,10 +122,16 @@ public class DebugWindow extends Window {
 
         // Imposta una dimensione iniziale per la finestra
         setSize(300, 400); // Imposta la larghezza e l'altezza iniziale
+        hide();
     }
 
+    public void show(){
+        setVisible(true);
+    }
 
-
+    public void hide(){
+        setVisible(false);
+    }
 
     public static boolean renderEntities() {
         return entityAI;
@@ -169,7 +170,10 @@ public class DebugWindow extends Window {
         return stage;
     }
 
-    public void draw() {
+    public void update() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)){
+            setVisible(!isVisible());
+        }
         stage.getViewport().apply();
         stage.act(Gdx.graphics.getDeltaTime()); // Update the stage (for animations or actions)
         stage.draw(); // Draw the stage

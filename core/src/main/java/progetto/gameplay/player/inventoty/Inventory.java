@@ -4,18 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.GameScreen;
-
-import java.util.Iterator;
 
 public class Inventory extends Window {
     Array<Item> items;
@@ -38,7 +33,7 @@ public class Inventory extends Window {
         setMovable(true);
         setKeepWithinStage(false);
         setSize(width*itemSize, height*itemSize);
-        setVisible(true);
+        setVisible(false);
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()));
         stage.addActor(this);
         table = new Table();
@@ -101,10 +96,9 @@ public class Inventory extends Window {
         setVisible(false);
     }
 
-    public void draw() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.M) && itemCount > 0){
-            items.removeIndex(itemCount-1);
-            rebuild();
+    public void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
+            setVisible(!isVisible());
         }
         stage.getViewport().apply();
         stage.act();

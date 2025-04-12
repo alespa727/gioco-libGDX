@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 
 import progetto.gameplay.entity.behaviors.states.StatesEnemy;
 import progetto.gameplay.entity.components.humanoid.DeathController;
+import progetto.gameplay.entity.components.warrior.AttackCooldown;
 import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
@@ -17,43 +18,39 @@ public abstract class Enemy extends Warrior {
     public final float viewDistance;
     public final float pursueMaxDistance;
 
-    private final Array<Warrior> inRange;
-    protected final Cooldown attack;
+    private Array<Warrior> inRange;
 
-    public final DefaultStateMachine<Enemy, StatesEnemy> statemachine;
+    public DefaultStateMachine<Enemy, StatesEnemy> statemachine;
 
     // === COSTRUTTORI ===
     public Enemy(EnemyInstance instance, ManagerEntity manager) {
         super(instance, manager);
-        addComponent(new DeathController(this));
-
-        attack = new Cooldown(1.5f);
-        attack.reset(0f);
-
-        statemachine = new DefaultStateMachine<>(this);
-        statemachine.setInitialState(StatesEnemy.PATROLLING);
-
         viewDistance = instance.viewDistance;
         pursueMaxDistance = instance.pursueMaxDistance;
+    }
+
+    public Enemy(EntityConfig config, ManagerEntity manager, float attackcooldown) {
+        super(config, manager);
+        viewDistance = 11f;
+        pursueMaxDistance = 12f;
+    }
+
+    @Override
+    public void create() {
+        super.create();
+        statemachine = new DefaultStateMachine<>(this);
+        statemachine.setInitialState(StatesEnemy.PATROLLING);
+        addComponent(new DeathController(this));
+        addComponent(new AttackCooldown(1.5f));
+        getAttackCooldown().reset();
+
 
         this.inRange = new Array<>();
         getSkillset().add(new EnemySwordAttack(this, "", "", 10));
     }
 
-    public Enemy(EntityConfig config, ManagerEntity manager, float attackcooldown) {
-        super(config, manager);
-
-        attack = new Cooldown(attackcooldown);
-        attack.reset(0f);
-
-        statemachine = new DefaultStateMachine<>(this);
-        statemachine.setInitialState(StatesEnemy.PATROLLING);
-
-        viewDistance = 11f;
-        pursueMaxDistance = 12f;
-
-        this.inRange = new Array<>();
-        getSkillset().add(new EnemySwordAttack(this, "", "", 10));
+    public Cooldown getAttackCooldown(){
+        return getComponent(AttackCooldown.class);
     }
 
     // === METODI DI ACCESSO ===

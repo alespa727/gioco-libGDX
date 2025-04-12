@@ -54,6 +54,11 @@ public abstract class Humanoid extends Entity {
 
     // METODI ASTRATTI
 
+    @Override
+    public void create() {
+
+    }
+
     /**
      * Metodo astratto per la gestione dei cooldown delle abilità.
      *
