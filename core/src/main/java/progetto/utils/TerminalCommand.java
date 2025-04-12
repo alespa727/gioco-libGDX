@@ -1,16 +1,17 @@
 package progetto.utils;
 
 import com.badlogic.gdx.math.Vector2;
+import org.fusesource.jansi.Ansi;
 import progetto.gameplay.GameScreen;
 import progetto.menu.DebugWindow;
 
 import java.util.Scanner;
 
-public class TerminalCommandListener extends Thread {
+public class TerminalCommand extends Thread {
     private Scanner scanner;
     private GameScreen gameScreen;
 
-    public TerminalCommandListener(GameScreen gameScreen) {
+    public TerminalCommand(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         scanner = new Scanner(System.in);
     }
@@ -25,41 +26,59 @@ public class TerminalCommandListener extends Thread {
     private void processCommand(String command) {
         // Elenco dei comandi e delle azioni associate
         String[] tokens = command.split(" ");
+        if(tokens[0].isEmpty()){
+            return;
+        }
         switch (tokens[0]) {
             case "teleport":
                 try {
                     int x = Integer.parseInt(tokens[1]);
                     int y = Integer.parseInt(tokens[2]);
+                    printMessage("Teleporting the player...");
+                    sleep(500);
                     teleportPlayer(x, y);
-                    System.out.println("Teleporting the player...");
+                    printMessage("Command executed!");
                 }catch (Exception e) {
                     switch (tokens.length) {
                         case 1:
-                            System.err.println("Inserire coordinate x e y");
+                            printError("Inserire coordinate x e y");
                             break;
                         case 2:
-                            System.err.println("Inserire coordinate y");
+                            printError("Inserire coordinate y");
                             break;
                         default:
-                            System.err.println("Comando non trovato");
+                            printError("Sintassi non corretta");
                             break;
                     }
                 }
                 break;
             case "debug":
                 try{
-                    String line = tokens[1];
-                    setDebugMode(line);
+                    String state = tokens[1];
+                    switch (state){
+                        case "true":
+                            printMessage("Enabling debug mode...");
+                            sleep(500);
+                            DebugWindow.setDebugMode(true);
+                            break;
+                        case "false":
+                            printMessage("Disabling debug mode...");
+                            sleep(500);
+                            DebugWindow.setDebugMode(false);
+                            break;
+                        default:
+                            printError("Sintassi non corretta");
+                    }
                 }catch (Exception e) {
                     if (tokens.length == 1) {
-                        System.err.println("Inserire lo stato");
+                        printError("Inserire lo stato");
                     } else {
-                        System.err.println("Comando non trovato");
+                        printError("Sintassi non corretta");
                     }
                 }
                 break;
             default:
-                System.out.println("Comando non trovato: " + command);
+                printError("Comando non trovato: " + command);
         }
     }
 
@@ -68,21 +87,12 @@ public class TerminalCommandListener extends Thread {
         gameScreen.getEntityManager().player().teleport(new Vector2(x, y));
     }
 
-    private void setDebugMode(String state) {
-        switch (state){
-            case "true":
-                DebugWindow.setDebugMode(true);
+    public static void printMessage(String message) {
+        System.out.println(Ansi.ansi().fg(Ansi.Color.BLUE).a(message).reset());
+    }
 
-                break;
-            case "false":
-                DebugWindow.setDebugMode(false);
-                System.out.println("Debug mode is now disabled.");
-                break;
-            default:
-                System.err.println("Inserire uno stato valido");
-        }
-
-        // Aggiungi eventuali operazioni legate al debug
+    public static void printError(String message) {
+        System.err.println(Ansi.ansi().fg(Ansi.Color.RED).a(message).reset());
     }
 
 }

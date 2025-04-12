@@ -6,6 +6,7 @@ dependencies {
   api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
 
+  implementation 'org.fusesource.jansi:jansi:1.18'
    implementation "com.badlogicgames.gdx:gdx-ai:1.8.2"
     implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
   implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

@@ -8,7 +8,6 @@ import progetto.gameplay.GameScreen;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.menu.MainScreen;
-import progetto.utils.TerminalCommandListener;
 
 // Classe principale del gioco, estende Game di libGDX
 public class Core extends com.badlogic.gdx.Game {

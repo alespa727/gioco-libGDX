@@ -97,8 +97,6 @@ public class Player extends Warrior {
     public void checkIfDead() {
         if (getHealth() <= 0) {
             setDead();
-            System.out.println("Il giocatore è morto");
-            System.out.println("Rianimazione..");
             getStats().setHealth(100);
         }
     }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.GameScreen;
 import progetto.gameplay.map.Map;
+import progetto.utils.TerminalCommand;
 
 public class DebugWindow extends Window {
 
@@ -145,16 +146,16 @@ public class DebugWindow extends Window {
 
     public static void setDebugMode(boolean state) {
         if (hitboxes==state) {
-            System.err.println("Hitboxes mode is already active.");
+            TerminalCommand.printError("Hitboxes mode is already active.");
         }else{
-            System.out.println("Debug mode is now active.");
+            TerminalCommand.printMessage("Debug mode is now active.");
             hitboxes = state;
         }
 
         if (pathfinding==state) {
-            System.err.println("Pathfinding mode is already active.");
+            TerminalCommand.printError("Pathfinding mode is already active.");
         }else{
-            System.out.println("Pathfinding mode is now active.");
+            TerminalCommand.printMessage("Pathfinding mode is now active.");
             pathfinding = state;
         }
 

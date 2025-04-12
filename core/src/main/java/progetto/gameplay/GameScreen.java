@@ -32,7 +32,7 @@ public class GameScreen implements Screen {
     // Costante per il passo fisico (60Hz)
     public static final float STEP = 1 / 60f;
 
-    private TerminalCommandListener terminalCommandListener;
+    private TerminalCommand terminalCommand;
     private DebugWindow debugWindow;
 
     private Window window;
@@ -59,8 +59,8 @@ public class GameScreen implements Screen {
         GameLoader.loadWorld();
         this.time = new GameTime();
         this.vignette = Vignette.getInstance();
-        this.terminalCommandListener = new TerminalCommandListener(this);
-        this.terminalCommandListener.start();
+        this.terminalCommand = new TerminalCommand(this);
+        this.terminalCommand.start();
         this.loadGame(core);
         ManagerEvent listener = new ManagerEvent();
         ManagerWorld.getInstance().setContactListener(listener);
