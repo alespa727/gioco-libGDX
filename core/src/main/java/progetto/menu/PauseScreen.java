@@ -23,12 +23,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.CoreConfig;
 import progetto.Core;
 import progetto.gameplay.entity.components.entity.Cooldown;
-import progetto.gameplay.Game;
+import progetto.gameplay.GameScreen;
 import progetto.gameplay.manager.ManagerCamera;
 
 public class PauseScreen implements Screen {
     final Core game;
-    final Game gameScreen;
+    final GameScreen gameScreen;
     boolean resumeRequest;
     boolean pauseRequest;
     Cooldown pause;
@@ -48,7 +48,7 @@ public class PauseScreen implements Screen {
     private Table root;
     private Table table;
 
-    public PauseScreen(Core game, Game gameScreen) {
+    public PauseScreen(Core game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
     }

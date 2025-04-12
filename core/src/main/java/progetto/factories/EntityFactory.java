@@ -12,7 +12,7 @@ import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.living.combat.enemy.Finn;
 import progetto.gameplay.entity.types.notliving.Bullet;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 public class EntityFactory {
     public static Enemy createEnemy(String type, EntityConfig config, ManagerEntity manager, float attackCooldown) {

@@ -28,7 +28,6 @@ public class EntityInstance {
      */
     public EntityInstance(Entity e) {
         this.type = e.getClass().getSimpleName(); // Nome del tipo (classe)
-        System.out.println(type); // Debug: stampa il tipo dell'entità
 
         this.config = e.getConfig();       // Clona la configurazione
         this.coordinate = e.getPosition(); // Clona la posizione

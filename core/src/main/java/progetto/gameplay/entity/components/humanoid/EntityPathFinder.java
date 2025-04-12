@@ -85,14 +85,6 @@ public class EntityPathFinder extends Component implements Disposable {
         shapeRenderer.setColor(Color.BLACK);
     }
 
-    public void debug() {
-
-        System.out.println("Start Node Index: " + startNode.getIndex());
-        System.out.println("End Node Index: " + endNode.getIndex());
-        System.out.println("Graph Node Count: " + Map.getGraph().getNodeCount());
-
-    }
-
     public void clear() {
         path.clear();
     }

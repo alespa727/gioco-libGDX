@@ -11,7 +11,7 @@ import progetto.gameplay.entity.components.entity.NodeTracker;
 import progetto.gameplay.entity.components.entity.PhysicsComponent;
 import progetto.gameplay.entity.components.entity.StateComponent;
 import progetto.gameplay.entity.types.living.HumanoidTextures;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 /**
  * Classe base per ogni entità del gioco (giocatori, nemici, boss, ecc.).

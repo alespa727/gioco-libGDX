@@ -1,14 +1,12 @@
 package progetto.gameplay.entity.types.living.combat.enemy;
 
-import com.badlogic.gdx.Gdx;
-
 import progetto.gameplay.entity.behaviors.states.StatesEnemy;
 import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 public final class Finn extends Enemy {
 
@@ -51,9 +49,6 @@ public final class Finn extends Enemy {
 
     @Override
     public EntityInstance despawn() {
-        // Log per il despawn
-        System.out.println("Entità id " + getConfig().id + " despawnata");
-
         // Rimuove l'entità dal manager
         manager.remove(this);
 

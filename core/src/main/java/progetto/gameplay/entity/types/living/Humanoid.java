@@ -8,7 +8,7 @@ import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.skills.SkillSet;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 /**
  * Classe astratta che rappresenta un'entità umanoide nel gioco.

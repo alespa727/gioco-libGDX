@@ -3,7 +3,7 @@ package progetto.gameplay.entity.behaviors.manager.entity.movement;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.player.Player;
 
 import static progetto.utils.KeyHandler.*;
 

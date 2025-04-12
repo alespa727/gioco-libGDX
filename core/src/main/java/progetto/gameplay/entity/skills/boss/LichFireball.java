@@ -7,7 +7,7 @@ import progetto.audio.AudioManager;
 import progetto.factories.EntityFactory;
 import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.player.Player;
 
 public class LichFireball extends CombatSkill {
     private final float speed;

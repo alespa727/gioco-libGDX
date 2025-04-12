@@ -2,7 +2,8 @@ package progetto.gameplay.manager.entity;
 
 import progetto.factories.EntityConfigFactory;
 import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.player.Player;
 
 public class PlayerManager {
 

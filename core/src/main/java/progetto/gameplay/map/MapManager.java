@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 public class MapManager {
 

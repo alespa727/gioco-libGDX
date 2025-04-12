@@ -2,9 +2,7 @@ package progetto.gameplay.map.events;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import progetto.CoreConfig;
-import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
-import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.player.Player;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.map.MapManager;
 import progetto.utils.KeyHandler;

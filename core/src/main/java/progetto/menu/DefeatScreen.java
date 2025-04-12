@@ -30,7 +30,7 @@ public class DefeatScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         root = new Table();
         root.setFillParent(true);
-        skin = new Skin(Gdx.files.internal("metal-ui.json"));
+        skin = new Skin(Gdx.files.internal("skins/metal-ui.json"));
         stage.addActor(root);
 
         Table table = new Table();
@@ -40,7 +40,7 @@ public class DefeatScreen implements Screen {
         button1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(game.game);
+                game.setScreen(game.gameScreen);
                 return true;
             }
         });

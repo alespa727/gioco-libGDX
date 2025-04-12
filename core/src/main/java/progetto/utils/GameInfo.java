@@ -1,18 +1,19 @@
-package progetto.gameplay;
+package progetto.utils;
 
 import progetto.Core;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.GameScreen;
+import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.MapManager;
 
 public class GameInfo {
     public Core core;
-    public Game screen;
+    public GameScreen screen;
     public ManagerEntity managerEntity;
     public MapManager mapManager;
 
     public GameInfo() {}
 
-    public GameInfo(Core core, Game screen, ManagerEntity managerEntity, MapManager mapManager) {
+    public GameInfo(Core core, GameScreen screen, ManagerEntity managerEntity, MapManager mapManager) {
         this.core = core;
         this.screen = screen;
         this.managerEntity = managerEntity;

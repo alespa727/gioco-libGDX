@@ -1,8 +1,6 @@
 package progetto.gameplay.map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -17,9 +15,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.events.ChangeMapEvent;
-import progetto.gameplay.manager.ManagerEvent;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
 import progetto.factories.BodyFactory;
@@ -132,42 +129,49 @@ public class Map implements Disposable {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 TiledMapTileLayer.Cell tile = collisionLayer.getCell(i, j);
-                if (tile != null && tile.getTile() != null && tile.getTile().getProperties().containsKey("solido")) {
-                    collisions[i][j] = (Boolean) tile.getTile().getProperties().get("solido");
+                if (tile != null && tile.getTile() != null) {
+                    collisions[i][j] = true;
                 }
             }
         }
     }
 
-    public Map createCollision() {
+    public void createCollision() {
         MapObjects objects = customCollisionLayer.getObjects();
         for(MapObject object : objects) {
             if (object instanceof RectangleMapObject) {  // Check if it's a rectangle, adjust if necessary
-                float x = ((RectangleMapObject) object).getRectangle().x;
-                System.out.println("Object X position: " + x);
+                System.out.println(object);
+                float x = ((RectangleMapObject) object).getRectangle().x*MapManager.TILE_SIZE;
+                float y = ((RectangleMapObject) object).getRectangle().y*MapManager.TILE_SIZE;
+                float width = ((RectangleMapObject) object).getRectangle().width*MapManager.TILE_SIZE;
+                float height = ((RectangleMapObject) object).getRectangle().height*MapManager.TILE_SIZE;
+                BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x+width/2, y+height/2);
+                Shape boxShape = BodyFactory.createPolygonShape(width/2, height/2);
+
+                FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
+                fixtureDef.filter.groupIndex = ManagerEntity.WALL;
+
+                BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
             }
         }
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (collisions[i][j]) {
-                    final int x = i;
-                    final int y = j;
-
-
-                    // Crea oggetti nuovi per ogni Runnable
-                    BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x + 0.5f, y + 0.5f);
-                    Shape boxShape = BodyFactory.createPolygonShape(0.5f, 0.5f);
-
-                    FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
-                    fixtureDef.filter.groupIndex = ManagerEntity.WALL;
-
-                    BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
-
-                }
-            }
-        }
+//        for (int i = 0; i < width; i++) {
+//            for (int j = 0; j < height; j++) {
+//                if (collisions[i][j]) {
+//                    final int x = i;
+//                    final int y = j;
+//                    // Crea oggetti nuovi per ogni Runnable
+//                    BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x + 0.5f, y + 0.5f);
+//                    Shape boxShape = BodyFactory.createPolygonShape(0.5f, 0.5f);
+//
+//                    FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
+//                    fixtureDef.filter.groupIndex = ManagerEntity.WALL;
+//
+//                    BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
+//
+//                }
+//            }
+//        }
         //createBorders();
-        return this;
     }
 
 

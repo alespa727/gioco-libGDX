@@ -8,8 +8,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.entity.components.warrior.DirectionalRange;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
-import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.player.Player;
+import progetto.gameplay.manager.ManagerEntity;
 
 public enum StatesEnemy implements State<Enemy> {
 

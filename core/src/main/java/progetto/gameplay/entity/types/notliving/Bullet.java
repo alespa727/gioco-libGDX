@@ -1,14 +1,11 @@
 package progetto.gameplay.entity.types.notliving;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 
 import progetto.Core;
-import progetto.audio.AudioManager;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.entity.NodeTracker;
@@ -16,7 +13,7 @@ import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 /**
  * Rappresenta un proiettile nel gioco.

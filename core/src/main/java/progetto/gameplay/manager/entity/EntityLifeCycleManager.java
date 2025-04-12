@@ -2,11 +2,12 @@ package progetto.gameplay.manager.entity;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.gameplay.GameInfo;
+import progetto.gameplay.manager.ManagerEntity;
+import progetto.utils.GameInfo;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.entity.types.notliving.Bullet;
+import progetto.gameplay.player.Player;
+
 public class EntityLifeCycleManager {
     GameInfo info;
     ManagerEntity managerEntity;

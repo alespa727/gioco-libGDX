@@ -8,8 +8,7 @@ import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.entity.types.living.combat.player.Player;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.player.Player;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
 
@@ -27,12 +26,12 @@ public class ManagerEvent implements ContactListener {
 
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
         if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {
-            System.out.println("TRIGGERED");
+            Gdx.app.log("ManagerEvent", "Got Player");
             ((MapEvent) dataB).setActive(true);
             ((MapEvent) dataB).trigger((Entity) dataA);
             return;
         } else if (dataB instanceof Player && dataA instanceof ChangeMapEvent) {
-            System.out.println("TRIGGERED");
+            Gdx.app.log("ManagerEvent", "Got Player");
             ((MapEvent) dataA).setActive(true);
             ((MapEvent) dataA).trigger((Entity) dataB);
             return;

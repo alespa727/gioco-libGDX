@@ -9,7 +9,7 @@ import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 public abstract class Enemy extends Warrior {
 

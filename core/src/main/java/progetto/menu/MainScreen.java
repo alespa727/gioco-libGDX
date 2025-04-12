@@ -32,7 +32,7 @@ public class MainScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         root = new Table();
         root.setFillParent(true);
-        skin = new Skin(Gdx.files.internal("metal-ui.json"));
+        skin = new Skin(Gdx.files.internal("skins/metal-ui.json"));
         table = new Table();
         stage.addActor(root);
         root.add(table);
@@ -66,7 +66,7 @@ public class MainScreen implements Screen {
         button.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(game.game);
+                game.setScreen(game.gameScreen);
                 return true;
             }
         });

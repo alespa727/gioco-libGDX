@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
-import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.player.Player;
 
 public class Gui {
-    private final Game gamescreen; // Riferimento allo schermo di gioco
+    private final GameScreen gamescreen; // Riferimento allo schermo di gioco
     private final ShapeRenderer shapeRenderer; // Strumento per disegnare forme (come la barra della vita)
     private float height; // Altezza della finestra
     private float width;  // Larghezza della finestra
@@ -20,7 +20,7 @@ public class Gui {
     private final SpriteBatch batch; // Batch per disegnare le immagini (non usato per ora)
 
     // Costruttore che prepara la GUI
-    public Gui(Game gamescreen) {
+    public Gui(GameScreen gamescreen) {
         this.gamescreen = gamescreen;
         shapeRenderer = new ShapeRenderer(); // Inizializza lo strumento per disegnare forme
         width = Gdx.app.getGraphics().getWidth(); // Prende la larghezza della finestra

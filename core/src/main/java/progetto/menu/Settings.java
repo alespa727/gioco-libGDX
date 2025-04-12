@@ -54,7 +54,7 @@ public class Settings implements Screen {
 
         root = new Table(); // Creo la tabella che conterra' quella principale
         root.setFillParent(true);
-        skin = new Skin(Gdx.files.internal("metal-ui.json")); // Creo la skin che conterra' i dati
+        skin = new Skin(Gdx.files.internal("skins/metal-ui.json")); // Creo la skin che conterra' i dati
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

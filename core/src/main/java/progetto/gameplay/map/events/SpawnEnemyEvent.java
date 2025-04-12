@@ -5,7 +5,7 @@ import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 /**
  * Evento di spawn di un {@link Enemy}

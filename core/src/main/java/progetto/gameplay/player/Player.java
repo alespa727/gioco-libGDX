@@ -1,18 +1,17 @@
-package progetto.gameplay.entity.types.living.combat.player;
+package progetto.gameplay.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 
-import progetto.gameplay.entity.components.warrior.DirectionalRange;
 import progetto.gameplay.entity.skills.player.PlayerSwordAttack;
 import progetto.gameplay.entity.skills.player.PlayerDash;
 import progetto.gameplay.entity.skills.player.PlayerRangedAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.entity.behaviors.manager.entity.movement.PlayerMovementManager;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.entity.components.entity.Cooldown;

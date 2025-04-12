@@ -45,18 +45,6 @@ public class ManagerWorld {
         }
     }
 
-    public static Body createBody(Object userdata, BodyDef bodyDef, FixtureDef fixtureDef, Shape shape) {
-        BodyComponent bodyComponent = new BodyComponent();
-
-        bodyComponent.bodyDef = bodyDef;
-        bodyComponent.fixtureDef = fixtureDef;
-        bodyComponent.shape = shape;
-        bodyComponent.userdata = userdata;
-
-        bodyToCreate.addFirst(bodyComponent);
-        return instance.createBody(bodyDef);
-    }
-
     public static void destroyBody(Body body) {
         bodyToDestroy.addFirst(body);
     }

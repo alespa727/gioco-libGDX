@@ -4,34 +4,34 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import progetto.CoreConfig;
-import progetto.gameplay.Game;
+import progetto.gameplay.GameScreen;
 import progetto.menu.PauseScreen;
+import progetto.utils.GameTime;
 import progetto.utils.KeyHandler;
 
-import static progetto.gameplay.Game.STEP;
+import static progetto.gameplay.GameScreen.STEP;
 
-public enum ManagerGame implements State<Game> {
+public enum ManagerGame implements State<GameScreen> {
 
     PLAYING {
         @Override
-        public void enter(Game screen) {
+        public void enter(GameScreen screen) {
             System.out.println("GameScreen.PLAYING");
         }
 
         @Override
-        public void update(Game screen) {
+        public void update(GameScreen screen) {
+            GameTime time = screen.getTime();
             if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
                 screen.getInfo().core.setScreen(new PauseScreen(screen.getInfo().core, screen));
             }
 
-            screen.accumulator += screen.delta;
-
             // Aggiorna il gioco finché necessario
-            while (screen.accumulator >= STEP) {
+            while (time.getAccumulator() >= STEP) {
                 float scaledTime = STEP * screen.getTimeScale();
                 ManagerWorld.getInstance().step(scaledTime, 8, 8);
                 screen.update(scaledTime);
-                screen.accumulator -= STEP;
+                time.setAccumulator(time.getAccumulator() - STEP);
                 KeyHandler.input();
             }
 
@@ -40,12 +40,12 @@ public enum ManagerGame implements State<Game> {
         }
 
         @Override
-        public void exit(Game screen) {
+        public void exit(GameScreen screen) {
 
         }
 
         @Override
-        public boolean onMessage(Game entity, Telegram telegram) {
+        public boolean onMessage(GameScreen entity, Telegram telegram) {
             return false;
         }
     }

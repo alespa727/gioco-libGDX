@@ -3,12 +3,14 @@ package progetto.gameplay.manager.entity;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.factories.BodyFactory;
-import progetto.gameplay.GameInfo;
+import progetto.gameplay.manager.ManagerEntity;
+import progetto.menu.DebugWindow;
+import progetto.utils.GameInfo;
 import progetto.gameplay.entity.components.warrior.DirectionalRange;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.entity.types.living.combat.player.Player;
+import progetto.gameplay.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
 
 import java.util.Comparator;
@@ -90,12 +92,18 @@ public class EntityRenderer {
      * Aggiorna le entità
      */
     public void updateEntityLogic(){
-        for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
-                e.render(this.deltaTime);
-                e.updateComponents(this.deltaTime);
-                e.setShouldRender(true);
-            } else e.setShouldRender(false);
+        if(DebugWindow.renderEntities()){
+            for (Entity e : entities) {
+                if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
+                    e.render(this.deltaTime);
+                    e.updateComponents(this.deltaTime);
+                    e.setShouldRender(true);
+                } else e.setShouldRender(false);
+            }
+        }else{
+            managerEntity.player().render(this.deltaTime);
+            managerEntity.player().updateComponents(this.deltaTime);
+            managerEntity.player().setShouldRender(true);
         }
     }
 

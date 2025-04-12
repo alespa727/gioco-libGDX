@@ -1,15 +1,12 @@
 package progetto.gameplay.entity.components.warrior;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.manager.entity.ManagerEntity;
+import progetto.gameplay.manager.ManagerEntity;
 
 public class DirectionalRange extends IteratableComponent {
 
