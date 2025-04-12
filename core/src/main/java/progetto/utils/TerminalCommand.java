@@ -1,5 +1,6 @@
 package progetto.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.GameScreen;
@@ -92,7 +93,7 @@ public class TerminalCommand extends Thread {
     }
 
     public static void printError(String message) {
-        System.err.println(Ansi.ansi().fg(Ansi.Color.RED).a(message).reset());
+        Gdx.app.log("Error", Ansi.ansi().fg(Ansi.Color.RED).a(message).reset().toString());
     }
 
 }
