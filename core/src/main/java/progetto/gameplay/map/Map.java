@@ -20,6 +20,7 @@ import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
 import progetto.factories.BodyFactory;
+import progetto.utils.TerminalCommand;
 
 public class Map implements Disposable {
     public final String nome;
@@ -140,7 +141,6 @@ public class Map implements Disposable {
         MapObjects objects = customCollisionLayer.getObjects();
         for(MapObject object : objects) {
             if (object instanceof RectangleMapObject) {  // Check if it's a rectangle, adjust if necessary
-                System.out.println(object);
                 float x = ((RectangleMapObject) object).getRectangle().x*MapManager.TILE_SIZE;
                 float y = ((RectangleMapObject) object).getRectangle().y*MapManager.TILE_SIZE;
                 float width = ((RectangleMapObject) object).getRectangle().width*MapManager.TILE_SIZE;
@@ -215,7 +215,6 @@ public class Map implements Disposable {
             float spawny = object.getProperties().get("spawny", Float.class);
             if ("changeMap".equals(eventType)) {
                 events.add(new ChangeMapEvent(new Vector2(x, y), radius, this.mapManager, map, spawnx, spawny));
-                System.out.println("evento aggiunto");
             }
         }
     }

@@ -159,7 +159,6 @@ public enum StatesLich implements State<Lich> {
             if (entity.prepareToChangeStates.isReady){
                 entity.prepareToChangeStates.reset(1);
                 if(Map.isGraphLoaded) entity.searchPath(entity.manager.player());
-                System.out.println(entity.getPathFinder().success);
                 if(!entity.getPathFinder().success){
                     entity.getStateMachine().changeState(StatesLich.IDLE);
                     return;
@@ -193,7 +192,6 @@ public enum StatesLich implements State<Lich> {
     IDLE {
         @Override
         public void enter(Lich entity) {
-            Gdx.app.log("GDX", "IDLE");
             entity.getMovementManager().setReady();
         }
 

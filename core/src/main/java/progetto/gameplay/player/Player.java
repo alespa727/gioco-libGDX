@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
 import progetto.gameplay.entity.behaviors.movement.PlayerMovementManager;
 import progetto.gameplay.entity.skills.player.PlayerSwordAttack;
 import progetto.gameplay.entity.skills.player.PlayerDash;
@@ -105,7 +107,7 @@ public class Player extends Warrior {
 
     @Override
     public final void create() {
-        System.out.println("Player creato");
+        System.out.println(Ansi.ansi().fg(Ansi.Color.GREEN).a("Player creato").reset());
     }
 
     @Override

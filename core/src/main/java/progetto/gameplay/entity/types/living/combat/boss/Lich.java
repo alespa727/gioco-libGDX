@@ -12,6 +12,7 @@ import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.utils.TerminalCommand;
 
 public class Lich extends Boss{
 
@@ -60,7 +61,7 @@ public class Lich extends Boss{
     @Override
     public EntityInstance despawn() {
         // Log per il despawn
-        System.out.println("Boss id " + getConfig().id + " despawnata");
+        TerminalCommand.printMessage("Boss id " + getConfig().id + " despawnata");
 
         // Rimuove l'entità dal manager
         manager.remove(this);

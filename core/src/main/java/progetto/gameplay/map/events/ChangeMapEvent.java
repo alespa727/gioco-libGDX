@@ -6,6 +6,7 @@ import progetto.gameplay.player.Player;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.map.MapManager;
 import progetto.utils.KeyHandler;
+import progetto.utils.TerminalCommand;
 
 /**
  * Evento di cambio mappa tramite {@link MapManager}
@@ -46,6 +47,7 @@ public class ChangeMapEvent extends MapEvent {
     public void update() {
         if (isActive()) {
             if (KeyHandler.usa) {
+                TerminalCommand.printMessage("Map " + MapManager.getMapIndex() + " changing to " + map + "..");
                 Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f));
                 isActive = false;
             }

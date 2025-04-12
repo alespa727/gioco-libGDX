@@ -6,17 +6,18 @@ import progetto.Core;
 import progetto.gameplay.entity.types.EntityConfig;
 
 public class EntityConfigFactory {
-    public static EntityConfig createEntityConfig(String type, float x, float y) {
+    public static EntityConfig createEntityConfig(String type, int id, float x, float y) {
         return switch (type) {
-            case "Finn" -> finnConfig(x, y);
-            case "Lich" -> lichConfig(x, y);
+            case "Finn" -> finnConfig(id, x, y);
+            case "Lich" -> lichConfig(id, x, y);
             default -> null;
         };
     }
 
-    private static EntityConfig finnConfig(float x, float y) {
+    private static EntityConfig finnConfig(int id, float x, float y) {
         EntityConfig config = new EntityConfig();
         config = new EntityConfig();
+        config.id = id;
         config.nome = "Finn";
         config.descrizione = "Nemico pericoloso";
         config.x = x;
@@ -35,9 +36,10 @@ public class EntityConfigFactory {
         return config;
     }
 
-    public static EntityConfig lichConfig(float x, float y) {
+    public static EntityConfig lichConfig(int id, float x, float y) {
         EntityConfig lich = new EntityConfig();
         lich.nome = "Finn";
+        lich.id = id;
         lich.descrizione = "Nemico pericoloso";
         lich.x = x;
         lich.y = y;

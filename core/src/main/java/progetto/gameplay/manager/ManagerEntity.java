@@ -30,6 +30,7 @@ public final class ManagerEntity {
 
     public static final short WALL = 0;
     public static final short RANGE = 0x0010;
+    private static int idCount=0;
 
     public float delta;
     public float elapsedTime;
@@ -46,9 +47,14 @@ public final class ManagerEntity {
         this.summon(playerManager.getPlayer());
         Core.assetManager.load("entities/nemico.png", Texture.class);
         Core.assetManager.finishLoading();
-        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", 8, 12);
+        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8, 12);
         this.summon(EntityFactory.createBoss("Lich", e, this));
         this.renderer = new EntityRenderer(this);
+    }
+
+    public int getIdCount(){
+        idCount++;
+        return idCount;
     }
 
     /**

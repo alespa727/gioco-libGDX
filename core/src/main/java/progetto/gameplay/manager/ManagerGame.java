@@ -16,7 +16,7 @@ public enum ManagerGame implements State<GameScreen> {
     PLAYING {
         @Override
         public void enter(GameScreen screen) {
-            System.out.println("GameScreen.PLAYING");
+            
         }
 
         @Override

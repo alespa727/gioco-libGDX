@@ -54,7 +54,6 @@ public abstract class Skill {
         // Caricamento delle texture per ogni frame
         for (int i = 0; i < texture.length; i++) {
             texture[i] = new Texture(path + (i + 1) + ".png");
-            System.out.println(path + (i + 1) + ".png"); // Log per il debug
         }
 
         // Creazione delle regioni della texture

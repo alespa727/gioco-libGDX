@@ -26,12 +26,10 @@ public class ManagerEvent implements ContactListener {
 
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
         if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {
-            Gdx.app.log("ManagerEvent", "Got Player");
             ((MapEvent) dataB).setActive(true);
             ((MapEvent) dataB).trigger((Entity) dataA);
             return;
         } else if (dataB instanceof Player && dataA instanceof ChangeMapEvent) {
-            Gdx.app.log("ManagerEvent", "Got Player");
             ((MapEvent) dataA).setActive(true);
             ((MapEvent) dataA).trigger((Entity) dataB);
             return;
