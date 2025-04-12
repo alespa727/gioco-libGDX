@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -35,6 +37,7 @@ public class Map implements Disposable {
 
     private final TiledMapTileLayer collisionLayer;
     private final MapLayer eventLayer;
+    private final MapLayer customCollisionLayer;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final ManagerEntity managerEntity;
     private final MapManager mapManager;
@@ -55,6 +58,8 @@ public class Map implements Disposable {
         this.managerEntity = manager;
 
         this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni"); // Layer collisioni
+        this.customCollisionLayer = map.getLayers().get("collisionobjects");
+
         this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
 
         Gdx.app.postRunnable(() -> managerEntity.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
@@ -135,6 +140,13 @@ public class Map implements Disposable {
     }
 
     public Map createCollision() {
+        MapObjects objects = customCollisionLayer.getObjects();
+        for(MapObject object : objects) {
+            if (object instanceof RectangleMapObject) {  // Check if it's a rectangle, adjust if necessary
+                float x = ((RectangleMapObject) object).getRectangle().x;
+                System.out.println("Object X position: " + x);
+            }
+        }
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (collisions[i][j]) {
@@ -190,7 +202,6 @@ public class Map implements Disposable {
      */
     public void createEvents() {
         for (MapObject object : eventLayer.getObjects()) {
-
             String eventType = (String) object.getProperties().get("eventType", String.class);
             float x = object.getProperties().get("x", Float.class) * MapManager.TILE_SIZE;
             float y = object.getProperties().get("y", Float.class) * MapManager.TILE_SIZE;

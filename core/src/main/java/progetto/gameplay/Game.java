@@ -44,7 +44,6 @@ public class Game implements Screen {
     // Shaders
     private ShaderProgram program;
     private FrameBuffer fbo1;
-    private FrameBuffer fbo2;
 
     // Ui e debug
     private Box2DDebugRenderer debug;
@@ -81,7 +80,6 @@ public class Game implements Screen {
      */
     private void createFrameBuffer(int width, int height) {
         this.fbo1 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
-        this.fbo2 = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
     }
 
     /**
@@ -89,8 +87,8 @@ public class Game implements Screen {
      */
     private void createShaderProgram() {
         // Carica e crea il programma shader (per effetti grafici avanzati)
-        String vertexShader = Gdx.files.internal("shaders/vertex.glsl").readString();
-        String fragmentShader = Gdx.files.internal("shaders/fragment.glsl").readString();
+        String vertexShader = Gdx.files.internal("shaders/vertex.vsh").readString();
+        String fragmentShader = Gdx.files.internal("shaders/vignette.fsh").readString();
         this.program = new ShaderProgram(vertexShader, fragmentShader);
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
     }
@@ -102,6 +100,12 @@ public class Game implements Screen {
         Core.assetManager.load("entities/Finn.png", Texture.class);
         Core.assetManager.load("entities/circle.png", Texture.class);
         Core.assetManager.finishLoading();
+<<<<<<< Updated upstream
+=======
+
+        AudioManager.addSound("sounds/gunshot.mp3");
+        AudioManager.addSound("sounds/fireball.mp3");
+>>>>>>> Stashed changes
 
         // Crea e imposta gli shader e i framebuffer
         this.createShaderProgram();
@@ -262,6 +266,7 @@ public class Game implements Screen {
         this.info.core.batch.begin();
         this.info.core.batch.setShader(program);
         this.info.core.batch.draw(fboTextReg, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
+        this.info.core.batch.setShader(null);
         this.info.core.batch.end();
     }
 
