@@ -226,8 +226,8 @@ public class GameScreen implements Screen {
         mapRenderer.setView(ManagerCamera.getInstance());
         mapRenderer.render();
         if(DebugWindow.renderPathfinding()){
-            Map.getGraph().drawNodes(info.core.renderer);
             Map.getGraph().drawConnections(info.core.renderer);
+            Map.getGraph().drawNodes(info.core.renderer);
         }
     }
 

@@ -1,5 +1,7 @@
 package progetto.gameplay.manager.entity;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.factories.BodyFactory;
@@ -51,6 +53,9 @@ public class EntityRenderer {
      * Disegna entità e skill
      */
     public void draw() {
+        if(DebugWindow.renderPathfinding()){
+            drawPaths();
+        }
         entities.sort(comparator);
         info.core.batch.begin();
         drawEntities();
@@ -64,11 +69,7 @@ public class EntityRenderer {
     private void drawSkills() {
         for (Entity e : entities) {
             if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
-                try {
-                    ((Humanoid) e).getSkillset().draw(info.core.batch, elapsedTime);
-                } catch (Exception ex) {
-                    System.out.println("ERRORE" + e.getDirection());
-                }
+                ((Humanoid) e).getSkillset().draw(info.core.batch, elapsedTime);
             }
         }
     }
@@ -86,6 +87,25 @@ public class EntityRenderer {
                 }
             }
         }
+    }
+
+    /**
+     * Disegna le entità
+     */
+    private void drawPaths() {
+        info.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (Entity e : entities) {
+            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
+                try {
+                    if(e instanceof Humanoid human) {
+                        human.drawPath(info.core.renderer);
+                    }
+                } catch (Exception ex) {
+                    System.out.println("ERRORE" + e.getDirection());
+                }
+            }
+        }
+        info.core.renderer.end();
     }
 
     /**

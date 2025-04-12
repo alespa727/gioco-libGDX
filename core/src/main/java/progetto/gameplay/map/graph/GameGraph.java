@@ -136,9 +136,9 @@ public class GameGraph implements IndexedGraph<Node> {
 
 
         for (Node node : nodes) {
-            shapeRenderer.setColor(Color.BLUE);
+            shapeRenderer.setColor(Color.PURPLE);
             if (!node.isWalkable()) {
-                shapeRenderer.setColor(Color.RED);
+                shapeRenderer.setColor(Color.SCARLET);
             }
             // Disegna ogni nodo come un cerchio al centro della cella
             if (ManagerCamera.isWithinFrustumBounds(node.getX(), node.getY()))
@@ -154,15 +154,15 @@ public class GameGraph implements IndexedGraph<Node> {
      * @param shapeRenderer
      */
     public void drawConnections(ShapeRenderer shapeRenderer) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.BLACK); // Colore delle linee di connessione
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.VIOLET); // Colore delle linee di connessione
 
         for (Node node : nodes) {
             for (Connection<Node> connection : node.connessioni) {
                 Node toNode = connection.getToNode();
 
                 // Disegna una linea tra il nodo corrente e il nodo connesso
-                shapeRenderer.line(node.x + 0.5f, node.y + 0.5f, toNode.x + 0.5f, toNode.y + 0.5f);
+                shapeRenderer.rectLine(node.x + 0.5f, node.y + 0.5f, toNode.x + 0.5f, toNode.y + 0.5f, 0.05f);
             }
         }
 

@@ -71,7 +71,6 @@ public class EntityPathFinder extends Component implements Disposable {
         if (path.nodes.isEmpty()) {
             return;
         }
-
         shapeRenderer.setColor(Color.RED);
         Node previousNode = null;
         for (Node node : path.nodes) {

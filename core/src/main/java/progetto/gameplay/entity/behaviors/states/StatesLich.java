@@ -1,11 +1,15 @@
 package progetto.gameplay.entity.behaviors.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
+import progetto.gameplay.entity.components.BodyComponent;
 import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.gameplay.entity.components.entity.Cooldown;
+import progetto.gameplay.map.Map;
 import progetto.gameplay.player.Player;
+import progetto.utils.TerminalCommand;
 
 public enum StatesLich implements State<Lich> {
     FIREDOMAIN{
@@ -144,6 +148,7 @@ public enum StatesLich implements State<Lich> {
         public void enter(Lich entity) {
             if (entity.prepareToChangeStates.isReady){
                 entity.prepareToChangeStates.reset(1);
+                if(Map.isGraphLoaded) entity.searchPath(entity.manager.player());
                 if(!entity.getPathFinder().success){
                     entity.getStateMachine().changeState(StatesLich.IDLE);
                 }
@@ -156,7 +161,6 @@ public enum StatesLich implements State<Lich> {
             }else{
                 entity.getStateMachine().changeState(entity.getStateMachine().getPreviousState());
             }
-
         }
 
         @Override
@@ -178,11 +182,14 @@ public enum StatesLich implements State<Lich> {
     IDLE {
         @Override
         public void enter(Lich entity) {
+            Gdx.app.log("GDX", "IDLE");
+            entity.getMovementManager().setAwake(false);
         }
 
         @Override
         public void update(Lich entity) {
-            entity.getPathFinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
+            entity.searchPath(entity.manager.player());
+            System.out.println(entity.getPathFinder().success);
             if(entity.getPathFinder().success){
                 entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
             }
@@ -190,7 +197,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void exit(Lich entity) {
-
+            entity.getMovementManager().setAwake(true);
         }
 
         @Override
