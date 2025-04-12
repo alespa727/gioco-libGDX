@@ -33,6 +33,10 @@ public class EntityMovementManager extends IteratableComponent {
         return isReady;
     }
 
+    public void setReady() {
+        isReady = true;
+    }
+
     public void setPath(DefaultGraphPath<Node> path) {
         this.path.clear();
         for (Node node : path) {

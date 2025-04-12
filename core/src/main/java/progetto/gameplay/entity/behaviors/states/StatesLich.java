@@ -21,6 +21,10 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
+            if (!entity.searchPathIdle(entity.manager.player())){
+                entity.getStateMachine().changeState(StatesLich.IDLE);
+                return;
+            }
             useFireDomain.update(entity.manager.delta);
             fireDomain(entity);
         }
@@ -54,8 +58,14 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
+            if (!entity.searchPathIdle(entity.manager.player())){
+                entity.getStateMachine().changeState(StatesLich.IDLE);
+                return;
+            }
             useFireball.update(entity.manager.delta);
-            if (useFireball.isReady) fireball(entity);
+            if (useFireball.isReady){
+                fireball(entity);
+            }
         }
 
         @Override
@@ -149,17 +159,18 @@ public enum StatesLich implements State<Lich> {
             if (entity.prepareToChangeStates.isReady){
                 entity.prepareToChangeStates.reset(1);
                 if(Map.isGraphLoaded) entity.searchPath(entity.manager.player());
+                System.out.println(entity.getPathFinder().success);
                 if(!entity.getPathFinder().success){
                     entity.getStateMachine().changeState(StatesLich.IDLE);
+                    return;
                 }
-
                 if (entity.getPosition().dst(entity.manager.player().getPosition()) > 2f) {
                     entity.getStateMachine().changeState(StatesLich.LONG_RANGE_ATTACKS);
                 }else{
                     entity.getStateMachine().changeState(StatesLich.CLOSE_RANGE_ATTACKS);
                 }
             }else{
-                entity.getStateMachine().changeState(entity.getStateMachine().getPreviousState());
+                entity.getStateMachine().revertToPreviousState();
             }
         }
 
@@ -183,21 +194,19 @@ public enum StatesLich implements State<Lich> {
         @Override
         public void enter(Lich entity) {
             Gdx.app.log("GDX", "IDLE");
-            entity.getMovementManager().setAwake(false);
+            entity.getMovementManager().setReady();
         }
 
         @Override
         public void update(Lich entity) {
-            entity.searchPath(entity.manager.player());
-            System.out.println(entity.getPathFinder().success);
-            if(entity.getPathFinder().success){
-                entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
-            }
+            boolean success = entity.searchPathIdle(entity.manager.player());
+            if(!success) return;
+
+            entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
         }
 
         @Override
         public void exit(Lich entity) {
-            entity.getMovementManager().setAwake(true);
         }
 
         @Override

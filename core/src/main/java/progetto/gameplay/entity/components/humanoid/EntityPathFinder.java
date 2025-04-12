@@ -31,7 +31,7 @@ public class EntityPathFinder extends Component implements Disposable {
         this.entity = entity;
     }
 
-    public void renderPath(float x, float y, float delta) {
+    public boolean renderPath(float x, float y, float delta) {
         //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
         if (Map.isGraphLoaded && map != MapManager.getMapIndex()) {
             map = MapManager.getMapIndex();
@@ -41,6 +41,20 @@ public class EntityPathFinder extends Component implements Disposable {
         if (entity.getMovementManager().isReady()){
             search(x, y);
         }
+
+        return success;
+    }
+
+    public boolean render(float x, float y, float delta) {
+        //INIZIALIZZAZIONE EVENTUALE (in caso cambio mappa/grafico non loaddato)
+        if (Map.isGraphLoaded && map != MapManager.getMapIndex()) {
+            map = MapManager.getMapIndex();
+            pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
+        }
+
+        search(x, y);
+
+        return success;
     }
 
 
@@ -63,7 +77,6 @@ public class EntityPathFinder extends Component implements Disposable {
         }
 
         success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
-
         entity.getMovementManager().setPath(path);
     }
 

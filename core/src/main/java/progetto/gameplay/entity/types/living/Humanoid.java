@@ -103,8 +103,12 @@ public abstract class Humanoid extends Entity {
      *
      * @param target L'entità target verso cui l'umanoide deve dirigersi.
      */
-    public void searchPath(Entity target) {
-        getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
+    public boolean searchPath(Entity target) {
+        return getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
+    }
+
+    public boolean searchPathIdle(Entity target) {
+        return getPathFinder().render(target.getPosition().x, target.getPosition().y, manager.delta);
     }
 
     // --- GESTIONE SALUTE ---

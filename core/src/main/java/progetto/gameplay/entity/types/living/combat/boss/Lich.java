@@ -25,7 +25,7 @@ public class Lich extends Boss{
         super(instance, managerEntity);
         addComponent(new DeathController(this));
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(StatesLich.CHOOSING_STATE);
+        stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
@@ -34,7 +34,7 @@ public class Lich extends Boss{
         super(config, managerEntity);
         addComponent(new DeathController(this));
         stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(StatesLich.CHOOSING_STATE);
+        stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
