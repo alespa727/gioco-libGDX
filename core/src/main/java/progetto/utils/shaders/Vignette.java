@@ -40,7 +40,6 @@ public class Vignette {
     }
 
     public void draw(SpriteBatch batch) {
-        program.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Texture texture = frameBuffer.getColorBufferTexture();
         TextureRegion region = new TextureRegion(texture);
         region.flip(false, true);

@@ -84,6 +84,18 @@ public class TerminalCommand extends Thread {
                     }
                 }
                 break;
+            case "kill":
+                try{
+                    if (tokens.length == 1) {
+                        printMessage("Killing the player...");
+                        sleep(500);
+                        printMessage("Player killed.");
+                        killPlayer();
+                    }
+                }catch (Exception e) {
+                    printError("Sintassi non corretta");
+                }
+                break;
             default:
                 printError("Comando non trovato: " + command);
         }
@@ -94,15 +106,23 @@ public class TerminalCommand extends Thread {
         gameScreen.getEntityManager().player().teleport(new Vector2(x, y));
     }
 
+    private void killPlayer() {
+        // Uccide il player
+        gameScreen.getEntityManager().player().kill();
+    }
+
     public static void printMessage(String message) {
+        // Messaggio da console (Blu)
         System.out.println(Ansi.ansi().fg(Ansi.Color.BLUE).a(message).reset());
     }
 
     public static void printError(String message) {
+        // Messaggio di errore (Rosso)
         Gdx.app.log("Error", Ansi.ansi().fg(Ansi.Color.RED).a(message).reset().toString());
     }
 
     public static void printWarning(String message) {
+        // Warning (Giallo)
         Gdx.app.log("Warning", Ansi.ansi().fg(Ansi.Color.YELLOW).a(message).reset().toString());
     }
 

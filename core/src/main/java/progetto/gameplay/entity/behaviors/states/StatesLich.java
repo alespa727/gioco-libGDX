@@ -93,6 +93,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
+            entity.getMovementManager().update(entity.manager.delta);
 
             entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
 
@@ -106,6 +107,7 @@ public enum StatesLich implements State<Lich> {
 
             Player player = entity.manager.player();
             entity.searchPath(player);
+
         }
 
         @Override

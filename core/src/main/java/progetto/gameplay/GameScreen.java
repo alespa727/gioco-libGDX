@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -28,6 +29,7 @@ import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
 import progetto.utils.Vignette;
+import progetto.utils.shaders.Darken;
 
 public class GameScreen implements Screen {
 
@@ -42,6 +44,7 @@ public class GameScreen implements Screen {
     private final GameTime time;
     private Gui gui;
     private final Vignette vignette;
+    private final Darken darken;
 
     GameInfo info;
     DefaultStateMachine<GameScreen, ManagerGame> state;
@@ -61,6 +64,7 @@ public class GameScreen implements Screen {
         GameLoader.loadWorld();
         this.time = new GameTime();
         this.vignette = Vignette.getInstance();
+        this.darken = Darken.getInstance();
         this.terminalCommand = new TerminalCommand(this);
         this.terminalCommand.start();
         this.loadGame(core);
@@ -171,11 +175,15 @@ public class GameScreen implements Screen {
 
     private void renderVignette(float delta) {
         vignette.begin();
-        ScreenUtils.clear(0, 0, 0, 1);
+        Color darkGray = new Color(0.17f, 0.17f, 0.17f, 1.0f); // Grigio scuro
+        ScreenUtils.clear(darkGray);
         time.update(delta);
         state.update();
         vignette.end();
+        darken.begin();
         vignette.draw(info.core.batch);
+        darken.end();
+        darken.draw(info.core.batch);
     }
 
     /**
@@ -308,16 +316,6 @@ public class GameScreen implements Screen {
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
         ManagerCamera.update(info.managerEntity, viewport, time.delta, boundaries);
-        float PPM = 128f;
-        OrthographicCamera camera = ManagerCamera.getInstance();
-
-        // Dopo averla spostata
-        camera.position.set(
-            Math.round(camera.position.x * PPM) / PPM,
-            Math.round(camera.position.y * PPM) / PPM,
-            0
-        );
-        camera.update();
 
         this.info.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
         this.info.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
