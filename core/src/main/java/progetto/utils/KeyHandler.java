@@ -12,7 +12,7 @@ public class KeyHandler {
     public static boolean su, giu, sinistra, destra, sprint, usa;
     public static boolean debug;
 
-    private static boolean usePressed = false;
+    private static boolean usePressedLastFrame = false;
 
     // Posizione del mouse sullo schermo
     public static final Vector3 mouse = new Vector3(0, 0, 0);
@@ -27,8 +27,10 @@ public class KeyHandler {
         destra = Gdx.input.isKeyPressed(CoreConfig.getDirezioneEst());
         sprint = Gdx.input.isKeyPressed(CoreConfig.getCORRI());
 
-        usa = Gdx.input.isKeyJustPressed(CoreConfig.getUSA());
-
+        // Gestione manuale del tasto "usa"
+        boolean usaCurrentlyPressed = Gdx.input.isKeyPressed(CoreConfig.getUSA());
+        usa = usaCurrentlyPressed && !usePressedLastFrame; // true solo se premuto adesso e non nel frame precedente
+        usePressedLastFrame = usaCurrentlyPressed; // aggiorna lo stato
 
         // Ottiene la posizione del mouse (in coordinate schermo)
         mouse.x = Gdx.input.getX();
@@ -38,3 +40,4 @@ public class KeyHandler {
         debug = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
     }
 }
+

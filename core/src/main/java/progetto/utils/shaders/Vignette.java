@@ -25,8 +25,8 @@ public class Vignette {
     private Vignette() {
         // Carica e crea il programma shader (per effetti grafici avanzati)
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        String vertexShader = Gdx.files.internal("shaders/vertex.vsh").readString();
-        String fragmentShader = Gdx.files.internal("shaders/vignette.fsh").readString();
+        String vertexShader = Gdx.files.internal("shaders/vignette/vertex.vsh").readString();
+        String fragmentShader = Gdx.files.internal("shaders/vignette/fragment.fsh").readString();
         this.program = new ShaderProgram(vertexShader, fragmentShader);
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
     }

@@ -15,13 +15,14 @@ public class TerminalCommand extends Thread {
         this.gameScreen = gameScreen;
         scanner = new Scanner(System.in);
     }
+
+    @Override
     public void run() {
         while (true) {
             String input = scanner.nextLine();  // Legge l'input dal terminale
             processCommand(input);  // Elabora il comando
         }
     }
-
 
     private void processCommand(String command) {
         // Elenco dei comandi e delle azioni associate
@@ -32,6 +33,9 @@ public class TerminalCommand extends Thread {
         switch (tokens[0]) {
             case "teleport":
                 try {
+                    if (tokens.length > 3) {
+                        throw new RuntimeException();
+                    }
                     int x = Integer.parseInt(tokens[1]);
                     int y = Integer.parseInt(tokens[2]);
                     printMessage("Teleporting the player...");
@@ -54,6 +58,9 @@ public class TerminalCommand extends Thread {
                 break;
             case "debug":
                 try{
+                    if (tokens.length > 2) {
+                        throw new RuntimeException();
+                    }
                     String state = tokens[1];
                     switch (state){
                         case "true":
@@ -93,6 +100,10 @@ public class TerminalCommand extends Thread {
 
     public static void printError(String message) {
         Gdx.app.log("Error", Ansi.ansi().fg(Ansi.Color.RED).a(message).reset().toString());
+    }
+
+    public static void printWarning(String message) {
+        Gdx.app.log("Warning", Ansi.ansi().fg(Ansi.Color.YELLOW).a(message).reset().toString());
     }
 
 }

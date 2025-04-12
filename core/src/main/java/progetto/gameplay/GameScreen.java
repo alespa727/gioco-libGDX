@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -26,16 +25,16 @@ import progetto.gameplay.map.MapManager;
 import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
+import progetto.utils.Vignette;
 
 public class GameScreen implements Screen {
 
     // Costante per il passo fisico (60Hz)
     public static final float STEP = 1 / 60f;
 
-    private TerminalCommand terminalCommand;
+    private final TerminalCommand terminalCommand;
     private DebugWindow debugWindow;
 
-    private Window window;
     public FitViewport viewport;
     private final GameTime time;
     private Gui gui;
@@ -163,7 +162,7 @@ public class GameScreen implements Screen {
         vignette.begin();
         ScreenUtils.clear(0, 0, 0, 1);
         time.update(delta);
-        this.state.update();
+        state.update();
         vignette.end();
         vignette.draw(info.core.batch);
     }
@@ -224,6 +223,7 @@ public class GameScreen implements Screen {
     private void renderMap() {
         OrthogonalTiledMapRenderer mapRenderer = this.info.mapManager.getMap().getMapRenderer();
         mapRenderer.setView(ManagerCamera.getInstance());
+
         mapRenderer.render();
         if(DebugWindow.renderPathfinding()){
             Map.getGraph().drawConnections(info.core.renderer);
