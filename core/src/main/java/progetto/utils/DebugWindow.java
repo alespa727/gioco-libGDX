@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.GameScreen;
 import progetto.gameplay.map.Map;
 
+import javax.swing.plaf.nimbus.State;
+
 public class DebugWindow extends Window {
 
     private final Stage stage;
@@ -26,9 +28,8 @@ public class DebugWindow extends Window {
 
     public DebugWindow(GameScreen gameScreen, String title, Skin skin) {
         super(title, skin);
-        setKeepWithinStage(true);
         setDebug(true);
-
+        setKeepWithinStage(false);
         // Crea la viewport
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()));
         // Aggiunge la finestra
@@ -39,7 +40,7 @@ public class DebugWindow extends Window {
 
         // Posiziona la finestra in basso (spazio per il titolo) e dai un margine
         int marginTop = 50;  // Distanza dal bordo superiore per il titolo
-        setPosition(10, Gdx.graphics.getHeight() - 150 - marginTop); // Aggiungi spazio sopra
+        setPosition(0, 0); // Aggiungi spazio sopra
 
         // Crea i TextField, TextButton e Label
         xCoord = new TextField("", skin);
@@ -162,6 +163,10 @@ public class DebugWindow extends Window {
 
     public static void setEntityAI(boolean entityAI) {
         DebugWindow.entityAI = entityAI;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     public void draw() {

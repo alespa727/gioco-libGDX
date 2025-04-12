@@ -1,6 +1,7 @@
 package progetto.gameplay;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.audio.Sound;
@@ -22,6 +23,8 @@ import progetto.gameplay.manager.ManagerGame;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.MapManager;
+import progetto.gameplay.player.inventoty.Inventory;
+import progetto.gameplay.player.inventoty.Item;
 import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
@@ -34,6 +37,7 @@ public class GameScreen implements Screen {
 
     private final TerminalCommand terminalCommand;
     private DebugWindow debugWindow;
+    private Inventory inventory;
 
     public FitViewport viewport;
     private final GameTime time;
@@ -89,6 +93,13 @@ public class GameScreen implements Screen {
     private void initializeDebugWindow() {
         Skin skin = new Skin(Gdx.files.internal("skins/metal-ui.json"));
         debugWindow = new DebugWindow(this, "Debug", skin);
+        inventory = new Inventory(this, "Inventory", skin);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(debugWindow.getStage());   // Processa gli input per la scena principale
+        inputMultiplexer.addProcessor(inventory.getStage());  // Processa gli input per la finestra di debug
+
+        // Imposta l'input processor globale
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     private void loadAssets() {
@@ -145,6 +156,7 @@ public class GameScreen implements Screen {
         // Disegna la finestra di debug
         debugWindow.updateDebugInfo(Gdx.graphics.getFramesPerSecond(), Gdx.app.getJavaHeap());
         debugWindow.draw();
+        inventory.draw();
     }
 
     private void updateWorld() {
