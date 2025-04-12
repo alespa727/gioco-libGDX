@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.behaviors.manager.entity.movement;
+package progetto.gameplay.entity.behaviors.movement;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -17,7 +17,9 @@ public class PlayerMovementManager {
 
         if (!(su || giu || sinistra || destra)) {
             notMoving();
-        } else if (su && giu) {
+        }else if(destra && sinistra && su && giu){
+            notMoving();
+        }else if (su && giu) {
             oppostoY();
         } else if (sinistra && destra) {
             oppostoX();

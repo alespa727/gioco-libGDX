@@ -47,6 +47,8 @@ public class HumanoidTextures extends EntityTextures {
         putAnim(idleSpeed, new Vector2(-0.5f, 0), idleLeft);
         putAnim(idleSpeed, new Vector2(0.5f, 0), idleRight);
 
+        putAnim(idleSpeed, new Vector2(0, 0), idleDown);
+
         putAnim(idleSpeed, new Vector2(-0.5f, 0.5f), idleLeft);
         putAnim(idleSpeed, new Vector2(-0.5f, -0.5f), idleLeft);
         putAnim(idleSpeed, new Vector2(0.5f, -0.5f), idleRight);
