@@ -1,6 +1,7 @@
 package progetto.gameplay.entity.types;
 
 import com.badlogic.gdx.math.Vector2;
+import progetto.utils.TerminalCommand;
 
 /**
  * Rappresenta una "fotografia" di un'entità in un certo momento.
@@ -32,6 +33,16 @@ public class EntityInstance {
         this.config = e.getConfig();       // Clona la configurazione
         this.coordinate = e.getPosition(); // Clona la posizione
         this.direction = e.getDirection(); // Clona la direzione
+    }
+
+    @Override
+    public String toString() {
+        return "EntityInstance{" +
+            "type='" + type + '\'' +
+            ", config=" + config.toString() +
+            ", coordinate=" + coordinate +
+            ", direction=" + direction +
+            '}';
     }
 }
 

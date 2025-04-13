@@ -5,6 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.entity.components.player.DashInvulnerability;
 import progetto.gameplay.entity.components.player.PlayerDeathController;
@@ -43,7 +46,6 @@ public class Player extends Warrior {
         getSkillset().add(new PlayerDash(this, "", "", 12.5f));
         getSkillset().add(new PlayerSwordAttack(this, "", "",10));
         getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
-
     }
 
     // === METODI DI ACCESSO ===
@@ -135,4 +137,6 @@ public class Player extends Warrior {
     @Override
     public void cooldown(float delta) {
     }
+
+
 }

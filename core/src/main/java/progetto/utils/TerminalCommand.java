@@ -8,20 +8,26 @@ import progetto.gameplay.GameScreen;
 import java.util.Scanner;
 
 public class TerminalCommand extends Thread {
-    private Scanner scanner;
-    private GameScreen gameScreen;
+    private final Scanner scanner;
+    private final GameScreen gameScreen;
+    private boolean running;
 
     public TerminalCommand(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         scanner = new Scanner(System.in);
+        running = true;
     }
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             String input = scanner.nextLine();  // Legge l'input dal terminale
             processCommand(input);  // Elabora il comando
         }
+    }
+
+    public void stopRunning() {
+        running = false;
     }
 
     private void processCommand(String command) {

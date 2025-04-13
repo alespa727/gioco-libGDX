@@ -1,4 +1,4 @@
-package progetto.utils;
+package progetto.utils.shaders;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,10 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import org.w3c.dom.Text;
 import progetto.gameplay.manager.ManagerCamera;
 
-public class Vignette {
+public class Vignette extends Shader{
     private static Vignette instance;
-    private ShaderProgram program;
-    private FrameBuffer frameBuffer;
 
     public static Vignette getInstance() {
         if (instance == null) {
@@ -31,14 +29,17 @@ public class Vignette {
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
     }
 
+    @Override
     public void begin(){
         frameBuffer.begin();
     }
 
+    @Override
     public void end(){
         frameBuffer.end();
     }
 
+    @Override
     public void draw(SpriteBatch batch) {
         Texture texture = frameBuffer.getColorBufferTexture();
         TextureRegion region = new TextureRegion(texture);

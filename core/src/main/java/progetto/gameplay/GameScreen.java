@@ -28,8 +28,8 @@ import progetto.gameplay.player.inventoty.Inventory;
 import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
-import progetto.utils.Vignette;
 import progetto.utils.shaders.Darken;
+import progetto.utils.shaders.Vignette;
 
 public class GameScreen implements Screen {
 
@@ -341,5 +341,6 @@ public class GameScreen implements Screen {
         // Pulisce le risorse utilizzate
         this.info.core.batch.dispose();
         this.info.core.renderer.dispose();
+        this.terminalCommand.stopRunning();
     }
 }

@@ -1,5 +1,7 @@
 package progetto;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -8,11 +10,14 @@ import progetto.gameplay.GameScreen;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.menu.MainScreen;
+import progetto.utils.TerminalCommand;
+
+import java.sql.Array;
+import java.util.HashMap;
 
 // Classe principale del gioco, estende Game di libGDX
 public class Core extends com.badlogic.gdx.Game {
 
-    public AudioManager audioManager;
     public static AssetManager assetManager = new AssetManager(); // Gestione risorse
     public SpriteBatch batch;         // Per disegnare sprite
     public ShapeRenderer renderer;    // Per disegnare forme geometriche
@@ -23,9 +28,9 @@ public class Core extends com.badlogic.gdx.Game {
         ManagerCamera.init();             // Inizializza la camera
         batch = new SpriteBatch();        // Per disegnare sprite
         renderer = new ShapeRenderer();   // Per forme geometriche
-        audioManager = new AudioManager(); // Manager per musica e suoni
         gameScreen = new GameScreen(this);            // Istanzia il gioco
         setScreen(new MainScreen(this));  // Mostra il menu principale
+        Preferences prefs = Gdx.app.getPreferences("Preferences");
     }
 
     @Override
