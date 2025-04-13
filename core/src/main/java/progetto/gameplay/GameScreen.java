@@ -192,6 +192,8 @@ public class GameScreen implements Screen {
 
         // Inizio lettura stampa dello schermo precedente
         darken.begin(new Color(.4f, .4f, .6f, 1.0f));
+
+
         // Disegna lo schermo precedente
         vignette.draw(info.core.batch);
         // Fine lettura
@@ -200,6 +202,7 @@ public class GameScreen implements Screen {
 
         Vector3 position = new Vector3(getEntityManager().player().getPosition(), 0);
         Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
+		
         light.begin(projectedPosition, 0.125f);
         darken.draw(info.core.batch);
         light.end();

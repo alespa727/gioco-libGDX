@@ -38,3 +38,4 @@ void main() {
     gl_FragColor = vec4(finalColor.rgb, texColor.a);
     //gl_FragColor = vec4(vec3(intensity), 1.0); // scala di grigi
 }
+
