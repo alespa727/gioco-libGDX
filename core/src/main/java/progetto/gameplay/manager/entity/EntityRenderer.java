@@ -7,7 +7,7 @@ import progetto.factories.BodyFactory;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.utils.DebugWindow;
 import progetto.utils.GameInfo;
-import progetto.gameplay.entity.components.warrior.DirectionalRange;
+import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.Warrior;
@@ -134,7 +134,7 @@ public class EntityRenderer {
             entities.add(queue.last());
             queue.last().getPhysics().initBody();
             if (queue.last() instanceof Warrior ce) {
-                DirectionalRange a = ce.getDirectionRangeComponent();
+                DirectionalRangeComponent a = ce.getDirectionRangeComponent();
                 ce.setDirectionalRange(BodyFactory.createBody(ce, a.getBodyDef(), a.getFixtureDef(), a.getShape()));
             }
             queue.last().create();

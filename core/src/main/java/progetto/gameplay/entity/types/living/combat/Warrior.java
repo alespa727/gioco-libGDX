@@ -2,7 +2,7 @@ package progetto.gameplay.entity.types.living.combat;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entity.components.warrior.DirectionalRange;
+import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entity.components.warrior.HitDirectionComponent;
 import progetto.gameplay.entity.components.warrior.KnockbackComponent;
 import progetto.gameplay.entity.types.living.Humanoid;
@@ -15,14 +15,14 @@ public abstract class Warrior extends Humanoid {
 
     public Warrior(HumanoidInstances instance, ManagerEntity managerEntity) {
         super(instance, managerEntity);
-        addComponent(new DirectionalRange(this));
+        addComponent(new DirectionalRangeComponent(this));
         addComponent(new HitDirectionComponent(new Vector2(0, 0)));
         addComponent(new KnockbackComponent(this));
     }
 
     public Warrior(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
-        addComponent(new DirectionalRange(this));
+        addComponent(new DirectionalRangeComponent(this));
         addComponent(new HitDirectionComponent(new Vector2(0, 0)));
         addComponent(new KnockbackComponent(this));
     }
@@ -34,15 +34,15 @@ public abstract class Warrior extends Humanoid {
     }
 
     public float getRangeRadius() {
-        return getComponent(DirectionalRange.class).getRangeRadius();
+        return getComponent(DirectionalRangeComponent.class).getRangeRadius();
     }
 
     public Body getDirectionalRange() {
-        return getComponent(DirectionalRange.class).getDirectionalRange();
+        return getComponent(DirectionalRangeComponent.class).getDirectionalRange();
     }
 
     public void setDirectionalRange(Body directionalRange) {
-        getComponent(DirectionalRange.class).setDirectionalRange(directionalRange);
+        getComponent(DirectionalRangeComponent.class).setDirectionalRange(directionalRange);
     }
 
     public Vector2 getHitDirection() {
@@ -55,8 +55,8 @@ public abstract class Warrior extends Humanoid {
 
     // === RANGE ===
 
-    public DirectionalRange getDirectionRangeComponent() {
-        return getComponent(DirectionalRange.class);
+    public DirectionalRangeComponent getDirectionRangeComponent() {
+        return getComponent(DirectionalRangeComponent.class);
     }
 
     // === COMBATTIMENTO ===

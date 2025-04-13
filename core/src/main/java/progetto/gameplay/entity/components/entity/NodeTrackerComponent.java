@@ -5,13 +5,13 @@ import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.node.Node;
 
-public class NodeTracker extends IteratableComponent {
+public class NodeTrackerComponent extends IteratableComponent {
     private final Entity owner;
 
     private Node lastNode;
     private Node node;
 
-    public NodeTracker(Entity owner) {
+    public NodeTrackerComponent(Entity owner) {
         this.owner = owner;
     }
 

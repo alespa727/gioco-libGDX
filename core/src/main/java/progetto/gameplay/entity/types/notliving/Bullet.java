@@ -1,6 +1,5 @@
 package progetto.gameplay.entity.types.notliving;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,14 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import progetto.Core;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.components.entity.Cooldown;
-import progetto.gameplay.entity.components.entity.DespawnCooldown;
-import progetto.gameplay.entity.components.entity.NodeTracker;
+import progetto.gameplay.entity.components.entity.NodeTrackerComponent;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
-import progetto.utils.TerminalCommand;
 
 /**
  * Rappresenta un proiettile nel gioco.
@@ -51,7 +48,7 @@ public class Bullet extends Entity {
         this.getDirection().set(config.direzione); // Imposta la direzione
 
         addComponent(new BulletComponent(damage, velocity, radius));
-        getComponent(NodeTracker.class).setAwake(false);
+        getComponent(NodeTrackerComponent.class).setAwake(false);
         addComponent(new Cooldown(2));
         getComponent(Cooldown.class).reset();
         getComponent(Cooldown.class).setAwake(false);

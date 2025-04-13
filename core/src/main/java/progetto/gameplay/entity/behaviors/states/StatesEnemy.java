@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entity.components.warrior.DirectionalRange;
+import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.player.Player;
@@ -170,7 +170,7 @@ public enum StatesEnemy implements State<Enemy> {
                 }
 
                 if (userData instanceof Player && filter.categoryBits != ManagerEntity.RANGE) {
-                    DirectionalRange a = entity.getComponent(DirectionalRange.class);
+                    DirectionalRangeComponent a = entity.getComponent(DirectionalRangeComponent.class);
                     if (start.dst(end) > a.getRangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
                         entity.statemachine.changeState(PURSUE);
                         return fraction;

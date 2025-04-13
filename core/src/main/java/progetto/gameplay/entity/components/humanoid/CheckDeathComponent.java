@@ -3,10 +3,10 @@ package progetto.gameplay.entity.components.humanoid;
 import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.entity.types.living.Humanoid;
 
-public class DeathController extends IteratableComponent {
+public class CheckDeathComponent extends IteratableComponent {
     private final Humanoid owner;
 
-    public DeathController(Humanoid owner) {
+    public CheckDeathComponent(Humanoid owner) {
         this.owner = owner;
     }
 

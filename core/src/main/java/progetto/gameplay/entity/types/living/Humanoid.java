@@ -26,11 +26,11 @@ public abstract class Humanoid extends Entity {
      */
     public Humanoid(HumanoidInstances instance, ManagerEntity managerEntity) {
         super(instance, managerEntity);
-        addComponent(new EntityMovementManager(this));
+        addComponent(new EntityMovementComponent(this));
         addComponent(new HumanStatsComponent(instance.speed, instance.maxHealth));
-        addComponent(new EntityPathFinder(this));
+        addComponent(new EntityPathFinderComponent(this));
         addComponent(new SkillSet());
-        addComponent(new SpeedLimiter(this));
+        addComponent(new SpeedLimiterComponent(this));
         addComponent(new HumanStatesComponent(this));
     }
 
@@ -43,12 +43,12 @@ public abstract class Humanoid extends Entity {
      */
     public Humanoid(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
-        addComponent(new EntityMovementManager(this));
-        getComponent(EntityMovementManager.class).setAwake(false);
+        addComponent(new EntityMovementComponent(this));
+        getComponent(EntityMovementComponent.class).setAwake(false);
         addComponent(new HumanStatsComponent(config.speed, config.hp));
-        addComponent(new EntityPathFinder(this));
+        addComponent(new EntityPathFinderComponent(this));
         addComponent(new SkillSet());
-        addComponent(new SpeedLimiter(this));
+        addComponent(new SpeedLimiterComponent(this));
         addComponent(new HumanStatesComponent(this));
     }
 
@@ -185,19 +185,19 @@ public abstract class Humanoid extends Entity {
     /**
      * Restituisce il gestore del movimento dell'umanoide.
      *
-     * @return Il componente {@link EntityMovementManager} dell'umanoide.
+     * @return Il componente {@link EntityMovementComponent} dell'umanoide.
      */
-    public EntityMovementManager getMovementManager() {
-        return getComponent(EntityMovementManager.class);
+    public EntityMovementComponent getMovementManager() {
+        return getComponent(EntityMovementComponent.class);
     }
 
     /**
      * Restituisce il gestore del percorso dell'umanoide.
      *
-     * @return Il componente {@link EntityPathFinder} dell'umanoide.
+     * @return Il componente {@link EntityPathFinderComponent} dell'umanoide.
      */
-    public EntityPathFinder getPathFinder() {
-        return getComponent(EntityPathFinder.class);
+    public EntityPathFinderComponent getPathFinder() {
+        return getComponent(EntityPathFinderComponent.class);
     }
 
     // --- METODI DI RENDERING ---
