@@ -24,7 +24,7 @@ public class Bullet extends Entity {
 
     // === Attributi specifici ===
     /** Proprietario del proiettile, ovvero l'entità che lo ha sparato ({@link Entity}) */
-    private final Entity owner;
+    private final Class<? extends Entity> target;
 
     /** Texture del proiettile */
     private final Texture texture;
@@ -39,11 +39,11 @@ public class Bullet extends Entity {
      * @param radius raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage danno inflitto dal proiettile
-     * @param owner entità che ha sparato il proiettile ({@link Entity})
+     * @param target entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity owner) {
+    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager);
-        this.owner = owner;
+        this.target = target.getClass();
         this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
@@ -69,8 +69,8 @@ public class Bullet extends Entity {
      *
      * @return {@link Entity} il proprietario del proiettile
      */
-    public Entity getOwner() {
-        return owner;
+    public Class<? extends Entity> getTargetClass() {
+        return target;
     }
 
     // === Override metodi principali ===

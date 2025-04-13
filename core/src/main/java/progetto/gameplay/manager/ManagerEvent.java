@@ -11,6 +11,7 @@ import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.player.Player;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
+import progetto.utils.TerminalCommand;
 
 public class ManagerEvent implements ContactListener {
 
@@ -58,14 +59,14 @@ public class ManagerEvent implements ContactListener {
         }
 
         if (dataA instanceof Warrior && !isRangeA && dataB instanceof Bullet) {
-            if (((Bullet) dataB).getOwner() == dataA) return;
             if(((Warrior) dataA).getHumanStates().isInvulnerable()) return;
+            if (!((Bullet) dataB).getTargetClass().equals(dataA.getClass())) return;
             ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).getComponent(BulletComponent.class).damage,2);
             ((Bullet) dataB).despawn();
         }
         if (dataB instanceof Warrior && !isRangeA && dataA instanceof Bullet) {
-            if (((Bullet) dataA).getOwner() == dataB) return;
             if(((Warrior) dataB).getHumanStates().isInvulnerable()) return;
+            if (((Bullet) dataA).getTargetClass().equals(dataB.getClass())) return;
             ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).getComponent(BulletComponent.class).damage, 2);
             ((Bullet) dataA).despawn();
         }

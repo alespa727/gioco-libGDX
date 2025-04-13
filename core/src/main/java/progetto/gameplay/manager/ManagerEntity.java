@@ -50,11 +50,9 @@ public final class ManagerEntity {
         Core.assetManager.finishLoading();
 
         EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8, 10);
-        for (int i = 0; i < 100; i++) {
-            e.x++;
+        for (int i = 0; i < 1; i++) {
             summon(EntityFactory.createBoss("Lich", e, this));
         }
-
 
         this.renderer = new EntityRenderer(this);
     }
