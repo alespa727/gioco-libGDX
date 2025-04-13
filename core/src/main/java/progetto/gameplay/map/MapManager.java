@@ -2,10 +2,17 @@ package progetto.gameplay.map;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import progetto.Core;
 import progetto.gameplay.entity.types.EntityInstance;
+import progetto.gameplay.entity.types.living.HumanoidInstances;
+import progetto.gameplay.entity.types.living.combat.boss.Boss;
+import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.manager.ManagerEntity;
 
 public class MapManager {
@@ -99,7 +106,11 @@ public class MapManager {
 
     public void spawnInstances(){
         if(mapEntityInstances.containsKey(nome)) {
+            Json json = new Json();
+            BossInstance loaded = json.fromJson(BossInstance.class, Gdx.files.local("save/entities.json"));
+            loaded.loadTexture();
             Array<EntityInstance> instances = mapEntityInstances.get(nome);
+            instances.add(loaded);
             managerEntity.summon(instances);
         }
     }

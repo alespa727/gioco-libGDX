@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Queue;
 import progetto.Core;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
+import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.manager.entity.EntityLifeCycleManager;
 import progetto.gameplay.manager.entity.EntityRenderer;
 import progetto.gameplay.manager.entity.PlayerManager;
@@ -14,7 +15,6 @@ import progetto.utils.GameInfo;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.player.Player;
 
@@ -46,7 +46,9 @@ public final class ManagerEntity {
         this.playerManager = new PlayerManager(this, lifeCycleManager);
         this.summon(playerManager.getPlayer());
         Core.assetManager.load("entities/nemico.png", Texture.class);
+        Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
+
         EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8, 12);
         summon(EntityFactory.createBoss("Lich", e, this));
 

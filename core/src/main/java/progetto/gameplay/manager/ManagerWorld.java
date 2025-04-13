@@ -51,7 +51,7 @@ public class ManagerWorld {
 
     public static void update() {
         if (bodyToDestroy.size > 0) {
-           instance.destroyBody(bodyToDestroy.removeFirst());
+            instance.destroyBody(bodyToDestroy.removeFirst());
         }
         if (bodyToCreate.size > 0) {
             BodyComponent bodyComponent = bodyToCreate.removeFirst();

@@ -17,11 +17,19 @@ import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 public class HumanoidInstances extends EntityInstance {
 
     // === Attributi specifici dell'umano ===
-    public transient final SkillSet skillset;
+    public transient SkillSet skillset;
     public List<String> skillNames;
-    public final float speed;
-    public final float maxHealth;
-    public final float health;
+    public float speed;
+    public float maxHealth;
+    public float health;
+
+    public HumanoidInstances(){
+        super();
+        this.skillset = new SkillSet();
+        this.maxHealth = 0;
+        this.speed = 0;
+        this.health = 0;
+    }
 
     // === Costruttore ===
     public HumanoidInstances(Humanoid e) {
@@ -38,7 +46,7 @@ public class HumanoidInstances extends EntityInstance {
         if (!Gdx.files.local("save").exists()) {
             Gdx.files.local("save").mkdirs();
         }
-        
+
         FileHandle fileHandle = Gdx.files.local("save/entities.json");
         System.out.println(fileHandle.file().getAbsolutePath());
         fileHandle.writeString(jsonString, false);

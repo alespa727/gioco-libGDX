@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -141,6 +143,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         // Aggiorna lo stato del mondo
         updateWorld();
 
@@ -164,6 +167,13 @@ public class GameScreen implements Screen {
 
     private void updateWorld() {
         ManagerWorld.update();
+        int bodyCount = 0;
+        Array<Body> array = new Array<>();
+        ManagerWorld.getInstance().getBodies(array);
+        for (Body body : array) {
+            bodyCount++;
+        }
+        System.out.println("Corpi nel mondo: " + bodyCount);
     }
 
     private void checkPlayerDeath() {
