@@ -47,7 +47,7 @@ public class EntityFactory {
         };
     }
 
-    public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Entity owner) {
+    public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Entity target) {
         EntityConfig config = new EntityConfig();
         config.nome = "Bullet";
         config.x = x;
@@ -57,6 +57,19 @@ public class EntityFactory {
         config.direzione = direction;
         config.isAlive = true;
         config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
-        return new Bullet(config, owner.manager, radius, speed, damage, owner);
+        return new Bullet(config, target.manager, radius, speed, damage, target);
+    }
+
+    public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, ManagerEntity managerEntity,Class<? extends Entity> target) {
+        EntityConfig config = new EntityConfig();
+        config.nome = "Bullet";
+        config.x = x;
+        config.y = y;
+        config.radius = radius;
+        config.descrizione = "fa male";
+        config.direzione = direction;
+        config.isAlive = true;
+        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
+        return new Bullet(config, managerEntity, radius, speed, damage, target);
     }
 }

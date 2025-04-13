@@ -39,17 +39,17 @@ public class HumanoidInstances extends EntityInstance {
         this.speed = e.getMaxSpeed();
         this.health = e.getHealth();
         this.skillNames = skillset.getSkillNames();
-        json.setOutputType(JsonWriter.OutputType.json);
-        String jsonString = json.prettyPrint(this);
-        TerminalCommand.printMessage(jsonString);
-
-        if (!Gdx.files.local("save").exists()) {
-            Gdx.files.local("save").mkdirs();
-        }
-
-        FileHandle fileHandle = Gdx.files.local("save/entities.json");
-        System.out.println(fileHandle.file().getAbsolutePath());
-        fileHandle.writeString(jsonString, false);
+//        json.setOutputType(JsonWriter.OutputType.json);
+//        String jsonString = json.prettyPrint(this);
+//        TerminalCommand.printMessage(jsonString);
+//
+//        if (!Gdx.files.local("save").exists()) {
+//            Gdx.files.local("save").mkdirs();
+//        }
+//
+//        FileHandle fileHandle = Gdx.files.local("save/entities.json");
+//        System.out.println(fileHandle.file().getAbsolutePath());
+//        fileHandle.writeString(jsonString, false);
     }
 
     @Override

@@ -56,7 +56,10 @@ public abstract class Humanoid extends Entity {
 
     @Override
     public void create() {
-
+        if (getPhysics().getBody() == null) {
+            despawn();
+            return;
+        }
     }
 
     /**

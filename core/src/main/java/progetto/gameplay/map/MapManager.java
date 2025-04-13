@@ -14,6 +14,7 @@ import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.entity.types.living.combat.boss.Boss;
 import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.utils.TerminalCommand;
 
 public class MapManager {
 
@@ -61,6 +62,7 @@ public class MapManager {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
             if (mapEntityInstances.get(currentMap.nome)!=null)
                 mapEntityInstances.get(currentMap.nome).clear();
+
             mapEntityInstances.put(currentMap.nome, managerEntity.clear()); // Salva le entità in una hashmap
             currentMap.dispose(); // Cancellazione mappa precedente
         }

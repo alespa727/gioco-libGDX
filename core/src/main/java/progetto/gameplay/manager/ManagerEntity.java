@@ -49,8 +49,10 @@ public final class ManagerEntity {
         Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8, 12);
-        summon(EntityFactory.createBoss("Lich", e, this));
+        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8, 10);
+        for (int i = 0; i < 1; i++) {
+            summon(EntityFactory.createBoss("Lich", e, this));
+        }
 
         this.renderer = new EntityRenderer(this);
     }

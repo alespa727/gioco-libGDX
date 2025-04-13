@@ -12,13 +12,11 @@ import progetto.gameplay.map.events.MapEvent;
 
 public class ManagerWorld {
     private static World instance;
-    private static Queue<BodyComponent> bodyToCreate;
     private static Queue<Body> bodyToDestroy;
 
     public static void init(){
         if (instance == null) {
             instance = new World(new Vector2(0, 0), true);
-            bodyToCreate = new Queue<>();
             bodyToDestroy = new Queue<>();
         }
     }
@@ -26,7 +24,6 @@ public class ManagerWorld {
     public static World getInstance() {
         if (instance == null) {
             instance = new World(new Vector2(0, 0), true);
-            bodyToCreate = new Queue<>();
             bodyToDestroy = new Queue<>();
         }
         return instance;
@@ -46,16 +43,14 @@ public class ManagerWorld {
     }
 
     public static void destroyBody(Body body) {
-        bodyToDestroy.addFirst(body);
+        if (body != null) {
+            bodyToDestroy.addFirst(body);
+        }
     }
 
     public static void update() {
-        if (bodyToDestroy.size > 0) {
+        if (bodyToDestroy.notEmpty()) {
             instance.destroyBody(bodyToDestroy.removeFirst());
-        }
-        if (bodyToCreate.size > 0) {
-            BodyComponent bodyComponent = bodyToCreate.removeFirst();
-            BodyFactory.createBody(bodyComponent.userdata, bodyComponent.bodyDef, bodyComponent.fixtureDef, bodyComponent.shape);
         }
     }
 }

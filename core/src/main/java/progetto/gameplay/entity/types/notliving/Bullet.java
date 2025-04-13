@@ -23,8 +23,8 @@ import progetto.gameplay.manager.ManagerEntity;
 public class Bullet extends Entity {
 
     // === Attributi specifici ===
-    /** Proprietario del proiettile, ovvero l'entità che lo ha sparato ({@link Entity}) */
-    private final Entity owner;
+    /** Classe del target, ovvero l'entità che avrà collisione con il proiettile ({@link Entity}) */
+    private final Class<? extends Entity> target;
 
     /** Texture del proiettile */
     private final Texture texture;
@@ -32,18 +32,42 @@ public class Bullet extends Entity {
     // === Costruttore ===
     /**
      * Costruttore del proiettile.
-     * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e proprietario.
+     * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config configurazione dell'entità ({@link EntityConfig})
      * @param manager gestore delle entità nel gioco ({@link ManagerEntity})
      * @param radius raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage danno inflitto dal proiettile
-     * @param owner entità che ha sparato il proiettile ({@link Entity})
+     * @param target entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity owner) {
+    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager);
-        this.owner = owner;
+        this.target = target.getClass();
+        this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
+        this.getDirection().set(config.direzione); // Imposta la direzione
+
+        addComponent(new BulletComponent(damage, velocity, radius));
+        getComponent(NodeTrackerComponent.class).setAwake(false);
+        addComponent(new Cooldown(2));
+        getComponent(Cooldown.class).reset();
+        getComponent(Cooldown.class).setAwake(false);
+    }
+
+    /**
+     * Costruttore del proiettile.
+     * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
+     *
+     * @param config configurazione dell'entità ({@link EntityConfig})
+     * @param manager gestore delle entità nel gioco ({@link ManagerEntity})
+     * @param radius raggio del proiettile
+     * @param velocity velocità del proiettile
+     * @param damage danno inflitto dal proiettile
+     * @param target classe dell'entità a cui è sparato il proiettile ({@link Entity})
+     */
+    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
+        super(config, manager);
+        this.target = target;
         this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
@@ -65,12 +89,12 @@ public class Bullet extends Entity {
     }
 
     /**
-     * Ottiene il proprietario del proiettile.
+     * Ottiene la classe con cui avrà collisioni
      *
-     * @return {@link Entity} il proprietario del proiettile
+     * @return {@link Entity} target
      */
-    public Entity getOwner() {
-        return owner;
+    public Class<? extends Entity> getTargetClass() {
+        return target;
     }
 
     // === Override metodi principali ===
@@ -105,6 +129,10 @@ public class Bullet extends Entity {
      */
     @Override
     public void create() {
+        if (getPhysics().getBody() == null) {
+            despawn();
+            return;
+        }
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
         getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)

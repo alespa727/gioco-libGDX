@@ -148,10 +148,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
-        // Aggiorna lo stato del mondo
-        updateWorld();
-
         // Controlla se il giocatore è morto
         checkPlayerDeath();
 
@@ -170,15 +166,8 @@ public class GameScreen implements Screen {
         inventory.update();
     }
 
-    private void updateWorld() {
+    public void updateWorld() {
         ManagerWorld.update();
-        int bodyCount = 0;
-        Array<Body> array = new Array<>();
-        ManagerWorld.getInstance().getBodies(array);
-        for (Body body : array) {
-            bodyCount++;
-        }
-        System.out.println("Corpi nel mondo: " + bodyCount);
     }
 
     private void checkPlayerDeath() {
@@ -202,7 +191,9 @@ public class GameScreen implements Screen {
         vignette.end();
 
         // Inizio lettura stampa dello schermo precedente
-        darken.begin(new Color(.6f, .6f, .6f, 1.0f));
+        darken.begin(new Color(.4f, .4f, .6f, 1.0f));
+
+
         // Disegna lo schermo precedente
         vignette.draw(info.core.batch);
         // Fine lettura
@@ -211,7 +202,8 @@ public class GameScreen implements Screen {
 
         Vector3 position = new Vector3(getEntityManager().player().getPosition(), 0);
         Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
-        light.begin(projectedPosition);
+		
+        light.begin(projectedPosition, 0.125f);
         darken.draw(info.core.batch);
         light.end();
 

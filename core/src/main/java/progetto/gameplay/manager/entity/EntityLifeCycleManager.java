@@ -27,13 +27,16 @@ public class EntityLifeCycleManager {
         queue = getEntityQueue();
         entities = getEntities();
         instances = new Array<>();
+        Player player = managerEntity.player();
+        entities.removeValue(player, false);
         if (queue.size > 0) {
             queue.clear();
         }
         for (Entity e : entities) {
-            if (e instanceof Player) continue;
-            else instances.add(e.despawn());
+            instances.add(e.despawn());
         }
+
+        entities.add(player);
         return instances;
     }
 

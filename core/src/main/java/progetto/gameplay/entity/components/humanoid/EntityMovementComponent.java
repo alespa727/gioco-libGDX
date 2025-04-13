@@ -75,6 +75,9 @@ public class EntityMovementComponent extends IteratableComponent {
 
     private void towards(Vector2 target) {
         Body body = owner.getPhysics().getBody();
+        if (body == null) {
+            return;
+        }
         if (owner.getPosition().dst(target) < 8/16f) {
             body.setLinearDamping(20f);
             steps++;

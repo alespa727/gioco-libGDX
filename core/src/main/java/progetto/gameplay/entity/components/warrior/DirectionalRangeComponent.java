@@ -27,6 +27,9 @@ public class DirectionalRangeComponent extends IteratableComponent {
     @Override
     public void update(float delta) {
         Body body = owner.getPhysics().getBody();
+        if (body == null) {
+            return;
+        }
         if (directionalRange != null) {
             directionalRange.setTransform(body.getPosition(), owner.getDirection().angleRad() - 60 *MathUtils.degreesToRadians);
         }
