@@ -29,6 +29,7 @@ public class Lwjgl3Launcher {
         // RefreshRate adattato agli hz del monitor
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
         // Modalità finestra
+        //configuration.setWindowedMode(1920, 1080);
         configuration.setWindowedMode(1280, 720);
         // Misura della finestra fissa
         configuration.setResizable(false);

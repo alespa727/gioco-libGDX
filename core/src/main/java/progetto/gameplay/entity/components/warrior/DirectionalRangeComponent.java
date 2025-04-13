@@ -8,7 +8,7 @@ import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.manager.ManagerEntity;
 
-public class DirectionalRange extends IteratableComponent {
+public class DirectionalRangeComponent extends IteratableComponent {
 
     public Warrior owner;
 
@@ -19,7 +19,7 @@ public class DirectionalRange extends IteratableComponent {
 
     private float rangeRadius;
 
-    public DirectionalRange(Warrior owner) {
+    public DirectionalRangeComponent(Warrior owner) {
         this.owner = owner;
         createRange(1.5f);
     }

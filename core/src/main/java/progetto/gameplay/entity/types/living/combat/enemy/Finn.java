@@ -26,9 +26,7 @@ public final class Finn extends Enemy {
 
     @Override
     public void create() {
-        // Log di creazione
-        System.out.println("Finn n." + getConfig().id + " creato");
-
+        super.create();
         // Imposta lo stato iniziale
         statemachine.changeState(StatesEnemy.PATROLLING);
 
@@ -39,11 +37,9 @@ public final class Finn extends Enemy {
 
     @Override
     public void attack() {
-        // Gestione dell'attacco con cooldown
-        attack.update(manager.delta);
-        if (attack.isReady) {
-            getSkillset().execute(LichFireball.class    );
-            attack.reset();
+        if (getAttackCooldown().isReady) {
+            getSkillset().execute(EnemySwordAttack.class);
+            getAttackCooldown().reset();
         }
     }
 

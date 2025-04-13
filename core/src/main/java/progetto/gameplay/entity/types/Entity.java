@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
 import progetto.gameplay.entity.components.*;
 import progetto.gameplay.entity.components.entity.DirectionComponent;
-import progetto.gameplay.entity.components.entity.NodeTracker;
+import progetto.gameplay.entity.components.entity.NodeTrackerComponent;
 import progetto.gameplay.entity.components.entity.PhysicsComponent;
 import progetto.gameplay.entity.components.entity.StateComponent;
 import progetto.gameplay.entity.types.living.HumanoidTextures;
@@ -43,7 +43,7 @@ public abstract class Entity {
         components = new ArrayMap<>();
         addComponent(new StateComponent());
         addComponent(new PhysicsComponent(this, instance.coordinate));
-        addComponent(new NodeTracker(this));
+        addComponent(new NodeTrackerComponent(this));
         addComponent(new DirectionComponent(config.direzione));
 
         getComponent(PhysicsComponent.class).createBody();
@@ -62,7 +62,7 @@ public abstract class Entity {
         components = new ArrayMap<>();
         addComponent(new StateComponent());
         addComponent(new PhysicsComponent(this));
-        addComponent(new NodeTracker(this));
+        addComponent(new NodeTrackerComponent(this));
         addComponent(new DirectionComponent(config.direzione));
 
         getComponent(PhysicsComponent.class).createBody();

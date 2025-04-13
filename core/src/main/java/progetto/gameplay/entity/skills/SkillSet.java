@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entity.components.IteratableComponent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SkillSet extends IteratableComponent {
 
     // === CAMPi ===
@@ -107,6 +110,21 @@ public class SkillSet extends IteratableComponent {
         if (skill != null) {
             skill.execute(); // Esegue la skill se trovata
         }
+    }
+
+    public List<String> getSkillNames(){
+        List<String> skillNames = new ArrayList<>();
+        for (Skill skill : skillList) {
+            skillNames.add(skill.getClass().getSimpleName());
+        }
+        return skillNames;
+    }
+
+    @Override
+    public String toString() {
+        return "SkillSet{" +
+            "skillList=" + skillList +
+            "} ";
     }
 }
 

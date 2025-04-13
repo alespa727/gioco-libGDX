@@ -1,15 +1,18 @@
 package progetto.gameplay;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -23,23 +26,27 @@ import progetto.gameplay.manager.ManagerGame;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.MapManager;
+import progetto.gameplay.player.inventoty.Inventory;
 import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
+import progetto.utils.shaders.Darken;
+import progetto.utils.shaders.Vignette;
 
 public class GameScreen implements Screen {
 
     // Costante per il passo fisico (60Hz)
     public static final float STEP = 1 / 60f;
 
-    private TerminalCommand terminalCommand;
+    private final TerminalCommand terminalCommand;
     private DebugWindow debugWindow;
+    private Inventory inventory;
 
-    private Window window;
     public FitViewport viewport;
     private final GameTime time;
     private Gui gui;
     private final Vignette vignette;
+    private final Darken darken;
 
     GameInfo info;
     DefaultStateMachine<GameScreen, ManagerGame> state;
@@ -59,6 +66,7 @@ public class GameScreen implements Screen {
         GameLoader.loadWorld();
         this.time = new GameTime();
         this.vignette = Vignette.getInstance();
+        this.darken = Darken.getInstance();
         this.terminalCommand = new TerminalCommand(this);
         this.terminalCommand.start();
         this.loadGame(core);
@@ -90,6 +98,13 @@ public class GameScreen implements Screen {
     private void initializeDebugWindow() {
         Skin skin = new Skin(Gdx.files.internal("skins/metal-ui.json"));
         debugWindow = new DebugWindow(this, "Debug", skin);
+        inventory = new Inventory(this, "Inventory", skin);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(debugWindow.getStage());   // Processa gli input per la scena principale
+        inputMultiplexer.addProcessor(inventory.getStage());  // Processa gli input per la finestra di debug
+
+        // Imposta l'input processor globale
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     private void loadAssets() {
@@ -128,6 +143,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         // Aggiorna lo stato del mondo
         updateWorld();
 
@@ -145,11 +161,19 @@ public class GameScreen implements Screen {
 
         // Disegna la finestra di debug
         debugWindow.updateDebugInfo(Gdx.graphics.getFramesPerSecond(), Gdx.app.getJavaHeap());
-        debugWindow.draw();
+        debugWindow.update();
+        inventory.update();
     }
 
     private void updateWorld() {
         ManagerWorld.update();
+        int bodyCount = 0;
+        Array<Body> array = new Array<>();
+        ManagerWorld.getInstance().getBodies(array);
+        for (Body body : array) {
+            bodyCount++;
+        }
+        System.out.println("Corpi nel mondo: " + bodyCount);
     }
 
     private void checkPlayerDeath() {
@@ -161,11 +185,15 @@ public class GameScreen implements Screen {
 
     private void renderVignette(float delta) {
         vignette.begin();
-        ScreenUtils.clear(0, 0, 0, 1);
+        Color darkGray = new Color(0.17f, 0.17f, 0.17f, 1.0f); // Grigio scuro
+        ScreenUtils.clear(darkGray);
         time.update(delta);
-        this.state.update();
+        state.update();
         vignette.end();
+        darken.begin();
         vignette.draw(info.core.batch);
+        darken.end();
+        darken.draw(info.core.batch);
     }
 
     /**
@@ -224,6 +252,7 @@ public class GameScreen implements Screen {
     private void renderMap() {
         OrthogonalTiledMapRenderer mapRenderer = this.info.mapManager.getMap().getMapRenderer();
         mapRenderer.setView(ManagerCamera.getInstance());
+
         mapRenderer.render();
         if(DebugWindow.renderPathfinding()){
             Map.getGraph().drawConnections(info.core.renderer);
@@ -297,16 +326,6 @@ public class GameScreen implements Screen {
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
         ManagerCamera.update(info.managerEntity, viewport, time.delta, boundaries);
-        float PPM = 128f;
-        OrthographicCamera camera = ManagerCamera.getInstance();
-
-        // Dopo averla spostata
-        camera.position.set(
-            Math.round(camera.position.x * PPM) / PPM,
-            Math.round(camera.position.y * PPM) / PPM,
-            0
-        );
-        camera.update();
 
         this.info.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
         this.info.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
@@ -332,5 +351,6 @@ public class GameScreen implements Screen {
         // Pulisce le risorse utilizzate
         this.info.core.batch.dispose();
         this.info.core.renderer.dispose();
+        this.terminalCommand.stopRunning();
     }
 }

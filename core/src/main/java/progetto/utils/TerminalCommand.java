@@ -8,20 +8,27 @@ import progetto.gameplay.GameScreen;
 import java.util.Scanner;
 
 public class TerminalCommand extends Thread {
-    private Scanner scanner;
-    private GameScreen gameScreen;
+    private final Scanner scanner;
+    private final GameScreen gameScreen;
+    private boolean running;
 
     public TerminalCommand(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         scanner = new Scanner(System.in);
+        running = true;
     }
+
+    @Override
     public void run() {
-        while (true) {
+        while (running) {
             String input = scanner.nextLine();  // Legge l'input dal terminale
             processCommand(input);  // Elabora il comando
         }
     }
 
+    public void stopRunning() {
+        running = false;
+    }
 
     private void processCommand(String command) {
         // Elenco dei comandi e delle azioni associate
@@ -32,6 +39,9 @@ public class TerminalCommand extends Thread {
         switch (tokens[0]) {
             case "teleport":
                 try {
+                    if (tokens.length > 3) {
+                        throw new RuntimeException();
+                    }
                     int x = Integer.parseInt(tokens[1]);
                     int y = Integer.parseInt(tokens[2]);
                     printMessage("Teleporting the player...");
@@ -54,6 +64,9 @@ public class TerminalCommand extends Thread {
                 break;
             case "debug":
                 try{
+                    if (tokens.length > 2) {
+                        throw new RuntimeException();
+                    }
                     String state = tokens[1];
                     switch (state){
                         case "true":
@@ -77,6 +90,18 @@ public class TerminalCommand extends Thread {
                     }
                 }
                 break;
+            case "kill":
+                try{
+                    if (tokens.length == 1) {
+                        printMessage("Killing the player...");
+                        sleep(500);
+                        printMessage("Player killed.");
+                        killPlayer();
+                    }
+                }catch (Exception e) {
+                    printError("Sintassi non corretta");
+                }
+                break;
             default:
                 printError("Comando non trovato: " + command);
         }
@@ -87,12 +112,24 @@ public class TerminalCommand extends Thread {
         gameScreen.getEntityManager().player().teleport(new Vector2(x, y));
     }
 
+    private void killPlayer() {
+        // Uccide il player
+        gameScreen.getEntityManager().player().kill();
+    }
+
     public static void printMessage(String message) {
+        // Messaggio da console (Blu)
         System.out.println(Ansi.ansi().fg(Ansi.Color.BLUE).a(message).reset());
     }
 
     public static void printError(String message) {
+        // Messaggio di errore (Rosso)
         Gdx.app.log("Error", Ansi.ansi().fg(Ansi.Color.RED).a(message).reset().toString());
+    }
+
+    public static void printWarning(String message) {
+        // Warning (Giallo)
+        Gdx.app.log("Warning", Ansi.ansi().fg(Ansi.Color.YELLOW).a(message).reset().toString());
     }
 
 }

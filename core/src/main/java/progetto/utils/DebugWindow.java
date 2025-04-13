@@ -1,6 +1,7 @@
 package progetto.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,20 +27,15 @@ public class DebugWindow extends Window {
 
     public DebugWindow(GameScreen gameScreen, String title, Skin skin) {
         super(title, skin);
-        setKeepWithinStage(true);
         setDebug(true);
-
+        setMovable(true);
+        setKeepWithinStage(false);
         // Crea la viewport
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()));
         // Aggiunge la finestra
         stage.addActor(this);
 
-        // Impostazioni della finestra
-        setMovable(true);
-
-        // Posiziona la finestra in basso (spazio per il titolo) e dai un margine
-        int marginTop = 50;  // Distanza dal bordo superiore per il titolo
-        setPosition(10, Gdx.graphics.getHeight() - 150 - marginTop); // Aggiungi spazio sopra
+        setPosition(0, 0); // Aggiungi spazio sopra
 
         // Crea i TextField, TextButton e Label
         xCoord = new TextField("", skin);
@@ -126,10 +122,16 @@ public class DebugWindow extends Window {
 
         // Imposta una dimensione iniziale per la finestra
         setSize(300, 400); // Imposta la larghezza e l'altezza iniziale
+        hide();
     }
 
+    public void show(){
+        setVisible(true);
+    }
 
-
+    public void hide(){
+        setVisible(false);
+    }
 
     public static boolean renderEntities() {
         return entityAI;
@@ -164,7 +166,14 @@ public class DebugWindow extends Window {
         DebugWindow.entityAI = entityAI;
     }
 
-    public void draw() {
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void update() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)){
+            setVisible(!isVisible());
+        }
         stage.getViewport().apply();
         stage.act(Gdx.graphics.getDeltaTime()); // Update the stage (for animations or actions)
         stage.draw(); // Draw the stage

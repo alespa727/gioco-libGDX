@@ -11,7 +11,9 @@ import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.node.Node;
 
-public class EntityMovementManager extends IteratableComponent {
+public class EntityMovementComponent extends IteratableComponent {
+
+    // Da rifare per entità non volanti
 
     final Humanoid owner;
     final Array<Vector2> path;
@@ -22,7 +24,7 @@ public class EntityMovementManager extends IteratableComponent {
 
     int steps = 0;
 
-    public EntityMovementManager(Humanoid entity) {
+    public EntityMovementComponent(Humanoid entity) {
         this.path = new Array<>();
         this.owner = entity;
         float offset = MathUtils.random(-0.3f, 0.3f);

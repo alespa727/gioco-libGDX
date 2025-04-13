@@ -1,4 +1,4 @@
-package progetto.utils;
+package progetto.utils.shaders;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,10 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import org.w3c.dom.Text;
 import progetto.gameplay.manager.ManagerCamera;
 
-public class Vignette {
+public class Vignette extends Shader{
     private static Vignette instance;
-    private ShaderProgram program;
-    private FrameBuffer frameBuffer;
 
     public static Vignette getInstance() {
         if (instance == null) {
@@ -25,22 +23,24 @@ public class Vignette {
     private Vignette() {
         // Carica e crea il programma shader (per effetti grafici avanzati)
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        String vertexShader = Gdx.files.internal("shaders/vertex.vsh").readString();
-        String fragmentShader = Gdx.files.internal("shaders/vignette.fsh").readString();
+        String vertexShader = Gdx.files.internal("shaders/vignette/vertex.vsh").readString();
+        String fragmentShader = Gdx.files.internal("shaders/vignette/fragment.fsh").readString();
         this.program = new ShaderProgram(vertexShader, fragmentShader);
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
     }
 
+    @Override
     public void begin(){
         frameBuffer.begin();
     }
 
+    @Override
     public void end(){
         frameBuffer.end();
     }
 
+    @Override
     public void draw(SpriteBatch batch) {
-        program.setUniformf("resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Texture texture = frameBuffer.getColorBufferTexture();
         TextureRegion region = new TextureRegion(texture);
         region.flip(false, true);

@@ -98,4 +98,11 @@ public abstract class Skill {
      * Metodo per eseguire la skill.
      */
     public abstract void execute();
+
+    @Override
+    public String toString() {
+        return "Skill{" +
+            "type='" + getClass().getSimpleName() + '\'' +
+            '}';
+    }
 }

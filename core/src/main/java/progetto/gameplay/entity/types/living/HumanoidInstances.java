@@ -1,14 +1,35 @@
 package progetto.gameplay.entity.types.living;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
 import progetto.gameplay.entity.skills.SkillSet;
 import progetto.gameplay.entity.types.EntityInstance;
+import progetto.utils.TerminalCommand;
+
+import java.util.List;
+
+import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 
 public class HumanoidInstances extends EntityInstance {
 
     // === Attributi specifici dell'umano ===
-    public final SkillSet skillset;
-    public final float speed;
-    public final float maxHealth;
+    public transient SkillSet skillset;
+    public List<String> skillNames;
+    public float speed;
+    public float maxHealth;
+    public float health;
+
+    public HumanoidInstances(){
+        super();
+        this.skillset = new SkillSet();
+        this.maxHealth = 0;
+        this.speed = 0;
+        this.health = 0;
+    }
 
     // === Costruttore ===
     public HumanoidInstances(Humanoid e) {
@@ -16,5 +37,29 @@ public class HumanoidInstances extends EntityInstance {
         this.skillset = e.getSkillset();
         this.maxHealth = e.getMaxHealth();
         this.speed = e.getMaxSpeed();
+        this.health = e.getHealth();
+        this.skillNames = skillset.getSkillNames();
+        json.setOutputType(JsonWriter.OutputType.json);
+        String jsonString = json.prettyPrint(this);
+        TerminalCommand.printMessage(jsonString);
+
+        if (!Gdx.files.local("save").exists()) {
+            Gdx.files.local("save").mkdirs();
+        }
+
+        FileHandle fileHandle = Gdx.files.local("save/entities.json");
+        System.out.println(fileHandle.file().getAbsolutePath());
+        fileHandle.writeString(jsonString, false);
+    }
+
+    @Override
+    public String toString() {
+        return "HumanoidInstances{" +
+            super.toString() +
+            "skillset=" + skillset +
+            ", speed=" + speed +
+            ", maxHealth=" + maxHealth +
+            ", health=" + health +
+            '}';
     }
 }

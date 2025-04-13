@@ -61,21 +61,13 @@ public class ManagerEvent implements ContactListener {
             if (((Bullet) dataB).getOwner() == dataA) return;
             if(((Warrior) dataA).getHumanStates().isInvulnerable()) return;
             ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).getComponent(BulletComponent.class).damage,2);
-            Gdx.app.postRunnable(new Runnable() {
-                public void run() {
-                    ((Bullet) dataB).despawn();
-                }
-            });
+            ((Bullet) dataB).despawn();
         }
         if (dataB instanceof Warrior && !isRangeA && dataA instanceof Bullet) {
             if (((Bullet) dataA).getOwner() == dataB) return;
             if(((Warrior) dataB).getHumanStates().isInvulnerable()) return;
             ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).getComponent(BulletComponent.class).damage, 2);
-            Gdx.app.postRunnable(new Runnable() {
-                public void run() {
-                    ((Bullet) dataA).despawn();
-                }
-            });
+            ((Bullet) dataA).despawn();
         }
 
     }

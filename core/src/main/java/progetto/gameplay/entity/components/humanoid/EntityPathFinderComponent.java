@@ -13,7 +13,7 @@ import progetto.gameplay.map.Map;
 import progetto.gameplay.map.graph.HeuristicDistance;
 import progetto.gameplay.map.graph.node.Node;
 
-public class EntityPathFinder extends Component implements Disposable {
+public class EntityPathFinderComponent extends Component implements Disposable {
     private final Humanoid entity;
     private final DefaultGraphPath<Node> path;
 
@@ -26,7 +26,7 @@ public class EntityPathFinder extends Component implements Disposable {
 
     public boolean success;
 
-    public EntityPathFinder(Humanoid entity) {
+    public EntityPathFinderComponent(Humanoid entity) {
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
     }

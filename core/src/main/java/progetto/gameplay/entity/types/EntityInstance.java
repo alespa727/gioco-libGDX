@@ -1,6 +1,9 @@
 package progetto.gameplay.entity.types;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import progetto.Core;
 
 /**
  * Rappresenta una "fotografia" di un'entità in un certo momento.
@@ -9,16 +12,16 @@ import com.badlogic.gdx.math.Vector2;
 public class EntityInstance {
 
     /** Nome della classe dell'entità (es. "Player", "Enemy", ecc.) */
-    public final String type;
+    public String type;
 
     /** {@link EntityConfig} contenente tutte le informazioni sull'entità (statistiche, immagine, stato, ecc.) */
-    public final EntityConfig config;
+    public EntityConfig config;
 
     /** Posizione corrente dell'entità nel mondo ({@link Vector2}) */
-    public final Vector2 coordinate;
+    public Vector2 coordinate;
 
     /** Direzione verso cui l'entità è rivolta o si sta muovendo ({@link Vector2}) */
-    public final Vector2 direction;
+    public Vector2 direction;
 
     /**
      * Costruisce un'istanza a partire da una {@link Entity}.
@@ -32,6 +35,26 @@ public class EntityInstance {
         this.config = e.getConfig();       // Clona la configurazione
         this.coordinate = e.getPosition(); // Clona la posizione
         this.direction = e.getDirection(); // Clona la direzione
+    }
+
+    public EntityInstance() {
+        this.coordinate = new Vector2();
+        this.direction = new Vector2();
+        this.type = "null";
+    }
+
+    public void loadTexture(){
+        config.img = Core.assetManager.get("entities/" + type + ".png", Texture.class);
+    }
+
+    @Override
+    public String toString() {
+        return "EntityInstance{" +
+            "type='" + type + '\'' +
+            ", config=" + config.toString() +
+            ", coordinate=" + coordinate +
+            ", direction=" + direction +
+            '}';
     }
 }
 

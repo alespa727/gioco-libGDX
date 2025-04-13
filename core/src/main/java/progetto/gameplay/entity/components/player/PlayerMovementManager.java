@@ -1,32 +1,16 @@
-package progetto.gameplay.entity.behaviors.movement;
+package progetto.gameplay.entity.components.player;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import progetto.gameplay.entity.types.living.Humanoid;
+import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.player.Player;
 
 import static progetto.utils.KeyHandler.*;
 
-public class PlayerMovementManager {
+public class PlayerMovementManager extends IteratableComponent {
     private final Player player;
     public PlayerMovementManager(Player player) {
         this.player = player;
-    }
-
-    public void update(Humanoid p) {
-
-        if (!(su || giu || sinistra || destra)) {
-            notMoving();
-        }else if(destra && sinistra && su && giu){
-            notMoving();
-        }else if (su && giu) {
-            oppostoY();
-        } else if (sinistra && destra) {
-            oppostoX();
-        } else {
-            moving();
-        }
-
     }
 
     public void oppostoY() {
@@ -110,5 +94,20 @@ public class PlayerMovementManager {
             return new Vector2(player.getDirection()).scl(body.getMass() * player.getMaxSpeed() * 1 / 1.41f).scl(1 / 1.41f);
         }
         return new Vector2(player.getDirection()).scl(player.getMaxSpeed()).scl(body.getMass());
+    }
+
+    @Override
+    public void update(float delta) {
+        if (!(su || giu || sinistra || destra)) {
+            notMoving();
+        }else if(destra && sinistra && su && giu){
+            notMoving();
+        }else if (su && giu) {
+            oppostoY();
+        } else if (sinistra && destra) {
+            oppostoX();
+        } else {
+            moving();
+        }
     }
 }
