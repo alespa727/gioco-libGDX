@@ -14,6 +14,9 @@ public class SpeedLimiterComponent extends IteratableComponent {
     @Override
     public void update(float delta) {
         Body body = humanoid.getPhysics().getBody();
+        if (body == null) {
+            return;
+        }
         if (body.getLinearVelocity().len() > humanoid.getMaxSpeed()) {
             body.applyLinearImpulse(body.getLinearVelocity().scl(-1), body.getWorldCenter(), true);
         }

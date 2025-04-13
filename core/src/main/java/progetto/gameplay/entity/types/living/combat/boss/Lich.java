@@ -50,7 +50,7 @@ public class Lich extends Boss{
 
     @Override
     public void create() {
-
+        super.create();
     }
 
     @Override

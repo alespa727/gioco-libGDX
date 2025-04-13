@@ -16,7 +16,7 @@ public enum ManagerGame implements State<GameScreen> {
     PLAYING {
         @Override
         public void enter(GameScreen screen) {
-            
+
         }
 
         @Override
@@ -29,6 +29,7 @@ public enum ManagerGame implements State<GameScreen> {
             // Aggiorna il gioco finché necessario
             while (time.getAccumulator() >= STEP) {
                 float scaledTime = STEP * screen.getTimeScale();
+                screen.updateWorld();
                 ManagerWorld.getInstance().step(scaledTime, 8, 8);
                 screen.update(scaledTime);
                 time.setAccumulator(time.getAccumulator() - STEP);

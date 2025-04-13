@@ -16,6 +16,7 @@ public class Light extends Shader{
 
     private static Light instance;
     private final Vector2 position;
+    private float intensity;
 
     private Light() {
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -38,11 +39,12 @@ public class Light extends Shader{
         frameBuffer.begin();
     }
 
-    public void begin(Vector3 position) {
+    public void begin(Vector3 position, float intensity) {
         frameBuffer.begin();
         float normX = position.x / Gdx.graphics.getWidth();
         float normY = position.y / Gdx.graphics.getHeight();
         this.position.set(normX, normY);
+        this.intensity = intensity;
     }
 
     @Override
@@ -61,7 +63,8 @@ public class Light extends Shader{
         program.setUniformf("u_resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());// (1) assegna lo shader
         program.setUniformf("u_lightPos", position.x, position.y);
         program.setUniformf("u_lightRadius", 0.5f);
-        program.setUniformf("u_lightColor", Color.ORANGE.cpy().mul(0.5f));
+        program.setUniformf("u_lightIntensity", intensity);
+        program.setUniformf("u_lightColor", Color.ORANGE.cpy());
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
             ManagerCamera.getFrustumCorners()[0].x,
