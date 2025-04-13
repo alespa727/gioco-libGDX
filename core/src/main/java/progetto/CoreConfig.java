@@ -64,6 +64,11 @@ public final class CoreConfig {
      */
     private static int RIPRENDIGIOCO = Input.Keys.SPACE;
 
+    /**
+     * <p>TASTO PER APRIRE L'INVENTARIO, MODIFICABILE-----------------------------------------------</p>
+     */
+    private static int APRIINVENTARIO = Input.Keys.M;
+
     // COSTRUTTORI -----------------------------------------------------------------------------
 
 
@@ -141,5 +146,13 @@ public final class CoreConfig {
 
     public static void setRIPRENDIGIOCO(int RIPRENDIGIOCO) {
         CoreConfig.RIPRENDIGIOCO = RIPRENDIGIOCO;
+    }
+
+    public static int getAPRIINVENTARIO() {
+        return APRIINVENTARIO;
+    }
+
+    public static void setAPRIINVENTARIO(int APRIINVENTARIO) {
+        CoreConfig.APRIINVENTARIO = APRIINVENTARIO;
     }
 }
