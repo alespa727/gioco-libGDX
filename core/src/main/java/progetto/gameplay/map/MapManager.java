@@ -106,11 +106,7 @@ public class MapManager {
 
     public void spawnInstances(){
         if(mapEntityInstances.containsKey(nome)) {
-            Json json = new Json();
-            BossInstance loaded = json.fromJson(BossInstance.class, Gdx.files.local("save/entities.json"));
-            loaded.loadTexture();
             Array<EntityInstance> instances = mapEntityInstances.get(nome);
-            instances.add(loaded);
             managerEntity.summon(instances);
         }
     }
