@@ -16,7 +16,7 @@ public enum StatesLich implements State<Lich> {
         private final Cooldown useFireDomain = new Cooldown(0);
         @Override
         public void enter(Lich entity) {
-            useFireDomain.reset(MathUtils.random(4f, 5f));
+            useFireDomain.reset(MathUtils.random(3f, 5f));
         }
 
         @Override
@@ -70,7 +70,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void exit(Lich entity) {
-            entity.prepareToFireball.reset(MathUtils.random(2f, 3f));
+            entity.prepareToFireball.reset(MathUtils.random(4f, 7f));
         }
 
         @Override

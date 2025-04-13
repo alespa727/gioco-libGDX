@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import progetto.factories.EntityFactory;
 import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.utils.KeyHandler;
 import progetto.gameplay.manager.ManagerCamera;
@@ -45,7 +46,7 @@ public class PlayerRangedAttack extends CombatSkill {
             direction.nor();
             Vector2 position=new Vector2(owner.getPosition()).add(direction);
 
-            Bullet bullet = (Bullet) owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner));
+            Bullet bullet = (Bullet) owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.manager, Warrior.class));
             bullet.startCooldown(1f);
         }else{
             System.out.println("FINITI I PROIETTILI");

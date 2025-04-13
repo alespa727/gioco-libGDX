@@ -23,7 +23,7 @@ import progetto.gameplay.manager.ManagerEntity;
 public class Bullet extends Entity {
 
     // === Attributi specifici ===
-    /** Proprietario del proiettile, ovvero l'entità che lo ha sparato ({@link Entity}) */
+    /** Classe del target, ovvero l'entità che avrà collisione con il proiettile ({@link Entity}) */
     private final Class<? extends Entity> target;
 
     /** Texture del proiettile */
@@ -32,7 +32,7 @@ public class Bullet extends Entity {
     // === Costruttore ===
     /**
      * Costruttore del proiettile.
-     * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e proprietario.
+     * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config configurazione dell'entità ({@link EntityConfig})
      * @param manager gestore delle entità nel gioco ({@link ManagerEntity})
@@ -55,6 +55,30 @@ public class Bullet extends Entity {
     }
 
     /**
+     * Costruttore del proiettile.
+     * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
+     *
+     * @param config configurazione dell'entità ({@link EntityConfig})
+     * @param manager gestore delle entità nel gioco ({@link ManagerEntity})
+     * @param radius raggio del proiettile
+     * @param velocity velocità del proiettile
+     * @param damage danno inflitto dal proiettile
+     * @param target classe dell'entità a cui è sparato il proiettile ({@link Entity})
+     */
+    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
+        super(config, manager);
+        this.target = target;
+        this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
+        this.getDirection().set(config.direzione); // Imposta la direzione
+
+        addComponent(new BulletComponent(damage, velocity, radius));
+        getComponent(NodeTrackerComponent.class).setAwake(false);
+        addComponent(new Cooldown(2));
+        getComponent(Cooldown.class).reset();
+        getComponent(Cooldown.class).setAwake(false);
+    }
+
+    /**
      * Avvia il cooldown per il proiettile.
      *
      * @param time durata del cooldown in secondi
@@ -65,9 +89,9 @@ public class Bullet extends Entity {
     }
 
     /**
-     * Ottiene il proprietario del proiettile.
+     * Ottiene la classe con cui avrà collisioni
      *
-     * @return {@link Entity} il proprietario del proiettile
+     * @return {@link Entity} target
      */
     public Class<? extends Entity> getTargetClass() {
         return target;

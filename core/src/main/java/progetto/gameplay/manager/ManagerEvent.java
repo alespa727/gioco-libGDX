@@ -59,17 +59,25 @@ public class ManagerEvent implements ContactListener {
         }
 
         if (dataA instanceof Warrior && !isRangeA && dataB instanceof Bullet) {
-            if(((Warrior) dataA).getHumanStates().isInvulnerable()) return;
-            if (!((Bullet) dataB).getTargetClass().equals(dataA.getClass())) return;
-            ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).getComponent(BulletComponent.class).damage,2);
+            if (((Warrior) dataA).getHumanStates().isInvulnerable()) return;
+
+            // ACCETTA anche sottoclassi di targetClass
+            if (!((Bullet) dataB).getTargetClass().isAssignableFrom(dataA.getClass())) return;
+
+            ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).getComponent(BulletComponent.class).damage, 2);
             ((Bullet) dataB).despawn();
         }
+
         if (dataB instanceof Warrior && !isRangeA && dataA instanceof Bullet) {
-            if(((Warrior) dataB).getHumanStates().isInvulnerable()) return;
-            if (((Bullet) dataA).getTargetClass().equals(dataB.getClass())) return;
+            if (((Warrior) dataB).getHumanStates().isInvulnerable()) return;
+
+            // ACCETTA anche sottoclassi di targetClass
+            if (!((Bullet) dataA).getTargetClass().isAssignableFrom(dataB.getClass())) return;
+
             ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).getComponent(BulletComponent.class).damage, 2);
             ((Bullet) dataA).despawn();
         }
+
 
     }
 
