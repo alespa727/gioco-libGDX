@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.types.living.combat.npc;
+package progetto.gameplay.entity.types.living.npc;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;

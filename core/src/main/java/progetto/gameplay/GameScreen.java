@@ -202,7 +202,7 @@ public class GameScreen implements Screen {
 
         Vector3 position = new Vector3(getEntityManager().player().getPosition(), 0);
         Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
-		
+
         light.begin(projectedPosition, 0.125f);
         darken.draw(info.core.batch);
         light.end();

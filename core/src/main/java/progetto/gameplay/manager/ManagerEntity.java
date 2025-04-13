@@ -1,6 +1,8 @@
 package progetto.gameplay.manager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 
@@ -8,6 +10,8 @@ import progetto.Core;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
+import progetto.gameplay.entity.types.living.npc.ProvaNpc;
+import progetto.gameplay.entity.types.living.npc.WindowDialogo;
 import progetto.gameplay.manager.entity.EntityLifeCycleManager;
 import progetto.gameplay.manager.entity.EntityRenderer;
 import progetto.gameplay.manager.entity.PlayerManager;
@@ -53,6 +57,11 @@ public final class ManagerEntity {
         for (int i = 0; i < 1; i++) {
             summon(EntityFactory.createBoss("Lich", e, this));
         }
+
+        e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8, 8);
+        String[] dialogo = new String[1];
+        dialogo[0] = "CIAO";
+        summon(new ProvaNpc(e, this, dialogo, new WindowDialogo("Ciao", new Skin(Gdx.files.internal("skins/metal-ui.json")))));
 
         this.renderer = new EntityRenderer(this);
     }

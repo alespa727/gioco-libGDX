@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.types.living.combat.npc;
+package progetto.gameplay.entity.types.living.npc;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -9,6 +9,8 @@ import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
+import progetto.utils.TerminalCommand;
 
 public abstract class NotPlayableCharacter extends Humanoid {
 
@@ -89,6 +91,11 @@ public abstract class NotPlayableCharacter extends Humanoid {
 
     @Override
     public EntityInstance despawn() {
-        return null;
+        TerminalCommand.printError("Deleting entity" + getConfig().nome);
+        manager.remove(this);
+
+        ManagerWorld.destroyBody(getPhysics().getBody());
+
+        return new HumanoidInstances(this);
     }
 }

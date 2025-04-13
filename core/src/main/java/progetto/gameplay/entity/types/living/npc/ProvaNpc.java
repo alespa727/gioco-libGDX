@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.types.living.combat.npc;
+package progetto.gameplay.entity.types.living.npc;
 
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
@@ -12,5 +12,7 @@ public class ProvaNpc extends NotPlayableCharacter {
 
     public ProvaNpc(EntityConfig config, ManagerEntity manager, String[] dialoghi, WindowDialogo windowDialogo) {
         super(config, manager, dialoghi, windowDialogo);
+        windowDialogo.setVisible(true);
+        windowDialogo.setSize(1000, 1000);
     }
 }

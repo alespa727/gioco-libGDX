@@ -61,7 +61,7 @@ public class Lich extends Boss{
     @Override
     public EntityInstance despawn() {
         // Log per il despawn
-        TerminalCommand.printMessage("Boss id " + getConfig().id + " despawnata");
+        TerminalCommand.printError("Boss id " + getConfig().id + " despawnata");
 
         // Rimuove l'entità dal manager
         manager.remove(this);
