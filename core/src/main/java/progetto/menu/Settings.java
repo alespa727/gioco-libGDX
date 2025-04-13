@@ -44,7 +44,7 @@ public class Settings implements Screen {
         comandi.put("Attacca", CoreConfig.getATTACCO());
         comandi.put("Pausa", CoreConfig.getFERMAGIOCO());
         comandi.put("Riprendi", CoreConfig.getRIPRENDIGIOCO());
-
+        comandi.put("Apri/Chiudi Inventario", CoreConfig.getAPRIINVENTARIO());
     }
 
     @Override
@@ -209,6 +209,9 @@ public class Settings implements Screen {
                 break;
             case "Riprendi":
                 CoreConfig.setRIPRENDIGIOCO(keycode);
+                break;
+            case "Apri/Chiudi Inventario":
+                CoreConfig.setAPRIINVENTARIO(keycode);
                 break;
         }
     }

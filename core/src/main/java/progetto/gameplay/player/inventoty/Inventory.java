@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import progetto.CoreConfig;
 import progetto.gameplay.GameScreen;
 
 public class Inventory extends Window {
@@ -97,7 +99,7 @@ public class Inventory extends Window {
     }
 
     public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
+        if (Gdx.input.isKeyJustPressed(CoreConfig.getAPRIINVENTARIO())){
             setVisible(!isVisible());
         }
         stage.getViewport().apply();
