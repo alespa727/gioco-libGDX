@@ -62,8 +62,8 @@ public class MapManager {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
             if (mapEntityInstances.get(currentMap.nome)!=null)
                 mapEntityInstances.get(currentMap.nome).clear();
-
-            mapEntityInstances.put(currentMap.nome, managerEntity.clear()); // Salva le entità in una hashmap
+            Array<EntityInstance> instances = managerEntity.clear();
+            mapEntityInstances.put(currentMap.nome, instances); // Salva le entità in una hashmap
             currentMap.dispose(); // Cancellazione mappa precedente
         }
 
@@ -109,6 +109,7 @@ public class MapManager {
     public void spawnInstances(){
         if(mapEntityInstances.containsKey(nome)) {
             Array<EntityInstance> instances = mapEntityInstances.get(nome);
+            System.out.println(mapEntityInstances.get(nome));
             managerEntity.summon(instances);
         }
     }

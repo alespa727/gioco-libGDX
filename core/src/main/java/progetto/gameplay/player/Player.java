@@ -138,5 +138,4 @@ public class Player extends Warrior {
     public void cooldown(float delta) {
     }
 
-
 }

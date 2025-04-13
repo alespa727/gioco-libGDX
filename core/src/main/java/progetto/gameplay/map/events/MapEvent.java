@@ -45,6 +45,10 @@ public abstract class MapEvent {
         return isActive;
     }
 
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
     /**
      * @param status stato dell'evento
      */

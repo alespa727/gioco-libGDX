@@ -47,6 +47,10 @@ public class PhysicsComponent extends Component {
         return body;
     }
 
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
     public Vector2 getPosition() {
         if (body != null) {
             return body.getPosition();

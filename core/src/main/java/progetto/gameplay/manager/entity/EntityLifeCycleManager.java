@@ -49,8 +49,7 @@ public class EntityLifeCycleManager {
     }
 
     public void remove(Entity e) {
-        entities.removeValue(e, false);
-        entities.shrink();
+
     }
 
     public Array<Entity> getEntities() {

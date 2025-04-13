@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Queue;
 import progetto.Core;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
+import progetto.gameplay.entity.types.living.combat.boss.Boss;
 import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.entity.types.living.npc.ProvaNpc;
 import progetto.gameplay.entity.types.living.npc.WindowDialogo;
@@ -21,6 +22,7 @@ import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.player.Player;
+import progetto.utils.TerminalCommand;
 
 public final class ManagerEntity {
 
@@ -53,15 +55,10 @@ public final class ManagerEntity {
         Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8, 10);
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 3; i++) {
+            EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8+i, 10);
             summon(EntityFactory.createBoss("Lich", e, this));
         }
-
-        e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8, 8);
-        String[] dialogo = new String[1];
-        dialogo[0] = "CIAO";
-        summon(new ProvaNpc(e, this, dialogo, new WindowDialogo("Ciao", new Skin(Gdx.files.internal("skins/metal-ui.json")))));
 
         this.renderer = new EntityRenderer(this);
     }
@@ -93,33 +90,55 @@ public final class ManagerEntity {
         queue.clear();
     }
 
-    /**
-     * Rimuove tutte le entità
-     * @return array di istanze di tutte le entità rimosse
-     */
     public Array<EntityInstance> clear() {
-        return lifeCycleManager.clear();
-    }
+        Array<EntityInstance> instances = new Array<>();
+        Array<Entity> entitiesCopy = new Array<>(entities); // Crea una copia della lista
 
+        Player p = playerManager.getPlayer();
+
+        for (Entity e : entitiesCopy) {
+            if (e instanceof Boss) {
+                TerminalCommand.printError(e.getClass().getSimpleName() + ": Boss1");
+            }
+            EntityInstance in = e.despawn();
+            if (in != null) {
+                instances.add(in);
+            }
+
+        }
+
+        // Dopo l'iterazione, svuota la lista originale
+        entities.clear();
+        queue.clear();
+
+        entities.add(p);
+
+        // Verifica il conteggio delle entità rimosse
+        TerminalCommand.printError("Entità rimosse: " + instances.size + instances);
+        return instances;
+    }
     /**
      * Crea un entità
      * @param e da evocare
      * @return l'entità evocata
      */
     public Entity summon(Entity e) {
-        return lifeCycleManager.summon(e);
+        queue.addFirst(e);
+        return queue.first();
     }
 
     /**
      * @param instances istanze delle entità da evocare
      */
     public void summon(Array<EntityInstance> instances) {
+
         for (EntityInstance instance : instances) {
             if (instance==null) continue;
 
             if (instance instanceof EnemyInstance) summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
             if (instance instanceof BossInstance) summon(EntityFactory.createBoss(instance.type, (BossInstance) instance, this));
         }
+
     }
 
     /**
@@ -150,7 +169,9 @@ public final class ManagerEntity {
      * @param e entità da rimuovere
      */
     public void remove(Entity e) {
-        lifeCycleManager.remove(e);
+        TerminalCommand.printWarning("Removing entity " + e.getClass().getSimpleName());
+        entities.removeValue(e, false);
+        entities.shrink();
     }
 
 }

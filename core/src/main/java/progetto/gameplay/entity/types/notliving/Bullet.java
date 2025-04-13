@@ -148,7 +148,7 @@ public class Bullet extends Entity {
     public EntityInstance despawn() {
         manager.remove(this); // Rimuove il proiettile dal gestore
         ManagerWorld.destroyBody(getPhysics().getBody());
-        return new EntityInstance(this); // Ritorna l'istanza dell'entità
+        return null;
     }
 
     /**
