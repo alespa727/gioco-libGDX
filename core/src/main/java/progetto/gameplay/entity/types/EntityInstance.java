@@ -1,7 +1,6 @@
 package progetto.gameplay.entity.types;
 
 import com.badlogic.gdx.math.Vector2;
-import progetto.utils.TerminalCommand;
 
 /**
  * Rappresenta una "fotografia" di un'entità in un certo momento.
@@ -13,7 +12,7 @@ public class EntityInstance {
     public final String type;
 
     /** {@link EntityConfig} contenente tutte le informazioni sull'entità (statistiche, immagine, stato, ecc.) */
-    public final EntityConfig config;
+    public transient final EntityConfig config;
 
     /** Posizione corrente dell'entità nel mondo ({@link Vector2}) */
     public final Vector2 coordinate;

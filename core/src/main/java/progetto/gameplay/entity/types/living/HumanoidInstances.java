@@ -1,5 +1,7 @@
 package progetto.gameplay.entity.types.living;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -30,10 +32,16 @@ public class HumanoidInstances extends EntityInstance {
         this.health = e.getHealth();
         this.skillNames = skillset.getSkillNames();
         json.setOutputType(JsonWriter.OutputType.json);
-        json.setIgnoreUnknownFields(true);
-        json.setUsePrototypes(false); // evita riferimenti strani tra oggetti
         String jsonString = json.prettyPrint(this);
-        System.out.println(jsonString);
+        TerminalCommand.printMessage(jsonString);
+
+        if (!Gdx.files.local("save").exists()) {
+            Gdx.files.local("save").mkdirs();
+        }
+        
+        FileHandle fileHandle = Gdx.files.local("save/entities.json");
+        System.out.println(fileHandle.file().getAbsolutePath());
+        fileHandle.writeString(jsonString, false);
     }
 
     @Override
