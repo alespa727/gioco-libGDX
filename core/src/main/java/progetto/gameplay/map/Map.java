@@ -151,7 +151,7 @@ public class Map implements Disposable {
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = ManagerEntity.WALL;
 
-                BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
+                BodyFactory.createBody("map", bodyDef, fixtureDef);
             }
         }
 //        for (int i = 0; i < width; i++) {
@@ -198,7 +198,7 @@ public class Map implements Disposable {
         FixtureDef fixtureDef = BodyFactory.createFixtureDef(chainShape, 1f, 0, 0);
 
         // Creazione del corpo
-        Gdx.app.postRunnable(()->BodyFactory.createBody("map", bodyDef, fixtureDef, chainShape));
+        Gdx.app.postRunnable(()->BodyFactory.createBody("map", bodyDef, fixtureDef));
     }
 
     /**

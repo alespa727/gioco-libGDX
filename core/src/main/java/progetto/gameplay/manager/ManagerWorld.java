@@ -9,6 +9,7 @@ import progetto.factories.BodyFactory;
 import progetto.gameplay.entity.components.BodyComponent;
 import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.map.events.MapEvent;
+import progetto.utils.TerminalCommand;
 
 public class ManagerWorld {
     private static World instance;

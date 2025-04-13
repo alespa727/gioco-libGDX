@@ -130,12 +130,12 @@ public class EntityRenderer {
      * Processa la coda, svuotandola e evocando entità dalla coda
      */
     private void processQueue() {
-        if(queue.size > 0){
+        while(queue.size > 0){
             entities.add(queue.last());
             queue.last().getPhysics().initBody();
             if (queue.last() instanceof Warrior ce) {
                 DirectionalRangeComponent a = ce.getDirectionRangeComponent();
-                ce.setDirectionalRange(BodyFactory.createBody(ce, a.getBodyDef(), a.getFixtureDef(), a.getShape()));
+                ce.setDirectionalRange(BodyFactory.createBody(ce, a.getBodyDef(), a.getFixtureDef()));
             }
             queue.last().create();
             queue.removeLast().load();

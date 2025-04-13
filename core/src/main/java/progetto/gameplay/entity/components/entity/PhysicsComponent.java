@@ -38,7 +38,7 @@ public class PhysicsComponent extends Component {
     }
 
     public void initBody() {
-        body = BodyFactory.createBody(owner, bodyDef, fixtureDef, shape);
+        body = BodyFactory.createBody(owner, bodyDef, fixtureDef);
         body.setAngularDamping(5f);
         body.setLinearDamping(5f);
     }

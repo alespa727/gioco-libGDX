@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.manager.ManagerWorld;
+import progetto.utils.TerminalCommand;
 
 public class BodyFactory {
     public static BodyDef createBodyDef(BodyDef.BodyType type, float x, float y) {
@@ -39,11 +40,14 @@ public class BodyFactory {
         return fixtureDef;
     }
 
-    public static Body createBody(Object userdata, BodyDef bodyDef, FixtureDef fixtureDef, Shape shape) {
+    public static Body createBody(Object userdata, BodyDef bodyDef, FixtureDef fixtureDef) {
+        TerminalCommand.printError("Creando una body per: " + userdata.getClass().getSimpleName() + bodyDef + fixtureDef);
+        Shape shape = fixtureDef.shape;
         Body body = ManagerWorld.getInstance().createBody(bodyDef);
         body.setTransform(bodyDef.position.x, bodyDef.position.y, 0f);
         body.createFixture(fixtureDef);
         body.setUserData(userdata);
+        fixtureDef.shape = null;
         shape.dispose();
         return body;
     }
