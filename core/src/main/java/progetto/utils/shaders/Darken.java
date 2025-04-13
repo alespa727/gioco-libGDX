@@ -1,19 +1,19 @@
 package progetto.utils.shaders;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Vector3;
 import progetto.gameplay.manager.ManagerCamera;
 
 public class Darken extends Shader{
     private static Darken instance;
 
-    public final Vector3 colorFilter;
+    public final Color color;
 
     public static Darken getInstance() {
         if (instance == null) {
@@ -26,7 +26,7 @@ public class Darken extends Shader{
         if (instance == null) {
             instance = new Darken();
         }
-        instance.colorFilter.set(r, g, b);
+        instance.color.set(r, g, b, 1);
         return instance;
     }
 
@@ -37,13 +37,19 @@ public class Darken extends Shader{
         String fragmentShader = Gdx.files.internal("shaders/darken/fragment.glsl").readString();
         this.program = new ShaderProgram(vertexShader, fragmentShader);
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
-        colorFilter = new Vector3(1f, 1f, 1f);
+        color = new Color(0.6f, 0.8f, 1.0f, 1.0f);
     }
 
     @Override
     public void begin(){
         frameBuffer.begin();
     }
+
+    public void begin(Color color){
+        frameBuffer.begin();
+        this.color.set(color);
+    }
+
 
     @Override
     public void end(){
@@ -59,7 +65,7 @@ public class Darken extends Shader{
 
         program.bind();
         batch.setShader(program);                            // (1) assegna lo shader
-        program.setUniformf("u_tint", 0.6f, 0.8f, 1.0f);
+        program.setUniformf("u_tint", color.r, color.g, color.b);
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
             ManagerCamera.getFrustumCorners()[0].x,
