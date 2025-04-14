@@ -14,6 +14,7 @@ import progetto.utils.TerminalCommand;
 public enum StatesLich implements State<Lich> {
     FIREDOMAIN{
         private final Cooldown useFireDomain = new Cooldown(0);
+        private final Cooldown interval = new Cooldown(0.33f);
         @Override
         public void enter(Lich entity) {
             useFireDomain.reset(MathUtils.random(3f, 5f));
@@ -25,6 +26,7 @@ public enum StatesLich implements State<Lich> {
                 entity.getStateMachine().changeState(StatesLich.IDLE);
                 return;
             }
+            interval.update(entity.manager.delta);
             useFireDomain.update(entity.manager.delta);
             fireDomain(entity);
         }
@@ -40,7 +42,11 @@ public enum StatesLich implements State<Lich> {
         }
 
         public void fireDomain(Lich entity){
-            entity.fireDomain();
+            System.out.println(interval.time);
+            if (interval.isReady) {
+                entity.fireDomain();
+                interval.reset();
+            }
             if (useFireDomain.isReady){
                 entity.manager.clearQueue();
                 entity.getStateMachine().changeState(StatesLich.LONG_RANGE_ATTACKS);

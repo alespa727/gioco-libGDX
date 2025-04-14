@@ -64,6 +64,7 @@ public abstract class Warrior extends Humanoid {
         Body bodyThatHits = entity.getPhysics().getBody();
         Body bodyToHit = getPhysics().getBody();
         if (!getHumanStates().isInvulnerable()){
+            System.out.println(getHumanStates().isInvulnerable());
             getHitDirection().set(new Vector2(bodyThatHits.getPosition()).sub(bodyToHit.getPosition()).nor().scl(-1*hitForce));
             inflictDamage(damage);
             getComponent(KnockbackComponent.class).reset();

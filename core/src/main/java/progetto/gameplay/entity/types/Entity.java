@@ -26,6 +26,7 @@ public abstract class Entity {
     private final EntityConfig config;
 
     // Componenti principali dell'entità
+    protected Color color;
     private final ArrayMap<Class<? extends Component>, Component> components;
     protected boolean awake = true;
     private final HumanoidTextures textures;       // Gestisce immagini e animazioni
@@ -39,6 +40,7 @@ public abstract class Entity {
         this.config = instance.config;
         this.manager = manager;
         this.textures = new HumanoidTextures(config.img);
+        this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
         addComponent(new StateComponent());
@@ -58,6 +60,7 @@ public abstract class Entity {
         this.config = config;
         this.manager = manager;
         this.textures = new HumanoidTextures(config.img);
+        this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
         addComponent(new StateComponent());
@@ -176,12 +179,15 @@ public abstract class Entity {
         getPhysics().teleport(position);
     }
 
+    public void setColor(Color color){this.color = color;}
+
     /**
      * Disegna l'entità sullo schermo.
      * @param batch il disegnatore
      * @param tempoTrascorso tempo passato per l’animazione
      */
     public void draw(SpriteBatch batch, float tempoTrascorso) {
+        batch.setColor(color);
         batch.draw(
             textures.getAnimation(this).getKeyFrame(tempoTrascorso, true),
             getPosition().x - config.imageWidth / 2,

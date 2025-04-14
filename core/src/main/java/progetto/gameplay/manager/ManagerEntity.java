@@ -55,7 +55,7 @@ public final class ManagerEntity {
         Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
             EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8+i, 10);
             summon(EntityFactory.createBoss("Lich", e, this));
         }
@@ -97,9 +97,6 @@ public final class ManagerEntity {
         Player p = playerManager.getPlayer();
 
         for (Entity e : entitiesCopy) {
-            if (e instanceof Boss) {
-                TerminalCommand.printError(e.getClass().getSimpleName() + ": Boss1");
-            }
             EntityInstance in = e.despawn();
             if (in != null) {
                 instances.add(in);
@@ -135,6 +132,7 @@ public final class ManagerEntity {
         for (EntityInstance instance : instances) {
             if (instance==null) continue;
 
+            System.out.println();
             if (instance instanceof EnemyInstance) summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
             if (instance instanceof BossInstance) summon(EntityFactory.createBoss(instance.type, (BossInstance) instance, this));
         }

@@ -131,14 +131,14 @@ public class EntityRenderer {
      */
     private void processQueue() {
         while(queue.size > 0){
-            entities.add(queue.last());
-            queue.last().getPhysics().initBody();
-            if (queue.last() instanceof Warrior ce) {
+            entities.add(queue.first());
+            queue.first().getPhysics().initBody();
+            if (queue.first() instanceof Warrior ce) {
                 DirectionalRangeComponent a = ce.getDirectionRangeComponent();
                 ce.setDirectionalRange(BodyFactory.createBody(ce, a.getBodyDef(), a.getFixtureDef()));
             }
-            queue.last().create();
-            queue.removeLast().load();
+            queue.first().create();
+            queue.removeFirst().load();
         }
     }
 

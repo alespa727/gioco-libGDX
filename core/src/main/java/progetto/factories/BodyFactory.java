@@ -41,7 +41,6 @@ public class BodyFactory {
     }
 
     public static Body createBody(Object userdata, BodyDef bodyDef, FixtureDef fixtureDef) {
-        TerminalCommand.printError("Creando una body per: " + userdata.getClass().getSimpleName() + bodyDef + fixtureDef);
         Shape shape = fixtureDef.shape;
         Body body = ManagerWorld.getInstance().createBody(bodyDef);
         body.setTransform(bodyDef.position.x, bodyDef.position.y, 0f);

@@ -82,7 +82,7 @@ public class MapManager {
             }
 
             default -> {
-                nome = "stanza"; // Nome file
+                nome = "map"; // Nome file
                 ambienteAperto = true; // Tipo ambiente
                 viewport.setWorldSize(22f, 22f * 9 / 16f); // Grandezza telecamera
             }

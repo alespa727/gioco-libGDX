@@ -24,6 +24,7 @@ public class ManagerWorld {
 
     public static World getInstance() {
         if (instance == null) {
+            System.err.println("AHGDASUYGDASDAGSDASID");
             instance = new World(new Vector2(0, 0), true);
             bodyToDestroy = new Queue<>();
         }
@@ -36,9 +37,6 @@ public class ManagerWorld {
         for (Body body : bodies) {
             if ("map".equals(body.getUserData()) || body.getUserData() instanceof MapEvent) {
                 instance.destroyBody(body);
-            }
-            if (body.getUserData() instanceof Bullet){
-                ((Bullet) body.getUserData()).despawn();
             }
         }
     }

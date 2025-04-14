@@ -102,9 +102,39 @@ public class TerminalCommand extends Thread {
                     printError("Sintassi non corretta");
                 }
                 break;
+            case "god":
+                try {
+                    String state = tokens[1];
+                    switch (state){
+                        case "true":
+                            printMessage("Enabling god mode...");
+                            sleep(500);
+                            printMessage("God mode enabled.");
+                            setGodMode(true);
+                            break;
+                        case "false":
+                            printMessage("Disabling god mode...");
+                            sleep(500);
+                            printMessage("God mode disabled.");
+                            setGodMode(false);
+                            break;
+                        default:
+                            printError("Sintassi non corretta");
+                    }
+                }catch (Exception e) {
+                    printError("Sintassi non corretta");
+                }
+                break;
+            case "exit":
+                Gdx.app.exit();
             default:
                 printError("Comando non trovato: " + command);
         }
+    }
+
+    private void setGodMode(boolean state) {
+        gameScreen.getEntityManager().player().getHumanStates().setInvulnerable(state);
+        System.out.println(gameScreen.getEntityManager().player().getHumanStates().isInvulnerable());
     }
 
     private void teleportPlayer(int x, int y) {

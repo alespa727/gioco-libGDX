@@ -213,6 +213,7 @@ public abstract class Humanoid extends Entity {
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
+        batch.setColor(color);
         if (getHumanStates().hasBeenHit()) {
             batch.setColor(1, 0, 0, 0.6f);
         }

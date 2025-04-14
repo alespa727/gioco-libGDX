@@ -1,5 +1,6 @@
 package progetto.gameplay.entity.types.notliving;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -133,6 +134,7 @@ public class Bullet extends Entity {
             despawn();
             return;
         }
+        setColor(Color.RED);
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
         getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
@@ -174,6 +176,7 @@ public class Bullet extends Entity {
     public void draw(SpriteBatch batch, float elapsedTime) {
         float radius = getComponent(BulletComponent.class).radius;
         Sprite sprite = new Sprite(texture); // Crea uno sprite per il proiettile
+        sprite.setColor(color);
         sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio
         sprite.setPosition(getPosition().x - sprite.getWidth() / 2, getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite
         sprite.draw(batch); // Disegna lo sprite
