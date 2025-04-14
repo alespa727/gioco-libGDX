@@ -157,9 +157,6 @@ public class GameScreen implements Screen {
         // Gestisci il rendering della vignetta
         renderVignette(delta);
 
-        // Esegui il rendering del debug se attivato
-        if (DebugWindow.renderHitboxes()) debug();
-
         // Disegna la finestra di debug
         debugWindow.updateDebugInfo(Gdx.graphics.getFramesPerSecond(), Gdx.app.getJavaHeap());
         debugWindow.update();
@@ -255,6 +252,9 @@ public class GameScreen implements Screen {
         renderMap();
         // Renderizza le entità
         renderEntities();
+
+        // Esegui il rendering del debug se attivato
+        if (DebugWindow.renderHitboxes()) debug();
 
         // Se necessario, disegna la GUI
         if (getMapManager().disegnaUI()) {
