@@ -46,8 +46,6 @@ public class Lich extends Boss{
         stateMachine.update();
     }
 
-
-
     @Override
     public void create() {
         super.create();
