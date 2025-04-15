@@ -3,11 +3,9 @@ package progetto.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -25,6 +23,7 @@ import progetto.Core;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.GameScreen;
 import progetto.gameplay.manager.ManagerCamera;
+import progetto.utils.shaders.Darken;
 
 public class PauseScreen implements Screen {
     final Core game;
@@ -48,9 +47,13 @@ public class PauseScreen implements Screen {
     private Table root;
     private Table table;
 
+
+    private Darken darken;
+
     public PauseScreen(Core game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
+        this.darken = Darken.getInstance();
     }
 
     @Override
@@ -142,18 +145,8 @@ public class PauseScreen implements Screen {
         boolean boundaries = gameScreen.getMapManager().disegnaUI();
         gameScreen.updateCamera(boundaries);
         gameScreen.render(delta);
+
         gameScreen.draw();
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        float progress = 1 - (resume.getTimer() / resume.getMaxTime());
-        float alpha = Interpolation.smoother.apply(0.5f, 0f, progress);
-        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.renderer.setColor(new Color(0, 0, 0, alpha));
-        game.renderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        game.renderer.end();
-
-        Gdx.gl.glDisable(GL20.GL_BLEND);
 
         if (resume.isReady) {
             game.setScreen(gameScreen);
@@ -172,44 +165,31 @@ public class PauseScreen implements Screen {
 
         gameScreen.draw();
 
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.renderer.setColor(Color.BLACK.cpy().mul(this.alpha));
-
-        game.renderer.rect(ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        game.renderer.end();
-
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-
         stage.act();
         stage.draw();
     }
 
 
+    private float transitionTime = 0; // quanto tempo è passato
+    private float duration = 1f; // quanto deve durare l'interpolazione in secondi
+
     public void transitionIn(float delta) {
+        // Incrementa il tempo passato
+        transitionTime += delta;
+
+        // Calcola il progresso (da 0 a 1, clampato)
+        float progress = Math.min(transitionTime / duration, 1f);
+
+        // Applica l'interpolazione tra 0 e 1
+        alpha = Interpolation.smoother.apply(0f, 1f, progress);
+
         pause.update(delta);
         gameScreen.updateCamera(false);
 
         gameScreen.draw();
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        float alpha = Interpolation.fade.apply(0.0f, 0.4f, 0.8f);
-        game.renderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.renderer.setColor(Color.BLACK.cpy().mul(alpha));
-
-        game.renderer.rect(ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        game.renderer.end();
-
-        Gdx.gl.glDisable(GL20.GL_BLEND);
 
         if (pause.isReady) {
             pauseRequest = false;
-            this.alpha = alpha;
             System.out.println("Pause request is ready");
         }
     }

@@ -37,7 +37,7 @@ public enum ManagerGame implements State<GameScreen> {
             }
 
             // Disegna il gioco
-            screen.draw();
+            screen.getGameDrawer().draw(screen.getInfo().core.batch);
         }
 
         @Override

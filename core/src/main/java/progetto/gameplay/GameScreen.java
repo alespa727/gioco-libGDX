@@ -6,15 +6,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -33,7 +28,7 @@ import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
 import progetto.utils.shaders.Darken;
-import progetto.utils.shaders.Light;
+import progetto.utils.shaders.PlayerLight;
 import progetto.utils.shaders.Vignette;
 
 public class GameScreen implements Screen {
@@ -48,9 +43,6 @@ public class GameScreen implements Screen {
     public FitViewport viewport;
     private final GameTime time;
     private Gui gui;
-    private final Vignette vignette;
-    private final Darken darken;
-    private final Light light;
 
     GameInfo info;
     DefaultStateMachine<GameScreen, ManagerGame> state;
@@ -62,21 +54,26 @@ public class GameScreen implements Screen {
 
     private boolean loaded = false;
 
+    private GameDrawer drawer;
+
     /**
      * Costruttore del gioco
      * @param core gestore degli schermi
      */
     public GameScreen(final Core core) {
         GameLoader.loadWorld();
+        drawer = new GameDrawer(this);
         this.time = new GameTime();
-        this.vignette = Vignette.getInstance();
-        this.darken = Darken.getInstance();
-        this.light = Light.getInstance();
+
         this.terminalCommand = new TerminalCommand(this);
         this.terminalCommand.start();
         this.loadGame(core);
         ManagerEvent listener = new ManagerEvent();
         ManagerWorld.getInstance().setContactListener(listener);
+    }
+
+    public GameDrawer getGameDrawer() {
+        return drawer;
     }
 
     @Override
@@ -127,6 +124,9 @@ public class GameScreen implements Screen {
             info.managerEntity = new ManagerEntity(this.info);
             info.mapManager = new MapManager(viewport, this.info.managerEntity, 1);
             loaded = true;
+            drawer.addShader(Vignette.getInstance());
+            drawer.addShader(Darken.getInstance(0.4f, 0.4f, 0.5f));
+            drawer.addShader(PlayerLight.getInstance(getEntityManager().player(), 0.15f));
         }
     }
 
@@ -137,7 +137,7 @@ public class GameScreen implements Screen {
     }
 
     private void updateCameraPosition() {
-        ManagerCamera.getInstance().position.set(this.info.managerEntity.player().getPosition(), 0);
+
         ManagerCamera.getInstance().update();
     }
 
@@ -155,7 +155,7 @@ public class GameScreen implements Screen {
         updateTimeScale(delta);
 
         // Gestisci il rendering della vignetta
-        renderVignette(delta);
+        drawWithShaders(delta);
 
         // Disegna la finestra di debug
         debugWindow.updateDebugInfo(Gdx.graphics.getFramesPerSecond(), Gdx.app.getJavaHeap());
@@ -174,37 +174,14 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void renderVignette(float delta) {
+    public void drawWithShaders(float delta) {
         //Lettura dello schermo
-        vignette.begin();
 
-        //Impostazione dello sfondo
-        Color darkGray = new Color(0.17f, 0.17f, 0.17f, 1.0f); // Grigio scuro
-        ScreenUtils.clear(darkGray); // Clear dello schermo
         time.update(delta); // Tempo aggiornato
         state.update(); // Aggiorno il gioco
 
-        //Fine lettura schermo
-        vignette.end();
-
-        // Inizio lettura stampa dello schermo precedente
-        darken.begin(new Color(.4f, .4f, .6f, 1.0f));
 
 
-        // Disegna lo schermo precedente
-        vignette.draw(info.core.batch);
-        // Fine lettura
-        darken.end();
-        // Disegno risultato finale
-
-        Vector3 position = new Vector3(getEntityManager().player().getPosition(), 0);
-        Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
-
-        light.begin(projectedPosition, 0.125f);
-        darken.draw(info.core.batch);
-        light.end();
-
-        light.draw(info.core.batch);
     }
 
     /**
@@ -248,6 +225,9 @@ public class GameScreen implements Screen {
      * Disegna il gioco (Mappa, entità, ui)
      */
     public void draw() {
+        //Impostazione dello sfondo
+        Color darkGray = new Color(0.17f, 0.17f, 0.17f, 1.0f); // Grigio scuro
+        ScreenUtils.clear(darkGray); // Clear dello schermo
         // Renderizza la mappa
         renderMap();
         // Renderizza le entità
@@ -312,6 +292,7 @@ public class GameScreen implements Screen {
         this.gui = new Gui(this);
         this.viewport = new FitViewport(16f, 9f, ManagerCamera.getInstance());
         this.viewport.apply();
+
     }
 
     /**
@@ -338,7 +319,7 @@ public class GameScreen implements Screen {
      */
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
-        ManagerCamera.update(info.managerEntity, viewport, time.delta, boundaries);
+        ManagerCamera.update(info.managerEntity, viewport, time.delta, false);
 
         this.info.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
         this.info.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);

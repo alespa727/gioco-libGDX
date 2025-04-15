@@ -1,5 +1,6 @@
 package progetto.lwjgl3;
 
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
@@ -30,6 +31,7 @@ public class Lwjgl3Launcher {
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
         // Modalità finestra
         //configuration.setWindowedMode(1920, 1080);
+        //configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
         configuration.setWindowedMode(1280, 720);
         // Misura della finestra fissa
         configuration.setResizable(false);

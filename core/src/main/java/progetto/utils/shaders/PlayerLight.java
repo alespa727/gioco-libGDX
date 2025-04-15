@@ -10,26 +10,31 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.player.Player;
 
-public class Light extends Shader{
+public class PlayerLight extends Shader{
 
-    private static Light instance;
+    private static PlayerLight instance;
     private final Vector2 position;
+    private Entity e;
     private float intensity;
 
-    private Light() {
+    private PlayerLight(Entity e, float intensity) {
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         String vertexShader = Gdx.files.internal("shaders/light/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/light/fragment.glsl").readString();
         this.program = new ShaderProgram(vertexShader, fragmentShader);
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
+        this.intensity = intensity;
         position = new Vector2(0.5f, 0.5f);
+        this.e = e;
     }
 
-    public static Light getInstance() {
+    public static PlayerLight getInstance(Entity e, float intensity) {
         if (instance == null) {
-            instance = new Light();
+            instance = new PlayerLight(e, intensity);
         }
         return instance;
     }
@@ -37,6 +42,11 @@ public class Light extends Shader{
     @Override
     public void begin() {
         frameBuffer.begin();
+        Vector3 position = new Vector3(e.getPosition(), 0);
+        Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
+        float normX = projectedPosition.x / Gdx.graphics.getWidth();
+        float normY = projectedPosition.y / Gdx.graphics.getHeight();
+        this.position.set(normX, normY);
     }
 
     public void begin(Vector3 position, float intensity) {

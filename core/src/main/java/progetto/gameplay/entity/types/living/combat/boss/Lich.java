@@ -61,7 +61,6 @@ public class Lich extends Boss{
         // Rimuove l'entità dal manager
         manager.remove(this);
 
-        System.out.println("CORPI DISTRUTTI BOSS");
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
         ManagerWorld.destroyBody(getPhysics().getBody());
         ManagerWorld.destroyBody(getDirectionRangeComponent().getDirectionalRange());

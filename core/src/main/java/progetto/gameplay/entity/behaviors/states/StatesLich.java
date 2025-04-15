@@ -42,7 +42,6 @@ public enum StatesLich implements State<Lich> {
         }
 
         public void fireDomain(Lich entity){
-            System.out.println(interval.time);
             if (interval.isReady) {
                 entity.fireDomain();
                 interval.reset();

@@ -132,7 +132,6 @@ public final class ManagerEntity {
         for (EntityInstance instance : instances) {
             if (instance==null) continue;
 
-            System.out.println();
             if (instance instanceof EnemyInstance) summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
             if (instance instanceof BossInstance) summon(EntityFactory.createBoss(instance.type, (BossInstance) instance, this));
         }
@@ -167,7 +166,6 @@ public final class ManagerEntity {
      * @param e entità da rimuovere
      */
     public void remove(Entity e) {
-        TerminalCommand.printWarning("Removing entity " + e.getClass().getSimpleName());
         entities.removeValue(e, false);
         entities.shrink();
     }

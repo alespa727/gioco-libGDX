@@ -4,22 +4,11 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import progetto.Core;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.entity.types.living.combat.boss.Boss;
-import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.manager.ManagerEntity;
-import progetto.utils.TerminalCommand;
-
-import javax.crypto.KEMSpi;
 
 public class MapManager {
 
@@ -37,7 +26,7 @@ public class MapManager {
     private String nome;
     private boolean ambienteAperto;
 
-    public final HashMap<String, Array<EntityInstance>> mapEntityInstances = new HashMap<>();
+    public final HashMap<String, Array<EntityInstance>> mapEntityInstances;
 
     /**
      * Creazione manager delle mappe
@@ -51,13 +40,7 @@ public class MapManager {
         float defaultx = 11 , defaulty = 11;
 
         this.changeMap(defaultMap, defaultx, defaulty); // Cambio mappa
-    }
-
-    /**
-     * Index mappa
-     */
-    public static int getMapIndex() {
-        return currentMapNum;
+        mapEntityInstances = new HashMap<>();
     }
 
     /**
@@ -65,20 +48,29 @@ public class MapManager {
      */
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
-            FileHandle fileHandle = Gdx.files.local("/save/"+ currentMap.nome +".json");
-            Json json = new Json();
-            if (mapEntityInstances.get(currentMap.nome)!=null)
-                mapEntityInstances.get(currentMap.nome).clear();
-            Array<EntityInstance> instances = managerEntity.clear();
-            mapEntityInstances.put(currentMap.nome, instances); // Salva le entità in una hashmap
-            String string = json.toJson(instances);
-            System.out.println(json.prettyPrint(string));
-            fileHandle.writeString(string, false);
-            currentMap.dispose(); // Cancellazione mappa precedente
+           saveMapEntities();
         }
 
+        chooseMap(map);
 
+        // Riassegnazione index
+        currentMapNum = map;
 
+        // Creazione mappa e crea corpi/eventi rilevanti
+        currentMap = new Map(nome, managerEntity, this, x, y);
+        currentMap.createCollision();
+
+        loadMapEntities();
+
+        // Applico la telecamera
+        viewport.apply();
+    }
+
+    public void render(){
+        currentMap.render();
+    }
+
+    public void chooseMap(int map){
         // Cambio mappa
         switch (map) {
             case 1 -> {
@@ -99,45 +91,41 @@ public class MapManager {
                 viewport.setWorldSize(22f, 22f * 9 / 16f); // Grandezza telecamera
             }
         }
+    }
 
-
-
-        // Riassegnazione index
-        currentMapNum = map;
-
-        // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, managerEntity, this, x, y);
-        currentMap.createCollision();
-
-        if (currentMap!=null){
-            FileHandle file = Gdx.files.local("/save/"+ currentMap.nome +".json");
-            if (file.exists()) {
-                Json json = new Json();
-                Array<EntityInstance> loadedInstances = json.fromJson(Array.class, EntityInstance.class, file);
-                System.out.println("TESTO DA FILE" + loadedInstances);
-                for (int i = 0; i < loadedInstances.size; i++) {
-                    EntityInstance instance = loadedInstances.get(i);
-                    instance.loadTexture();
-                }
-                managerEntity.summon(loadedInstances);
+    public void loadMapEntities() {
+        FileHandle file = Gdx.files.local("/save/"+ currentMap.nome +".json");
+        if (file.exists()) {
+            Json json = new Json();
+            @SuppressWarnings("unchecked")
+            Array<EntityInstance> loadedInstances = json.fromJson(Array.class, EntityInstance.class, file);
+            System.out.println("TESTO DA FILE" + json.prettyPrint(loadedInstances));
+            for (int i = 0; i < loadedInstances.size; i++) {
+                EntityInstance instance = loadedInstances.get(i);
+                instance.loadTexture();
             }
+            managerEntity.summon(loadedInstances);
         }
-
-
-        // Applico la telecamera
-        viewport.apply();
     }
 
-    public void render(){
-        currentMap.render();
-    }
+    public void saveMapEntities(){
+        FileHandle fileHandle = Gdx.files.local("/save/" + currentMap.nome + ".json");
 
-    public void spawnInstances(){
-        if(mapEntityInstances.containsKey(nome)) {
-            Array<EntityInstance> instances = mapEntityInstances.get(nome);
-            System.out.println(mapEntityInstances.get(nome));
-            managerEntity.summon(instances);
-        }
+        Json json = new Json();
+        json.setOutputType(JsonWriter.OutputType.json); // output in formato JSON puro
+
+        // Pulisce l'elenco delle entità associate alla mappa corrente
+        if (mapEntityInstances.get(currentMap.nome) != null)
+            mapEntityInstances.get(currentMap.nome).clear();
+
+        Array<EntityInstance> instances = managerEntity.clear();
+        mapEntityInstances.put(currentMap.nome, instances); // Salva nella mappa
+
+        String string = json.prettyPrint(instances); // Serializzazione ben formattata
+        System.out.println(json.prettyPrint(string)); // Stampa leggibile
+
+        fileHandle.writeString(string, false); // Salvataggio su file
+        currentMap.dispose(); // Rilascio risorse mappa precedente
     }
 
     /**
@@ -146,6 +134,14 @@ public class MapManager {
     public Map getMap() {
         return currentMap;
     }
+
+    /**
+     * Index mappa
+     */
+    public static int getMapIndex() {
+        return currentMapNum;
+    }
+
 
     /**
      * Restituisce il tipo di ambiente
