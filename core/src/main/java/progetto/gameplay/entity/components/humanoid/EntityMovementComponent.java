@@ -78,6 +78,7 @@ public class EntityMovementComponent extends IteratableComponent {
         if (body == null) {
             return;
         }
+
         if (owner.getPosition().dst(target) < 8/16f) {
             body.setLinearDamping(20f);
             steps++;
@@ -94,8 +95,8 @@ public class EntityMovementComponent extends IteratableComponent {
         Vector2 movementDirection = new Vector2(target).sub(owner.getPosition()).nor();
         float speed = owner.getMaxSpeed();
         Vector2 movement = movementDirection.scl(speed);
-        Vector2 force = new Vector2(movement).scl(speed).scl(body.getMass());
-        body.applyForceToCenter(force.scl(2f), true);
+        Vector2 force = new Vector2(movement).scl(speed);
+        body.applyLinearImpulse(force, owner.getPosition(), true);
     }
 }
 

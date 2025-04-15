@@ -10,27 +10,27 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import progetto.gameplay.manager.ManagerCamera;
 
-public class Darken extends Shader{
-    private static Darken instance;
+public class ColorFilter extends Shader{
+    private static ColorFilter instance;
 
     public final Color color;
 
-    public static Darken getInstance() {
+    public static ColorFilter getInstance() {
         if (instance == null) {
-            instance = new Darken();
+            instance = new ColorFilter();
         }
         return instance;
     }
 
-    public static Darken getInstance(float r, float g, float b) {
+    public static ColorFilter getInstance(float r, float g, float b) {
         if (instance == null) {
-            instance = new Darken();
+            instance = new ColorFilter();
         }
         instance.color.set(r, g, b, 1);
         return instance;
     }
 
-    private Darken() {
+    private ColorFilter() {
         // Carica e crea il programma shader (per effetti grafici avanzati)
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         String vertexShader = Gdx.files.internal("shaders/darken/vertex.glsl").readString();

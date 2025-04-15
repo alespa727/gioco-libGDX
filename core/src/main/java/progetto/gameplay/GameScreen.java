@@ -27,7 +27,7 @@ import progetto.gameplay.player.inventoty.Inventory;
 import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
-import progetto.utils.shaders.Darken;
+import progetto.utils.shaders.ColorFilter;
 import progetto.utils.shaders.PlayerLight;
 import progetto.utils.shaders.Vignette;
 
@@ -125,7 +125,7 @@ public class GameScreen implements Screen {
             info.mapManager = new MapManager(viewport, this.info.managerEntity, 1);
             loaded = true;
             drawer.addShader(Vignette.getInstance());
-            drawer.addShader(Darken.getInstance(0.4f, 0.4f, 0.5f));
+            drawer.addShader(ColorFilter.getInstance(0.4f, 0.4f, 0.5f));
             drawer.addShader(PlayerLight.getInstance(getEntityManager().player(), 0.15f));
         }
     }

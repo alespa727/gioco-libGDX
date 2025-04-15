@@ -23,7 +23,7 @@ import progetto.Core;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.GameScreen;
 import progetto.gameplay.manager.ManagerCamera;
-import progetto.utils.shaders.Darken;
+import progetto.utils.shaders.ColorFilter;
 
 public class PauseScreen implements Screen {
     final Core game;
@@ -48,12 +48,12 @@ public class PauseScreen implements Screen {
     private Table table;
 
 
-    private Darken darken;
+    private ColorFilter darken;
 
     public PauseScreen(Core game, GameScreen gameScreen) {
         this.game = game;
         this.gameScreen = gameScreen;
-        this.darken = Darken.getInstance();
+        this.darken = ColorFilter.getInstance();
     }
 
     @Override
@@ -146,7 +146,7 @@ public class PauseScreen implements Screen {
         gameScreen.updateCamera(boundaries);
         gameScreen.render(delta);
 
-        gameScreen.draw();
+        gameScreen.getGameDrawer().draw(game.batch);
 
         if (resume.isReady) {
             game.setScreen(gameScreen);
@@ -161,9 +161,10 @@ public class PauseScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(CoreConfig.getRIPRENDIGIOCO())) {
             resumeRequest = true;
         }
+
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
 
-        gameScreen.draw();
+        gameScreen.getGameDrawer().draw(game.batch);
 
         stage.act();
         stage.draw();
@@ -186,7 +187,7 @@ public class PauseScreen implements Screen {
         pause.update(delta);
         gameScreen.updateCamera(false);
 
-        gameScreen.draw();
+        gameScreen.getGameDrawer().draw(game.batch);
 
         if (pause.isReady) {
             pauseRequest = false;
