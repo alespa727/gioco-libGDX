@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
 import progetto.Core;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.components.entity.Cooldown;
@@ -13,8 +12,8 @@ import progetto.gameplay.entity.components.entity.NodeTrackerComponent;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
 
 /**
  * Rappresenta un proiettile nel gioco.

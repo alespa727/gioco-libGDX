@@ -1,7 +1,6 @@
 package progetto.gameplay.entity.types.living.combat.boss;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-
 import progetto.gameplay.entity.behaviors.states.StatesLich;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.humanoid.CheckDeathComponent;
@@ -10,8 +9,8 @@ import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
 
 public class Lich extends Boss{
 

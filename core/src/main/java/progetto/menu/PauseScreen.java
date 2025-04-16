@@ -18,10 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import progetto.CoreConfig;
 import progetto.Core;
-import progetto.gameplay.entity.components.entity.Cooldown;
+import progetto.CoreConfig;
 import progetto.gameplay.GameScreen;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.manager.ManagerCamera;
 import progetto.utils.shaders.ColorFilter;
 

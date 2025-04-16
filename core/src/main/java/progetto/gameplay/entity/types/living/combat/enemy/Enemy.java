@@ -2,14 +2,13 @@ package progetto.gameplay.entity.types.living.combat.enemy;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Array;
-
 import progetto.gameplay.entity.behaviors.states.StatesEnemy;
+import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.humanoid.CheckDeathComponent;
 import progetto.gameplay.entity.components.warrior.AttackCooldown;
-import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.manager.ManagerEntity;
 
 public abstract class Enemy extends Warrior {

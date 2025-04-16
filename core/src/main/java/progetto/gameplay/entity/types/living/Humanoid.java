@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.entity.components.humanoid.*;
+import progetto.gameplay.entity.skills.SkillSet;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.skills.SkillSet;
 import progetto.gameplay.manager.ManagerEntity;
 
 /**

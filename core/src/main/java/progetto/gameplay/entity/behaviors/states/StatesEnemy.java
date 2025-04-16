@@ -4,12 +4,14 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
-import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
-import progetto.gameplay.player.Player;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.player.Player;
 
 public enum StatesEnemy implements State<Enemy> {
 

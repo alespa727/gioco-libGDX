@@ -3,8 +3,8 @@ package progetto.gameplay.entity.behaviors.states;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
-import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.gameplay.entity.components.entity.Cooldown;
+import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.player.Player;
 

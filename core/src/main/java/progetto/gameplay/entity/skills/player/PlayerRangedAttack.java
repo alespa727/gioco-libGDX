@@ -8,8 +8,8 @@ import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.notliving.Bullet;
-import progetto.utils.KeyHandler;
 import progetto.gameplay.manager.ManagerCamera;
+import progetto.utils.KeyHandler;
 
 public class PlayerRangedAttack extends CombatSkill {
     final float speed;

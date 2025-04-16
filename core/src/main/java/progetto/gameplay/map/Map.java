@@ -10,16 +10,18 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import progetto.factories.BodyFactory;
 import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
-import progetto.factories.BodyFactory;
 
 public class Map implements Disposable {
     public final String nome;

@@ -1,14 +1,14 @@
 package progetto.gameplay.entity.types.living.combat;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
 import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entity.components.warrior.HitDirectionComponent;
 import progetto.gameplay.entity.components.warrior.KnockbackComponent;
-import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
+import progetto.gameplay.entity.types.living.Humanoid;
+import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.manager.ManagerEntity;
 
 public abstract class Warrior extends Humanoid {

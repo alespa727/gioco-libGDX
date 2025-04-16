@@ -2,14 +2,14 @@ package progetto.gameplay.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
-import progetto.gameplay.entity.types.living.combat.boss.Boss;
-import progetto.gameplay.entity.types.notliving.Bullet;
-import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.player.Player;
+import progetto.gameplay.entity.types.living.combat.Warrior;
+import progetto.gameplay.entity.types.living.combat.boss.Boss;
+import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
+import progetto.gameplay.entity.types.notliving.Bullet;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
+import progetto.gameplay.player.Player;
 
 public class ManagerEvent implements ContactListener {
 

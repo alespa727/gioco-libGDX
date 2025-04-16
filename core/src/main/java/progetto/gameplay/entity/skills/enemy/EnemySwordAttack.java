@@ -1,8 +1,8 @@
 package progetto.gameplay.entity.skills.enemy;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.skills.CombatSkill;
+import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 
 public class EnemySwordAttack extends CombatSkill {

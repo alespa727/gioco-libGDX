@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.gameplay.entity.components.Component;
 import progetto.gameplay.entity.types.living.Humanoid;
-import progetto.gameplay.map.MapManager;
 import progetto.gameplay.map.Map;
+import progetto.gameplay.map.MapManager;
 import progetto.gameplay.map.graph.HeuristicDistance;
 import progetto.gameplay.map.graph.node.Node;
 

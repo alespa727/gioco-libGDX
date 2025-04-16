@@ -3,20 +3,19 @@ package progetto.gameplay.manager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-
 import progetto.Core;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
-import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
-import progetto.gameplay.manager.entity.EntityLifeCycleManager;
-import progetto.gameplay.manager.entity.EntityRenderer;
-import progetto.gameplay.manager.entity.PlayerManager;
-import progetto.utils.GameInfo;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
+import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
+import progetto.gameplay.manager.entity.EntityLifeCycleManager;
+import progetto.gameplay.manager.entity.EntityRenderer;
+import progetto.gameplay.manager.entity.PlayerManager;
 import progetto.gameplay.player.Player;
+import progetto.utils.GameInfo;
 import progetto.utils.TerminalCommand;
 
 public final class ManagerEntity {

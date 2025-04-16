@@ -1,14 +1,15 @@
 package progetto.gameplay.map;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.manager.ManagerEntity;
+
+import java.util.HashMap;
 
 public class MapManager {
 

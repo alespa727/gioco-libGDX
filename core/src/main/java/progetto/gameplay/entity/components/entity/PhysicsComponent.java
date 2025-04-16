@@ -1,7 +1,10 @@
 package progetto.gameplay.entity.components.entity;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Shape;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entity.components.Component;
 import progetto.gameplay.entity.types.Entity;

@@ -1,11 +1,13 @@
 package progetto.gameplay.entity.types;
 
 // Importazioni
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
-import progetto.gameplay.entity.components.*;
+import progetto.gameplay.entity.components.Component;
+import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.entity.components.entity.DirectionComponent;
 import progetto.gameplay.entity.components.entity.NodeTrackerComponent;
 import progetto.gameplay.entity.components.entity.PhysicsComponent;

@@ -5,8 +5,8 @@ import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.ManagerWorld;
 
 public final class Finn extends Enemy {
 

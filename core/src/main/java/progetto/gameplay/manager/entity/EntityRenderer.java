@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.factories.BodyFactory;
-import progetto.gameplay.manager.ManagerEntity;
-import progetto.utils.DebugWindow;
-import progetto.utils.GameInfo;
 import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.player.Player;
 import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.player.Player;
+import progetto.utils.DebugWindow;
+import progetto.utils.GameInfo;
 
 import java.util.Comparator;
 
