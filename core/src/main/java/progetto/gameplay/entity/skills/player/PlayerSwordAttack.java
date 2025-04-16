@@ -52,7 +52,7 @@ public class PlayerSwordAttack extends CombatSkill {
         cooldown.reset();
         Array<Warrior> inRange = ((Player) owner).getInRange();
         for (Warrior warrior : inRange) {
-            warrior.hit((Warrior) owner, damage, 2);
+            warrior.hit(owner, damage, 2);
         }
         direction.set(owner.getDirection().x, owner.getDirection().y).setLength(((Player) owner).getRangeRadius());
         angle = owner.getDirection().angleDeg()-90;

@@ -1,16 +1,13 @@
 package progetto.gameplay.entity.components.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entity.components.Component;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.manager.ManagerWorld;
-import progetto.utils.TerminalCommand;
 
 public class PhysicsComponent extends Component {
-    protected Entity owner;
+    protected final Entity owner;
 
     private final Vector2 position;
 

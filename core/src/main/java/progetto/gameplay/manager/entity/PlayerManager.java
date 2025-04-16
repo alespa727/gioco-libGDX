@@ -7,8 +7,8 @@ import progetto.gameplay.player.Player;
 
 public class PlayerManager {
 
-    ManagerEntity managerEntity;
-    EntityLifeCycleManager lifeCycleManager;
+    final ManagerEntity managerEntity;
+    final EntityLifeCycleManager lifeCycleManager;
 
     private final Player player;
 

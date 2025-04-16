@@ -1,6 +1,5 @@
 package progetto.lwjgl3;
 
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
@@ -13,9 +12,11 @@ public class Lwjgl3Launcher {
         createApplication();
     }
 
-    /** Crea l'applicazione LWJGL  */
-    private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new Core(), getDefaultConfiguration()); // Gli passa il Core del gioco e la configurazione presa dalla funzione
+    /**
+     * Crea l'applicazione LWJGL
+     */
+    private static void createApplication() {
+        new Lwjgl3Application(new Core(), getDefaultConfiguration());
     }
 
     /** Configurazione di default */

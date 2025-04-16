@@ -1,10 +1,8 @@
 package progetto.factories;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.manager.ManagerWorld;
-import progetto.utils.TerminalCommand;
 
 public class BodyFactory {
     public static BodyDef createBodyDef(BodyDef.BodyType type, float x, float y) {

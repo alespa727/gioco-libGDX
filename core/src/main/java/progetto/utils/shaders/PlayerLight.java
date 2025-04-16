@@ -12,13 +12,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.player.Player;
 
 public class PlayerLight extends Shader{
 
     private static PlayerLight instance;
     private final Vector2 position;
-    private Entity e;
+    private final Entity e;
     private float intensity;
 
     private PlayerLight(Entity e, float intensity) {

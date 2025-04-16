@@ -1,11 +1,9 @@
 package progetto.utils;
 
-import progetto.Core;
-
 public class GameTime {
     public float delta;
     public float accumulator;
-    private float timeScale;
+    private final float timeScale;
 
     public GameTime() {
         delta=0;

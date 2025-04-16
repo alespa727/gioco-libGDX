@@ -9,7 +9,7 @@ public class GameDrawer {
     private final GameScreen game;
 
     public GameDrawer(GameScreen game) {
-        shaders = new Array<Shader>();
+        shaders = new Array<>();
         this.game = game;
 
     }

@@ -58,7 +58,6 @@ public abstract class Humanoid extends Entity {
     public void create() {
         if (getPhysics().getBody() == null) {
             despawn();
-            return;
         }
     }
 
@@ -111,8 +110,8 @@ public abstract class Humanoid extends Entity {
      *
      * @param target L'entità target verso cui l'umanoide deve dirigersi.
      */
-    public boolean searchPath(Entity target) {
-        return getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
+    public void searchPath(Entity target) {
+        getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
     }
 
     public boolean searchPathIdle(Entity target) {

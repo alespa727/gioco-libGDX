@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class Item{
     String name;
-    String description;
-    ImageButton image;
+    final String description;
+    final ImageButton image;
 
     public Item(String name, String description, Texture image) {
         this.name = name;

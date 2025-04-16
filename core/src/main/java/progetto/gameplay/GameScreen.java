@@ -24,7 +24,6 @@ import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.map.MapManager;
 import progetto.gameplay.player.inventoty.Inventory;
-import progetto.utils.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
 import progetto.utils.shaders.ColorFilter;
@@ -54,7 +53,7 @@ public class GameScreen implements Screen {
 
     private boolean loaded = false;
 
-    private GameDrawer drawer;
+    private final GameDrawer drawer;
 
     /**
      * Costruttore del gioco
@@ -292,7 +291,6 @@ public class GameScreen implements Screen {
         this.gui = new Gui(this);
         this.viewport = new FitViewport(16f, 9f, ManagerCamera.getInstance());
         this.viewport.apply();
-
     }
 
     /**

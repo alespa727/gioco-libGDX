@@ -1,18 +1,13 @@
 package progetto.gameplay.manager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 
 import progetto.Core;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
-import progetto.gameplay.entity.types.living.combat.boss.Boss;
 import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
-import progetto.gameplay.entity.types.living.npc.ProvaNpc;
-import progetto.gameplay.entity.types.living.npc.WindowDialogo;
 import progetto.gameplay.manager.entity.EntityLifeCycleManager;
 import progetto.gameplay.manager.entity.EntityRenderer;
 import progetto.gameplay.manager.entity.PlayerManager;

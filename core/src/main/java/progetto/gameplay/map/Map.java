@@ -20,7 +20,6 @@ import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
 import progetto.factories.BodyFactory;
-import progetto.utils.TerminalCommand;
 
 public class Map implements Disposable {
     public final String nome;
@@ -206,7 +205,7 @@ public class Map implements Disposable {
      */
     public void createEvents() {
         for (MapObject object : eventLayer.getObjects()) {
-            String eventType = (String) object.getProperties().get("eventType", String.class);
+            String eventType = object.getProperties().get("eventType", String.class);
             float x = object.getProperties().get("x", Float.class) * MapManager.TILE_SIZE;
             float y = object.getProperties().get("y", Float.class) * MapManager.TILE_SIZE;
             float radius = object.getProperties().get("eventRadius", Float.class);

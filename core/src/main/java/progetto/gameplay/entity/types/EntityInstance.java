@@ -1,6 +1,5 @@
 package progetto.gameplay.entity.types;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.Core;
@@ -12,16 +11,16 @@ import progetto.Core;
 public class EntityInstance {
 
     /** Nome della classe dell'entità (es. "Player", "Enemy", ecc.) */
-    public String type;
+    public final String type;
 
     /** {@link EntityConfig} contenente tutte le informazioni sull'entità (statistiche, immagine, stato, ecc.) */
     public EntityConfig config;
 
     /** Posizione corrente dell'entità nel mondo ({@link Vector2}) */
-    public Vector2 coordinate;
+    public final Vector2 coordinate;
 
     /** Direzione verso cui l'entità è rivolta o si sta muovendo ({@link Vector2}) */
-    public Vector2 direction;
+    public final Vector2 direction;
 
     /**
      * Costruisce un'istanza a partire da una {@link Entity}.

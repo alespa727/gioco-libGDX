@@ -11,7 +11,7 @@ import progetto.gameplay.player.Player;
 
 public class LichFireball extends CombatSkill {
     private final float speed;
-    private Player player;
+    private final Player player;
     private AudioManager mng;
     public LichFireball(Humanoid entity, String name, String description, float damage, float speed) {
         super(entity, name, description, damage);

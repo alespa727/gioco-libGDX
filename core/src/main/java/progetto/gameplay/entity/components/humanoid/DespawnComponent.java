@@ -9,9 +9,9 @@ import progetto.gameplay.entity.types.Entity;
 
 
 public class DespawnComponent extends Component{
-    private Entity owner;
+    private final Entity owner;
     private float accumulator = 0f;
-    private float dissolve_speed = 0.4f;
+    private final float dissolve_speed = 0.4f;
 
     public DespawnComponent(Entity e) {
         this.owner = e;

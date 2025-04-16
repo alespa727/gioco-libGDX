@@ -14,8 +14,8 @@ import progetto.utils.TerminalCommand;
 
 public abstract class NotPlayableCharacter extends Humanoid {
 
-    private String[] dialoghi;
-    private WindowDialogo windowDialogo;
+    private final String[] dialoghi;
+    private final WindowDialogo windowDialogo;
     private int indexDialogo = 0;
 
     private boolean listenerAggiunto = false;

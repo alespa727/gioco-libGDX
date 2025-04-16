@@ -94,7 +94,7 @@ public class MapManager {
     }
 
     public void loadMapEntities() {
-        FileHandle file = Gdx.files.local("/save/"+ currentMap.nome +".json");
+        FileHandle file = Gdx.files.local("/save/maps/"+ currentMap.nome +".json");
         if (file.exists()) {
             Json json = new Json();
             @SuppressWarnings("unchecked")
@@ -109,7 +109,7 @@ public class MapManager {
     }
 
     public void saveMapEntities(){
-        FileHandle fileHandle = Gdx.files.local("/save/" + currentMap.nome + ".json");
+        FileHandle fileHandle = Gdx.files.local("/save/maps/" + currentMap.nome + ".json");
 
         Json json = new Json();
         json.setOutputType(JsonWriter.OutputType.json); // output in formato JSON puro

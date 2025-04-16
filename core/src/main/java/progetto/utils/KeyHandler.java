@@ -3,7 +3,6 @@ package progetto.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
-import progetto.Core;
 import progetto.CoreConfig;
 
 public class KeyHandler {

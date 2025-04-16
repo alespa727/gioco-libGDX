@@ -1,6 +1,5 @@
 package progetto.gameplay.manager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import progetto.gameplay.entity.components.bullet.BulletComponent;
 import progetto.gameplay.entity.types.living.combat.boss.Boss;
@@ -11,7 +10,6 @@ import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.player.Player;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
-import progetto.utils.TerminalCommand;
 
 public class ManagerEvent implements ContactListener {
 
@@ -121,10 +119,8 @@ public class ManagerEvent implements ContactListener {
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
         if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {
             ((MapEvent) dataB).setActive(false);
-            return;
         } else if (dataB instanceof Player && dataA instanceof ChangeMapEvent) {
             ((MapEvent) dataA).setActive(false);
-            return;
         }
 
     }

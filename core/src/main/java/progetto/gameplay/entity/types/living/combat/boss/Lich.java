@@ -12,13 +12,12 @@ import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
 import progetto.gameplay.manager.ManagerWorld;
 import progetto.gameplay.manager.ManagerEntity;
-import progetto.utils.TerminalCommand;
 
 public class Lich extends Boss{
 
-    public Cooldown prepareToFireball = new Cooldown(2f);
-    public Cooldown prepareFireDomain = new Cooldown(0);
-    public Cooldown prepareToChangeStates = new Cooldown(0.5f);
+    public final Cooldown prepareToFireball = new Cooldown(2f);
+    public final Cooldown prepareFireDomain = new Cooldown(0);
+    public final Cooldown prepareToChangeStates = new Cooldown(0.5f);
 
     private final DefaultStateMachine<Lich, StatesLich> stateMachine;
 

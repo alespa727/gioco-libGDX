@@ -154,36 +154,32 @@ public enum StatesEnemy implements State<Enemy> {
 
     private static RayCastCallback getRayCastCallback(Enemy entity, Vector2 start, Vector2 end) {
 
-        return new RayCastCallback() {
+        return (fixture, point, normal, fraction) -> {
+            Filter filter = fixture.getFilterData();
+            Object userData = fixture.getBody().getUserData();
 
-            @Override
-            public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-                Filter filter = fixture.getFilterData();
-                Object userData = fixture.getBody().getUserData();
-
-                if (userData == null) {
-                    return -1; // Ignora il fixture e continua il raycasting
-                }
-
-                if (userData.equals("map")) {
-                    return -1;
-                }
-
-                if (userData instanceof Player && filter.categoryBits != ManagerEntity.RANGE) {
-                    DirectionalRangeComponent a = entity.getComponent(DirectionalRangeComponent.class);
-                    if (start.dst(end) > a.getRangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
-                        entity.statemachine.changeState(PURSUE);
-                        return fraction;
-                    }
-                    if (start.dst(end) < a.getRangeRadius() && entity.statemachine.getCurrentState() != ATTACKING) {
-                        entity.statemachine.changeState(ATTACKING);
-                        return fraction;
-                    }
-
-                }
-
-                return 0;
+            if (userData == null) {
+                return -1; // Ignora il fixture e continua il raycasting
             }
+
+            if (userData.equals("map")) {
+                return -1;
+            }
+
+            if (userData instanceof Player && filter.categoryBits != ManagerEntity.RANGE) {
+                DirectionalRangeComponent a = entity.getComponent(DirectionalRangeComponent.class);
+                if (start.dst(end) > a.getRangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
+                    entity.statemachine.changeState(PURSUE);
+                    return fraction;
+                }
+                if (start.dst(end) < a.getRangeRadius() && entity.statemachine.getCurrentState() != ATTACKING) {
+                    entity.statemachine.changeState(ATTACKING);
+                    return fraction;
+                }
+
+            }
+
+            return 0;
         };
 
 

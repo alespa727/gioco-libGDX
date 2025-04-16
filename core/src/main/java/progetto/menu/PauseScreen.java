@@ -48,7 +48,7 @@ public class PauseScreen implements Screen {
     private Table table;
 
 
-    private ColorFilter darken;
+    private final ColorFilter darken;
 
     public PauseScreen(Core game, GameScreen gameScreen) {
         this.game = game;
@@ -172,7 +172,7 @@ public class PauseScreen implements Screen {
 
 
     private float transitionTime = 0; // quanto tempo è passato
-    private float duration = 1f; // quanto deve durare l'interpolazione in secondi
+    private final float duration = 1f; // quanto deve durare l'interpolazione in secondi
 
     public void transitionIn(float delta) {
         // Incrementa il tempo passato

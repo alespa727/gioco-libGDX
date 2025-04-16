@@ -10,7 +10,7 @@ import progetto.gameplay.manager.ManagerEntity;
 
 public class DirectionalRangeComponent extends IteratableComponent {
 
-    public Warrior owner;
+    public final Warrior owner;
 
     public Body directionalRange;
     public BodyDef bodyDef = new BodyDef();

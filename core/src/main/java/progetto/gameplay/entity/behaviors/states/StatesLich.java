@@ -1,15 +1,12 @@
 package progetto.gameplay.entity.behaviors.states;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
-import progetto.gameplay.entity.components.BodyComponent;
 import progetto.gameplay.entity.types.living.combat.boss.Lich;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.map.Map;
 import progetto.gameplay.player.Player;
-import progetto.utils.TerminalCommand;
 
 public enum StatesLich implements State<Lich> {
     FIREDOMAIN{
@@ -218,5 +215,5 @@ public enum StatesLich implements State<Lich> {
         public boolean onMessage(Lich entity, Telegram telegram) {
             return false;
         }
-    };
+    }
 }

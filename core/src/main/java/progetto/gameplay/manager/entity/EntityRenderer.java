@@ -17,11 +17,11 @@ import progetto.gameplay.manager.ManagerCamera;
 import java.util.Comparator;
 
 public class EntityRenderer {
-    GameInfo info;
-    ManagerEntity managerEntity;
-    Comparator<Entity> comparator;
-    Array<Entity> entities;
-    Queue<Entity> queue;
+    final GameInfo info;
+    final ManagerEntity managerEntity;
+    final Comparator<Entity> comparator;
+    final Array<Entity> entities;
+    final Queue<Entity> queue;
 
     float deltaTime;
     float elapsedTime;

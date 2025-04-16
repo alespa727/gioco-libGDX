@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 public class WindowDialogo extends Window {
-    private Label dialogLabel;
+    private final Label dialogLabel;
 
     public WindowDialogo(String title, Skin skin) {
         super(title, skin);

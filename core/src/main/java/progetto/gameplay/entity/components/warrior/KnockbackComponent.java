@@ -8,7 +8,7 @@ import progetto.gameplay.entity.types.living.combat.Warrior;
 public class KnockbackComponent extends IteratableComponent {
 
     private static final float KNOCKBACK_COOLDOWN_TIME = 0.22f;
-    private Warrior owner;
+    private final Warrior owner;
     private final Cooldown cooldown = new Cooldown(KNOCKBACK_COOLDOWN_TIME);
 
     public KnockbackComponent(Warrior owner) {

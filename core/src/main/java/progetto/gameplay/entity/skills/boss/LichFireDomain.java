@@ -3,8 +3,6 @@ package progetto.gameplay.entity.skills.boss;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import progetto.factories.BodyFactory;
 import progetto.factories.EntityFactory;
 import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;

@@ -4,7 +4,7 @@ import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.player.Player;
 
 public class PlayerDeathController extends IteratableComponent {
-    private Player player;
+    private final Player player;
     public PlayerDeathController(Player player) {
         this.player = player;
     }

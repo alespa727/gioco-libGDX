@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.ArrayMap;
 
 public class ShaderManager {
 
-    ArrayMap<String, Shader> shaders;
+    final ArrayMap<String, Shader> shaders;
 
     public ShaderManager() {
         shaders = new ArrayMap<>();

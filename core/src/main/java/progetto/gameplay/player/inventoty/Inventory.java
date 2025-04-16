@@ -1,7 +1,6 @@
 package progetto.gameplay.player.inventoty;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,9 +14,9 @@ import progetto.CoreConfig;
 import progetto.gameplay.GameScreen;
 
 public class Inventory extends Window {
-    Array<Item> items;
-    Stage stage;
-    Table table;
+    final Array<Item> items;
+    final Stage stage;
+    final Table table;
 
     final boolean[][] slots;
     int itemCount=0;

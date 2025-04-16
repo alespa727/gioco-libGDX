@@ -7,11 +7,10 @@ import progetto.utils.GameInfo;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.player.Player;
-import progetto.utils.TerminalCommand;
 
 public class EntityLifeCycleManager {
-    GameInfo info;
-    ManagerEntity managerEntity;
+    final GameInfo info;
+    final ManagerEntity managerEntity;
     Array<Entity> entities;
     Queue<Entity> queue;
 

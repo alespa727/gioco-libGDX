@@ -28,7 +28,7 @@ public abstract class Entity {
     // Componenti principali dell'entità
     protected Color color;
     private final ArrayMap<Class<? extends Component>, Component> components;
-    protected boolean awake = true;
+    protected final boolean awake = true;
     private final HumanoidTextures textures;       // Gestisce immagini e animazioni
 
     /**
