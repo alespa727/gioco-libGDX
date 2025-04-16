@@ -1,6 +1,7 @@
 package progetto.gameplay.entity.components.humanoid;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -11,21 +12,28 @@ import progetto.gameplay.entity.types.Entity;
 public class DespawnComponent extends Component{
     private final Entity owner;
     private float accumulator = 0f;
-    private final float dissolve_speed = 0.4f;
+    private final float dissolve_duration = 0.6f;
 
     public DespawnComponent(Entity e) {
         this.owner = e;
     }
 
     public void draw(SpriteBatch batch, TextureRegion texture, float x, float y, float width, float height) {
-        if(accumulator < 1.0f){
-            accumulator = Interpolation.smooth.apply(accumulator, 1.0f, dissolve_speed);
-            batch.setColor(1, 1, 1, 1-accumulator);
-            batch.draw(texture, x, y, width, height);
-            accumulator+=0.1f* Gdx.graphics.getDeltaTime();
-        }else{
+        accumulator += Gdx.graphics.getDeltaTime();
 
+        // Calcola il progresso interpolato
+        float progress = Math.min(accumulator / dissolve_duration, 1f);
+        float alpha = Interpolation.fade.apply(1f - progress);
+
+        // Applica trasparenza
+        batch.setColor(1, 1, 1, alpha);
+        batch.draw(texture, x, y, width, height);
+        batch.setColor(Color.WHITE);
+
+        // Despawn quando finisce
+        if (accumulator >= dissolve_duration) {
             owner.despawn();
         }
     }
+
 }

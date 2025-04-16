@@ -28,9 +28,9 @@ public abstract class Entity {
     private final EntityConfig config;
 
     // Componenti principali dell'entità
-    protected Color color;
+    public Color color;
     private final ArrayMap<Class<? extends Component>, Component> components;
-    protected final boolean awake = true;
+    private boolean awake = true;
     private final HumanoidTextures textures;       // Gestisce immagini e animazioni
 
     /**
@@ -71,6 +71,10 @@ public abstract class Entity {
         addComponent(new DirectionComponent(config.direzione));
 
         getComponent(PhysicsComponent.class).createBody();
+    }
+
+    public void setAwake(boolean awake) {
+        this.awake = awake;
     }
 
     /**
@@ -188,17 +192,7 @@ public abstract class Entity {
      * @param batch il disegnatore
      * @param tempoTrascorso tempo passato per l’animazione
      */
-    public void draw(SpriteBatch batch, float tempoTrascorso) {
-        batch.setColor(color);
-        batch.draw(
-            textures.getAnimation(this).getKeyFrame(tempoTrascorso, true),
-            getPosition().x - config.imageWidth / 2,
-            getPosition().y - config.imageWidth / 2,
-            config.imageWidth,
-            config.imageHeight
-        );
-        batch.setColor(Color.WHITE);
-    }
+    public abstract void draw(SpriteBatch batch, float tempoTrascorso);
 
     /**
      * Restituisce le texture e animazioni associate.

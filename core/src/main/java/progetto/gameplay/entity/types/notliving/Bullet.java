@@ -1,7 +1,9 @@
 package progetto.gameplay.entity.types.notliving;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -29,6 +31,8 @@ public class Bullet extends Entity {
     /** Texture del proiettile */
     private final Texture texture;
 
+    ParticleEffect effect = new ParticleEffect();
+
     // === Costruttore ===
     /**
      * Costruttore del proiettile.
@@ -44,7 +48,7 @@ public class Bullet extends Entity {
     public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager);
         this.target = target.getClass();
-        this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
+        this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
         addComponent(new BulletComponent(damage, velocity, radius));
@@ -52,6 +56,10 @@ public class Bullet extends Entity {
         addComponent(new Cooldown(2));
         getComponent(Cooldown.class).reset();
         getComponent(Cooldown.class).setAwake(false);
+
+        effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
+        effect.scaleEffect(getConfig().radius/2);
+        effect.start();
     }
 
     /**
@@ -68,7 +76,7 @@ public class Bullet extends Entity {
     public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
         super(config, manager);
         this.target = target;
-        this.texture = Core.assetManager.get("entities/circle.png", Texture.class);
+        this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
         addComponent(new BulletComponent(damage, velocity, radius));
@@ -76,6 +84,10 @@ public class Bullet extends Entity {
         addComponent(new Cooldown(2));
         getComponent(Cooldown.class).reset();
         getComponent(Cooldown.class).setAwake(false);
+
+        effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
+        effect.scaleEffect(getConfig().radius/2);
+        effect.start();
     }
 
     /**
@@ -133,7 +145,7 @@ public class Bullet extends Entity {
             despawn();
             return;
         }
-        setColor(Color.RED);
+        setColor(Color.BLACK);
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
         getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
@@ -173,6 +185,9 @@ public class Bullet extends Entity {
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
+        effect.setPosition(getPosition().x, getPosition().y); // o qualsiasi posizione iniziale
+        effect.update(manager.delta);
+        effect.draw(batch);
         float radius = getComponent(BulletComponent.class).radius;
         Sprite sprite = new Sprite(texture); // Crea uno sprite per il proiettile
         sprite.setColor(color);

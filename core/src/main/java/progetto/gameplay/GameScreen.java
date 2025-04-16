@@ -6,7 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -24,6 +28,8 @@ import progetto.utils.*;
 import progetto.utils.shaders.ColorFilter;
 import progetto.utils.shaders.PlayerLight;
 import progetto.utils.shaders.Vignette;
+
+import static progetto.gameplay.map.Map.height;
 
 public class GameScreen implements Screen {
 
@@ -49,7 +55,6 @@ public class GameScreen implements Screen {
     private boolean loaded = false;
 
     private final GameDrawer drawer;
-
     /**
      * Costruttore del gioco
      * @param core gestore degli schermi
@@ -106,7 +111,7 @@ public class GameScreen implements Screen {
     private void loadAssets() {
         // Carica gli asset necessari
         Core.assetManager.load("entities/Finn.png", Texture.class);
-        Core.assetManager.load("entities/circle.png", Texture.class);
+        Core.assetManager.load("particle/particle.png", Texture.class);
         Core.assetManager.load("sounds/gunshot.mp3", Sound.class);
         Core.assetManager.load("sounds/fireball.mp3", Sound.class);
         Core.assetManager.finishLoading();
@@ -119,8 +124,8 @@ public class GameScreen implements Screen {
             info.mapManager = new MapManager(viewport, this.info.managerEntity, 1);
             loaded = true;
             drawer.addShader(Vignette.getInstance());
-            drawer.addShader(ColorFilter.getInstance(0.4f, 0.4f, 0.5f));
-            drawer.addShader(PlayerLight.getInstance(getEntityManager().player(), 0.15f));
+            drawer.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
+            drawer.addShader(PlayerLight.getInstance(getEntityManager().player(), 0.10f));
         }
     }
 
@@ -220,7 +225,7 @@ public class GameScreen implements Screen {
      */
     public void draw() {
         //Impostazione dello sfondo
-        Color darkGray = new Color(0.17f, 0.17f, 0.17f, 1.0f); // Grigio scuro
+        Color darkGray = new Color(0.3f, 0.3f, 0.3f, 1.0f); // Grigio scuro
         ScreenUtils.clear(darkGray); // Clear dello schermo
         // Renderizza la mappa
         renderMap();
@@ -238,6 +243,7 @@ public class GameScreen implements Screen {
 
     private void renderMap() {
         OrthogonalTiledMapRenderer mapRenderer = this.info.mapManager.getMap().getMapRenderer();
+        ManagerCamera.getInstance().update();
         mapRenderer.setView(ManagerCamera.getInstance());
 
         mapRenderer.render();

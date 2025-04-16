@@ -12,9 +12,10 @@ public class CheckDeathComponent extends IteratableComponent {
 
     @Override
     public void update(float delta) {
-        if (owner.getHealth() <= 0) {
+        if (owner.getHealth() <= 0 && owner.getState().isAlive()) {
             owner.setDead();
-            owner.despawn();
+            owner.setAwake(false);
+            owner.addComponent(new DespawnComponent(owner));
         }
     }
 }

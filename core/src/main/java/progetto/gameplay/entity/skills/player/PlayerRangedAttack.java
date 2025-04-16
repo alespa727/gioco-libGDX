@@ -47,7 +47,7 @@ public class PlayerRangedAttack extends CombatSkill {
             Vector2 position=new Vector2(owner.getPosition()).add(direction);
 
             Bullet bullet = (Bullet) owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.manager, Warrior.class));
-            bullet.startCooldown(1f);
+            bullet.startCooldown(3f);
         }else{
             System.out.println("FINITI I PROIETTILI");
         }

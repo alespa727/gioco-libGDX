@@ -1,13 +1,13 @@
 package progetto.gameplay.map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -49,7 +49,14 @@ public class Map implements Disposable {
         this.nome = name;
 
         TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
-        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE); // Inizializzazione map renderer
+        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, manager.info.core.batch); // Inizializzazione map renderer
+
+        for (TiledMapTileSet tileset : map.getTileSets()) {
+            for (TiledMapTile tile : tileset) {
+                Texture texture = tile.getTextureRegion().getTexture();
+                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            }
+        }
 
         events = new Array<>(); // Array di eventi
 
@@ -83,7 +90,6 @@ public class Map implements Disposable {
 
         // Crezione eventi
         createEvents();
-
     }
 
     /**
@@ -155,51 +161,6 @@ public class Map implements Disposable {
                 BodyFactory.createBody("map", bodyDef, fixtureDef);
             }
         }
-//        for (int i = 0; i < width; i++) {
-//            for (int j = 0; j < height; j++) {
-//                if (collisions[i][j]) {
-//                    final int x = i;
-//                    final int y = j;
-//                    // Crea oggetti nuovi per ogni Runnable
-//                    BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x + 0.5f, y + 0.5f);
-//                    Shape boxShape = BodyFactory.createPolygonShape(0.5f, 0.5f);
-//
-//                    FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
-//                    fixtureDef.filter.groupIndex = ManagerEntity.WALL;
-//
-//                    BodyFactory.createBody("map", bodyDef, fixtureDef, boxShape);
-//
-//                }
-//            }
-//        }
-        //createBorders();
-    }
-
-
-    /**
-     * Crea bordi della mappa
-     */
-    public void createBorders() {
-
-        Vector2[] bordi = new Vector2[5];
-
-        bordi[0] = new Vector2(4, 4);
-        bordi[1] = new Vector2(width - 4, 4);
-        bordi[2] = new Vector2(width - 4, height - 4);
-        bordi[3] = new Vector2(4, height - 4);
-        bordi[4] = new Vector2(4, 4);
-
-        // Definizione della forma
-        Shape chainShape = BodyFactory.createChainShape(bordi);
-
-        // Definizione del corpo
-        BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, 0, 0);
-
-        // Definizione delle caratteristiche fisiche
-        FixtureDef fixtureDef = BodyFactory.createFixtureDef(chainShape, 1f, 0, 0);
-
-        // Creazione del corpo
-        Gdx.app.postRunnable(()->BodyFactory.createBody("map", bodyDef, fixtureDef));
     }
 
     /**

@@ -66,6 +66,9 @@ public abstract class Enemy extends Warrior {
         inRange.removeValue(entity, false);
     }
 
+    public DefaultStateMachine<Enemy, StatesEnemy> getStateMachine(){
+        return statemachine;
+    }
     // === AGGIORNAMENTO E GESTIONE STATO ===
     @Override
     public void updateEntityType(float delta) {

@@ -1,8 +1,8 @@
 package progetto.gameplay.entity.types.living;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import progetto.gameplay.entity.components.humanoid.HumanoidDrawerComponent;
 import progetto.gameplay.entity.components.humanoid.*;
 import progetto.gameplay.entity.skills.SkillSet;
 import progetto.gameplay.entity.types.Entity;
@@ -32,6 +32,8 @@ public abstract class Humanoid extends Entity {
         addComponent(new SkillSet());
         addComponent(new SpeedLimiterComponent(this));
         addComponent(new HumanStatesComponent(this));
+        addComponent(new HumanoidDrawerComponent(this));
+        getComponent(HumanoidDrawerComponent.class).setAwake(false);
     }
 
     /**
@@ -50,6 +52,8 @@ public abstract class Humanoid extends Entity {
         addComponent(new SkillSet());
         addComponent(new SpeedLimiterComponent(this));
         addComponent(new HumanStatesComponent(this));
+        addComponent(new HumanoidDrawerComponent(this));
+        getComponent(HumanoidDrawerComponent.class).setAwake(false);
     }
 
     // METODI ASTRATTI
@@ -212,15 +216,16 @@ public abstract class Humanoid extends Entity {
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        batch.setColor(color);
-        if (getHumanStates().hasBeenHit()) {
-            batch.setColor(1, 0, 0, 0.6f);
+        if (getState().isAlive()){
+            getComponent(HumanoidDrawerComponent.class).draw(batch, elapsedTime);
+            getComponent(HumanoidDrawerComponent.class).update();
+        } else {
+            getComponent(DespawnComponent.class).draw(batch, getTextures().getAnimation(this).getKeyFrame(elapsedTime, true),
+                getPosition().x - getConfig().imageWidth / 2,
+                getPosition().y - getConfig().imageHeight / 2,
+                getConfig().imageWidth, getConfig().imageHeight);
         }
-        batch.draw(getTextures().getAnimation(this).getKeyFrame(elapsedTime, true),
-            getPosition().x - getConfig().imageWidth / 2,
-            getPosition().y - getConfig().imageHeight / 2,
-            getConfig().imageWidth, getConfig().imageHeight);
-        batch.setColor(Color.WHITE);
+
     }
 
 

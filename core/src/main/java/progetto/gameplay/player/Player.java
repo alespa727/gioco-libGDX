@@ -2,6 +2,7 @@ package progetto.gameplay.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Array;
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.entity.components.player.DashCooldown;
@@ -26,7 +27,6 @@ public class Player extends Warrior {
     public Player(EntityConfig config, ManagerEntity manager) {
         super(config, manager);
         this.inRange = new Array<>();
-
         addComponent(new PlayerDeathController(this));
         addComponent(new DashInvulnerability(this));
         addComponent(new PlayerMovementManager(this));

@@ -1,5 +1,6 @@
 package progetto.gameplay.manager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -44,8 +45,8 @@ public class ManagerCamera {
 
     public static void smoothTransitionTo(Vector2 coords) {
         Vector3 position = new Vector3();
-        position.x = camera.position.x + (coords.x - camera.position.x) * .1f;
-        position.y = camera.position.y + (coords.y - camera.position.y) * .1f;
+        position.x = camera.position.x + (coords.x - camera.position.x) * 1/16f;
+        position.y = camera.position.y + (coords.y - camera.position.y) * 1/16f;
         position.z = 0;
         camera.position.set(position);
     }

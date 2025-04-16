@@ -11,6 +11,7 @@ import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.map.Map;
 import progetto.gameplay.player.Player;
 
 public enum StatesEnemy implements State<Enemy> {
@@ -28,17 +29,9 @@ public enum StatesEnemy implements State<Enemy> {
             if (player == null)
                 player = entity.manager.player();
 
-            Body enemyBody = entity.getPhysics().getBody();
-            Body playerBody = player.getPhysics().getBody();
-
             entity.attack();
-            entity.searchPath(player);
 
             entity.getDirection().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
-
-            RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
-            ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());
-
             if (entity.getDirection().x != 0f && (entity.getDirection().x == 1f || entity.getDirection().x == -1f)) {
                 entity.getDirection().scl(0.5f, 1f);
             }
@@ -46,6 +39,7 @@ public enum StatesEnemy implements State<Enemy> {
                 entity.getDirection().scl(1f, 0.5f);
             }
 
+            entity.getStateMachine().changeState(CHOOSE_STATE);
         }
 
         @Override
@@ -87,15 +81,9 @@ public enum StatesEnemy implements State<Enemy> {
             if (player == null)
                 player = entity.manager.player();
 
-            Body enemyBody = entity.getPhysics().getBody();
-            Body playerBody = player.getPhysics().getBody();
-            enemyBody.setLinearDamping(3f);
+            entity.getPhysics().getBody().setLinearDamping(3f);
 
-            RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
-            ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());
-
-            entity.getPathFinder().renderPath(entity.manager.player().getPosition().x, entity.manager.player().getPosition().y, entity.manager.delta);
-            if (!entity.getPathFinder().success) entity.statemachine.changeState(PATROLLING);
+            entity.getStateMachine().changeState(CHOOSE_STATE);
         }
 
         @Override
@@ -122,16 +110,7 @@ public enum StatesEnemy implements State<Enemy> {
             if (player == null)
                 player = entity.manager.player();
 
-            Body enemyBody = entity.getPhysics().getBody();
-            Body playerBody = player.getPhysics().getBody();
-
             accumulator+=entity.manager.delta;
-            if (accumulator > 0.5f){
-                accumulator = 0f;
-                RayCastCallback callback = getRayCastCallback(entity, enemyBody.getPosition(), playerBody.getPosition());
-                ManagerWorld.getInstance().rayCast(callback, enemyBody.getPosition(), playerBody.getPosition());
-            }
-
 
             Vector2 direction = entity.getDirection();
 
@@ -141,6 +120,8 @@ public enum StatesEnemy implements State<Enemy> {
             if (direction.y == 1f || direction.y == -1f) {
                 direction.scl(1f, 0.5f);
             }
+
+            entity.getStateMachine().changeState(CHOOSE_STATE);
         }
 
         @Override
@@ -152,38 +133,39 @@ public enum StatesEnemy implements State<Enemy> {
             return false;
         }
 
-    };
+    },
 
-    private static RayCastCallback getRayCastCallback(Enemy entity, Vector2 start, Vector2 end) {
+    CHOOSE_STATE {
+        @Override
+        public void enter(Enemy entity) {
 
-        return (fixture, point, normal, fraction) -> {
-            Filter filter = fixture.getFilterData();
-            Object userData = fixture.getBody().getUserData();
+        }
 
-            if (userData == null) {
-                return -1; // Ignora il fixture e continua il raycasting
+        @Override
+        public void update(Enemy entity) {
+            if(Map.isGraphLoaded) entity.searchPath(entity.manager.player());
+            if(!entity.getPathFinder().success){
+                entity.getStateMachine().changeState(StatesEnemy.PATROLLING);
+                return;
             }
-
-            if (userData.equals("map")) {
-                return -1;
+            if (entity.getPosition().dst(entity.manager.player().getPosition()) > entity.getRangeRadius()) {
+                entity.getStateMachine().changeState(StatesEnemy.PURSUE);
+            }else{
+                entity.getStateMachine().changeState(StatesEnemy.ATTACKING);
             }
+        }
 
-            if (userData instanceof Player && filter.categoryBits != ManagerEntity.RANGE) {
-                DirectionalRangeComponent a = entity.getComponent(DirectionalRangeComponent.class);
-                if (start.dst(end) > a.getRangeRadius() && entity.statemachine.getCurrentState() != PURSUE) {
-                    entity.statemachine.changeState(PURSUE);
-                    return fraction;
-                }
-                if (start.dst(end) < a.getRangeRadius() && entity.statemachine.getCurrentState() != ATTACKING) {
-                    entity.statemachine.changeState(ATTACKING);
-                    return fraction;
-                }
+        @Override
+        public void exit(Enemy entity) {
 
-            }
+        }
 
-            return 0;
-        };
+        @Override
+        public boolean onMessage(Enemy entity, Telegram telegram) {
+            return false;
+        }
 
+        Player player;
 
     }
 }
