@@ -25,6 +25,9 @@ public class Vignette extends Shader{
         String vertexShader = Gdx.files.internal("shaders/vignette/vertex.vsh").readString();
         String fragmentShader = Gdx.files.internal("shaders/vignette/fragment.fsh").readString();
         this.program = new ShaderProgram(vertexShader, fragmentShader);
+        if (!program.isCompiled()) {
+            System.out.println(program.getLog());
+        }
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
     }
 

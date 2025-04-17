@@ -25,6 +25,7 @@ public class PlayerLight extends Shader{
         String vertexShader = Gdx.files.internal("shaders/light/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/light/fragment.glsl").readString();
         this.program = new ShaderProgram(vertexShader, fragmentShader);
+
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
         this.intensity = intensity;
         position = new Vector2(0.5f, 0.5f);
