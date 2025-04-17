@@ -46,51 +46,55 @@ public class Map implements Disposable {
     /* Creazione nuova mappa */
     public Map(String name, ManagerEntity manager, MapManager mapManager, float x, float y) {
 
+        // Setup iniziale
         this.nome = name;
+        this.mapManager = mapManager;
+        this.managerEntity = manager;
+        events = new Array<>(); // Array di eventi
 
-        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
-        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, manager.info.core.batch); // Inizializzazione map renderer
+        // Caricamento mappa
+        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carica il file TMX
+        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, manager.info.core.batch); // Renderer
 
+        // Filtro texture per tileset
         for (TiledMapTileSet tileset : map.getTileSets()) {
             for (TiledMapTile tile : tileset) {
                 Texture texture = tile.getTextureRegion().getTexture();
-                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+                texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
             }
         }
 
-        events = new Array<>(); // Array di eventi
+        // Accesso ai layer della mappa
+        this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni");        // Layer collisioni base
+        this.customCollisionLayer = map.getLayers().get("collisionobjects");                // Layer collisioni speciali
+        this.eventLayer = map.getLayers().get("eventi");                                     // Layer eventi
 
-        this.mapManager = mapManager;
-        this.managerEntity = manager;
+        // Inizializzazione posizione del player
+        Gdx.app.postRunnable(() -> managerEntity.player().teleport(new Vector2(x, y)));
 
-        this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni"); // Layer collisioni
-        this.customCollisionLayer = map.getLayers().get("collisionobjects");
-
-        this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
-
-        Gdx.app.postRunnable(() -> managerEntity.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+        // Inizializzazione camera
         ManagerCamera.getInstance().position.set(managerEntity.player().getPosition(), 0);
         ManagerCamera.getInstance().update();
 
-        // Salvataggio grandezza mappa
+        // Proprietà mappa
         width = (Integer) map.getProperties().get("width");
         height = (Integer) map.getProperties().get("height");
 
-        //Inizializzazioni collisioni
+        //  Setup collisioni
         collisions = new boolean[width][height];
+        loadCollisionMap(); // Crea la mappa delle collisioni
 
-        loadCollisionMap(); // Carica la mappa delle collisioni
-
-        // Crea un grafo basatosi sulle collisioni
+        //  Creazione grafo di navigazione
         graph = new GameGraph(width, height, collisions);
-
-        // Variabili di controllo
         isGraphLoaded = true;
+
+        //  Stato mappa
         isLoaded = true;
 
-        // Crezione eventi
+        //  Creazione eventi dalla mappa
         createEvents();
     }
+
 
     /**
      * Restituisce il grafo
