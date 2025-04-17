@@ -2,7 +2,6 @@ package progetto.gameplay.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -16,9 +15,10 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.factories.BodyFactory;
-import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.manager.ManagerEntity;
-import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.CameraManager;
+import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.manager.WorldManager;
+import progetto.gameplay.manager.MapManager;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.map.graph.GameGraph;
@@ -38,25 +38,19 @@ public class Map implements Disposable {
     private final MapLayer eventLayer;
     private final MapLayer customCollisionLayer;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final ManagerEntity managerEntity;
+    private final EntityManager entityManager;
     private final MapManager mapManager;
 
     private final Array<MapEvent> events;
 
     /* Creazione nuova mappa */
-    public Map(String name, ManagerEntity manager, MapManager mapManager, float x, float y) {
+    public Map(String name, EntityManager manager, MapManager mapManager, float x, float y) {
 
-        // Setup iniziale
         this.nome = name;
-        this.mapManager = mapManager;
-        this.managerEntity = manager;
-        events = new Array<>(); // Array di eventi
 
-        // Caricamento mappa
-        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carica il file TMX
-        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, manager.info.core.batch); // Renderer
+        TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
+        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, manager.info.core.batch); // Inizializzazione map renderer
 
-        // Filtro texture per tileset
         for (TiledMapTileSet tileset : map.getTileSets()) {
             for (TiledMapTile tile : tileset) {
                 Texture texture = tile.getTextureRegion().getTexture();
@@ -64,37 +58,39 @@ public class Map implements Disposable {
             }
         }
 
-        // Accesso ai layer della mappa
-        this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni");        // Layer collisioni base
-        this.customCollisionLayer = map.getLayers().get("collisionobjects");                // Layer collisioni speciali
-        this.eventLayer = map.getLayers().get("eventi");                                     // Layer eventi
+        events = new Array<>(); // Array di eventi
 
-        // Inizializzazione posizione del player
-        Gdx.app.postRunnable(() -> managerEntity.player().teleport(new Vector2(x, y)));
+        this.mapManager = mapManager;
+        this.entityManager = manager;
 
-        // Inizializzazione camera
-        ManagerCamera.getInstance().position.set(managerEntity.player().getPosition(), 0);
-        ManagerCamera.getInstance().update();
+        this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni"); // Layer collisioni
+        this.customCollisionLayer = map.getLayers().get("collisionobjects");
 
-        // Proprietà mappa
+        this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
+
+        Gdx.app.postRunnable(() -> entityManager.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+        CameraManager.getInstance().position.set(entityManager.player().getPosition(), 0);
+        CameraManager.getInstance().update();
+
+        // Salvataggio grandezza mappa
         width = (Integer) map.getProperties().get("width");
         height = (Integer) map.getProperties().get("height");
 
-        //  Setup collisioni
+        //Inizializzazioni collisioni
         collisions = new boolean[width][height];
-        loadCollisionMap(); // Crea la mappa delle collisioni
 
-        //  Creazione grafo di navigazione
+        loadCollisionMap(); // Carica la mappa delle collisioni
+
+        // Crea un grafo basatosi sulle collisioni
         graph = new GameGraph(width, height, collisions);
-        isGraphLoaded = true;
 
-        //  Stato mappa
+        // Variabili di controllo
+        isGraphLoaded = true;
         isLoaded = true;
 
-        //  Creazione eventi dalla mappa
+        // Crezione eventi
         createEvents();
     }
-
 
     /**
      * Restituisce il grafo
@@ -160,7 +156,7 @@ public class Map implements Disposable {
                 Shape boxShape = BodyFactory.createPolygonShape(width/2, height/2);
 
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
-                fixtureDef.filter.groupIndex = ManagerEntity.WALL;
+                fixtureDef.filter.groupIndex = EntityManager.WALL;
 
                 BodyFactory.createBody("map", bodyDef, fixtureDef);
             }
@@ -187,6 +183,6 @@ public class Map implements Disposable {
 
     @Override
     public void dispose() {
-        ManagerWorld.clearMap();
+        WorldManager.clearMap();
     }
 }
