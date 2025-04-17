@@ -14,7 +14,7 @@ void main() {
     float dist = length(position);  // Calcola la distanza dal centro della texture
 
     // Imposta l'effetto vignetta usando smoothstep per creare una transizione morbida
-    float vignette = smoothstep(0.1, 2, dist);  // Modifica questi valori per regolare l'intensità
+    float vignette = smoothstep(0.1, 2.0, dist);  // Modifica questi valori per regolare l'intensità
 
     // Misceliamo il colore originale con il nero (0.0) in base alla distanza dal centro
     vec3 darkened = mix(color.rgb, vec3(0.0), vignette);

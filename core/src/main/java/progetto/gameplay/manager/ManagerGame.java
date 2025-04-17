@@ -3,6 +3,7 @@ package progetto.gameplay.manager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import progetto.CoreConfig;
 import progetto.gameplay.GameScreen;
 import progetto.menu.PauseScreen;
@@ -21,6 +22,8 @@ public enum ManagerGame implements State<GameScreen> {
 
         @Override
         public void update(GameScreen screen) {
+            SpriteBatch batch = screen.getInfo().core.batch;
+
             GameTime time = screen.getTime();
             if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
                 screen.getInfo().core.setScreen(new PauseScreen(screen.getInfo().core, screen));
@@ -37,7 +40,8 @@ public enum ManagerGame implements State<GameScreen> {
             }
 
             // Disegna il gioco
-            screen.getGameDrawer().draw(screen.getInfo().core.batch);
+            screen.getGameDrawer().draw(batch);
+
         }
 
         @Override
