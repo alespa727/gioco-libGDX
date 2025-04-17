@@ -28,7 +28,7 @@ public class EntityMovementComponent extends IteratableComponent {
         this.path = new Array<>();
         this.owner = entity;
         float offset = MathUtils.random(-0.3f, 0.3f);
-        this.cooldown = new Cooldown(1.5f+offset);
+        this.cooldown = new Cooldown(1f+offset);
     }
 
     public boolean isReady() {

@@ -1,4 +1,4 @@
-package progetto.gameplay.map;
+package progetto.gameplay.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -7,7 +7,8 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.map.Map;
 
 import java.util.HashMap;
 
@@ -20,7 +21,7 @@ public class MapManager {
     // Mappa default
     private final int defaultMap = 0;
     // Reference utili
-    private final ManagerEntity managerEntity;
+    private final EntityManager entityManager;
     private final FitViewport viewport;
     // Mappa attuale
     private Map currentMap;
@@ -32,9 +33,9 @@ public class MapManager {
     /**
      * Creazione manager delle mappe
      */
-    public MapManager(FitViewport viewport, ManagerEntity manager, int startingMap) {
+    public MapManager(FitViewport viewport, EntityManager manager, int startingMap) {
         // Inizializzazione
-        this.managerEntity = manager;
+        this.entityManager = manager;
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
@@ -58,7 +59,7 @@ public class MapManager {
         currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, managerEntity, this, x, y);
+        currentMap = new Map(nome, entityManager, this, x, y);
         currentMap.createCollision();
 
         loadMapEntities();
@@ -105,7 +106,7 @@ public class MapManager {
                 EntityInstance instance = loadedInstances.get(i);
                 instance.loadTexture();
             }
-            managerEntity.summon(loadedInstances);
+            entityManager.summon(loadedInstances);
         }
     }
 
@@ -119,7 +120,7 @@ public class MapManager {
         if (mapEntityInstances.get(currentMap.nome) != null)
             mapEntityInstances.get(currentMap.nome).clear();
 
-        Array<EntityInstance> instances = managerEntity.clear();
+        Array<EntityInstance> instances = entityManager.clear();
         mapEntityInstances.put(currentMap.nome, instances); // Salva nella mappa
 
         String string = json.prettyPrint(instances); // Serializzazione ben formattata

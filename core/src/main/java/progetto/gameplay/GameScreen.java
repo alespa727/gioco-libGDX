@@ -6,11 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -19,17 +15,17 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.Core;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.manager.*;
+import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.map.Map;
-import progetto.gameplay.map.MapManager;
+import progetto.gameplay.manager.MapManager;
 import progetto.gameplay.player.Player;
 import progetto.gameplay.player.inventoty.Inventory;
+import progetto.menu.DebugWindow;
 import progetto.menu.DefeatScreen;
 import progetto.utils.*;
 import progetto.utils.shaders.ColorFilter;
 import progetto.utils.shaders.PlayerLight;
 import progetto.utils.shaders.Vignette;
-
-import static progetto.gameplay.map.Map.height;
 
 public class GameScreen implements Screen {
 
@@ -45,7 +41,7 @@ public class GameScreen implements Screen {
     private Gui gui;
 
     GameInfo info;
-    DefaultStateMachine<GameScreen, ManagerGame> state;
+    DefaultStateMachine<GameScreen, GameManager> state;
     Cooldown resetTimeScale;
 
     Box2DDebugRenderer debugHitbox;
@@ -67,8 +63,8 @@ public class GameScreen implements Screen {
         this.terminalCommand = new TerminalCommand(this);
         this.terminalCommand.start();
         this.loadGame(core);
-        ManagerEvent listener = new ManagerEvent();
-        ManagerWorld.getInstance().setContactListener(listener);
+        EventListener listener = new EventListener();
+        WorldManager.getInstance().setContactListener(listener);
     }
 
     public GameDrawer getGameDrawer() {
@@ -120,8 +116,8 @@ public class GameScreen implements Screen {
 
     private void initializeGameObjects() {
         if (!loaded) {
-            info.managerEntity = new ManagerEntity(this.info);
-            info.mapManager = new MapManager(viewport, this.info.managerEntity, 1);
+            info.entityManager = new EntityManager(this.info);
+            info.mapManager = new MapManager(viewport, this.info.entityManager, 1);
             loaded = true;
             drawer.addShader(Vignette.getInstance());
             drawer.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
@@ -137,7 +133,7 @@ public class GameScreen implements Screen {
 
     private void updateCameraPosition() {
 
-        ManagerCamera.getInstance().update();
+        CameraManager.getInstance().update();
     }
 
     private void initializeBox2DRenderer() {
@@ -163,11 +159,11 @@ public class GameScreen implements Screen {
     }
 
     public void updateWorld() {
-        ManagerWorld.update();
+        WorldManager.update();
     }
 
     private void checkPlayerDeath() {
-        Player player = this.info.managerEntity.player();
+        Player player = this.info.entityManager.player();
         if (!player.getState().isAlive()) {
             info.core.setScreen(new DefeatScreen(info.core));
         }
@@ -243,8 +239,8 @@ public class GameScreen implements Screen {
 
     private void renderMap() {
         OrthogonalTiledMapRenderer mapRenderer = this.info.mapManager.getMap().getMapRenderer();
-        ManagerCamera.getInstance().update();
-        mapRenderer.setView(ManagerCamera.getInstance());
+        CameraManager.getInstance().update();
+        mapRenderer.setView(CameraManager.getInstance());
 
         mapRenderer.render();
         if(DebugWindow.renderPathfinding()){
@@ -262,8 +258,8 @@ public class GameScreen implements Screen {
     }
 
     // Getter per variabili principali
-    public ManagerEntity getEntityManager() {
-        return this.info.managerEntity;
+    public EntityManager getEntityManager() {
+        return this.info.entityManager;
     }
 
     public MapManager getMapManager() {
@@ -284,13 +280,14 @@ public class GameScreen implements Screen {
      */
     public void loadGame(final Core core) {
         this.state = new DefaultStateMachine<>(this);
-        this.state.changeState(ManagerGame.PLAYING);
+        this.state.changeState(GameManager.PLAYING);
         this.info = new GameInfo();
         this.info.core = core;
         this.info.screen = this;
+        this.info.batch = core.batch;
         this.resetTimeScale = new Cooldown(0);
         this.gui = new Gui(this);
-        this.viewport = new FitViewport(16f, 9f, ManagerCamera.getInstance());
+        this.viewport = new FitViewport(16f, 9f, CameraManager.getInstance());
         this.viewport.apply();
     }
 
@@ -309,7 +306,7 @@ public class GameScreen implements Screen {
      */
     private void debug() {
         // Renderizza il debug di Box2D
-        debugHitbox.render(ManagerWorld.getInstance(), ManagerCamera.getInstance().combined);
+        debugHitbox.render(WorldManager.getInstance(), CameraManager.getInstance().combined);
     }
 
     /**
@@ -318,10 +315,10 @@ public class GameScreen implements Screen {
      */
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
-        ManagerCamera.update(info.managerEntity, viewport, time.delta, false);
+        CameraManager.update(info.entityManager, viewport, time.delta, false);
 
-        this.info.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
-        this.info.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
+        this.info.core.batch.setProjectionMatrix(CameraManager.getInstance().combined);
+        this.info.core.renderer.setProjectionMatrix(CameraManager.getInstance().combined);
     }
 
     public GameTime getTime() {

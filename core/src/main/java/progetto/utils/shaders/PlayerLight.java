@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.CameraManager;
 
 public class PlayerLight extends Shader{
 
@@ -43,7 +43,7 @@ public class PlayerLight extends Shader{
     public void begin() {
         frameBuffer.begin();
         Vector3 position = new Vector3(e.getPosition(), 0);
-        Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
+        Vector3 projectedPosition = CameraManager.getInstance().project(position);
         float normX = projectedPosition.x / Gdx.graphics.getWidth();
         float normY = projectedPosition.y / Gdx.graphics.getHeight();
         this.position.set(normX, normY);
@@ -77,10 +77,10 @@ public class PlayerLight extends Shader{
         program.setUniformf("u_lightColor", Color.ORANGE.cpy());
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
-            ManagerCamera.getFrustumCorners()[0].x,
-            ManagerCamera.getFrustumCorners()[0].y,
-            ManagerCamera.getViewportWidth(),
-            ManagerCamera.getViewportHeight());
+            CameraManager.getFrustumCorners()[0].x,
+            CameraManager.getFrustumCorners()[0].y,
+            CameraManager.getViewportWidth(),
+            CameraManager.getViewportHeight());
         batch.end();                                         // (4) finisci il batch
         batch.setShader(null);
     }

@@ -5,13 +5,13 @@ import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.EntityManager;
 
 /**
  * Evento di spawn di un {@link Enemy}
  */
 public class SpawnEnemyEvent extends MapEvent{
-    private final ManagerEntity managerEntity;
+    private final EntityManager entityManager;
     private final String type;
 
     /**
@@ -21,12 +21,12 @@ public class SpawnEnemyEvent extends MapEvent{
      * </p>
      * @param position posizione centrale dell’evento
      * @param radius raggio entro cui l’evento può attivarsi
-     * @param managerEntity gestore entità
+     * @param entityManager gestore entità
      * @param enemyType tipo di nemico
      */
-    public SpawnEnemyEvent(Vector2 position, float radius, ManagerEntity managerEntity, String enemyType) {
+    public SpawnEnemyEvent(Vector2 position, float radius, EntityManager entityManager, String enemyType) {
         super(position, radius);
-        this.managerEntity = managerEntity;
+        this.entityManager = entityManager;
         this.type = enemyType;
         this.trigger(null);
         this.destroy();
@@ -39,10 +39,10 @@ public class SpawnEnemyEvent extends MapEvent{
 
     @Override
     public void trigger(Entity entity) {
-        managerEntity.summon(EntityFactory.createEnemy(
+        entityManager.summon(EntityFactory.createEnemy(
             type,
-            EntityConfigFactory.createEntityConfig(type, managerEntity.getIdCount(), position.x,  position.y),
-            managerEntity,
+            EntityConfigFactory.createEntityConfig(type, entityManager.getIdCount(), position.x,  position.y),
+            entityManager,
             1.5f
         ));
     }

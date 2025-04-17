@@ -2,14 +2,14 @@ package progetto.gameplay.entity.types.living.combat.enemy;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entity.behaviors.states.StatesEnemy;
+import progetto.gameplay.entity.statemachines.StatesEnemy;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.humanoid.CheckDeathComponent;
 import progetto.gameplay.entity.components.warrior.AttackCooldown;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.EntityManager;
 
 public abstract class Enemy extends Warrior {
 
@@ -22,13 +22,13 @@ public abstract class Enemy extends Warrior {
     public DefaultStateMachine<Enemy, StatesEnemy> statemachine;
 
     // === COSTRUTTORI ===
-    public Enemy(EnemyInstance instance, ManagerEntity manager) {
+    public Enemy(EnemyInstance instance, EntityManager manager) {
         super(instance, manager);
         viewDistance = instance.viewDistance;
         pursueMaxDistance = instance.pursueMaxDistance;
     }
 
-    public Enemy(EntityConfig config, ManagerEntity manager, float attackcooldown) {
+    public Enemy(EntityConfig config, EntityManager manager, float attackcooldown) {
         super(config, manager);
         viewDistance = 11f;
         pursueMaxDistance = 12f;

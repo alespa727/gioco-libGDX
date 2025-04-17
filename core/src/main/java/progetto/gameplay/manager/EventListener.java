@@ -7,11 +7,12 @@ import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.living.combat.boss.Boss;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
 import progetto.gameplay.entity.types.notliving.Bullet;
+import progetto.gameplay.manager.entity.EntityManager;
 import progetto.gameplay.map.events.ChangeMapEvent;
 import progetto.gameplay.map.events.MapEvent;
 import progetto.gameplay.player.Player;
 
-public class ManagerEvent implements ContactListener {
+public class EventListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
@@ -49,8 +50,8 @@ public class ManagerEvent implements ContactListener {
         // Se "dataA" è un Enemy e il filtro del fixtureA indica RANGE,
         // mentre "dataB" è un Player e il filtro del fixtureB non indica RANGE,
         // l'enemy aggiunge il player alla sua lista di entità.
-        boolean isRangeA = (fixtureA.getFilterData().categoryBits == ManagerEntity.RANGE);
-        boolean isRangeB = (fixtureB.getFilterData().categoryBits == ManagerEntity.RANGE);
+        boolean isRangeA = (fixtureA.getFilterData().categoryBits == EntityManager.RANGE);
+        boolean isRangeB = (fixtureB.getFilterData().categoryBits == EntityManager.RANGE);
 
         if (dataA instanceof Enemy && isRangeA && dataB instanceof Player && !isRangeB) {
             ((Enemy) dataA).addEntity((Player) dataB);
@@ -104,8 +105,8 @@ public class ManagerEvent implements ContactListener {
         // Gestione del contatto tra Enemy e Player nel range (Rimozione Player)
         // Se dataA è un Enemy associato a un fixture con filtro RANGE
         // e dataB è un Player (con filtro NON RANGE), rimuovo il Player dall'Enemy
-        boolean isRangeA = fixtureA.getFilterData().categoryBits == ManagerEntity.RANGE;
-        boolean isRangeB = fixtureB.getFilterData().categoryBits == ManagerEntity.RANGE;
+        boolean isRangeA = fixtureA.getFilterData().categoryBits == EntityManager.RANGE;
+        boolean isRangeB = fixtureB.getFilterData().categoryBits == EntityManager.RANGE;
 
         if (dataA instanceof Enemy enemy1 && isRangeA && dataB instanceof Player player && !isRangeB) {
             enemy1.removeEntity(player);

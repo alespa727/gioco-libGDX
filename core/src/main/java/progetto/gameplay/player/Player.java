@@ -2,7 +2,6 @@ package progetto.gameplay.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Array;
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.entity.components.player.DashCooldown;
@@ -16,15 +15,15 @@ import progetto.gameplay.entity.skills.player.PlayerSwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.CameraManager;
+import progetto.gameplay.manager.entity.EntityManager;
 
 public class Player extends Warrior {
 
     private final Array<Warrior> inRange;
 
     // === COSTRUTTORE ===
-    public Player(EntityConfig config, ManagerEntity manager) {
+    public Player(EntityConfig config, EntityManager manager) {
         super(config, manager);
         this.inRange = new Array<>();
         addComponent(new PlayerDeathController(this));
@@ -36,11 +35,11 @@ public class Player extends Warrior {
         getAttackCooldown().reset(0.8f);
         getDashCooldown().reset(1f);
 
-        ManagerCamera.getInstance().position.set(config.x, config.y, 0);
+        CameraManager.getInstance().position.set(config.x, config.y, 0);
 
         getSkillset().add(new PlayerDash(this, "", "", 12.5f));
         getSkillset().add(new PlayerSwordAttack(this, "", "",10));
-        getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
+        getSkillset().add(new PlayerRangedAttack(this, "", "", 20,25f, 5f));
     }
 
     // === METODI DI ACCESSO ===
@@ -96,7 +95,7 @@ public class Player extends Warrior {
 
     public void hit(Warrior entity, float damage, float hitForce) {
         super.hit(entity, damage, hitForce);
-        ManagerCamera.shakeTheCamera(0.1f, 0.025f);
+        CameraManager.shakeTheCamera(0.1f, 0.025f);
     }
 
     // === GESTIONE ENTITY ===

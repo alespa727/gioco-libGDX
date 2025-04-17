@@ -7,8 +7,8 @@ import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.manager.ManagerEntity;
-import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.manager.WorldManager;
 import progetto.utils.TerminalCommand;
 
 public abstract class NotPlayableCharacter extends Humanoid {
@@ -20,13 +20,13 @@ public abstract class NotPlayableCharacter extends Humanoid {
     private boolean listenerAggiunto = false;
     private boolean isTyping = false;
 
-    public NotPlayableCharacter(HumanoidInstances instance, ManagerEntity managerEntity, String[] dialoghi, WindowDialogo windowDialogo) {
-        super(instance, managerEntity);
+    public NotPlayableCharacter(HumanoidInstances instance, EntityManager entityManager, String[] dialoghi, WindowDialogo windowDialogo) {
+        super(instance, entityManager);
         this.dialoghi = dialoghi;
         this.windowDialogo = windowDialogo;
     }
 
-    public NotPlayableCharacter(EntityConfig config, ManagerEntity manager, String[] dialoghi, WindowDialogo windowDialogo) {
+    public NotPlayableCharacter(EntityConfig config, EntityManager manager, String[] dialoghi, WindowDialogo windowDialogo) {
         super(config, manager);
         this.dialoghi = dialoghi;
         this.windowDialogo = windowDialogo;
@@ -93,7 +93,7 @@ public abstract class NotPlayableCharacter extends Humanoid {
         TerminalCommand.printError("Deleting entity" + getConfig().nome);
         manager.remove(this);
 
-        ManagerWorld.destroyBody(getPhysics().getBody());
+        WorldManager.destroyBody(getPhysics().getBody());
 
         return new HumanoidInstances(this);
     }

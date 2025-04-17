@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.CameraManager;
 import progetto.gameplay.map.graph.node.Node;
 
 import java.util.HashMap;
@@ -141,7 +141,7 @@ public class GameGraph implements IndexedGraph<Node> {
                 shapeRenderer.setColor(Color.SCARLET);
             }
             // Disegna ogni nodo come un cerchio al centro della cella
-            if (ManagerCamera.isWithinFrustumBounds(node.getX(), node.getY()))
+            if (CameraManager.isWithinFrustumBounds(node.getX(), node.getY()))
                 shapeRenderer.circle(node.x + 0.5f, node.y + 0.5f, 0.2f, 10); // Raggio 0.2 per nodi
         }
 

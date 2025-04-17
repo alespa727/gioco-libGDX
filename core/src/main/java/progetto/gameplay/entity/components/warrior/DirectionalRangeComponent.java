@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entity.components.IteratableComponent;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.EntityManager;
 
 public class DirectionalRangeComponent extends IteratableComponent {
 
@@ -62,7 +62,7 @@ public class DirectionalRangeComponent extends IteratableComponent {
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = ManagerEntity.RANGE;
+        fixtureDef.filter.categoryBits = EntityManager.RANGE;
     }
 
     public Body getDirectionalRange() {

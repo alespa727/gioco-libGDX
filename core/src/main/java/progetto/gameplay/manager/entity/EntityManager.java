@@ -1,4 +1,4 @@
-package progetto.gameplay.manager;
+package progetto.gameplay.manager.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
@@ -11,14 +11,11 @@ import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.combat.boss.BossInstance;
 import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
-import progetto.gameplay.manager.entity.EntityLifeCycleManager;
-import progetto.gameplay.manager.entity.EntityRenderer;
-import progetto.gameplay.manager.entity.PlayerManager;
 import progetto.gameplay.player.Player;
-import progetto.utils.GameInfo;
+import progetto.gameplay.GameInfo;
 import progetto.utils.TerminalCommand;
 
-public final class ManagerEntity {
+public final class EntityManager {
 
     public final GameInfo info;
     private final EntityLifeCycleManager lifeCycleManager;
@@ -38,7 +35,7 @@ public final class ManagerEntity {
     /**
      * @param info informazioni del gioco
      */
-    public ManagerEntity(GameInfo info) {
+    public EntityManager(GameInfo info) {
         this.lifeCycleManager = new EntityLifeCycleManager(this);
         this.info = info;
         this.entities = new Array<>();
@@ -46,13 +43,13 @@ public final class ManagerEntity {
         this.playerManager = new PlayerManager(this, lifeCycleManager);
         this.summon(playerManager.getPlayer());
         Core.assetManager.load("entities/nemico.png", Texture.class);
-        Core.assetManager.load("entities/Lich.png", Texture.class);
+        Core.assetManager.load("entities/Finn.png", Texture.class);
         Core.assetManager.finishLoading();
 
-//        for (int i = 0; i < 1; i++) {
-//            EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i, 10);
-//            summon(EntityFactory.createEnemy("Finn", e, this, 5));
-//        }
+        for (int i = 0; i < 1; i++) {
+            EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i, 10);
+            summon(EntityFactory.createEnemy("Finn", e, this, 5));
+        }
 
         this.renderer = new EntityRenderer(this);
     }

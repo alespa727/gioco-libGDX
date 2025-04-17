@@ -1,4 +1,4 @@
-package progetto.utils;
+package progetto.gameplay;
 
 public class GameTime {
     public float delta;

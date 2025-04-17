@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.CameraManager;
 import progetto.gameplay.player.Player;
 
 public class PlayerSwordAttack extends CombatSkill {
@@ -46,7 +46,7 @@ public class PlayerSwordAttack extends CombatSkill {
 
     @Override
     public void execute() {
-        ManagerCamera.shakeTheCamera(0.1f, 0.01f);
+        CameraManager.shakeTheCamera(0.1f, 0.01f);
         owner.manager.info.screen.setTimeScale(1f, 1f);
         cooldown.reset();
         Array<Warrior> inRange = ((Player) owner).getInRange();

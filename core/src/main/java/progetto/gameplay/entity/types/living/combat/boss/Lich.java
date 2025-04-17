@@ -1,7 +1,7 @@
 package progetto.gameplay.entity.types.living.combat.boss;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import progetto.gameplay.entity.behaviors.states.StatesLich;
+import progetto.gameplay.entity.statemachines.StatesLich;
 import progetto.gameplay.entity.components.entity.Cooldown;
 import progetto.gameplay.entity.components.humanoid.CheckDeathComponent;
 import progetto.gameplay.entity.skills.boss.LichFireDomain;
@@ -9,8 +9,8 @@ import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.manager.ManagerEntity;
-import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.manager.WorldManager;
 
 public class Lich extends Boss{
 
@@ -20,8 +20,8 @@ public class Lich extends Boss{
 
     private final DefaultStateMachine<Lich, StatesLich> stateMachine;
 
-    public Lich(HumanoidInstances instance, ManagerEntity managerEntity) {
-        super(instance, managerEntity);
+    public Lich(HumanoidInstances instance, EntityManager entityManager) {
+        super(instance, entityManager);
         addComponent(new CheckDeathComponent(this));
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
@@ -29,8 +29,8 @@ public class Lich extends Boss{
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
 
-    public Lich(EntityConfig config, ManagerEntity managerEntity) {
-        super(config, managerEntity);
+    public Lich(EntityConfig config, EntityManager entityManager) {
+        super(config, entityManager);
         addComponent(new CheckDeathComponent(this));
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
@@ -60,8 +60,8 @@ public class Lich extends Boss{
         manager.remove(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
-        ManagerWorld.destroyBody(getPhysics().getBody());
-        ManagerWorld.destroyBody(getDirectionRangeComponent().getDirectionalRange());
+        WorldManager.destroyBody(getPhysics().getBody());
+        WorldManager.destroyBody(getDirectionRangeComponent().getDirectionalRange());
 
         return new BossInstance(this);
     }

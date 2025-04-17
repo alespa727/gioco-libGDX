@@ -14,8 +14,8 @@ import progetto.gameplay.entity.components.entity.NodeTrackerComponent;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerEntity;
-import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.manager.WorldManager;
 
 /**
  * Rappresenta un proiettile nel gioco.
@@ -39,13 +39,13 @@ public class Bullet extends Entity {
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config configurazione dell'entità ({@link EntityConfig})
-     * @param manager gestore delle entità nel gioco ({@link ManagerEntity})
+     * @param manager gestore delle entità nel gioco ({@link EntityManager})
      * @param radius raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage danno inflitto dal proiettile
      * @param target entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Entity target) {
+    public Bullet(EntityConfig config, EntityManager manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager);
         this.target = target.getClass();
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
@@ -67,13 +67,13 @@ public class Bullet extends Entity {
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config configurazione dell'entità ({@link EntityConfig})
-     * @param manager gestore delle entità nel gioco ({@link ManagerEntity})
+     * @param manager gestore delle entità nel gioco ({@link EntityManager})
      * @param radius raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage danno inflitto dal proiettile
      * @param target classe dell'entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, ManagerEntity manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
+    public Bullet(EntityConfig config, EntityManager manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
         super(config, manager);
         this.target = target;
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
@@ -160,7 +160,7 @@ public class Bullet extends Entity {
     @Override
     public EntityInstance despawn() {
         manager.remove(this); // Rimuove il proiettile dal gestore
-        ManagerWorld.destroyBody(getPhysics().getBody());
+        WorldManager.destroyBody(getPhysics().getBody());
         return null;
     }
 

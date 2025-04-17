@@ -8,7 +8,7 @@ import progetto.gameplay.entity.skills.SkillSet;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.EntityManager;
 
 /**
  * Classe astratta che rappresenta un'entità umanoide nel gioco.
@@ -22,10 +22,10 @@ public abstract class Humanoid extends Entity {
      * Aggiunge i componenti necessari per la gestione del movimento, salute, abilità e velocità.
      *
      * @param instance L'istanza dell'umanoide da usare per la configurazione.
-     * @param managerEntity Il gestore delle entità del gioco.
+     * @param entityManager Il gestore delle entità del gioco.
      */
-    public Humanoid(HumanoidInstances instance, ManagerEntity managerEntity) {
-        super(instance, managerEntity);
+    public Humanoid(HumanoidInstances instance, EntityManager entityManager) {
+        super(instance, entityManager);
         addComponent(new EntityMovementComponent(this));
         addComponent(new HumanStatsComponent(instance.speed, instance.maxHealth));
         addComponent(new EntityPathFinderComponent(this));
@@ -43,7 +43,7 @@ public abstract class Humanoid extends Entity {
      * @param config La configurazione dell'umanoide (velocità, salute, ecc.).
      * @param manager Il gestore delle entità del gioco.
      */
-    public Humanoid(EntityConfig config, ManagerEntity manager) {
+    public Humanoid(EntityConfig config, EntityManager manager) {
         super(config, manager);
         addComponent(new EntityMovementComponent(this));
         getComponent(EntityMovementComponent.class).setAwake(false);

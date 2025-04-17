@@ -8,7 +8,7 @@ import progetto.gameplay.entity.skills.CombatSkill;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.Warrior;
 import progetto.gameplay.entity.types.notliving.Bullet;
-import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.CameraManager;
 import progetto.utils.KeyHandler;
 
 public class PlayerRangedAttack extends CombatSkill {
@@ -41,7 +41,7 @@ public class PlayerRangedAttack extends CombatSkill {
     public void execute() {
         if (bullets > 0) {
             bullets--;
-            Vector3 mouse = ManagerCamera.getInstance().unproject(KeyHandler.mouse);
+            Vector3 mouse = CameraManager.getInstance().unproject(KeyHandler.mouse);
             Vector2 direction=new Vector2(mouse.x- owner.getPosition().x, mouse.y- owner.getPosition().y);
             direction.nor();
             Vector2 position=new Vector2(owner.getPosition()).add(direction);

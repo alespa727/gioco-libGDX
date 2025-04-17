@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import progetto.CoreConfig;
 import progetto.gameplay.GameScreen;
 import progetto.menu.PauseScreen;
-import progetto.utils.GameTime;
+import progetto.gameplay.GameTime;
 import progetto.utils.KeyHandler;
 
 import static progetto.gameplay.GameScreen.STEP;
 
-public enum ManagerGame implements State<GameScreen> {
+public enum GameManager implements State<GameScreen> {
 
     PLAYING {
         @Override
@@ -32,7 +32,7 @@ public enum ManagerGame implements State<GameScreen> {
             // Aggiorna il gioco finché necessario
             while (time.getAccumulator() >= STEP) {
                 float scaledTime = STEP * screen.getTimeScale();
-                ManagerWorld.getInstance().step(scaledTime, 8, 8);
+                WorldManager.getInstance().step(scaledTime, 8, 8);
                 screen.update(scaledTime);
                 screen.updateWorld();
                 time.setAccumulator(time.getAccumulator() - STEP);

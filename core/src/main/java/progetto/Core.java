@@ -6,8 +6,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.GameScreen;
-import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.CameraManager;
+import progetto.gameplay.manager.WorldManager;
 import progetto.menu.MainScreen;
 
 // Classe principale del gioco, estende Game di libGDX
@@ -20,7 +20,7 @@ public class Core extends com.badlogic.gdx.Game {
 
     @Override
     public void create() {
-        ManagerCamera.init();             // Inizializza la camera
+        CameraManager.init();             // Inizializza la camera
         batch = new SpriteBatch();        // Per disegnare sprite
         renderer = new ShapeRenderer();   // Per forme geometriche
         gameScreen = new GameScreen(this);            // Istanzia il gioco
@@ -30,7 +30,7 @@ public class Core extends com.badlogic.gdx.Game {
 
     @Override
     public void dispose() {
-        ManagerWorld.getInstance().dispose();
+        WorldManager.getInstance().dispose();
         batch.dispose();          // Libera risorse grafiche
         renderer.dispose();
         assetManager.dispose();   // Libera le risorse caricate

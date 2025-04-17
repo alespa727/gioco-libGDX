@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.gameplay.map.events.MapEvent;
 
-public class ManagerWorld {
+public class WorldManager {
     private static World instance;
     private static Queue<Body> bodyToDestroy;
 

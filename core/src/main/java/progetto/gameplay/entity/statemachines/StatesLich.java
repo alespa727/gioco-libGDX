@@ -1,4 +1,4 @@
-package progetto.gameplay.entity.behaviors.states;
+package progetto.gameplay.entity.statemachines;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;

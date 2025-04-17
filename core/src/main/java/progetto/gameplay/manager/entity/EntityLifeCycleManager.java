@@ -4,21 +4,20 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerEntity;
 import progetto.gameplay.player.Player;
-import progetto.utils.GameInfo;
+import progetto.gameplay.GameInfo;
 
 public class EntityLifeCycleManager {
     final GameInfo info;
-    final ManagerEntity managerEntity;
+    final EntityManager entityManager;
     Array<Entity> entities;
     Queue<Entity> queue;
 
     Array<EntityInstance> instances;
 
-    public EntityLifeCycleManager(ManagerEntity managerEntity) {
-        this.managerEntity = managerEntity;
-        info = managerEntity.info;
+    public EntityLifeCycleManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        info = entityManager.info;
         queue = getEntityQueue();
         entities = getEntities();
     }
@@ -27,7 +26,7 @@ public class EntityLifeCycleManager {
         queue = getEntityQueue();
         entities = getEntities();
         instances = new Array<>();
-        Player player = managerEntity.player();
+        Player player = entityManager.player();
         entities.removeValue(player, false);
         if (queue.size > 0) {
             queue.clear();
@@ -52,10 +51,10 @@ public class EntityLifeCycleManager {
     }
 
     public Array<Entity> getEntities() {
-        return managerEntity.getEntities();
+        return entityManager.getEntities();
     }
 
     public Queue<Entity> getEntityQueue() {
-        return managerEntity.getQueue();
+        return entityManager.getQueue();
     }
 }

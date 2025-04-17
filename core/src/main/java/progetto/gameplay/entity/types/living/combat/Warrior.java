@@ -9,18 +9,18 @@ import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.EntityManager;
 
 public abstract class Warrior extends Humanoid {
 
-    public Warrior(HumanoidInstances instance, ManagerEntity managerEntity) {
-        super(instance, managerEntity);
+    public Warrior(HumanoidInstances instance, EntityManager entityManager) {
+        super(instance, entityManager);
         addComponent(new DirectionalRangeComponent(this));
         addComponent(new HitDirectionComponent(new Vector2(0, 0)));
         addComponent(new KnockbackComponent(this));
     }
 
-    public Warrior(EntityConfig config, ManagerEntity manager) {
+    public Warrior(EntityConfig config, EntityManager manager) {
         super(config, manager);
         addComponent(new DirectionalRangeComponent(this));
         addComponent(new HitDirectionComponent(new Vector2(0, 0)));

@@ -8,17 +8,16 @@ import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entity.types.Entity;
 import progetto.gameplay.entity.types.living.Humanoid;
 import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.CameraManager;
 import progetto.gameplay.player.Player;
-import progetto.utils.DebugWindow;
-import progetto.utils.GameInfo;
+import progetto.menu.DebugWindow;
+import progetto.gameplay.GameInfo;
 
 import java.util.Comparator;
 
 public class EntityRenderer {
     final GameInfo info;
-    final ManagerEntity managerEntity;
+    final EntityManager entityManager;
     final Comparator<Entity> comparator;
     final Array<Entity> entities;
     final Queue<Entity> queue;
@@ -28,12 +27,12 @@ public class EntityRenderer {
 
     /**
      * Costruttore
-     * @param managerEntity manager delle entità
+     * @param entityManager manager delle entità
      */
-    public EntityRenderer(ManagerEntity managerEntity) {
-        this.managerEntity = managerEntity;
+    public EntityRenderer(EntityManager entityManager) {
+        this.entityManager = entityManager;
         comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
-        info = managerEntity.info;
+        info = entityManager.info;
         queue = getEntityQueue();
         entities = getEntities();
     }
@@ -42,8 +41,8 @@ public class EntityRenderer {
      * Processa la coda e aggiorna le entità
      */
     public void updateEntities() {
-        this.deltaTime = managerEntity.delta;
-        this.elapsedTime = managerEntity.elapsedTime;
+        this.deltaTime = entityManager.delta;
+        this.elapsedTime = entityManager.elapsedTime;
         processQueue();
         updateEntityLogic();
     }
@@ -67,7 +66,7 @@ public class EntityRenderer {
      */
     private void drawSkills() {
         for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
                 ((Humanoid) e).getSkillset().draw(info.core.batch, elapsedTime);
             }
         }
@@ -78,7 +77,7 @@ public class EntityRenderer {
      */
     private void drawEntities() {
         for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
                     e.draw(info.core.batch, this.elapsedTime);
                 } catch (Exception ex) {
@@ -94,7 +93,7 @@ public class EntityRenderer {
     private void drawPaths() {
         info.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
+            if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
                     if(e instanceof Humanoid human) {
                         human.drawPath(info.core.renderer);
@@ -113,16 +112,16 @@ public class EntityRenderer {
     public void updateEntityLogic(){
         if(DebugWindow.renderEntities()){
             for (Entity e : entities) {
-                if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
+                if (CameraManager.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
                     e.render(this.deltaTime);
                     e.updateComponents(this.deltaTime);
                     e.setShouldRender(true);
                 } else e.setShouldRender(false);
             }
         }else{
-            managerEntity.player().render(this.deltaTime);
-            managerEntity.player().updateComponents(this.deltaTime);
-            managerEntity.player().setShouldRender(true);
+            entityManager.player().render(this.deltaTime);
+            entityManager.player().updateComponents(this.deltaTime);
+            entityManager.player().setShouldRender(true);
         }
     }
 
@@ -146,13 +145,13 @@ public class EntityRenderer {
      * @return array di entità
      */
     public Array<Entity> getEntities() {
-        return managerEntity.getEntities();
+        return entityManager.getEntities();
     }
 
     /**
      * @return coda di entità da evocare
      */
     public Queue<Entity> getEntityQueue() {
-        return managerEntity.getQueue();
+        return entityManager.getQueue();
     }
 }

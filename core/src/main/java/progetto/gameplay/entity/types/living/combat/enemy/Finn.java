@@ -1,24 +1,24 @@
 package progetto.gameplay.entity.types.living.combat.enemy;
 
-import progetto.gameplay.entity.behaviors.states.StatesEnemy;
+import progetto.gameplay.entity.statemachines.StatesEnemy;
 import progetto.gameplay.entity.skills.boss.LichFireball;
 import progetto.gameplay.entity.skills.enemy.EnemySwordAttack;
 import progetto.gameplay.entity.types.EntityConfig;
 import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.manager.ManagerEntity;
-import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.entity.EntityManager;
+import progetto.gameplay.manager.WorldManager;
 
 public final class Finn extends Enemy {
 
     // === COSTRUTTORI ===
 
     // Costruttore con EnemyInstance
-    public Finn(EnemyInstance instance, ManagerEntity manager) {
+    public Finn(EnemyInstance instance, EntityManager manager) {
         super(instance, manager);
     }
 
     // Costruttore con EntityConfig
-    public Finn(EntityConfig config, ManagerEntity manager, Float attackcooldown) {
+    public Finn(EntityConfig config, EntityManager manager, Float attackcooldown) {
         super(config, manager, attackcooldown);
     }
 
@@ -49,8 +49,8 @@ public final class Finn extends Enemy {
         manager.remove(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
-        ManagerWorld.destroyBody(getPhysics().getBody());
-        ManagerWorld.destroyBody(getDirectionalRange());
+        WorldManager.destroyBody(getPhysics().getBody());
+        WorldManager.destroyBody(getDirectionalRange());
 
         return new EnemyInstance(this);
     }

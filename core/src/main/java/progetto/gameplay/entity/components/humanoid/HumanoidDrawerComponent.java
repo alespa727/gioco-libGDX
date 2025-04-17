@@ -6,9 +6,9 @@ import progetto.gameplay.entity.components.Component;
 import progetto.gameplay.entity.types.living.Humanoid;
 
 public class HumanoidDrawerComponent extends Component {
-    Humanoid entity;
-    SpriteBatch batch;
-    float tempoTrascorso;
+    private final Humanoid entity;
+    private SpriteBatch batch;
+    private float tempoTrascorso;
 
     public HumanoidDrawerComponent(Humanoid entity) {
         this.entity = entity;
@@ -18,6 +18,7 @@ public class HumanoidDrawerComponent extends Component {
         this.batch = batch;
         this.tempoTrascorso = tempoTrascorso;
     }
+
     public void update() {
         if (batch==null) return;
         batch.setColor(entity.color);

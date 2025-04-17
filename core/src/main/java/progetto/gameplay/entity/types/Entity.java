@@ -12,8 +12,7 @@ import progetto.gameplay.entity.components.entity.DirectionComponent;
 import progetto.gameplay.entity.components.entity.NodeTrackerComponent;
 import progetto.gameplay.entity.components.entity.PhysicsComponent;
 import progetto.gameplay.entity.components.entity.StateComponent;
-import progetto.gameplay.entity.types.living.HumanoidTextures;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.manager.entity.EntityManager;
 
 /**
  * Classe base per ogni entità del gioco (giocatori, nemici, boss, ecc.).
@@ -21,8 +20,8 @@ import progetto.gameplay.manager.ManagerEntity;
  */
 public abstract class Entity {
 
-    /** Gestore generale delle entità (dove è registrata questa entità). {@link ManagerEntity} */
-    public final ManagerEntity manager;
+    /** Gestore generale delle entità (dove è registrata questa entità). {@link EntityManager} */
+    public final EntityManager manager;
 
     /** Configurazione iniziale dell'entità. {@link EntityConfig} */
     private final EntityConfig config;
@@ -31,17 +30,17 @@ public abstract class Entity {
     public Color color;
     private final ArrayMap<Class<? extends Component>, Component> components;
     private boolean awake = true;
-    private final HumanoidTextures textures;       // Gestisce immagini e animazioni
+    private final GenericEntityTextures textures;       // Gestisce immagini e animazioni
 
     /**
      * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).
      * @param instance l'entità salvata {@link EntityInstance}
-     * @param manager il gestore delle entità {@link ManagerEntity}
+     * @param manager il gestore delle entità {@link EntityManager}
      */
-    public Entity(EntityInstance instance, ManagerEntity manager) {
+    public Entity(EntityInstance instance, EntityManager manager) {
         this.config = instance.config;
         this.manager = manager;
-        this.textures = new HumanoidTextures(config.img);
+        this.textures = new GenericEntityTextures(config.img);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
@@ -56,12 +55,12 @@ public abstract class Entity {
     /**
      * Crea un'entità a partire da una configurazione personalizzata.
      * @param config configurazione dell'entità {@link EntityConfig}
-     * @param manager il gestore delle entità {@link ManagerEntity}
+     * @param manager il gestore delle entità {@link EntityManager}
      */
-    public Entity(EntityConfig config, ManagerEntity manager) {
+    public Entity(EntityConfig config, EntityManager manager) {
         this.config = config;
         this.manager = manager;
-        this.textures = new HumanoidTextures(config.img);
+        this.textures = new GenericEntityTextures(config.img);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
@@ -196,9 +195,9 @@ public abstract class Entity {
 
     /**
      * Restituisce le texture e animazioni associate.
-     * @return immagini {@link HumanoidTextures}
+     * @return immagini {@link GenericEntityTextures}
      */
-    public HumanoidTextures getTextures() {
+    public GenericEntityTextures getTextures() {
         return textures;
     }
 

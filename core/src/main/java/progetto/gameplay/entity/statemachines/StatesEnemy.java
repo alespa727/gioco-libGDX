@@ -1,17 +1,10 @@
-package progetto.gameplay.entity.behaviors.states;
+package progetto.gameplay.entity.statemachines;
 
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
-import progetto.gameplay.entity.components.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
-import progetto.gameplay.manager.ManagerEntity;
-import progetto.gameplay.manager.ManagerWorld;
-import progetto.gameplay.map.Map;
 import progetto.gameplay.player.Player;
 
 public enum StatesEnemy implements State<Enemy> {
@@ -138,12 +131,11 @@ public enum StatesEnemy implements State<Enemy> {
     CHOOSE_STATE {
         @Override
         public void enter(Enemy entity) {
-
         }
 
         @Override
         public void update(Enemy entity) {
-            if(Map.isGraphLoaded) entity.searchPath(entity.manager.player());
+            entity.searchPathIdle(entity.manager.player());
             if(!entity.getPathFinder().success){
                 entity.getStateMachine().changeState(StatesEnemy.PATROLLING);
                 return;

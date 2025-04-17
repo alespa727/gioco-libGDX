@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.manager.ManagerWorld;
+import progetto.gameplay.manager.WorldManager;
 
 /**
  * Evento nella mappa
@@ -96,6 +96,6 @@ public abstract class MapEvent {
      * Rimuove l'evento
      */
     public void destroy() {
-        ManagerWorld.destroyBody(body);
+        WorldManager.destroyBody(body);
     }
 }

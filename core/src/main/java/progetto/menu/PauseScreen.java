@@ -22,7 +22,7 @@ import progetto.Core;
 import progetto.CoreConfig;
 import progetto.gameplay.GameScreen;
 import progetto.gameplay.entity.components.entity.Cooldown;
-import progetto.gameplay.manager.ManagerCamera;
+import progetto.gameplay.manager.CameraManager;
 import progetto.utils.shaders.ColorFilter;
 
 public class PauseScreen implements Screen {
@@ -61,7 +61,7 @@ public class PauseScreen implements Screen {
         viewport = gameScreen.viewport;
 
         stage = new Stage(new ScreenViewport());
-        viewport.setCamera(ManagerCamera.getInstance());
+        viewport.setCamera(CameraManager.getInstance());
         viewport.apply(false);
         Gdx.input.setInputProcessor(stage);
         root = new Table();
@@ -121,7 +121,7 @@ public class PauseScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        corners = ManagerCamera.getFrustumCorners();
+        corners = CameraManager.getFrustumCorners();
         drawBackground(delta);
     }
 
@@ -150,8 +150,8 @@ public class PauseScreen implements Screen {
 
         if (resume.isReady) {
             game.setScreen(gameScreen);
-            ManagerCamera.getInstance().position.set(gameScreen.getEntityManager().player().getPosition(), 0);
-            ManagerCamera.getInstance().update();
+            CameraManager.getInstance().position.set(gameScreen.getEntityManager().player().getPosition(), 0);
+            CameraManager.getInstance().update();
             resumeRequest = false;
             Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
         }
