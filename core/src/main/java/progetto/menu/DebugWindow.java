@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import progetto.gameplay.GameScreen;
-import progetto.gameplay.map.Map;
-import progetto.utils.TerminalCommand;
+import progetto.screens.GameScreen;
+import progetto.gameplay.world.Map;
+import progetto.manager.input.TerminalCommand;
 
 public class DebugWindow extends Window {
 

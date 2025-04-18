@@ -2,17 +2,17 @@ package progetto.factories;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import progetto.Core;
-import progetto.gameplay.entity.types.Entity;
-import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.entity.types.living.HumanoidInstances;
-import progetto.gameplay.entity.types.living.combat.boss.Boss;
-import progetto.gameplay.entity.types.living.combat.boss.Lich;
-import progetto.gameplay.entity.types.living.combat.enemy.Enemy;
-import progetto.gameplay.entity.types.living.combat.enemy.EnemyInstance;
-import progetto.gameplay.entity.types.living.combat.enemy.Finn;
-import progetto.gameplay.entity.types.notliving.Bullet;
-import progetto.gameplay.manager.entity.EntityManager;
+import progetto.core.Core;
+import progetto.entity.specific.base.Entity;
+import progetto.entity.specific.base.EntityConfig;
+import progetto.entity.specific.specific.living.HumanoidInstances;
+import progetto.entity.specific.specific.living.combat.boss.Boss;
+import progetto.entity.specific.specific.living.combat.boss.Lich;
+import progetto.entity.specific.specific.living.combat.enemy.Enemy;
+import progetto.entity.specific.specific.living.combat.enemy.EnemyInstance;
+import progetto.entity.specific.specific.living.combat.enemy.Finn;
+import progetto.entity.specific.specific.notliving.Bullet;
+import progetto.rendering.entity.EntityManager;
 
 public class EntityFactory {
     public static Enemy createEnemy(String type, EntityConfig config, EntityManager manager, float attackCooldown) {
