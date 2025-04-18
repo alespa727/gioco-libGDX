@@ -105,7 +105,6 @@ public class PauseScreen implements Screen {
 
 
         table.add(table1).pad(20).fill().expand();
-        Gdx.graphics.setForegroundFPS(60);
 
         System.out.println("PauseScreen loaded");
         resumeRequest = false;
