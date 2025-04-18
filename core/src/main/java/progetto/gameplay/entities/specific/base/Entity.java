@@ -7,15 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
-import org.w3c.dom.Text;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.IteratableComponent;
 import progetto.gameplay.entities.components.specific.entity.DirectionComponent;
 import progetto.gameplay.entities.components.specific.entity.NodeTrackerComponent;
 import progetto.gameplay.entities.components.specific.entity.PhysicsComponent;
 import progetto.gameplay.entities.components.specific.entity.StateComponent;
-import progetto.graphics.CustomAnimation;
-import progetto.graphics.DefaultAnimationSet;
+import progetto.graphics.animations.CustomAnimation;
+import progetto.graphics.animations.DefaultAnimationSet;
 import progetto.manager.entities.EntityManager;
 
 /**
@@ -32,9 +31,15 @@ public abstract class Entity {
 
     // Componenti principali dell'entità
     public Color color;
-    private final ArrayMap<Class<? extends Component>, Component> components;
+
     private boolean awake = true;
-    private final CustomAnimation textures;       // Gestisce immagini e animazioni
+
+    /**
+     * Gestione delle animazioni
+     */
+    private final CustomAnimation textures;
+
+    private final ArrayMap<Class<? extends Component>, Component> components;
 
     /**
      * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).

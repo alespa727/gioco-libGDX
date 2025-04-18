@@ -27,9 +27,9 @@ import progetto.gameplay.player.Player;
 import progetto.gameplay.player.inventory.Inventory;
 import progetto.screens.DefeatScreen;
 import progetto.statemachines.ManagerGame;
-import progetto.graphics.shaders.ColorFilter;
-import progetto.graphics.shaders.PlayerLight;
-import progetto.graphics.shaders.Vignette;
+import progetto.graphics.shaders.specific.ColorFilter;
+import progetto.graphics.shaders.specific.PlayerLight;
+import progetto.graphics.shaders.specific.Vignette;
 
 public class GameScreen implements Screen {
 

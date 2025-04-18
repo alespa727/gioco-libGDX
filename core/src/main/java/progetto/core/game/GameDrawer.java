@@ -2,7 +2,7 @@ package progetto.core.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import progetto.graphics.shaders.Shader;
+import progetto.graphics.shaders.base.Shader;
 
 public class GameDrawer {
     private final Array<Shader> shaders;

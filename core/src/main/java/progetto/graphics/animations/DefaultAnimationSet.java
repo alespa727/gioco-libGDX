@@ -1,4 +1,4 @@
-package progetto.graphics;
+package progetto.graphics.animations;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;

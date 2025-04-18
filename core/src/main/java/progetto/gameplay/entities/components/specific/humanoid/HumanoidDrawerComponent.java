@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
-import progetto.graphics.shaders.Flash;
+import progetto.graphics.shaders.specific.Flash;
 
 public class HumanoidDrawerComponent extends Component {
     private final Humanoid entity;

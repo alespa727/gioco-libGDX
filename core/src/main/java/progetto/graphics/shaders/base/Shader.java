@@ -1,4 +1,4 @@
-package progetto.graphics.shaders;
+package progetto.graphics.shaders.base;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;

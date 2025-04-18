@@ -1,4 +1,4 @@
-package progetto.graphics;
+package progetto.graphics.shaders.base;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.utils.ArrayMap;

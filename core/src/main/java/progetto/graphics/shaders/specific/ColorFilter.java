@@ -1,4 +1,4 @@
-package progetto.graphics.shaders;
+package progetto.graphics.shaders.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import progetto.gameplay.player.ManagerCamera;
+import progetto.graphics.shaders.base.Shader;
 
-public class ColorFilter extends Shader{
+public class ColorFilter extends Shader {
     private static ColorFilter instance;
 
     public final Color color;

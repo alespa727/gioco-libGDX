@@ -1,4 +1,4 @@
-package progetto.graphics.shaders;
+package progetto.graphics.shaders.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -12,8 +12,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.player.ManagerCamera;
+import progetto.graphics.shaders.base.Shader;
 
-public class PlayerLight extends Shader{
+public class PlayerLight extends Shader {
 
     private static PlayerLight instance;
     private final Vector2 position;

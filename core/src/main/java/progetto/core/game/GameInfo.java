@@ -12,10 +12,4 @@ public class GameInfo {
 
     public GameInfo() {}
 
-    public GameInfo(Core core, GameScreen screen, EntityManager entityManager, MapManager mapManager) {
-        this.core = core;
-        this.screen = screen;
-        this.entityManager = entityManager;
-        this.mapManager = mapManager;
-    }
 }

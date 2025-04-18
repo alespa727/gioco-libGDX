@@ -1,4 +1,4 @@
-package progetto.graphics.shaders;
+package progetto.graphics.shaders.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

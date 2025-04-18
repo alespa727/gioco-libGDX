@@ -10,5 +10,4 @@ public class GameInstance {
 
     Array<EntityInstance> entities;
     int map;
-
 }
