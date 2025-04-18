@@ -16,10 +16,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.player.ManagerCamera;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 import progetto.manager.world.WorldManager;
-import progetto.gameplay.world.events.ChangeMapEvent;
-import progetto.gameplay.world.events.MapEvent;
+import progetto.gameplay.world.events.specific.ChangeMapEvent;
+import progetto.gameplay.world.events.base.MapEvent;
 import progetto.gameplay.world.graph.GameGraph;
 import progetto.manager.world.MapManager;
 
@@ -38,13 +38,13 @@ public class Map implements Disposable {
     private final MapLayer eventLayer;
     private final MapLayer customCollisionLayer;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final EntityManager entityManager;
+    private final Engine engine;
     private final MapManager mapManager;
 
     private final Array<MapEvent> events;
 
     /* Creazione nuova mappa */
-    public Map(String name, EntityManager manager, MapManager mapManager, float x, float y) {
+    public Map(String name, Engine manager, MapManager mapManager, float x, float y) {
 
         this.nome = name;
 
@@ -61,15 +61,15 @@ public class Map implements Disposable {
         events = new Array<>(); // Array di eventi
 
         this.mapManager = mapManager;
-        this.entityManager = manager;
+        this.engine = manager;
 
         this.collisionLayer = (TiledMapTileLayer) map.getLayers().get("collisioni"); // Layer collisioni
         this.customCollisionLayer = map.getLayers().get("collisionobjects");
 
         this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
 
-        Gdx.app.postRunnable(() -> entityManager.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
-        ManagerCamera.getInstance().position.set(entityManager.player().getPosition(), 0);
+        Gdx.app.postRunnable(() -> engine.player().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+        ManagerCamera.getInstance().position.set(engine.player().getPosition(), 0);
         ManagerCamera.getInstance().update();
 
         // Salvataggio grandezza mappa
@@ -156,7 +156,7 @@ public class Map implements Disposable {
                 Shape boxShape = BodyFactory.createPolygonShape(width/2, height/2);
 
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
-                fixtureDef.filter.groupIndex = EntityManager.WALL;
+                fixtureDef.filter.groupIndex = Engine.WALL;
 
                 BodyFactory.createBody("map", bodyDef, fixtureDef);
             }

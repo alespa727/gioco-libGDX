@@ -16,7 +16,7 @@ import progetto.core.Core;
 import progetto.core.Gui;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.world.Map;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 import progetto.manager.input.DebugWindow;
 import progetto.manager.input.TerminalCommand;
 import progetto.manager.world.MapManager;
@@ -120,8 +120,8 @@ public class GameScreen implements Screen {
 
     private void initializeGameObjects() {
         if (!loaded) {
-            info.entityManager = new EntityManager(this.info);
-            info.mapManager = new MapManager(viewport, this.info.entityManager, 1);
+            info.engine = new Engine(this.info);
+            info.mapManager = new MapManager(viewport, this.info.engine, 1);
             loaded = true;
             drawer.addShader(Vignette.getInstance());
             drawer.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
@@ -167,7 +167,7 @@ public class GameScreen implements Screen {
     }
 
     private void checkPlayerDeath() {
-        Player player = this.info.entityManager.player();
+        Player player = this.info.engine.player();
         if (!player.getState().isAlive()) {
             info.core.setScreen(new DefeatScreen(info.core));
         }
@@ -262,8 +262,8 @@ public class GameScreen implements Screen {
     }
 
     // Getter per variabili principali
-    public EntityManager getEntityManager() {
-        return this.info.entityManager;
+    public Engine getEntityManager() {
+        return this.info.engine;
     }
 
     public MapManager getMapManager() {
@@ -318,7 +318,7 @@ public class GameScreen implements Screen {
      */
     public void updateCamera(boolean boundaries) {
         // Aggiorna la posizione della telecamera
-        ManagerCamera.update(info.entityManager, viewport, time.delta, false);
+        ManagerCamera.update(info.engine, viewport, time.delta, false);
 
         this.info.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
         this.info.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);

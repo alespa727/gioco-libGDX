@@ -14,7 +14,7 @@ import progetto.gameplay.entities.components.specific.base.NodeTrackerComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 import progetto.manager.world.WorldManager;
 
 /**
@@ -39,23 +39,23 @@ public class Bullet extends GameObject{
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config configurazione dell'entità ({@link EntityConfig})
-     * @param manager gestore delle entità nel gioco ({@link EntityManager})
+     * @param manager gestore delle entità nel gioco ({@link Engine})
      * @param radius raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage danno inflitto dal proiettile
      * @param target entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, EntityManager manager, float radius, float velocity, float damage, Entity target) {
+    public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager);
         this.target = target.getClass();
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
-        addComponent(new BulletComponent(damage, velocity, radius));
-        getComponent(NodeTrackerComponent.class).setAwake(false);
-        addComponent(new Cooldown(2));
-        getComponent(Cooldown.class).reset();
-        getComponent(Cooldown.class).setAwake(false);
+        componentManager.add(new BulletComponent(damage, velocity, radius));
+        componentManager.get(NodeTrackerComponent.class).setAwake(false);
+        componentManager.add(new Cooldown(2));
+        componentManager.get(Cooldown.class).reset();
+        componentManager.get(Cooldown.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
         effect.scaleEffect(getConfig().radius/2);
@@ -67,23 +67,23 @@ public class Bullet extends GameObject{
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config configurazione dell'entità ({@link EntityConfig})
-     * @param manager gestore delle entità nel gioco ({@link EntityManager})
+     * @param manager gestore delle entità nel gioco ({@link Engine})
      * @param radius raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage danno inflitto dal proiettile
      * @param target classe dell'entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, EntityManager manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
+    public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
         super(config, manager);
         this.target = target;
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
-        addComponent(new BulletComponent(damage, velocity, radius));
-        getComponent(NodeTrackerComponent.class).setAwake(false);
-        addComponent(new Cooldown(2));
-        getComponent(Cooldown.class).reset();
-        getComponent(Cooldown.class).setAwake(false);
+        componentManager.add(new BulletComponent(damage, velocity, radius));
+        componentManager.get(NodeTrackerComponent.class).setAwake(false);
+        componentManager.add(new Cooldown(2));
+        componentManager.get(Cooldown.class).reset();
+        componentManager.get(Cooldown.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
         effect.scaleEffect(getConfig().radius/2);
@@ -96,8 +96,8 @@ public class Bullet extends GameObject{
      * @param time durata del cooldown in secondi
      */
     public void startCooldown(float time) {
-        getComponent(Cooldown.class).reset(time);
-        getComponent(Cooldown.class).setAwake(true);
+        componentManager.get(Cooldown.class).reset(time);
+        componentManager.get(Cooldown.class).setAwake(true);
     }
 
     /**
@@ -118,7 +118,7 @@ public class Bullet extends GameObject{
      */
     @Override
     public void updateEntity(float delta) {
-        Cooldown cooldown = getComponent(Cooldown.class);
+        Cooldown cooldown = componentManager.get(Cooldown.class);
         if (cooldown.isReady) {
             cooldown.isReady = false;
             despawn();
@@ -147,7 +147,7 @@ public class Bullet extends GameObject{
         }
         setColor(Color.BLACK);
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
-        getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(getComponent(BulletComponent.class).velocity)); // Imposta la velocità
+        getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(componentManager.get(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
         getPhysics().getBody().setUserData(this); // Associa il proiettile al corpo fisico
     }
@@ -188,7 +188,7 @@ public class Bullet extends GameObject{
         effect.setPosition(getPosition().x, getPosition().y); // o qualsiasi posizione iniziale
         effect.update(manager.delta);
         effect.draw(batch);
-        float radius = getComponent(BulletComponent.class).radius;
+        float radius = componentManager.get(BulletComponent.class).radius;
         Sprite sprite = new Sprite(texture); // Crea uno sprite per il proiettile
         sprite.setColor(color);
         sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio

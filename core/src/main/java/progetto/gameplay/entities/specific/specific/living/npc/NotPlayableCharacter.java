@@ -7,7 +7,7 @@ import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.entities.specific.specific.living.HumanoidInstances;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 import progetto.manager.world.WorldManager;
 import progetto.manager.input.TerminalCommand;
 
@@ -20,13 +20,13 @@ public abstract class NotPlayableCharacter extends Humanoid {
     private boolean listenerAggiunto = false;
     private boolean isTyping = false;
 
-    public NotPlayableCharacter(HumanoidInstances instance, EntityManager entityManager, String[] dialoghi, WindowDialogo windowDialogo) {
-        super(instance, entityManager);
+    public NotPlayableCharacter(HumanoidInstances instance, Engine engine, String[] dialoghi, WindowDialogo windowDialogo) {
+        super(instance, engine);
         this.dialoghi = dialoghi;
         this.windowDialogo = windowDialogo;
     }
 
-    public NotPlayableCharacter(EntityConfig config, EntityManager manager, String[] dialoghi, WindowDialogo windowDialogo) {
+    public NotPlayableCharacter(EntityConfig config, Engine manager, String[] dialoghi, WindowDialogo windowDialogo) {
         super(config, manager);
         this.dialoghi = dialoghi;
         this.windowDialogo = windowDialogo;

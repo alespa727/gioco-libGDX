@@ -1,17 +1,18 @@
-package progetto.gameplay.world.events;
+package progetto.gameplay.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
-import progetto.manager.entities.EntityManager;
+import progetto.gameplay.world.events.base.MapEvent;
+import progetto.manager.entities.Engine;
 
 /**
  * Evento di spawn di un {@link Enemy}
  */
-public class SpawnEnemyEvent extends MapEvent{
-    private final EntityManager entityManager;
+public class SpawnEnemyEvent extends MapEvent {
+    private final Engine engine;
     private final String type;
 
     /**
@@ -21,12 +22,12 @@ public class SpawnEnemyEvent extends MapEvent{
      * </p>
      * @param position posizione centrale dell’evento
      * @param radius raggio entro cui l’evento può attivarsi
-     * @param entityManager gestore entità
+     * @param engine gestore entità
      * @param enemyType tipo di nemico
      */
-    public SpawnEnemyEvent(Vector2 position, float radius, EntityManager entityManager, String enemyType) {
+    public SpawnEnemyEvent(Vector2 position, float radius, Engine engine, String enemyType) {
         super(position, radius);
-        this.entityManager = entityManager;
+        this.engine = engine;
         this.type = enemyType;
         this.trigger(null);
         this.destroy();
@@ -39,10 +40,10 @@ public class SpawnEnemyEvent extends MapEvent{
 
     @Override
     public void trigger(Entity entity) {
-        entityManager.summon(EntityFactory.createEnemy(
+        engine.summon(EntityFactory.createEnemy(
             type,
-            EntityConfigFactory.createEntityConfig(type, entityManager.getIdCount(), position.x,  position.y),
-            entityManager,
+            EntityConfigFactory.createEntityConfig(type, engine.getIdCount(), position.x,  position.y),
+            engine,
             1.5f
         ));
     }

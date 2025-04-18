@@ -11,18 +11,22 @@ import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.gameplay.entities.specific.specific.living.combat.boss.BossInstance;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.EnemyInstance;
+import progetto.gameplay.entities.systems.base.System;
+import progetto.gameplay.entities.systems.specific.DeathSystem;
 import progetto.gameplay.player.Player;
 import progetto.core.game.GameInfo;
 import progetto.manager.input.TerminalCommand;
 import progetto.gameplay.player.PlayerManager;
 
-public final class EntityManager {
+public final class Engine {
 
     public final GameInfo info;
     private final EntityLifeCycleManager lifeCycleManager;
-    private final PlayerManager playerManager;
     private final EntityRenderer renderer;
 
+    public Array<System> systems;
+
+    private final PlayerManager playerManager;
     private final Array<Entity> entities;
     private final Queue<Entity> queue;
 
@@ -36,7 +40,7 @@ public final class EntityManager {
     /**
      * @param info informazioni del gioco
      */
-    public EntityManager(GameInfo info) {
+    public Engine(GameInfo info) {
         this.lifeCycleManager = new EntityLifeCycleManager(this);
         this.info = info;
         this.entities = new Array<>();
@@ -53,6 +57,10 @@ public final class EntityManager {
         }
 
         this.renderer = new EntityRenderer(this);
+        System[] systems = new System[]{
+            new DeathSystem(),
+        };
+        this.systems = new Array<>(systems);
     }
 
     public int getIdCount(){
@@ -144,7 +152,14 @@ public final class EntityManager {
     public void render(float delta) {
         this.delta = delta;
         this.elapsedTime += delta;
+        updateSystems();
         renderer.updateEntities();
+    }
+
+    public void updateSystems(){
+        for (System s : systems) {
+            if (s.isActive()) s.update(delta, entities);
+        }
     }
 
     /**

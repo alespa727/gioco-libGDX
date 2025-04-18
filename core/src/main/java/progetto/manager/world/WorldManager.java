@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.gameplay.world.events.MapEvent;
+import progetto.gameplay.world.events.base.MapEvent;
 
 public class WorldManager {
     private static World instance;

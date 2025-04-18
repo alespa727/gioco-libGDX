@@ -5,7 +5,7 @@ import progetto.gameplay.entities.skills.specific.boss.LichFireball;
 import progetto.gameplay.entities.skills.specific.enemy.EnemySwordAttack;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 import progetto.manager.world.WorldManager;
 
 public final class Finn extends Enemy {
@@ -13,12 +13,12 @@ public final class Finn extends Enemy {
     // === COSTRUTTORI ===
 
     // Costruttore con EnemyInstance
-    public Finn(EnemyInstance instance, EntityManager manager) {
+    public Finn(EnemyInstance instance, Engine manager) {
         super(instance, manager);
     }
 
     // Costruttore con EntityConfig
-    public Finn(EntityConfig config, EntityManager manager, Float attackcooldown) {
+    public Finn(EntityConfig config, Engine manager, Float attackcooldown) {
         super(config, manager, attackcooldown);
     }
 

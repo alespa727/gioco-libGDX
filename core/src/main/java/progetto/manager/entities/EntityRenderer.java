@@ -17,7 +17,7 @@ import java.util.Comparator;
 
 public class EntityRenderer {
     final GameInfo info;
-    final EntityManager entityManager;
+    final Engine engine;
     final Comparator<Entity> comparator;
     final Array<Entity> entities;
     final Queue<Entity> queue;
@@ -27,17 +27,17 @@ public class EntityRenderer {
 
     /**
      * Costruttore
-     * @param entityManager manager delle entità
+     * @param engine manager delle entità
      */
-    public EntityRenderer(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public EntityRenderer(Engine engine) {
+        this.engine = engine;
         comparator = (o1, o2) -> {
             if (o2.getZ() != o1.getZ()) {
                 return Integer.compare(o1.getZ(), o2.getZ());
             }
             return Float.compare(o2.getPosition().y, o1.getPosition().y);
         };
-        info = entityManager.info;
+        info = engine.info;
         queue = getEntityQueue();
         entities = getEntities();
     }
@@ -46,8 +46,8 @@ public class EntityRenderer {
      * Processa la coda e aggiorna le entità
      */
     public void updateEntities() {
-        this.deltaTime = entityManager.delta;
-        this.elapsedTime = entityManager.elapsedTime;
+        this.deltaTime = engine.delta;
+        this.elapsedTime = engine.elapsedTime;
         processQueue();
         updateEntityLogic();
     }
@@ -119,14 +119,14 @@ public class EntityRenderer {
             for (Entity e : entities) {
                 if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
                     e.render(this.deltaTime);
-                    e.updateComponents(this.deltaTime);
+                    e.componentManager(this.deltaTime);
                     e.setShouldRender(true);
                 } else e.setShouldRender(false);
             }
         }else{
-            entityManager.player().render(this.deltaTime);
-            entityManager.player().updateComponents(this.deltaTime);
-            entityManager.player().setShouldRender(true);
+            engine.player().render(this.deltaTime);
+            engine.player().componentManager(this.deltaTime);
+            engine.player().setShouldRender(true);
         }
     }
 
@@ -150,13 +150,13 @@ public class EntityRenderer {
      * @return array di entità
      */
     public Array<Entity> getEntities() {
-        return entityManager.getEntities();
+        return engine.getEntities();
     }
 
     /**
      * @return coda di entità da evocare
      */
     public Queue<Entity> getEntityQueue() {
-        return entityManager.getQueue();
+        return engine.getQueue();
     }
 }

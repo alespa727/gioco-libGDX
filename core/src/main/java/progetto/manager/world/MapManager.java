@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.gameplay.world.Map;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 import java.util.HashMap;
 
@@ -21,7 +21,7 @@ public class MapManager {
     // Mappa default
     private final int defaultMap = 0;
     // Reference utili
-    private final EntityManager entityManager;
+    private final Engine engine;
     private final FitViewport viewport;
     // Mappa attuale
     private Map currentMap;
@@ -33,9 +33,9 @@ public class MapManager {
     /**
      * Creazione manager delle mappe
      */
-    public MapManager(FitViewport viewport, EntityManager manager, int startingMap) {
+    public MapManager(FitViewport viewport, Engine manager, int startingMap) {
         // Inizializzazione
-        this.entityManager = manager;
+        this.engine = manager;
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
@@ -59,7 +59,7 @@ public class MapManager {
         currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, entityManager, this, x, y);
+        currentMap = new Map(nome, engine, this, x, y);
         currentMap.createCollision();
 
         loadMapEntities();
@@ -106,7 +106,7 @@ public class MapManager {
                 EntityInstance instance = loadedInstances.get(i);
                 instance.loadTexture();
             }
-            entityManager.summon(loadedInstances);
+            engine.summon(loadedInstances);
         }
     }
 
@@ -120,7 +120,7 @@ public class MapManager {
         if (mapEntityInstances.get(currentMap.nome) != null)
             mapEntityInstances.get(currentMap.nome).clear();
 
-        Array<EntityInstance> instances = entityManager.clear();
+        Array<EntityInstance> instances = engine.clear();
         mapEntityInstances.put(currentMap.nome, instances); // Salva nella mappa
 
         String string = json.prettyPrint(instances); // Serializzazione ben formattata

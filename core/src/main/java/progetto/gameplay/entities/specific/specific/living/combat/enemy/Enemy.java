@@ -4,12 +4,12 @@ import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Array;
 import progetto.statemachines.StatesEnemy;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.humanoid.CheckDeathComponent;
+import progetto.gameplay.entities.components.specific.humanoid.DeathComponent;
 import progetto.gameplay.entities.components.specific.warrior.AttackCooldown;
 import progetto.gameplay.entities.skills.specific.enemy.EnemySwordAttack;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 public abstract class Enemy extends Warrior {
 
@@ -22,13 +22,13 @@ public abstract class Enemy extends Warrior {
     public DefaultStateMachine<Enemy, StatesEnemy> statemachine;
 
     // === COSTRUTTORI ===
-    public Enemy(EnemyInstance instance, EntityManager manager) {
+    public Enemy(EnemyInstance instance, Engine manager) {
         super(instance, manager);
         viewDistance = instance.viewDistance;
         pursueMaxDistance = instance.pursueMaxDistance;
     }
 
-    public Enemy(EntityConfig config, EntityManager manager, float attackcooldown) {
+    public Enemy(EntityConfig config, Engine manager, float attackcooldown) {
         super(config, manager);
         viewDistance = 11f;
         pursueMaxDistance = 12f;
@@ -39,8 +39,8 @@ public abstract class Enemy extends Warrior {
         super.create();
         statemachine = new DefaultStateMachine<>(this);
         statemachine.setInitialState(StatesEnemy.PATROLLING);
-        addComponent(new CheckDeathComponent(this));
-        addComponent(new AttackCooldown(1.5f));
+        componentManager.add(new DeathComponent());
+        componentManager.add(new AttackCooldown(1.5f));
         getAttackCooldown().reset();
 
 
@@ -49,7 +49,7 @@ public abstract class Enemy extends Warrior {
     }
 
     public Cooldown getAttackCooldown(){
-        return getComponent(AttackCooldown.class);
+        return componentManager.get(AttackCooldown.class);
     }
 
     // === METODI DI ACCESSO ===

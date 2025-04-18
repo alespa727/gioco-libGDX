@@ -3,20 +3,20 @@ package progetto.gameplay.player;
 import progetto.factories.EntityConfigFactory;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.manager.entities.EntityLifeCycleManager;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 public class PlayerManager {
 
-    final EntityManager entityManager;
+    final Engine engine;
     final EntityLifeCycleManager lifeCycleManager;
 
     private final Player player;
 
-    public PlayerManager(EntityManager entityManager, EntityLifeCycleManager lifeCycleManager) {
-        this.entityManager = entityManager;
+    public PlayerManager(Engine engine, EntityLifeCycleManager lifeCycleManager) {
+        this.engine = engine;
         this.lifeCycleManager = lifeCycleManager;
         EntityConfig p = EntityConfigFactory.createPlayerConfig();
-        player = new Player(p, entityManager);
+        player = new Player(p, engine);
     }
 
     /**

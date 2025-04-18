@@ -9,15 +9,15 @@ import progetto.core.game.GameInfo;
 
 public class EntityLifeCycleManager {
     final GameInfo info;
-    final EntityManager entityManager;
+    final Engine engine;
     Array<Entity> entities;
     Queue<Entity> queue;
 
     Array<EntityInstance> instances;
 
-    public EntityLifeCycleManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        info = entityManager.info;
+    public EntityLifeCycleManager(Engine engine) {
+        this.engine = engine;
+        info = engine.info;
         queue = getEntityQueue();
         entities = getEntities();
     }
@@ -26,7 +26,7 @@ public class EntityLifeCycleManager {
         queue = getEntityQueue();
         entities = getEntities();
         instances = new Array<>();
-        Player player = entityManager.player();
+        Player player = engine.player();
         entities.removeValue(player, false);
         if (queue.size > 0) {
             queue.clear();
@@ -51,10 +51,10 @@ public class EntityLifeCycleManager {
     }
 
     public Array<Entity> getEntities() {
-        return entityManager.getEntities();
+        return engine.getEntities();
     }
 
     public Queue<Entity> getEntityQueue() {
-        return entityManager.getQueue();
+        return engine.getQueue();
     }
 }

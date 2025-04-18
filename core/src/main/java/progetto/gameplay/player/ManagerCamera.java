@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.world.Map;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 public class ManagerCamera {
     private static OrthographicCamera camera;
@@ -72,7 +72,7 @@ public class ManagerCamera {
      * aggiorna cosa la telecamera deve seguire/modalità della telecamera
      */
 
-    public static void update(EntityManager entities, FitViewport viewport, float delta, boolean boundaries) {
+    public static void update(Engine entities, FitViewport viewport, float delta, boolean boundaries) {
 
         float x = camera.viewportWidth / 2;
         float y = camera.viewportHeight / 2;
