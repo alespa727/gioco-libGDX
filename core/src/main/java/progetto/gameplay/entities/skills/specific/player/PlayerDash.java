@@ -2,7 +2,7 @@ package progetto.gameplay.entities.skills.specific.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.skills.base.Skill;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.Player;

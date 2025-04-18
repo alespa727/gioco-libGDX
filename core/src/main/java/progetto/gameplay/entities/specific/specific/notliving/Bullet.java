@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
 import progetto.gameplay.entities.components.specific.bullet.BulletComponent;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
-import progetto.gameplay.entities.components.specific.entity.NodeTrackerComponent;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
+import progetto.gameplay.entities.components.specific.base.NodeTrackerComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
@@ -22,7 +22,7 @@ import progetto.manager.world.WorldManager;
  * Il proiettile ha una velocità, danno e raggio specifici.
  * Una volta lanciato, si muove in una direzione e può causare danni agli oggetti con cui entra in collisione.
  */
-public class Bullet extends Entity {
+public class Bullet extends GameObject{
 
     // === Attributi specifici ===
     /** Classe del target, ovvero l'entità che avrà collisione con il proiettile ({@link Entity}) */

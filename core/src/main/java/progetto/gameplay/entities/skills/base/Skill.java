@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 
 public abstract class Skill {

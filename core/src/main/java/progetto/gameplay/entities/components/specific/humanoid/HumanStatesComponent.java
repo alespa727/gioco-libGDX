@@ -1,7 +1,7 @@
 package progetto.gameplay.entities.components.specific.humanoid;
 
 import progetto.gameplay.entities.components.base.IteratableComponent;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 
 public class HumanStatesComponent extends IteratableComponent {

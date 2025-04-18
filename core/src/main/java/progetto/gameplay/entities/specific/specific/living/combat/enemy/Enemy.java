@@ -3,7 +3,7 @@ package progetto.gameplay.entities.specific.specific.living.combat.enemy;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Array;
 import progetto.statemachines.StatesEnemy;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.components.specific.humanoid.CheckDeathComponent;
 import progetto.gameplay.entities.components.specific.warrior.AttackCooldown;
 import progetto.gameplay.entities.skills.specific.enemy.EnemySwordAttack;

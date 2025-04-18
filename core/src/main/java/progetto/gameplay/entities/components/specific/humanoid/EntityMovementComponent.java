@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.components.base.IteratableComponent;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.world.Map;
 import progetto.gameplay.world.graph.node.Node;

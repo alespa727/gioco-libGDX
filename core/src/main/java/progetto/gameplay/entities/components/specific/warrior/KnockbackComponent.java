@@ -2,7 +2,7 @@ package progetto.gameplay.entities.components.specific.warrior;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import progetto.gameplay.entities.components.base.IteratableComponent;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 
 public class KnockbackComponent extends IteratableComponent {

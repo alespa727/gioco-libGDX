@@ -1,6 +1,6 @@
 package progetto.gameplay.entities.components.specific.player;
 
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 
 public class DashCooldown extends Cooldown{
     /**

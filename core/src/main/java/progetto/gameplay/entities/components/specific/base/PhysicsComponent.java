@@ -1,4 +1,4 @@
-package progetto.gameplay.entities.components.specific.entity;
+package progetto.gameplay.entities.components.specific.base;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;

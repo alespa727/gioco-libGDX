@@ -2,7 +2,7 @@ package progetto.gameplay.entities.specific.specific.living.combat.boss;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import progetto.statemachines.StatesLich;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.components.specific.humanoid.CheckDeathComponent;
 import progetto.gameplay.entities.skills.specific.boss.LichFireDomain;
 import progetto.gameplay.entities.skills.specific.boss.LichFireball;

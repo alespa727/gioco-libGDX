@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.Core;
 import progetto.core.CoreConfig;
 import progetto.core.game.GameScreen;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.player.ManagerCamera;
 import progetto.graphics.shaders.specific.ColorFilter;
 

@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.Core;
 import progetto.core.Gui;
-import progetto.gameplay.entities.components.specific.entity.Cooldown;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.world.Map;
 import progetto.manager.entities.EntityManager;
 import progetto.manager.input.DebugWindow;

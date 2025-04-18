@@ -31,7 +31,12 @@ public class EntityRenderer {
      */
     public EntityRenderer(EntityManager entityManager) {
         this.entityManager = entityManager;
-        comparator = (o1, o2) -> Float.compare(o2.getPosition().y, o1.getPosition().y);
+        comparator = (o1, o2) -> {
+            if (o2.getZ() != o1.getZ()) {
+                return Integer.compare(o1.getZ(), o2.getZ());
+            }
+            return Float.compare(o2.getPosition().y, o1.getPosition().y);
+        };
         info = entityManager.info;
         queue = getEntityQueue();
         entities = getEntities();

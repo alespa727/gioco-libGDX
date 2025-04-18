@@ -9,10 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.IteratableComponent;
-import progetto.gameplay.entities.components.specific.entity.DirectionComponent;
-import progetto.gameplay.entities.components.specific.entity.NodeTrackerComponent;
-import progetto.gameplay.entities.components.specific.entity.PhysicsComponent;
-import progetto.gameplay.entities.components.specific.entity.StateComponent;
+import progetto.gameplay.entities.components.specific.base.*;
 import progetto.graphics.animations.CustomAnimation;
 import progetto.graphics.animations.DefaultAnimationSet;
 import progetto.manager.entities.EntityManager;
@@ -57,6 +54,7 @@ public abstract class Entity {
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
+        addComponent(new ZLevelComponent(0));
         addComponent(new StateComponent());
         addComponent(new PhysicsComponent(this, instance.coordinate));
         addComponent(new NodeTrackerComponent(this));
@@ -82,6 +80,7 @@ public abstract class Entity {
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
+        addComponent(new ZLevelComponent(0));
         addComponent(new StateComponent());
         addComponent(new PhysicsComponent(this));
         addComponent(new NodeTrackerComponent(this));
@@ -186,6 +185,10 @@ public abstract class Entity {
         return getComponent(StateComponent.class);
     }
 
+
+    public final int getZ() {
+        return getComponent(ZLevelComponent.class).getZ();
+    }
     /**
      * Restituisce la posizione dell'entità.
      * @return posizione corrente

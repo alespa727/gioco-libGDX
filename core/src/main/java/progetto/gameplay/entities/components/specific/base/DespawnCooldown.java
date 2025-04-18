@@ -1,4 +1,4 @@
-package progetto.gameplay.entities.components.specific.entity;
+package progetto.gameplay.entities.components.specific.base;
 
 public class DespawnCooldown extends Cooldown {
     /**

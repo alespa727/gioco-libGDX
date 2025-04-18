@@ -1,4 +1,4 @@
-package progetto.gameplay.entities.components.specific.entity;
+package progetto.gameplay.entities.components.specific.base;
 
 import progetto.gameplay.entities.components.base.IteratableComponent;
 
