@@ -2,8 +2,8 @@ package progetto.factories;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import progetto.Core;
-import progetto.gameplay.entity.types.EntityConfig;
+import progetto.core.Core;
+import progetto.gameplay.entities.specific.base.EntityConfig;
 
 public class EntityConfigFactory {
     public static EntityConfig createEntityConfig(String type, int id, float x, float y) {

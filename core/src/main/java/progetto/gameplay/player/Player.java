@@ -2,29 +2,27 @@ package progetto.gameplay.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.Array;
 import org.fusesource.jansi.Ansi;
-import progetto.gameplay.entity.components.player.DashCooldown;
-import progetto.gameplay.entity.components.player.DashInvulnerability;
-import progetto.gameplay.entity.components.player.PlayerDeathController;
-import progetto.gameplay.entity.components.player.PlayerMovementManager;
-import progetto.gameplay.entity.components.warrior.AttackCooldown;
-import progetto.gameplay.entity.skills.player.PlayerDash;
-import progetto.gameplay.entity.skills.player.PlayerRangedAttack;
-import progetto.gameplay.entity.skills.player.PlayerSwordAttack;
-import progetto.gameplay.entity.types.EntityConfig;
-import progetto.gameplay.entity.types.EntityInstance;
-import progetto.gameplay.entity.types.living.combat.Warrior;
-import progetto.gameplay.manager.ManagerCamera;
-import progetto.gameplay.manager.ManagerEntity;
+import progetto.gameplay.entities.components.specific.player.DashCooldown;
+import progetto.gameplay.entities.components.specific.player.DashInvulnerability;
+import progetto.gameplay.entities.components.specific.player.PlayerDeathController;
+import progetto.gameplay.entities.components.specific.player.PlayerMovementManager;
+import progetto.gameplay.entities.components.specific.warrior.AttackCooldown;
+import progetto.gameplay.entities.skills.specific.player.PlayerDash;
+import progetto.gameplay.entities.skills.specific.player.PlayerRangedAttack;
+import progetto.gameplay.entities.skills.specific.player.PlayerSwordAttack;
+import progetto.gameplay.entities.specific.base.EntityConfig;
+import progetto.gameplay.entities.specific.base.EntityInstance;
+import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
+import progetto.manager.entities.EntityManager;
 
 public class Player extends Warrior {
 
     private final Array<Warrior> inRange;
 
     // === COSTRUTTORE ===
-    public Player(EntityConfig config, ManagerEntity manager) {
+    public Player(EntityConfig config, EntityManager manager) {
         super(config, manager);
         this.inRange = new Array<>();
         addComponent(new PlayerDeathController(this));

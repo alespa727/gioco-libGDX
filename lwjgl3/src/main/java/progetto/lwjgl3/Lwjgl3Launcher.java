@@ -3,7 +3,7 @@ package progetto.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-import progetto.Core;
+import progetto.core.Core;
 
 /** Launcher dell'applicazione */
 public class Lwjgl3Launcher {
