@@ -54,7 +54,7 @@ public class Map implements Disposable {
         for (TiledMapTileSet tileset : map.getTileSets()) {
             for (TiledMapTile tile : tileset) {
                 Texture texture = tile.getTextureRegion().getTexture();
-                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+                texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
             }
         }
 

@@ -114,6 +114,10 @@ public abstract class Entity {
         return componentClass.cast(component);
     }
 
+    public boolean containsComponent(Class<? extends Component> componentClass) {
+        return components.containsKey(componentClass);
+    }
+
     /**
      *
      * @param componentClass componente da rimuovere {@link Component}

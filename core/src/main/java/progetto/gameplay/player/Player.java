@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 import org.fusesource.jansi.Ansi;
+import progetto.gameplay.entities.components.specific.base.ShadowComponent;
 import progetto.gameplay.entities.components.specific.base.ZLevelComponent;
 import progetto.gameplay.entities.components.specific.player.DashCooldown;
 import progetto.gameplay.entities.components.specific.player.DashInvulnerability;
@@ -31,6 +32,7 @@ public class Player extends Warrior {
         addComponent(new PlayerMovementManager(this));
         addComponent(new AttackCooldown(0.8f));
         addComponent(new DashCooldown(1f));
+        addComponent(new ShadowComponent(this));
         getAttackCooldown().reset(0.8f);
         getDashCooldown().reset(1f);
 

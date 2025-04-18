@@ -61,7 +61,6 @@ public class EntityConfig {
     /** Immagine o sprite principale dell'entità (Texture di LibGDX) */
     public transient Texture img;
 
-
     /** Larghezza dell'immagine da disegnare a schermo */
     public float imageWidth;
 

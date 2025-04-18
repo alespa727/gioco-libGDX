@@ -3,6 +3,7 @@ package progetto.gameplay.entities.components.specific.humanoid;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import progetto.gameplay.entities.components.base.Component;
+import progetto.gameplay.entities.components.specific.base.ShadowComponent;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.graphics.shaders.specific.Flash;
 
@@ -35,6 +36,12 @@ public class HumanoidDrawerComponent extends Component {
             entity.getPosition().y - entity.getConfig().imageHeight / 2,
             entity.getConfig().imageWidth, entity.getConfig().imageHeight);
 
+        if (entity.containsComponent(ShadowComponent.class)) {
+            batch.draw(entity.getComponent(ShadowComponent.class).play(entity, "default" ,tempoTrascorso),
+                entity.getPosition().x - entity.getConfig().imageWidth / 2,
+                entity.getPosition().y - entity.getConfig().imageHeight / 2,
+                entity.getConfig().imageWidth, entity.getConfig().imageHeight);
+        }
 
         if(applied) {
             Flash.getInstance().end(batch);
