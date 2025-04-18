@@ -9,22 +9,22 @@ import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.entities.specific.specific.living.HumanoidInstances;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 public abstract class Warrior extends Humanoid {
 
-    public Warrior(HumanoidInstances instance, EntityManager entityManager) {
-        super(instance, entityManager);
-        addComponent(new DirectionalRangeComponent(this));
-        addComponent(new HitDirectionComponent(new Vector2(0, 0)));
-        addComponent(new KnockbackComponent(this));
+    public Warrior(HumanoidInstances instance, Engine engine) {
+        super(instance, engine);
+        componentManager.add(new DirectionalRangeComponent(this));
+        componentManager.add(new HitDirectionComponent(new Vector2(0, 0)));
+        componentManager.add(new KnockbackComponent(this));
     }
 
-    public Warrior(EntityConfig config, EntityManager manager) {
+    public Warrior(EntityConfig config, Engine manager) {
         super(config, manager);
-        addComponent(new DirectionalRangeComponent(this));
-        addComponent(new HitDirectionComponent(new Vector2(0, 0)));
-        addComponent(new KnockbackComponent(this));
+        componentManager.add(new DirectionalRangeComponent(this));
+        componentManager.add(new HitDirectionComponent(new Vector2(0, 0)));
+        componentManager.add(new KnockbackComponent(this));
     }
 
     @Override
@@ -34,19 +34,19 @@ public abstract class Warrior extends Humanoid {
     }
 
     public float getRangeRadius() {
-        return getComponent(DirectionalRangeComponent.class).getRangeRadius();
+        return  componentManager.get(DirectionalRangeComponent.class).getRangeRadius();
     }
 
     public Body getDirectionalRange() {
-        return getComponent(DirectionalRangeComponent.class).getDirectionalRange();
+        return componentManager.get(DirectionalRangeComponent.class).getDirectionalRange();
     }
 
     public void setDirectionalRange(Body directionalRange) {
-        getComponent(DirectionalRangeComponent.class).setDirectionalRange(directionalRange);
+        componentManager.get(DirectionalRangeComponent.class).setDirectionalRange(directionalRange);
     }
 
     public Vector2 getHitDirection() {
-        return getComponent(HitDirectionComponent.class).getDirection();
+        return componentManager.get(HitDirectionComponent.class).getDirection();
     }
 
     private void initCombatState() {
@@ -56,7 +56,7 @@ public abstract class Warrior extends Humanoid {
     // === RANGE ===
 
     public DirectionalRangeComponent getDirectionRangeComponent() {
-        return getComponent(DirectionalRangeComponent.class);
+        return componentManager.get(DirectionalRangeComponent.class);
     }
 
     // === COMBATTIMENTO ===
@@ -66,7 +66,7 @@ public abstract class Warrior extends Humanoid {
         if (!getHumanStates().isInvulnerable()){
             getHitDirection().set(new Vector2(bodyThatHits.getPosition()).sub(bodyToHit.getPosition()).nor().scl(-1*hitForce));
             inflictDamage(damage);
-            getComponent(KnockbackComponent.class).reset();
+            componentManager.get(KnockbackComponent.class).reset();
         }
     }
 }

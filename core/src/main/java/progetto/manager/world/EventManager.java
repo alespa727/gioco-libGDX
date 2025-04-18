@@ -7,9 +7,9 @@ import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.entities.specific.specific.living.combat.boss.Boss;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
 import progetto.gameplay.entities.specific.specific.notliving.Bullet;
-import progetto.gameplay.world.events.ChangeMapEvent;
-import progetto.gameplay.world.events.MapEvent;
-import progetto.manager.entities.EntityManager;
+import progetto.gameplay.world.events.specific.ChangeMapEvent;
+import progetto.gameplay.world.events.base.MapEvent;
+import progetto.manager.entities.Engine;
 import progetto.gameplay.player.Player;
 
 public class EventManager implements ContactListener {
@@ -50,8 +50,8 @@ public class EventManager implements ContactListener {
         // Se "dataA" è un Enemy e il filtro del fixtureA indica RANGE,
         // mentre "dataB" è un Player e il filtro del fixtureB non indica RANGE,
         // l'enemy aggiunge il player alla sua lista di entità.
-        boolean isRangeA = (fixtureA.getFilterData().categoryBits == EntityManager.RANGE);
-        boolean isRangeB = (fixtureB.getFilterData().categoryBits == EntityManager.RANGE);
+        boolean isRangeA = (fixtureA.getFilterData().categoryBits == Engine.RANGE);
+        boolean isRangeB = (fixtureB.getFilterData().categoryBits == Engine.RANGE);
 
         if (dataA instanceof Enemy && isRangeA && dataB instanceof Player && !isRangeB) {
             ((Enemy) dataA).addEntity((Player) dataB);
@@ -63,7 +63,7 @@ public class EventManager implements ContactListener {
             // ACCETTA anche sottoclassi di targetClass
             if (!((Bullet) dataB).getTargetClass().isAssignableFrom(dataA.getClass())) return;
 
-            ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).getComponent(BulletComponent.class).damage, 2);
+            ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).componentManager.get(BulletComponent.class).damage, 2);
             ((Bullet) dataB).despawn();
         }
 
@@ -73,7 +73,7 @@ public class EventManager implements ContactListener {
             // ACCETTA anche sottoclassi di targetClass
             if (!((Bullet) dataA).getTargetClass().isAssignableFrom(dataB.getClass())) return;
 
-            ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).getComponent(BulletComponent.class).damage, 2);
+            ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).componentManager.get(BulletComponent.class).damage, 2);
             ((Bullet) dataA).despawn();
         }
 
@@ -105,8 +105,8 @@ public class EventManager implements ContactListener {
         // Gestione del contatto tra Enemy e Player nel range (Rimozione Player)
         // Se dataA è un Enemy associato a un fixture con filtro RANGE
         // e dataB è un Player (con filtro NON RANGE), rimuovo il Player dall'Enemy
-        boolean isRangeA = fixtureA.getFilterData().categoryBits == EntityManager.RANGE;
-        boolean isRangeB = fixtureB.getFilterData().categoryBits == EntityManager.RANGE;
+        boolean isRangeA = fixtureA.getFilterData().categoryBits == Engine.RANGE;
+        boolean isRangeB = fixtureB.getFilterData().categoryBits == Engine.RANGE;
 
         if (dataA instanceof Enemy enemy1 && isRangeA && dataB instanceof Player player && !isRangeB) {
             enemy1.removeEntity(player);

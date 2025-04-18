@@ -3,13 +3,13 @@ package progetto.gameplay.entities.specific.specific.living.combat.boss;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import progetto.statemachines.StatesLich;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.humanoid.CheckDeathComponent;
+import progetto.gameplay.entities.components.specific.humanoid.DeathComponent;
 import progetto.gameplay.entities.skills.specific.boss.LichFireDomain;
 import progetto.gameplay.entities.skills.specific.boss.LichFireball;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.gameplay.entities.specific.specific.living.HumanoidInstances;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 import progetto.manager.world.WorldManager;
 
 public class Lich extends Boss{
@@ -20,18 +20,18 @@ public class Lich extends Boss{
 
     private final DefaultStateMachine<Lich, StatesLich> stateMachine;
 
-    public Lich(HumanoidInstances instance, EntityManager entityManager) {
-        super(instance, entityManager);
-        addComponent(new CheckDeathComponent(this));
+    public Lich(HumanoidInstances instance, Engine engine) {
+        super(instance, engine);
+        componentManager.add(new DeathComponent());
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
 
-    public Lich(EntityConfig config, EntityManager entityManager) {
-        super(config, entityManager);
-        addComponent(new CheckDeathComponent(this));
+    public Lich(EntityConfig config, Engine engine) {
+        super(config, engine);
+        componentManager.add(new DeathComponent());
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));

@@ -4,16 +4,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 public class GameObject extends Entity{
     /**
      * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).
      *
      * @param instance l'entità salvata {@link EntityInstance}
-     * @param manager  il gestore delle entità {@link EntityManager}
+     * @param manager  il gestore delle entità {@link Engine}
      */
-    public GameObject(EntityInstance instance, EntityManager manager) {
+    public GameObject(EntityInstance instance, Engine manager) {
         super(instance, manager);
     }
 
@@ -21,9 +21,9 @@ public class GameObject extends Entity{
      * Crea un'entità a partire da una configurazione personalizzata.
      *
      * @param config  configurazione dell'entità {@link EntityConfig}
-     * @param manager il gestore delle entità {@link EntityManager}
+     * @param manager il gestore delle entità {@link Engine}
      */
-    public GameObject(EntityConfig config, EntityManager manager) {
+    public GameObject(EntityConfig config, Engine manager) {
         super(config, manager);
     }
 

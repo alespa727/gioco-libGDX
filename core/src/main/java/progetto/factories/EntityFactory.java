@@ -12,10 +12,10 @@ import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.Finn;
 import progetto.gameplay.entities.specific.specific.notliving.Bullet;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 public class EntityFactory {
-    public static Enemy createEnemy(String type, EntityConfig config, EntityManager manager, float attackCooldown) {
+    public static Enemy createEnemy(String type, EntityConfig config, Engine manager, float attackCooldown) {
         return switch (type) {
             case "Finn" -> new Finn(config, manager, attackCooldown);
             case null -> null;
@@ -23,7 +23,7 @@ public class EntityFactory {
         };
     }
 
-    public static Boss createBoss(String type, EntityConfig config, EntityManager manager) {
+    public static Boss createBoss(String type, EntityConfig config, Engine manager) {
         return switch (type){
             case null -> null;
             case "Lich" -> new Lich(config, manager);
@@ -31,7 +31,7 @@ public class EntityFactory {
         };
     }
 
-    public static Boss createBoss(String type, HumanoidInstances instance, EntityManager manager) {
+    public static Boss createBoss(String type, HumanoidInstances instance, Engine manager) {
         return switch (type){
             case null -> null;
             case "Lich" -> new Lich(instance, manager);
@@ -39,7 +39,7 @@ public class EntityFactory {
         };
     }
 
-    public static Enemy createEnemy(String type, EnemyInstance instance, EntityManager manager, float attackCooldown) {
+    public static Enemy createEnemy(String type, EnemyInstance instance, Engine manager, float attackCooldown) {
         return switch (type) {
             case "Finn" -> new Finn(instance, manager);
             case null -> null;
@@ -60,7 +60,7 @@ public class EntityFactory {
         return new Bullet(config, target.manager, radius, speed, damage, target);
     }
 
-    public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, EntityManager entityManager, Class<? extends Entity> target) {
+    public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Engine engine, Class<? extends Entity> target) {
         EntityConfig config = new EntityConfig();
         config.nome = "Bullet";
         config.x = x;
@@ -70,6 +70,6 @@ public class EntityFactory {
         config.direzione = direction;
         config.isAlive = true;
         config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
-        return new Bullet(config, entityManager, radius, speed, damage, target);
+        return new Bullet(config, engine, radius, speed, damage, target);
     }
 }

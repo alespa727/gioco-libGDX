@@ -36,8 +36,8 @@ public class HumanoidDrawerComponent extends Component {
             entity.getPosition().y - entity.getConfig().imageHeight / 2,
             entity.getConfig().imageWidth, entity.getConfig().imageHeight);
 
-        if (entity.containsComponent(ShadowComponent.class)) {
-            batch.draw(entity.getComponent(ShadowComponent.class).play(entity, "default" ,tempoTrascorso),
+        if (entity.componentManager.contains(ShadowComponent.class)) {
+            batch.draw(entity.componentManager.get(ShadowComponent.class).play(entity, "default" ,tempoTrascorso),
                 entity.getPosition().x - entity.getConfig().imageWidth / 2,
                 entity.getPosition().y - entity.getConfig().imageHeight / 2,
                 entity.getConfig().imageWidth, entity.getConfig().imageHeight);

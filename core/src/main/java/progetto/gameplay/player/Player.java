@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.entities.components.specific.base.ShadowComponent;
-import progetto.gameplay.entities.components.specific.base.ZLevelComponent;
 import progetto.gameplay.entities.components.specific.player.DashCooldown;
 import progetto.gameplay.entities.components.specific.player.DashInvulnerability;
 import progetto.gameplay.entities.components.specific.player.PlayerDeathController;
@@ -17,22 +16,22 @@ import progetto.gameplay.entities.skills.specific.player.PlayerSwordAttack;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 public class Player extends Warrior {
 
     private final Array<Warrior> inRange;
 
     // === COSTRUTTORE ===
-    public Player(EntityConfig config, EntityManager manager) {
+    public Player(EntityConfig config, Engine manager) {
         super(config, manager);
         this.inRange = new Array<>();
-        addComponent(new PlayerDeathController(this));
-        addComponent(new DashInvulnerability(this));
-        addComponent(new PlayerMovementManager(this));
-        addComponent(new AttackCooldown(0.8f));
-        addComponent(new DashCooldown(1f));
-        addComponent(new ShadowComponent(this));
+        componentManager.add(new PlayerDeathController(this));
+        componentManager.add(new DashInvulnerability(this));
+        componentManager.add(new PlayerMovementManager(this));
+        componentManager.add(new AttackCooldown(0.8f));
+        componentManager.add(new DashCooldown(1f));
+        componentManager.add(new ShadowComponent(this));
         getAttackCooldown().reset(0.8f);
         getDashCooldown().reset(1f);
 
@@ -46,7 +45,7 @@ public class Player extends Warrior {
     // === METODI DI ACCESSO ===
 
     public PlayerMovementManager getMovement() {
-        return getComponent(PlayerMovementManager.class);
+        return componentManager.get(PlayerMovementManager.class);
     }
 
     public Array<Warrior> getInRange() {
@@ -54,11 +53,11 @@ public class Player extends Warrior {
     }
 
     public AttackCooldown getAttackCooldown(){
-        return getComponent(AttackCooldown.class);
+        return componentManager.get(AttackCooldown.class);
     }
 
     public DashCooldown getDashCooldown(){
-        return getComponent(DashCooldown.class);
+        return componentManager.get(DashCooldown.class);
     }
 
     // === GESTIONE ENTITÀ IN RANGE ===

@@ -7,7 +7,7 @@ import progetto.gameplay.entities.skills.base.SkillSet;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 /**
  * Classe astratta che rappresenta un'entità umanoide nel gioco.
@@ -21,18 +21,18 @@ public abstract class Humanoid extends Entity {
      * Aggiunge i componenti necessari per la gestione del movimento, salute, abilità e velocità.
      *
      * @param instance L'istanza dell'umanoide da usare per la configurazione.
-     * @param entityManager Il gestore delle entità del gioco.
+     * @param engine Il gestore delle entità del gioco.
      */
-    public Humanoid(HumanoidInstances instance, EntityManager entityManager) {
-        super(instance, entityManager);
-        addComponent(new EntityMovementComponent(this));
-        addComponent(new HumanStatsComponent(instance.speed, instance.maxHealth));
-        addComponent(new EntityPathFinderComponent(this));
-        addComponent(new SkillSet());
-        addComponent(new SpeedLimiterComponent(this));
-        addComponent(new HumanStatesComponent(this));
-        addComponent(new HumanoidDrawerComponent(this));
-        getComponent(HumanoidDrawerComponent.class).setAwake(false);
+    public Humanoid(HumanoidInstances instance, Engine engine) {
+        super(instance, engine);
+        componentManager.add(new EntityMovementComponent(this));
+        componentManager.add(new HumanStatsComponent(instance.speed, instance.maxHealth));
+        componentManager.add(new EntityPathFinderComponent(this));
+        componentManager.add(new SkillSet());
+        componentManager.add(new SpeedLimiterComponent(this));
+        componentManager.add(new HumanStatesComponent(this));
+        componentManager.add(new HumanoidDrawerComponent(this));
+        componentManager.get(HumanoidDrawerComponent.class).setAwake(false);
     }
 
     /**
@@ -42,17 +42,17 @@ public abstract class Humanoid extends Entity {
      * @param config La configurazione dell'umanoide (velocità, salute, ecc.).
      * @param manager Il gestore delle entità del gioco.
      */
-    public Humanoid(EntityConfig config, EntityManager manager) {
+    public Humanoid(EntityConfig config, Engine manager) {
         super(config, manager);
-        addComponent(new EntityMovementComponent(this));
-        getComponent(EntityMovementComponent.class).setAwake(false);
-        addComponent(new HumanStatsComponent(config.speed, config.hp));
-        addComponent(new EntityPathFinderComponent(this));
-        addComponent(new SkillSet());
-        addComponent(new SpeedLimiterComponent(this));
-        addComponent(new HumanStatesComponent(this));
-        addComponent(new HumanoidDrawerComponent(this));
-        getComponent(HumanoidDrawerComponent.class).setAwake(false);
+        componentManager.add(new EntityMovementComponent(this));
+        componentManager.get(EntityMovementComponent.class).setAwake(false);
+        componentManager.add(new HumanStatsComponent(config.speed, config.hp));
+        componentManager.add(new EntityPathFinderComponent(this));
+        componentManager.add(new SkillSet());
+        componentManager.add(new SpeedLimiterComponent(this));
+        componentManager.add(new HumanStatesComponent(this));
+        componentManager.add(new HumanoidDrawerComponent(this));
+        componentManager.get(HumanoidDrawerComponent.class).setAwake(false);
     }
 
     // METODI ASTRATTI
@@ -87,7 +87,7 @@ public abstract class Humanoid extends Entity {
      * @return Il {@link SkillSet} dell'umanoide.
      */
     public final SkillSet getSkillset() {
-        return getComponent(SkillSet.class);
+        return componentManager.get(SkillSet.class);
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link HumanStatesComponent} dell'umanoide.
      */
     public HumanStatesComponent getHumanStates() {
-        return getComponent(HumanStatesComponent.class);
+        return componentManager.get(HumanStatesComponent.class);
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link HumanStatsComponent} dell'umanoide.
      */
     public HumanStatsComponent getStats() {
-        return getComponent(HumanStatsComponent.class);
+        return componentManager.get(HumanStatsComponent.class);
     }
 
     /**
@@ -193,7 +193,7 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link EntityMovementComponent} dell'umanoide.
      */
     public EntityMovementComponent getMovementManager() {
-        return getComponent(EntityMovementComponent.class);
+        return componentManager.get(EntityMovementComponent.class);
     }
 
     /**
@@ -202,7 +202,7 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link EntityPathFinderComponent} dell'umanoide.
      */
     public EntityPathFinderComponent getPathFinder() {
-        return getComponent(EntityPathFinderComponent.class);
+        return componentManager.get(EntityPathFinderComponent.class);
     }
 
     // --- METODI DI RENDERING ---
@@ -216,10 +216,10 @@ public abstract class Humanoid extends Entity {
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
         if (getState().isAlive()){
-            getComponent(HumanoidDrawerComponent.class).draw(batch, elapsedTime);
-            getComponent(HumanoidDrawerComponent.class).update();
+            componentManager.get(HumanoidDrawerComponent.class).draw(batch, elapsedTime);
+            componentManager.get(HumanoidDrawerComponent.class).update();
         } else {
-            getComponent(DespawnComponent.class).draw(batch, getTextures().play(this, "default", elapsedTime),
+            componentManager.get(DespawnComponent.class).draw(batch, getTextures().play(this, "default", elapsedTime),
                 getPosition().x - getConfig().imageWidth / 2,
                 getPosition().y - getConfig().imageHeight / 2,
                 getConfig().imageWidth, getConfig().imageHeight);

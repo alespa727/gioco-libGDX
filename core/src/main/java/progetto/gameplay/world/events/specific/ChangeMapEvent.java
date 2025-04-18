@@ -1,8 +1,9 @@
-package progetto.gameplay.world.events;
+package progetto.gameplay.world.events.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.specific.base.Entity;
+import progetto.gameplay.world.events.base.MapEvent;
 import progetto.manager.world.MapManager;
 import progetto.gameplay.player.Player;
 import progetto.manager.input.KeyHandler;

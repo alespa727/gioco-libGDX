@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ArrayMap;
 import progetto.gameplay.entities.components.base.Component;
+import progetto.gameplay.entities.components.base.ComponentManager;
 import progetto.gameplay.entities.components.base.IteratableComponent;
 import progetto.gameplay.entities.components.specific.base.*;
 import progetto.graphics.animations.CustomAnimation;
 import progetto.graphics.animations.DefaultAnimationSet;
-import progetto.manager.entities.EntityManager;
+import progetto.manager.entities.Engine;
 
 /**
  * Classe base per ogni entità del gioco (giocatori, nemici, boss, ecc.).
@@ -20,8 +20,8 @@ import progetto.manager.entities.EntityManager;
  */
 public abstract class Entity {
 
-    /** Gestore generale delle entità (dove è registrata questa entità). {@link EntityManager} */
-    public final EntityManager manager;
+    /** Gestore generale delle entità (dove è registrata questa entità). {@link Engine} */
+    public final Engine manager;
 
     /** Configurazione iniziale dell'entità. {@link EntityConfig} */
     private final EntityConfig config;
@@ -36,14 +36,14 @@ public abstract class Entity {
      */
     private final CustomAnimation textures;
 
-    private final ArrayMap<Class<? extends Component>, Component> components;
+    public ComponentManager componentManager;
 
     /**
      * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).
      * @param instance l'entità salvata {@link EntityInstance}
-     * @param manager il gestore delle entità {@link EntityManager}
+     * @param manager il gestore delle entità {@link Engine}
      */
-    public Entity(EntityInstance instance, EntityManager manager) {
+    public Entity(EntityInstance instance, Engine manager) {
         this.config = instance.config;
         this.manager = manager;
         String[] string = new String[1];
@@ -53,22 +53,22 @@ public abstract class Entity {
         this.textures = new CustomAnimation(string, img);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
-        components = new ArrayMap<>();
-        addComponent(new ZLevelComponent(0));
-        addComponent(new StateComponent());
-        addComponent(new PhysicsComponent(this, instance.coordinate));
-        addComponent(new NodeTrackerComponent(this));
-        addComponent(new DirectionComponent(config.direzione));
+        componentManager = new ComponentManager();
+        componentManager.add(new ZLevelComponent(0));
+        componentManager.add(new StateComponent());
+        componentManager.add(new PhysicsComponent(this, instance.coordinate));
+        componentManager.add(new NodeTrackerComponent(this));
+        componentManager.add(new DirectionComponent(config.direzione));
 
-        getComponent(PhysicsComponent.class).createBody();
+        componentManager.get(PhysicsComponent.class).createBody();
     }
 
     /**
      * Crea un'entità a partire da una configurazione personalizzata.
      * @param config configurazione dell'entità {@link EntityConfig}
-     * @param manager il gestore delle entità {@link EntityManager}
+     * @param manager il gestore delle entità {@link Engine}
      */
-    public Entity(EntityConfig config, EntityManager manager) {
+    public Entity(EntityConfig config, Engine manager) {
         this.config = config;
         this.manager = manager;
         String[] string = new String[1];
@@ -79,52 +79,18 @@ public abstract class Entity {
         this.color = new Color(1f, 1f, 1f, 1.0f);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
-        components = new ArrayMap<>();
-        addComponent(new ZLevelComponent(0));
-        addComponent(new StateComponent());
-        addComponent(new PhysicsComponent(this));
-        addComponent(new NodeTrackerComponent(this));
-        addComponent(new DirectionComponent(config.direzione));
+        componentManager = new ComponentManager();
+        componentManager.add(new ZLevelComponent(0));
+        componentManager.add(new StateComponent());
+        componentManager.add(new PhysicsComponent(this));
+        componentManager.add(new NodeTrackerComponent(this));
+        componentManager.add(new DirectionComponent(config.direzione));
 
-        getComponent(PhysicsComponent.class).createBody();
+        componentManager.get(PhysicsComponent.class).createBody();
     }
 
     public void setAwake(boolean awake) {
         this.awake = awake;
-    }
-
-    /**
-     * @param component componente da aggiungere {@link Component}
-     */
-    public void addComponent(Component component) {
-        Class<? extends Component> componentClass = component.getClass();
-        components.put(componentClass, component);
-    }
-
-    /**
-     * @param componentClass classe del componente che si vuole {@link Class}
-     * @return componete richiesto {@link Component}
-     * @param <T> tipo di componente trovato
-     */
-    public <T extends Component> T getComponent(Class<T> componentClass) {
-        Component component = components.get(componentClass);
-        if (component == null) {
-            throw new IllegalArgumentException("Component " + componentClass.getSimpleName() + " non trovato");
-        }
-        return componentClass.cast(component);
-    }
-
-    public boolean containsComponent(Class<? extends Component> componentClass) {
-        return components.containsKey(componentClass);
-    }
-
-    /**
-     *
-     * @param componentClass componente da rimuovere {@link Component}
-     * @param <T> tipo di componente da rimuovere
-     */
-    public <T extends Component> void removeComponent(Class<T> componentClass) {
-        components.removeKey(componentClass);
     }
 
     /**
@@ -170,7 +136,7 @@ public abstract class Entity {
      * @return fisica {@link PhysicsComponent}
      */
     public PhysicsComponent getPhysics() {
-        return getComponent(PhysicsComponent.class);
+        return componentManager.get(PhysicsComponent.class);
     }
 
     /**
@@ -178,7 +144,7 @@ public abstract class Entity {
      * @return direzione {@link DirectionComponent}
      */
     public final Vector2 getDirection() {
-        return getComponent(DirectionComponent.class).getDirection();
+        return componentManager.get(DirectionComponent.class).getDirection();
     }
 
     /**
@@ -186,12 +152,12 @@ public abstract class Entity {
      * @return stato {@link StateComponent}
      */
     public final StateComponent getState() {
-        return getComponent(StateComponent.class);
+        return componentManager.get(StateComponent.class);
     }
 
 
     public final int getZ() {
-        return getComponent(ZLevelComponent.class).getZ();
+        return componentManager.get(ZLevelComponent.class).getZ();
     }
     /**
      * Restituisce la posizione dell'entità.
@@ -237,11 +203,12 @@ public abstract class Entity {
         }
     }
 
-    public void updateComponents(float delta) {
+    public void componentManager(float delta) {
         if (awake) {
-            for (Component component : components.values()) {
-                if (component instanceof IteratableComponent && component.isAwake()) {
-                    ((IteratableComponent) component).update(delta);
+            for (int i = 0; i < componentManager.components().length; i++) {
+                Component c = (Component) componentManager.components()[i];
+                if (c instanceof IteratableComponent && c.isAwake()) {
+                    ((IteratableComponent) c).update(delta);
                 }
             }
         }
