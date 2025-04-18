@@ -30,7 +30,7 @@ public class HumanoidDrawerComponent extends Component {
             applied = true;
         }
 
-        batch.draw(entity.getTextures().getAnimation(entity).getKeyFrame(tempoTrascorso, true),
+        batch.draw(entity.getTextures().play(entity, "default" ,tempoTrascorso),
             entity.getPosition().x - entity.getConfig().imageWidth / 2,
             entity.getPosition().y - entity.getConfig().imageHeight / 2,
             entity.getConfig().imageWidth, entity.getConfig().imageHeight);

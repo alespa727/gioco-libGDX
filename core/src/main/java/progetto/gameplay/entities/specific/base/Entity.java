@@ -3,16 +3,19 @@ package progetto.gameplay.entities.specific.base;
 // Importazioni
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ArrayMap;
+import org.w3c.dom.Text;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.IteratableComponent;
 import progetto.gameplay.entities.components.specific.entity.DirectionComponent;
 import progetto.gameplay.entities.components.specific.entity.NodeTrackerComponent;
 import progetto.gameplay.entities.components.specific.entity.PhysicsComponent;
 import progetto.gameplay.entities.components.specific.entity.StateComponent;
-import progetto.gameplay.entities.specific.specific.living.HumanoidTextures;
+import progetto.graphics.CustomAnimation;
+import progetto.graphics.DefaultAnimationSet;
 import progetto.manager.entities.EntityManager;
 
 /**
@@ -31,7 +34,7 @@ public abstract class Entity {
     public Color color;
     private final ArrayMap<Class<? extends Component>, Component> components;
     private boolean awake = true;
-    private final HumanoidTextures textures;       // Gestisce immagini e animazioni
+    private final CustomAnimation textures;       // Gestisce immagini e animazioni
 
     /**
      * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).
@@ -41,7 +44,11 @@ public abstract class Entity {
     public Entity(EntityInstance instance, EntityManager manager) {
         this.config = instance.config;
         this.manager = manager;
-        this.textures = new HumanoidTextures(config.img);
+        String[] string = new String[1];
+        string[0] = "default";
+        Texture[] img = new Texture[1];
+        img[0] = config.img;
+        this.textures = new CustomAnimation(string, img);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
@@ -61,7 +68,12 @@ public abstract class Entity {
     public Entity(EntityConfig config, EntityManager manager) {
         this.config = config;
         this.manager = manager;
-        this.textures = new HumanoidTextures(config.img);
+        String[] string = new String[1];
+        string[0] = "default";
+        Texture[] img = new Texture[1];
+        img[0] = config.img;
+        this.textures = new CustomAnimation(string, img);
+        this.color = new Color(1f, 1f, 1f, 1.0f);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
         components = new ArrayMap<>();
@@ -196,9 +208,9 @@ public abstract class Entity {
 
     /**
      * Restituisce le texture e animazioni associate.
-     * @return immagini {@link HumanoidTextures}
+     * @return immagini {@link DefaultAnimationSet}
      */
-    public HumanoidTextures getTextures() {
+    public CustomAnimation getTextures() {
         return textures;
     }
 

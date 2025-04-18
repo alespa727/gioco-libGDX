@@ -1,24 +1,24 @@
-package progetto.gameplay.entities.specific.base;
+package progetto.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
+import progetto.gameplay.entities.specific.base.Entity;
 
-public abstract class EntityTextures {
+public abstract class AnimationSet {
 
     // === Risorse grafiche ===
     protected final Texture texture;
     protected final ObjectMap<Vector2, Animation<TextureRegion>> animations;
 
     // === Costruttore ===
-    public EntityTextures(Texture texture) {
+    public AnimationSet(Texture texture) {
         this.texture = texture;
         this.animations = new ObjectMap<>();
     }
 
     // === Metodi astratti da implementare nelle sottoclassi ===
-    public abstract Animation<TextureRegion> getAnimation(Entity e);
-    public abstract void salvaAnimazioni();
+    public abstract TextureRegion play(Entity e, float elapsedTime);
 }

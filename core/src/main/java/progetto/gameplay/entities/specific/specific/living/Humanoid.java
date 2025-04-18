@@ -2,7 +2,6 @@ package progetto.gameplay.entities.specific.specific.living;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import progetto.entities.components.specific.humanoid.*;
 import progetto.gameplay.entities.components.specific.humanoid.*;
 import progetto.gameplay.entities.skills.base.SkillSet;
 import progetto.gameplay.entities.specific.base.Entity;
@@ -220,7 +219,7 @@ public abstract class Humanoid extends Entity {
             getComponent(HumanoidDrawerComponent.class).draw(batch, elapsedTime);
             getComponent(HumanoidDrawerComponent.class).update();
         } else {
-            getComponent(DespawnComponent.class).draw(batch, getTextures().getAnimation(this).getKeyFrame(elapsedTime, true),
+            getComponent(DespawnComponent.class).draw(batch, getTextures().play(this, "default", elapsedTime),
                 getPosition().x - getConfig().imageWidth / 2,
                 getPosition().y - getConfig().imageHeight / 2,
                 getConfig().imageWidth, getConfig().imageHeight);

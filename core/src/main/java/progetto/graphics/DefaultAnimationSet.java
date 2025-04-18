@@ -1,4 +1,4 @@
-package progetto.gameplay.entities.specific.specific.living;
+package progetto.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.specific.base.Entity;
-import progetto.gameplay.entities.specific.base.EntityTextures;
 
-public class HumanoidTextures extends EntityTextures {
+public class DefaultAnimationSet extends AnimationSet{
 
     private final TextureRegion[] movingUp = new TextureRegion[4];
     private final TextureRegion[] movingDown = new TextureRegion[4];
@@ -20,7 +19,7 @@ public class HumanoidTextures extends EntityTextures {
     private final TextureRegion[] idleLeft = new TextureRegion[2];
     private final TextureRegion[] idleRight = new TextureRegion[2];
 
-    public HumanoidTextures(Texture img) {
+    public DefaultAnimationSet(Texture img) {
         super(img);
 
         salvaAnimazioni();
@@ -83,7 +82,7 @@ public class HumanoidTextures extends EntityTextures {
 
     /** Restituisce l'animazione corretta in base alla direzione dell'entità */
     @Override
-    public Animation<TextureRegion> getAnimation(Entity e) {
-        return animations.get(e.getDirection());
+    public TextureRegion play(Entity e, float elapsedTime) {
+        return animations.get(e.getDirection()).getKeyFrame(elapsedTime, true);
     }
 }
