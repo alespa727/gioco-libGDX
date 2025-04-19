@@ -3,6 +3,7 @@ package progetto.gameplay.entities.skills.specific.player;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import progetto.gameplay.entities.components.specific.InRangeListComponent;
 import progetto.gameplay.entities.skills.specific.CombatSkill;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
@@ -49,7 +50,7 @@ public class PlayerSwordAttack extends CombatSkill {
         ManagerCamera.shakeTheCamera(0.1f, 0.01f);
         owner.manager.info.screen.setTimeScale(1f, 1f);
         cooldown.reset();
-        Array<Warrior> inRange = ((Player) owner).getInRange();
+        Array<Warrior> inRange = owner.componentManager.get(InRangeListComponent.class).inRange;
         for (Warrior warrior : inRange) {
             warrior.hit(owner, damage, 2);
         }

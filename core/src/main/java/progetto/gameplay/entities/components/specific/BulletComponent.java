@@ -1,6 +1,7 @@
-package progetto.gameplay.entities.components.specific.bullet;
+package progetto.gameplay.entities.components.specific;
 
 import progetto.gameplay.entities.components.base.Component;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
 
 public class BulletComponent extends Component{
     /** Danno che il proiettile infligge alle altre entità */
@@ -12,10 +13,14 @@ public class BulletComponent extends Component{
     /** Raggio del proiettile */
     public final float radius;
 
+    public final Cooldown cooldown;
+
 
     public BulletComponent(float damage, float velocity, float radius) {
         this.damage = damage;
         this.velocity = velocity;
         this.radius = radius;
+        cooldown = new Cooldown(3f);
+        cooldown.reset();
     }
 }

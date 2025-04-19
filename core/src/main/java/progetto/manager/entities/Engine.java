@@ -1,22 +1,27 @@
 package progetto.manager.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.core.Core;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
+import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.gameplay.entities.specific.specific.living.combat.boss.BossInstance;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.EnemyInstance;
-import progetto.gameplay.entities.systems.base.System;
-import progetto.gameplay.entities.systems.specific.DeathSystem;
+import progetto.gameplay.systems.base.System;
 import progetto.gameplay.player.Player;
 import progetto.core.game.GameInfo;
+import progetto.gameplay.systems.specific.*;
 import progetto.manager.input.TerminalCommand;
 import progetto.gameplay.player.PlayerManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Engine {
 
@@ -25,6 +30,7 @@ public final class Engine {
     private final EntityRenderer renderer;
 
     public Array<System> systems;
+    public Map<Integer, Map<Class<? extends Component>, Component>> components;
 
     private final PlayerManager playerManager;
     private final Array<Entity> entities;
@@ -59,8 +65,17 @@ public final class Engine {
         this.renderer = new EntityRenderer(this);
         System[] systems = new System[]{
             new DeathSystem(),
+            new DrawingSystem(info.core.batch),
+            new HitSystem(),
+            new SpeedLimiterSystem(),
+            new UserInputSystem(),
+            new KnockbackSystem(),
+            new NodeTrackerSystem(),
+            new RangeSystem(),
+            new PlayerSystem()
         };
         this.systems = new Array<>(systems);
+        this.components = new HashMap<>();
     }
 
     public int getIdCount(){
@@ -142,7 +157,12 @@ public final class Engine {
      * Disegna tutte le entità
      */
     public void draw() {
-        renderer.draw();
+        renderer.sort();
+        for (System s : systems) {
+            if (s instanceof DrawingSystem) {
+                systems.get(1).update(Gdx.graphics.getDeltaTime(), entities);
+            }
+        }
     }
 
     /**
@@ -158,6 +178,9 @@ public final class Engine {
 
     public void updateSystems(){
         for (System s : systems) {
+            if (s instanceof DrawingSystem) {
+                continue;
+            }
             if (s.isActive()) s.update(delta, entities);
         }
     }

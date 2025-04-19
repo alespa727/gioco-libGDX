@@ -50,7 +50,6 @@ public final class Finn extends Enemy {
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
         WorldManager.destroyBody(getPhysics().getBody());
-        WorldManager.destroyBody(getDirectionalRange());
 
         return new EnemyInstance(this);
     }

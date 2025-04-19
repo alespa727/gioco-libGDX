@@ -3,7 +3,7 @@ package progetto.gameplay.entities.specific.specific.living.combat.boss;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import progetto.statemachines.StatesLich;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.humanoid.DeathComponent;
+import progetto.gameplay.entities.components.specific.MortalComponent;
 import progetto.gameplay.entities.skills.specific.boss.LichFireDomain;
 import progetto.gameplay.entities.skills.specific.boss.LichFireball;
 import progetto.gameplay.entities.specific.base.EntityConfig;
@@ -22,7 +22,7 @@ public class Lich extends Boss{
 
     public Lich(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        componentManager.add(new DeathComponent());
+        componentManager.add(new MortalComponent());
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5));
@@ -31,7 +31,7 @@ public class Lich extends Boss{
 
     public Lich(EntityConfig config, Engine engine) {
         super(config, engine);
-        componentManager.add(new DeathComponent());
+        componentManager.add(new MortalComponent());
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));
@@ -50,18 +50,12 @@ public class Lich extends Boss{
     }
 
     @Override
-    public void cooldown(float delta) {
-
-    }
-
-    @Override
     public EntityInstance despawn() {
         // Rimuove l'entità dal manager
         manager.remove(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
         WorldManager.destroyBody(getPhysics().getBody());
-        WorldManager.destroyBody(getDirectionRangeComponent().getDirectionalRange());
 
         return new BossInstance(this);
     }

@@ -3,11 +3,8 @@ package progetto.manager.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.factories.BodyFactory;
-import progetto.gameplay.entities.components.specific.warrior.DirectionalRangeComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
-import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.player.ManagerCamera;
 import progetto.gameplay.player.Player;
 import progetto.manager.input.DebugWindow;
@@ -60,10 +57,15 @@ public class EntityRenderer {
             drawPaths();
         }
         entities.sort(comparator);
+
         info.core.batch.begin();
         drawEntities();
         drawSkills();
         info.core.batch.end();
+    }
+
+    public void sort(){
+        entities.sort(comparator);
     }
 
     /**
@@ -137,10 +139,6 @@ public class EntityRenderer {
         while(queue.size > 0){
             entities.add(queue.first());
             queue.first().getPhysics().initBody();
-            if (queue.first() instanceof Warrior ce) {
-                DirectionalRangeComponent a = ce.getDirectionRangeComponent();
-                ce.setDirectionalRange(BodyFactory.createBody(ce, a.getBodyDef(), a.getFixtureDef()));
-            }
             queue.first().create();
             queue.removeFirst().load();
         }

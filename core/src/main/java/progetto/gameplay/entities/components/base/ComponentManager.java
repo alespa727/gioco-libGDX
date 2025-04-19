@@ -25,6 +25,12 @@ public class ComponentManager {
         components.put(componentClass, component);
     }
 
+    public void add(Component[] components) {
+        for (Component component : components) {
+            add(component);
+        }
+    }
+
     /**
      * @param componentClass classe del componente che si vuole {@link Class}
      * @return componete richiesto {@link Component}

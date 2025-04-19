@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import progetto.gameplay.entities.components.specific.AttackRangeComponent;
+import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.world.events.base.MapEvent;
 
 public class WorldManager {
@@ -33,6 +35,14 @@ public class WorldManager {
         for (Body body : bodies) {
             if ("map".equals(body.getUserData()) || body.getUserData() instanceof MapEvent) {
                 instance.destroyBody(body);
+            }
+
+            if (body.getUserData() instanceof Warrior warrior && warrior.componentManager.contains(AttackRangeComponent.class)) {
+                AttackRangeComponent range = warrior.componentManager.get(AttackRangeComponent.class);
+                if (range.getDirectionalRange() != null) {
+                    instance.destroyBody(range.getDirectionalRange());
+                    range.directionalRange = null;
+                }
             }
         }
     }
