@@ -1,4 +1,4 @@
-package progetto.gameplay.entities.components.specific.base;
+package progetto.gameplay.entities.components.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.components.base.Component;
@@ -10,9 +10,5 @@ public class DirectionComponent extends Component {
 
     public DirectionComponent(Vector2 direction) {
         direction.set(direction.cpy());
-    }
-
-    public Vector2 getDirection() {
-        return direction;
     }
 }

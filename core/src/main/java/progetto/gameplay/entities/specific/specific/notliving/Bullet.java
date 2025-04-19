@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
-import progetto.gameplay.entities.components.specific.bullet.BulletComponent;
+import progetto.gameplay.entities.components.specific.BulletComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.base.NodeTrackerComponent;
+import progetto.gameplay.entities.components.specific.NodeComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
@@ -52,7 +52,7 @@ public class Bullet extends GameObject{
         this.getDirection().set(config.direzione); // Imposta la direzione
 
         componentManager.add(new BulletComponent(damage, velocity, radius));
-        componentManager.get(NodeTrackerComponent.class).setAwake(false);
+        componentManager.get(NodeComponent.class).setAwake(false);
         componentManager.add(new Cooldown(2));
         componentManager.get(Cooldown.class).reset();
         componentManager.get(Cooldown.class).setAwake(false);
@@ -80,7 +80,7 @@ public class Bullet extends GameObject{
         this.getDirection().set(config.direzione); // Imposta la direzione
 
         componentManager.add(new BulletComponent(damage, velocity, radius));
-        componentManager.get(NodeTrackerComponent.class).setAwake(false);
+        componentManager.get(NodeComponent.class).setAwake(false);
         componentManager.add(new Cooldown(2));
         componentManager.get(Cooldown.class).reset();
         componentManager.get(Cooldown.class).setAwake(false);
@@ -118,11 +118,6 @@ public class Bullet extends GameObject{
      */
     @Override
     public void updateEntity(float delta) {
-        Cooldown cooldown = componentManager.get(Cooldown.class);
-        if (cooldown.isReady) {
-            cooldown.isReady = false;
-            despawn();
-        }
     }
 
     /**

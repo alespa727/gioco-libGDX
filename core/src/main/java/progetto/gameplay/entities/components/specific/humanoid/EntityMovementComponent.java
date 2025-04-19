@@ -16,13 +16,13 @@ public class EntityMovementComponent extends IteratableComponent {
     // Da rifare per entità non volanti
 
     final Humanoid owner;
-    final Array<Vector2> path;
-    boolean isReady = true;
+    public final Array<Vector2> path;
+    public boolean isReady = true;
 
-    final Cooldown cooldown;
-    Vector2 direction;
+    public final Cooldown cooldown;
+    public Vector2 direction;
 
-    int steps = 0;
+    public int stepIndex = 0;
 
     public EntityMovementComponent(Humanoid entity) {
         this.path = new Array<>();
@@ -51,8 +51,8 @@ public class EntityMovementComponent extends IteratableComponent {
     @Override
     public void update(float delta) {
         cooldown.update(owner.manager.delta);
-        if (steps > path.size - 1 || cooldown.isReady) {
-            steps = 0;
+        if (stepIndex > path.size - 1 || cooldown.isReady) {
+            stepIndex = 0;
             this.isReady = true;
             cooldown.reset();
         }
@@ -60,13 +60,13 @@ public class EntityMovementComponent extends IteratableComponent {
             return;
         }
         direzione();
-        towards(path.get(steps));
+        towards(path.get(stepIndex));
     }
 
     public void direzione() {
-        if (steps == 0) return;
+        if (stepIndex == 0) return;
 
-        direction = new Vector2(path.get(steps).x - path.get(steps - 1).x, path.get(steps).y - path.get(steps - 1).y);
+        direction = new Vector2(path.get(stepIndex).x - path.get(stepIndex - 1).x, path.get(stepIndex).y - path.get(stepIndex - 1).y);
         if (!direction.epsilonEquals(0, 0)) {
             owner.getDirection().set(direction);
         }
@@ -81,7 +81,7 @@ public class EntityMovementComponent extends IteratableComponent {
 
         if (owner.getPosition().dst(target) < 8/16f) {
             body.setLinearDamping(20f);
-            steps++;
+            stepIndex++;
             for (Vector2 node: path){
                 if (!Map.getGraph().getClosestNode(node.x, node.y).isWalkable()){
                     this.isReady = true;

@@ -2,6 +2,9 @@ package progetto.gameplay.entities.specific.specific.living;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import progetto.gameplay.entities.components.specific.DrawableComponent;
+import progetto.gameplay.entities.components.specific.AttributeComponent;
+import progetto.gameplay.entities.components.specific.StatusComponet;
 import progetto.gameplay.entities.components.specific.humanoid.*;
 import progetto.gameplay.entities.skills.base.SkillSet;
 import progetto.gameplay.entities.specific.base.Entity;
@@ -26,13 +29,11 @@ public abstract class Humanoid extends Entity {
     public Humanoid(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
         componentManager.add(new EntityMovementComponent(this));
-        componentManager.add(new HumanStatsComponent(instance.speed, instance.maxHealth));
+        componentManager.add(new AttributeComponent(instance.speed, instance.maxHealth));
         componentManager.add(new EntityPathFinderComponent(this));
         componentManager.add(new SkillSet());
-        componentManager.add(new SpeedLimiterComponent(this));
-        componentManager.add(new HumanStatesComponent(this));
-        componentManager.add(new HumanoidDrawerComponent(this));
-        componentManager.get(HumanoidDrawerComponent.class).setAwake(false);
+        componentManager.add(new StatusComponet());
+        componentManager.add(new DrawableComponent());
     }
 
     /**
@@ -46,13 +47,11 @@ public abstract class Humanoid extends Entity {
         super(config, manager);
         componentManager.add(new EntityMovementComponent(this));
         componentManager.get(EntityMovementComponent.class).setAwake(false);
-        componentManager.add(new HumanStatsComponent(config.speed, config.hp));
+        componentManager.add(new AttributeComponent(config.speed, config.hp));
         componentManager.add(new EntityPathFinderComponent(this));
         componentManager.add(new SkillSet());
-        componentManager.add(new SpeedLimiterComponent(this));
-        componentManager.add(new HumanStatesComponent(this));
-        componentManager.add(new HumanoidDrawerComponent(this));
-        componentManager.get(HumanoidDrawerComponent.class).setAwake(false);
+        componentManager.add(new StatusComponet());
+        componentManager.add(new DrawableComponent());
     }
 
     // METODI ASTRATTI
@@ -63,13 +62,6 @@ public abstract class Humanoid extends Entity {
             despawn();
         }
     }
-
-    /**
-     * Metodo astratto per la gestione dei cooldown delle abilità.
-     *
-     * @param delta Il delta di tempo.
-     */
-    public abstract void cooldown(float delta);
 
     /**
      * Metodo astratto per gestire la scomparsa dell'umanoide dal gioco.
@@ -93,19 +85,19 @@ public abstract class Humanoid extends Entity {
     /**
      * Restituisce il componente che gestisce gli stati dell'umanoide.
      *
-     * @return Il componente {@link HumanStatesComponent} dell'umanoide.
+     * @return Il componente {@link StatusComponet} dell'umanoide.
      */
-    public HumanStatesComponent getHumanStates() {
-        return componentManager.get(HumanStatesComponent.class);
+    public StatusComponet getHumanStates() {
+        return componentManager.get(StatusComponet.class);
     }
 
     /**
      * Restituisce il componente che gestisce le statistiche di salute dell'umanoide.
      *
-     * @return Il componente {@link HumanStatsComponent} dell'umanoide.
+     * @return Il componente {@link AttributeComponent} dell'umanoide.
      */
-    public HumanStatsComponent getStats() {
-        return componentManager.get(HumanStatsComponent.class);
+    public AttributeComponent getStats() {
+        return componentManager.get(AttributeComponent.class);
     }
 
     /**
@@ -167,7 +159,7 @@ public abstract class Humanoid extends Entity {
      * @param damage Il danno da infliggere.
      */
     public void inflictDamage(float damage) {
-        getHumanStates().setHasBeenHit(true);
+        getHumanStates().hasBeenHit=true;
         getStats().setHealth(getStats().getHealth() - damage);
     }
 
@@ -184,7 +176,7 @@ public abstract class Humanoid extends Entity {
      */
     public void respawn() {
         setAlive();
-        getHumanStates().setHasBeenHit(false);
+        getHumanStates().hasBeenHit=false;
     }
 
     /**
@@ -215,16 +207,6 @@ public abstract class Humanoid extends Entity {
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        if (getState().isAlive()){
-            componentManager.get(HumanoidDrawerComponent.class).draw(batch, elapsedTime);
-            componentManager.get(HumanoidDrawerComponent.class).update();
-        } else {
-            componentManager.get(DespawnComponent.class).draw(batch, getTextures().play(this, "default", elapsedTime),
-                getPosition().x - getConfig().imageWidth / 2,
-                getPosition().y - getConfig().imageHeight / 2,
-                getConfig().imageWidth, getConfig().imageHeight);
-        }
-
     }
 
 
@@ -238,7 +220,7 @@ public abstract class Humanoid extends Entity {
      */
     @Override
     public void updateEntity(float delta) {
-        cooldown(delta);
+
     }
 
     // --- METODI DI DEBUG ---

@@ -9,6 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.ComponentManager;
 import progetto.gameplay.entities.components.base.IteratableComponent;
+import progetto.gameplay.entities.components.specific.DirectionComponent;
+import progetto.gameplay.entities.components.specific.NodeComponent;
+import progetto.gameplay.entities.components.specific.StateComponent;
+import progetto.gameplay.entities.components.specific.ZLevelComponent;
 import progetto.gameplay.entities.components.specific.base.*;
 import progetto.graphics.animations.CustomAnimation;
 import progetto.graphics.animations.DefaultAnimationSet;
@@ -53,13 +57,16 @@ public abstract class Entity {
         this.textures = new CustomAnimation(string, img);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
-        componentManager = new ComponentManager();
-        componentManager.add(new ZLevelComponent(0));
-        componentManager.add(new StateComponent());
-        componentManager.add(new PhysicsComponent(this, instance.coordinate));
-        componentManager.add(new NodeTrackerComponent(this));
-        componentManager.add(new DirectionComponent(config.direzione));
+        Component[] components = new Component[]{
+            new ZLevelComponent(0),
+            new StateComponent(),
+            new PhysicsComponent(this, instance.coordinate),
+            new NodeComponent(),
+            new DirectionComponent(),
+        };
 
+        componentManager = new ComponentManager();
+        componentManager.add(components);
         componentManager.get(PhysicsComponent.class).createBody();
     }
 
@@ -79,13 +86,16 @@ public abstract class Entity {
         this.color = new Color(1f, 1f, 1f, 1.0f);
         this.color = new Color(1f, 1f, 1f, 1.0f);
 
-        componentManager = new ComponentManager();
-        componentManager.add(new ZLevelComponent(0));
-        componentManager.add(new StateComponent());
-        componentManager.add(new PhysicsComponent(this));
-        componentManager.add(new NodeTrackerComponent(this));
-        componentManager.add(new DirectionComponent(config.direzione));
+        Component[] components = new Component[]{
+            new ZLevelComponent(0),
+            new StateComponent(),
+            new PhysicsComponent(this),
+            new NodeComponent(),
+            new DirectionComponent(),
+        };
 
+        componentManager = new ComponentManager();
+        componentManager.add(components);
         componentManager.get(PhysicsComponent.class).createBody();
     }
 
@@ -144,7 +154,7 @@ public abstract class Entity {
      * @return direzione {@link DirectionComponent}
      */
     public final Vector2 getDirection() {
-        return componentManager.get(DirectionComponent.class).getDirection();
+        return componentManager.get(DirectionComponent.class).direction;
     }
 
     /**

@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.utils.Array;
 import progetto.statemachines.StatesEnemy;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.humanoid.DeathComponent;
+import progetto.gameplay.entities.components.specific.MortalComponent;
 import progetto.gameplay.entities.components.specific.warrior.AttackCooldown;
 import progetto.gameplay.entities.skills.specific.enemy.EnemySwordAttack;
 import progetto.gameplay.entities.specific.base.EntityConfig;
@@ -39,7 +39,7 @@ public abstract class Enemy extends Warrior {
         super.create();
         statemachine = new DefaultStateMachine<>(this);
         statemachine.setInitialState(StatesEnemy.PATROLLING);
-        componentManager.add(new DeathComponent());
+        componentManager.add(new MortalComponent());
         componentManager.add(new AttackCooldown(1.5f));
         getAttackCooldown().reset();
 
@@ -73,11 +73,6 @@ public abstract class Enemy extends Warrior {
     @Override
     public void updateEntityType(float delta) {
         statemachine.update();
-    }
-
-    // === COOLDOWN ===
-    @Override
-    public void cooldown(float delta) {
     }
 
     // === ATTACCO ===

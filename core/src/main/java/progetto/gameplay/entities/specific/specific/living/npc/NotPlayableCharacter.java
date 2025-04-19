@@ -79,11 +79,6 @@ public abstract class NotPlayableCharacter extends Humanoid {
     }
 
     @Override
-    public void cooldown(float delta) {
-
-    }
-
-    @Override
     public void updateEntityType(float delta) {
 
     }

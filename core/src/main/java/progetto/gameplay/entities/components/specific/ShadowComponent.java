@@ -1,4 +1,4 @@
-package progetto.gameplay.entities.components.specific.base;
+package progetto.gameplay.entities.components.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

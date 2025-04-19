@@ -1,7 +1,8 @@
 package progetto.manager.world;
 
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entities.components.specific.bullet.BulletComponent;
+import progetto.gameplay.entities.components.specific.BulletComponent;
+import progetto.gameplay.entities.components.specific.InRangeListComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.entities.specific.specific.living.combat.boss.Boss;
@@ -38,10 +39,10 @@ public class EventManager implements ContactListener {
         // Gestione del range del player
         // ---------------------------------------------
         if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
-            ((Player) dataA).addEntity((Warrior) dataB);
+            ((Player) dataA).componentManager.get(InRangeListComponent.class).inRange.add((Warrior) dataB);
         }
         if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
-            ((Player) dataB).addEntity((Warrior) dataA);
+            ((Player) dataB).componentManager.get(InRangeListComponent.class).inRange.add((Warrior) dataA);
         }
 
         // ---------------------------------------------
@@ -95,10 +96,10 @@ public class EventManager implements ContactListener {
         // Se dataA è un Player e dataB è un CombatEntity (ma non un Player)
         // e se il filtro del fixtureB non indica RANGE, rimuovo la CombatEntity dal Player.
         if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
-            ((Player) dataA).removeEntity((Warrior) dataB);
+            ((Player) dataA).componentManager.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataB, false);
         }
         if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
-            ((Player) dataB).removeEntity((Warrior) dataA);
+            ((Player) dataB).componentManager.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataA, false);
         }
 
         // ----------------------------------------------------

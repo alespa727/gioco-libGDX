@@ -1,4 +1,4 @@
-package progetto.gameplay.entities.systems.base;
+package progetto.gameplay.systems.base;
 
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.specific.base.Entity;

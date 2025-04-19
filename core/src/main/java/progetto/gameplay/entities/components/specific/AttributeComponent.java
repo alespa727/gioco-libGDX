@@ -1,13 +1,14 @@
-package progetto.gameplay.entities.components.specific.humanoid;
+package progetto.gameplay.entities.components.specific;
 
 import progetto.gameplay.entities.components.base.Component;
 
-public class HumanStatsComponent extends Component {
+public class AttributeComponent extends Component {
     private final float maxSpeed;
     private final float maxHealth;
     private float health;
     private float speedMultiplier=1f;
-    public HumanStatsComponent(float maxSpeed, float maxHealth) {
+
+    public AttributeComponent(float maxSpeed, float maxHealth) {
         this.maxSpeed = maxSpeed;
         this.maxHealth = maxHealth;
         health = maxHealth;

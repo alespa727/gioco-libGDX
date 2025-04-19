@@ -1,14 +1,11 @@
 package progetto.gameplay.player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.utils.Array;
 import org.fusesource.jansi.Ansi;
-import progetto.gameplay.entities.components.specific.base.ShadowComponent;
+import progetto.gameplay.entities.components.base.Component;
+import progetto.gameplay.entities.components.specific.InRangeListComponent;
+import progetto.gameplay.entities.components.specific.ShadowComponent;
 import progetto.gameplay.entities.components.specific.player.DashCooldown;
-import progetto.gameplay.entities.components.specific.player.DashInvulnerability;
-import progetto.gameplay.entities.components.specific.player.PlayerDeathController;
-import progetto.gameplay.entities.components.specific.player.PlayerMovementManager;
+import progetto.gameplay.entities.components.specific.UserControllable;
 import progetto.gameplay.entities.components.specific.warrior.AttackCooldown;
 import progetto.gameplay.entities.skills.specific.player.PlayerDash;
 import progetto.gameplay.entities.skills.specific.player.PlayerRangedAttack;
@@ -19,19 +16,20 @@ import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.manager.entities.Engine;
 
 public class Player extends Warrior {
-
-    private final Array<Warrior> inRange;
-
     // === COSTRUTTORE ===
     public Player(EntityConfig config, Engine manager) {
         super(config, manager);
-        this.inRange = new Array<>();
-        componentManager.add(new PlayerDeathController(this));
-        componentManager.add(new DashInvulnerability(this));
-        componentManager.add(new PlayerMovementManager(this));
-        componentManager.add(new AttackCooldown(0.8f));
-        componentManager.add(new DashCooldown(1f));
-        componentManager.add(new ShadowComponent(this));
+
+        Component[] components = new Component[]{
+            new UserControllable(),
+            new AttackCooldown(0.8f),
+            new DashCooldown(1f),
+            new ShadowComponent(this),
+            new InRangeListComponent(),
+        };
+
+        componentManager.add(components);
+
         getAttackCooldown().reset(0.8f);
         getDashCooldown().reset(1f);
 
@@ -42,14 +40,9 @@ public class Player extends Warrior {
         getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
     }
 
-    // === METODI DI ACCESSO ===
+    @Override
+    public void updateEntityType(float delta) {
 
-    public PlayerMovementManager getMovement() {
-        return componentManager.get(PlayerMovementManager.class);
-    }
-
-    public Array<Warrior> getInRange() {
-        return inRange;
     }
 
     public AttackCooldown getAttackCooldown(){
@@ -62,40 +55,9 @@ public class Player extends Warrior {
 
     // === GESTIONE ENTITÀ IN RANGE ===
 
-    public void addEntity(Warrior entity) {
-        inRange.add(entity);
-    }
-
-    public void removeEntity(Warrior entity) {
-        inRange.removeValue(entity, false);
-    }
-
-    // === COMBATTIMENTO ===
-
-    public void useBow(){
-        if(getAttackCooldown().isReady) {
-            getSkillset().getSkill(PlayerRangedAttack.class).execute();
-            getAttackCooldown().reset();
-        }
-    }
-
-    public void useSword(){
-        if(getAttackCooldown().isReady) {
-            getSkillset().getSkill(PlayerSwordAttack.class).execute();
-            getAttackCooldown().reset();
-        }
-    }
-
-    public void dash() {
-        if (getDashCooldown().isReady) {
-            getSkillset().getSkill(PlayerDash.class).execute();
-            getDashCooldown().reset();
-        }
-    }
-
     public void hit(Warrior entity, float damage, float hitForce) {
         super.hit(entity, damage, hitForce);
-        ManagerCamera.shakeTheCamera(0.1f, 0.025f);
+        ManagerCamera.shakeTheCamera(0.04f, 0.025f);
     }
 
     // === GESTIONE ENTITY ===
@@ -108,28 +70,6 @@ public class Player extends Warrior {
     @Override
     public EntityInstance despawn() {
         return null;
-    }
-
-    @Override
-    public void updateEntityType(float delta) {
-
-        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
-            useSword();
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.Q)){
-            useBow();
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-            dash();
-        }
-    }
-
-    // === GESTIONE COOLDOWN ===
-
-    @Override
-    public void cooldown(float delta) {
     }
 
 }

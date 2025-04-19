@@ -2,12 +2,13 @@ package progetto.gameplay.entities.specific.base;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import progetto.gameplay.entities.components.base.Component;
 
 /**
  * Contiene tutte le informazioni di base per configurare un'entità.
  * Questa classe viene usata per creare, salvare o duplicare entità.
  */
-public class EntityConfig {
+public class EntityConfig extends Component{
 
     // === Identificatori e descrizione ===
 

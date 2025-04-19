@@ -34,15 +34,14 @@ public enum ManagerGame implements State<GameScreen> {
             while (time.getAccumulator() >= STEP) {
                 float scaledTime = STEP * screen.getTimeScale();
                 WorldManager.getInstance().step(scaledTime, 8, 8);
+                // Disegna il gioco
                 screen.update(scaledTime);
                 screen.updateWorld();
                 time.setAccumulator(time.getAccumulator() - STEP);
                 KeyHandler.input();
             }
 
-            // Disegna il gioco
             screen.getGameDrawer().draw(batch);
-
         }
 
         @Override
