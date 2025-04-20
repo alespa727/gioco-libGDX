@@ -53,13 +53,13 @@ public final class Engine {
         this.queue = new Queue<>();
         this.playerManager = new PlayerManager(this);
         this.summon(playerManager.getPlayer());
-        Core.assetManager.load("entities/nemico.png", Texture.class);
+        Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        for (int i = 0; i < 500; i++) {
-            for (int j = 0; j < 10; j++) {
-                EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i, 10+j);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i*0.3f, 10+j*0.3f);
                 summon(EntityFactory.createEnemy("Finn", e, this, 5));
             }
         }
