@@ -36,7 +36,7 @@ public class Gui {
             player = gamescreen.getEntityManager().player();
         } else {
             // Calcola la percentuale di salute del giocatore
-            float health = player.getHealth() / player.getMaxHealth();
+            float health = player.getHealth() / player.getStats().maxHealth;
             healthPercentage = MathUtils.lerp(healthPercentage, health, 0.5f); // Passaggio fluido tra le percentuali
         }
 

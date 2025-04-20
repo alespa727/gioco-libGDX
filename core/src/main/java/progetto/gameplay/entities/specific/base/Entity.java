@@ -9,10 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.ComponentManager;
 import progetto.gameplay.entities.components.base.IteratableComponent;
-import progetto.gameplay.entities.components.specific.DirectionComponent;
-import progetto.gameplay.entities.components.specific.NodeComponent;
-import progetto.gameplay.entities.components.specific.StateComponent;
-import progetto.gameplay.entities.components.specific.ZLevelComponent;
+import progetto.gameplay.entities.components.specific.*;
 import progetto.gameplay.entities.components.specific.base.*;
 import progetto.graphics.animations.CustomAnimation;
 import progetto.graphics.animations.DefaultAnimationSet;
@@ -29,9 +26,6 @@ public abstract class Entity {
 
     /** Configurazione iniziale dell'entità. {@link EntityConfig} */
     private final EntityConfig config;
-
-    // Componenti principali dell'entità
-    public Color color;
 
     private boolean awake = true;
 
@@ -55,7 +49,6 @@ public abstract class Entity {
         Texture[] img = new Texture[1];
         img[0] = config.img;
         this.textures = new CustomAnimation(string, img);
-        this.color = new Color(1f, 1f, 1f, 1.0f);
 
         Component[] components = new Component[]{
             new ZLevelComponent(0),
@@ -63,6 +56,7 @@ public abstract class Entity {
             new PhysicsComponent(this, instance.coordinate),
             new NodeComponent(),
             new DirectionComponent(),
+            new ColorComponent(),
         };
 
         componentManager = new ComponentManager();
@@ -83,8 +77,6 @@ public abstract class Entity {
         Texture[] img = new Texture[1];
         img[0] = config.img;
         this.textures = new CustomAnimation(string, img);
-        this.color = new Color(1f, 1f, 1f, 1.0f);
-        this.color = new Color(1f, 1f, 1f, 1.0f);
 
         Component[] components = new Component[]{
             new ZLevelComponent(0),
@@ -92,6 +84,7 @@ public abstract class Entity {
             new PhysicsComponent(this),
             new NodeComponent(),
             new DirectionComponent(),
+            new ColorComponent(),
         };
 
         componentManager = new ComponentManager();
@@ -169,6 +162,7 @@ public abstract class Entity {
     public final int getZ() {
         return componentManager.get(ZLevelComponent.class).getZ();
     }
+
     /**
      * Restituisce la posizione dell'entità.
      * @return posizione corrente
@@ -176,16 +170,6 @@ public abstract class Entity {
     public Vector2 getPosition() {
         return getPhysics().getPosition();
     }
-
-    /**
-     * Sposta istantaneamente l'entità in una nuova posizione.
-     * @param position nuova posizione
-     */
-    public void teleport(Vector2 position) {
-        getPhysics().teleport(position);
-    }
-
-    public void setColor(Color color){this.color = color;}
 
     /**
      * Disegna l'entità sullo schermo.

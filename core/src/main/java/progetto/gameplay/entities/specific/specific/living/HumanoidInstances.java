@@ -25,7 +25,7 @@ public class HumanoidInstances extends EntityInstance {
     public HumanoidInstances(Humanoid e) {
         super(e);
         this.skillset = e.getSkillset();
-        this.maxHealth = e.getMaxHealth();
+        this.maxHealth = e.getStats().maxHealth;
         this.speed = e.getMaxSpeed();
         this.health = e.getHealth();
         this.skillNames = skillset.getSkillNames();

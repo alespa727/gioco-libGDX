@@ -4,15 +4,9 @@ import progetto.gameplay.entities.components.base.Component;
 
 public class StateComponent extends Component {
 
-    private boolean isAlive;
-    private boolean isLoaded;
-    private boolean shouldRender;
-
-    public StateComponent() {
-        this.isAlive = true;
-        this.isLoaded = false;
-        this.shouldRender = false;
-    }
+    private boolean isAlive = true;
+    private boolean isLoaded = false;
+    private boolean shouldRender = false;
 
     public boolean isAlive() {
         return isAlive;

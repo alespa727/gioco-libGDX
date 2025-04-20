@@ -16,16 +16,18 @@ public class DeathSystem extends System {
             if (e instanceof Player player){
                 if (player.getHealth() <= 0) {
                     player.setDead();
-                    player.getStats().setHealth(100);
+                    player.getStats().health = 100;
                 }
                 continue;
             }
+
             if(e.componentManager.contains(BulletComponent.class)){
                 e.componentManager.get(BulletComponent.class).cooldown.update(delta);
                 if (e.componentManager.get(BulletComponent.class).cooldown.isReady || !e.getState().shouldRender()){
                     e.despawn();
                 }
             }
+
             if (e instanceof Humanoid h && e.componentManager.contains(MortalComponent.class)) {
                 if (h.getHealth() <= 0 && h.getState().isAlive()) {
                     h.setDead();

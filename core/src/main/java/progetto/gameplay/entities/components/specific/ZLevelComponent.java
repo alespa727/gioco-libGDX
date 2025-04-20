@@ -3,7 +3,7 @@ package progetto.gameplay.entities.components.specific;
 import progetto.gameplay.entities.components.base.Component;
 
 public class ZLevelComponent extends Component {
-    int z;
+    public int z;
 
     public ZLevelComponent(int z) {
         this.z = z;
