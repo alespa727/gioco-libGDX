@@ -158,7 +158,6 @@ public class GameScreen implements Screen {
 
         // Disegna la finestra di debug
         debugWindow.updateDebugInfo(Gdx.graphics.getFramesPerSecond(), Gdx.app.getJavaHeap());
-        Gdx.app.log("FPS", Gdx.graphics.getFramesPerSecond() + "");
         debugWindow.update();
         inventory.update();
     }
