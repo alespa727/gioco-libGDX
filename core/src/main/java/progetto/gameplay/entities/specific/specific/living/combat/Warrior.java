@@ -2,6 +2,7 @@ package progetto.gameplay.entities.specific.specific.living.combat;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.specific.AttackRangeComponent;
 import progetto.gameplay.entities.components.specific.KnockbackComponent;
 import progetto.gameplay.entities.specific.base.Entity;
@@ -14,14 +15,24 @@ public abstract class Warrior extends Humanoid {
 
     public Warrior(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        componentManager.add(new AttackRangeComponent());
-        componentManager.add(new KnockbackComponent());
+
+        Component[] components = new Component[]{
+            new AttackRangeComponent(),
+            new KnockbackComponent()
+        };
+
+        componentManager.add(components);
     }
 
     public Warrior(EntityConfig config, Engine manager) {
         super(config, manager);
-        componentManager.add(new AttackRangeComponent());
-        componentManager.add(new KnockbackComponent());
+
+        Component[] components = new Component[]{
+            new AttackRangeComponent(),
+            new KnockbackComponent()
+        };
+
+        componentManager.add(components);
     }
 
     @Override
@@ -54,7 +65,7 @@ public abstract class Warrior extends Humanoid {
         if (!getHumanStates().isInvulnerable()){
             componentManager.get(KnockbackComponent.class).hit.set(new Vector2(bodyThatHits.getPosition()).sub(bodyToHit.getPosition()).nor().scl(-1*hitForce));
             inflictDamage(damage);
-            componentManager.get(KnockbackComponent.class).reset();
+            componentManager.get(KnockbackComponent.class).cooldown.reset();
         }
     }
 }

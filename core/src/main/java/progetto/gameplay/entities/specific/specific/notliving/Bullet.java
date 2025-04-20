@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
 import progetto.gameplay.entities.components.specific.BulletComponent;
+import progetto.gameplay.entities.components.specific.ColorComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.components.specific.NodeComponent;
 import progetto.gameplay.entities.specific.base.Entity;
@@ -140,7 +141,7 @@ public class Bullet extends GameObject{
             despawn();
             return;
         }
-        setColor(Color.BLACK);
+        componentManager.get(ColorComponent.class).color.set(Color.BLACK);
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
         getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(componentManager.get(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
@@ -185,7 +186,7 @@ public class Bullet extends GameObject{
         effect.draw(batch);
         float radius = componentManager.get(BulletComponent.class).radius;
         Sprite sprite = new Sprite(texture); // Crea uno sprite per il proiettile
-        sprite.setColor(color);
+        sprite.setColor(componentManager.get(ColorComponent.class).color);
         sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio
         sprite.setPosition(getPosition().x - sprite.getWidth() / 2, getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite
         sprite.draw(batch); // Disegna lo sprite

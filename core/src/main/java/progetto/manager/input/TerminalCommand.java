@@ -139,7 +139,7 @@ public class TerminalCommand extends Thread {
 
     private void teleportPlayer(int x, int y) {
         // Teletrasporta il giocatore
-        gameScreen.getEntityManager().player().teleport(new Vector2(x, y));
+        gameScreen.getEntityManager().player().getPhysics().teleport(new Vector2(x, y));
     }
 
     private void killPlayer() {

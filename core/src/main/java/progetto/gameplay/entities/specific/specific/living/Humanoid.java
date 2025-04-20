@@ -2,9 +2,10 @@ package progetto.gameplay.entities.specific.specific.living;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.specific.DrawableComponent;
 import progetto.gameplay.entities.components.specific.AttributeComponent;
-import progetto.gameplay.entities.components.specific.StatusComponet;
+import progetto.gameplay.entities.components.specific.StatusComponent;
 import progetto.gameplay.entities.components.specific.humanoid.*;
 import progetto.gameplay.entities.skills.base.SkillSet;
 import progetto.gameplay.entities.specific.base.Entity;
@@ -28,12 +29,16 @@ public abstract class Humanoid extends Entity {
      */
     public Humanoid(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        componentManager.add(new EntityMovementComponent(this));
-        componentManager.add(new AttributeComponent(instance.speed, instance.maxHealth));
-        componentManager.add(new EntityPathFinderComponent(this));
-        componentManager.add(new SkillSet());
-        componentManager.add(new StatusComponet());
-        componentManager.add(new DrawableComponent());
+        Component[] components = new Component[]{
+            new EntityMovementComponent(this),
+            new AttributeComponent(instance.speed, instance.maxHealth),
+            new EntityPathFinderComponent(this),
+            new SkillSet(),
+            new StatusComponent(),
+            new DrawableComponent(),
+        };
+        componentManager.add(components);
+        componentManager.get(EntityMovementComponent.class).setAwake(false);
     }
 
     /**
@@ -45,13 +50,16 @@ public abstract class Humanoid extends Entity {
      */
     public Humanoid(EntityConfig config, Engine manager) {
         super(config, manager);
-        componentManager.add(new EntityMovementComponent(this));
+        Component[] components = new Component[]{
+            new EntityMovementComponent(this),
+            new AttributeComponent(config.speed, config.hp),
+            new EntityPathFinderComponent(this),
+            new SkillSet(),
+            new StatusComponent(),
+            new DrawableComponent(),
+        };
+        componentManager.add(components);
         componentManager.get(EntityMovementComponent.class).setAwake(false);
-        componentManager.add(new AttributeComponent(config.speed, config.hp));
-        componentManager.add(new EntityPathFinderComponent(this));
-        componentManager.add(new SkillSet());
-        componentManager.add(new StatusComponet());
-        componentManager.add(new DrawableComponent());
     }
 
     // METODI ASTRATTI
@@ -85,10 +93,10 @@ public abstract class Humanoid extends Entity {
     /**
      * Restituisce il componente che gestisce gli stati dell'umanoide.
      *
-     * @return Il componente {@link StatusComponet} dell'umanoide.
+     * @return Il componente {@link StatusComponent} dell'umanoide.
      */
-    public StatusComponet getHumanStates() {
-        return componentManager.get(StatusComponet.class);
+    public StatusComponent getHumanStates() {
+        return componentManager.get(StatusComponent.class);
     }
 
     /**
@@ -125,16 +133,6 @@ public abstract class Humanoid extends Entity {
     }
 
     /**
-     * Restituisce la salute massima dell'umanoide.
-     *
-     * @return La salute massima dell'umanoide.
-     */
-    public float getMaxHealth() {
-        return getStats().getMaxHealth();
-    }
-
-
-    /**
      * Restituisce la velocità attuale dell'umanoide.
      *
      * @return La velocità dell'umanoide.
@@ -160,14 +158,14 @@ public abstract class Humanoid extends Entity {
      */
     public void inflictDamage(float damage) {
         getHumanStates().hasBeenHit=true;
-        getStats().setHealth(getStats().getHealth() - damage);
+        getStats().health = getStats().health - damage;
     }
 
     /**
      * Uccide l'umanoide, infliggendo danno pari alla sua salute massima.
      */
     public void kill() {
-        inflictDamage(getMaxHealth());
+        inflictDamage(getStats().maxHealth);
         setDead();
     }
 

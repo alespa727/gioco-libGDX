@@ -62,6 +62,10 @@ public class PhysicsComponent extends Component {
         return body.getLinearVelocity();
     }
 
+    /**
+     * Sposta istantaneamente l'entità in una nuova posizione.
+     * @param pos nuova posizione
+     */
     public void teleport(Vector2 pos) {
         body.setTransform(pos, body.getAngle());
     }

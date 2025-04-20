@@ -55,7 +55,7 @@ public class DebugWindow extends Window {
                 }
 
                 if (coordX > 0 && coordY > 0 && coordX < Map.width() && coordY < Map.height()) {
-                    gameScreen.getEntityManager().player().teleport(new Vector2(coordX, coordY));
+                    gameScreen.getEntityManager().player().getPhysics().teleport(new Vector2(coordX, coordY));
                 } else {
                     xCoord.setMessageText("Errore di coordinate");
                     yCoord.setMessageText("Errore di coordinate");
