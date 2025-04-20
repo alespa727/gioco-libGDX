@@ -2,6 +2,7 @@ package progetto.manager.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.core.Core;
@@ -17,6 +18,7 @@ import progetto.gameplay.systems.base.System;
 import progetto.gameplay.player.Player;
 import progetto.core.game.GameInfo;
 import progetto.gameplay.systems.specific.*;
+import progetto.manager.input.DebugWindow;
 import progetto.manager.input.TerminalCommand;
 import progetto.gameplay.player.PlayerManager;
 
@@ -26,7 +28,6 @@ import java.util.Map;
 public final class Engine {
 
     public final GameInfo info;
-    private final EntityLifeCycleManager lifeCycleManager;
     private final EntityRenderer renderer;
 
     public Array<System> systems;
@@ -47,18 +48,17 @@ public final class Engine {
      * @param info informazioni del gioco
      */
     public Engine(GameInfo info) {
-        this.lifeCycleManager = new EntityLifeCycleManager(this);
         this.info = info;
         this.entities = new Array<>();
         this.queue = new Queue<>();
-        this.playerManager = new PlayerManager(this, lifeCycleManager);
+        this.playerManager = new PlayerManager(this);
         this.summon(playerManager.getPlayer());
         Core.assetManager.load("entities/nemico.png", Texture.class);
         Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 50; j++) {
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 1; j++) {
                 EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i, 10+j);
                 summon(EntityFactory.createEnemy("Finn", e, this, 5));
             }
@@ -160,10 +160,9 @@ public final class Engine {
      */
     public void draw() {
         renderer.sort();
+        if(DebugWindow.renderPathfinding()) renderer.drawPaths();
         for (System s : systems) {
-            if (s instanceof DrawingSystem) {
-                systems.get(1).update(Gdx.graphics.getDeltaTime(), entities);
-            }
+            if (s instanceof DrawingSystem && s.isActive()) systems.get(1).update(Gdx.graphics.getDeltaTime(), entities);
         }
     }
 

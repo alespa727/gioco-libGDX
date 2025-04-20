@@ -80,7 +80,7 @@ public class EntityMovementComponent extends IteratableComponent {
         }
 
         if (owner.getPosition().dst(target) < 8/16f) {
-            body.setLinearDamping(20f);
+            body.setLinearDamping(50f);
             stepIndex++;
             for (Vector2 node: path){
                 if (Map.getGraph().getClosestNode(node.x, node.y)!=null && Map.getGraph().getClosestNode(node.x, node.y).isWalkable()){

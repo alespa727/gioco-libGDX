@@ -97,7 +97,7 @@ public class EntityRenderer {
     /**
      * Disegna le entità
      */
-    private void drawPaths() {
+    public void drawPaths() {
         info.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entities) {
             if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
