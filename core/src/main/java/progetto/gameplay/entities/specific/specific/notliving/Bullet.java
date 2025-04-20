@@ -30,9 +30,9 @@ public class Bullet extends GameObject{
     private final Class<? extends Entity> target;
 
     /** Texture del proiettile */
-    private final Texture texture;
+    public final Texture texture;
 
-    ParticleEffect effect = new ParticleEffect();
+    public ParticleEffect effect = new ParticleEffect();
 
     // === Costruttore ===
     /**
@@ -181,14 +181,6 @@ public class Bullet extends GameObject{
      */
     @Override
     public void draw(SpriteBatch batch, float elapsedTime) {
-        effect.setPosition(getPosition().x, getPosition().y); // o qualsiasi posizione iniziale
-        effect.update(manager.delta);
-        effect.draw(batch);
-        float radius = componentManager.get(BulletComponent.class).radius;
-        Sprite sprite = new Sprite(texture); // Crea uno sprite per il proiettile
-        sprite.setColor(componentManager.get(ColorComponent.class).color);
-        sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio
-        sprite.setPosition(getPosition().x - sprite.getWidth() / 2, getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite
-        sprite.draw(batch); // Disegna lo sprite
+
     }
 }
