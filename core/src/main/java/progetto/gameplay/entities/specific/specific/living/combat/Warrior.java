@@ -1,5 +1,7 @@
 package progetto.gameplay.entities.specific.specific.living.combat;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import progetto.gameplay.entities.components.base.Component;
@@ -12,6 +14,7 @@ import progetto.gameplay.entities.specific.specific.living.HumanoidInstances;
 import progetto.manager.entities.Engine;
 
 public abstract class Warrior extends Humanoid {
+    public Texture weapon = new Texture(Gdx.files.internal("entities/Finn/attack/sword.png"));
 
     public Warrior(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
