@@ -12,6 +12,7 @@ public class KnockbackSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list){
+            if (!e.shouldRender()) continue;
             ComponentManager componentManager = e.componentManager;
             if (componentManager.contains(KnockbackComponent.class)){
                 KnockbackComponent knockbackComponent = componentManager.get(KnockbackComponent.class);

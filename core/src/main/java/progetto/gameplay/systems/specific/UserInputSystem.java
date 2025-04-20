@@ -15,6 +15,7 @@ public class UserInputSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list){
+            if(!e.shouldRender()) continue;
             if (e.componentManager.contains(UserControllable.class) && e instanceof Humanoid humanoid){
                 if (!(su || giu || sinistra || destra)) {
                     notMoving(humanoid);

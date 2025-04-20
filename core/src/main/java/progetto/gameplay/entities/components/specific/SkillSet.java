@@ -1,13 +1,14 @@
-package progetto.gameplay.entities.skills.base;
+package progetto.gameplay.entities.components.specific;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.base.IteratableComponent;
+import progetto.gameplay.entities.components.base.Component;
+import progetto.gameplay.entities.skills.base.Skill;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SkillSet extends IteratableComponent {
+public class SkillSet extends Component {
 
     // === CAMPi ===
 
@@ -23,15 +24,8 @@ public class SkillSet extends IteratableComponent {
 
     // === METODI ===
 
-    /**
-     * Aggiorna lo stato di tutte le skill nel set.
-     * Viene chiamato ogni frame per aggiornare il comportamento delle skill.
-     */
-    @Override
-    public void update(float delta) {
-        for (Skill skill : skillList) {
-            skill.update(); // Aggiorna ogni skill
-        }
+    public Array<Skill> getSkills() {
+        return skillList;
     }
 
     /**

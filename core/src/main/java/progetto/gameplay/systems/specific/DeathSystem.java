@@ -13,6 +13,7 @@ public class DeathSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
+            if (!e.shouldRender()) continue;
             if (e instanceof Player player){
                 if (player.getHealth() <= 0) {
                     player.setDead();
