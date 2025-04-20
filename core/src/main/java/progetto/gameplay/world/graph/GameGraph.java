@@ -4,8 +4,10 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.player.ManagerCamera;
+import progetto.gameplay.world.Map;
 import progetto.gameplay.world.graph.node.Node;
 
 import java.util.HashMap;
@@ -180,18 +182,10 @@ public class GameGraph implements IndexedGraph<Node> {
 
     public Node getClosestNode(float x, float y) {
         Node closestNode = null;
-        float closestDistanceSquared = Float.MAX_VALUE;
 
-        for (Node node : nodeLookup.values()) {
-            float dx = node.getX() - x;
-            float dy = node.getY() - y;
-            float distanceSquared = dx * dx + dy * dy; // Distanza al quadrato (evita Math.sqrt, più efficiente)
-
-            if (distanceSquared < closestDistanceSquared) {
-                closestDistanceSquared = distanceSquared;
-                closestNode = node;
-            }
-        }
+        int coordX = Math.max(0, Math.min(Map.width() - 1, MathUtils.floor(x)));
+        int coordY = Math.max(0, Math.min(Map.height() - 1, MathUtils.floor(y)));
+        closestNode = nodeLookup.get(generateKey(coordX, coordY));
 
         return closestNode;
     }

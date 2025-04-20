@@ -9,11 +9,11 @@ import progetto.manager.entities.Engine;
  public abstract class Boss extends Warrior {
     public Boss(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        componentManager.add(new PhaseComponent(0));
+        componentManager.add(new PhaseComponent());
     }
 
     public Boss(EntityConfig config, Engine engine) {
         super(config, engine);
-        componentManager.add(new PhaseComponent(0));
+        componentManager.add(new PhaseComponent());
     }
 }

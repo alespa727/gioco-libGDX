@@ -137,7 +137,7 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-            if(Map.isGraphLoaded) entity.searchPath(entity.manager.player());
+            if(Map.isGraphLoaded) entity.searchPathIdle(entity.manager.player());
             if(!entity.getPathFinder().success){
                 entity.getStateMachine().changeState(StatesEnemy.PATROLLING);
                 return;
@@ -158,8 +158,5 @@ public enum StatesEnemy implements State<Enemy> {
         public boolean onMessage(Enemy entity, Telegram telegram) {
             return false;
         }
-
-        Player player;
-
     }
 }

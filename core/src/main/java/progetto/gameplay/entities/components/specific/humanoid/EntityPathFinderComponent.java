@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.gameplay.entities.components.base.Component;
+import progetto.gameplay.entities.components.specific.NodeComponent;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.world.Map;
 import progetto.manager.world.MapManager;
@@ -62,7 +63,7 @@ public class EntityPathFinderComponent extends Component implements Disposable {
         //System.out.println("Calcolo del percorso!");
         path.clear();
         //setta il nodo di inizio e fine
-        startNode = Map.getGraph().getClosestNode(entity.getPosition().x, entity.getPosition().y);
+        startNode = entity.componentManager.get(NodeComponent.class).node;
         endNode = Map.getGraph().getClosestNode(x, y);
 
         //nodi validi?
@@ -77,7 +78,9 @@ public class EntityPathFinderComponent extends Component implements Disposable {
         }
 
         success = pathFinder.searchNodePath(startNode, endNode, heuristic, path);
-        entity.getMovementManager().setPath(path);
+        if (entity.getMovementManager().isReady()) {
+            entity.getMovementManager().setPath(path);
+        }
     }
 
     public void drawPath(ShapeRenderer shapeRenderer) {

@@ -57,9 +57,11 @@ public final class Engine {
         Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        for (int i = 0; i < 1; i++) {
-            EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i, 10);
-            summon(EntityFactory.createEnemy("Finn", e, this, 5));
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 50; j++) {
+                EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i, 10+j);
+                summon(EntityFactory.createEnemy("Finn", e, this, 5));
+            }
         }
 
         this.renderer = new EntityRenderer(this);

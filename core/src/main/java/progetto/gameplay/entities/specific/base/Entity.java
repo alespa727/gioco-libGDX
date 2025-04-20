@@ -21,6 +21,9 @@ import progetto.manager.entities.Engine;
  */
 public abstract class Entity {
 
+    private static int nextId = 0;
+
+    public final int id;
     /** Gestore generale delle entità (dove è registrata questa entità). {@link Engine} */
     public final Engine manager;
 
@@ -42,7 +45,11 @@ public abstract class Entity {
      * @param manager il gestore delle entità {@link Engine}
      */
     public Entity(EntityInstance instance, Engine manager) {
+        nextId++;
         this.config = instance.config;
+        this.id = nextId;
+        this.config.id = nextId;
+        System.out.println(config.id);
         this.manager = manager;
         String[] string = new String[1];
         string[0] = "default";
@@ -70,7 +77,11 @@ public abstract class Entity {
      * @param manager il gestore delle entità {@link Engine}
      */
     public Entity(EntityConfig config, Engine manager) {
+        nextId++;
         this.config = config;
+        this.id = nextId;
+        this.config.id = nextId;
+        System.out.println(config.id);
         this.manager = manager;
         String[] string = new String[1];
         string[0] = "default";
