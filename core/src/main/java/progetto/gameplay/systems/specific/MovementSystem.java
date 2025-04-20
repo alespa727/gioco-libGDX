@@ -7,15 +7,29 @@ import progetto.gameplay.entities.components.specific.MovementComponent;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
+import progetto.gameplay.player.Player;
 import progetto.gameplay.systems.base.System;
 import progetto.gameplay.world.Map;
 import progetto.gameplay.world.graph.node.Node;
+import progetto.manager.input.DebugWindow;
 
 public class MovementSystem extends System {
 
     @Override
     public void update(float delta, Array<Entity> entities) {
+        if(!DebugWindow.renderEntities()){
+            for (Entity entity : entities) {
+                if (entity instanceof Player) continue;
+                if (!entity.shouldRender()) continue;
+                if (!entity.componentManager.contains(MovementComponent.class)) continue;
+                if (!entity.componentManager.contains(PhysicsComponent.class)) continue;
+
+                entity.getPhysics().getBody().setLinearVelocity(new Vector2(0, 0));
+            }
+            return;
+        }
         for (Entity entity : entities) {
+            if (!entity.shouldRender()) continue;
             if (!entity.componentManager.contains(MovementComponent.class)) continue;
             if (!entity.componentManager.contains(PhysicsComponent.class)) continue;
 

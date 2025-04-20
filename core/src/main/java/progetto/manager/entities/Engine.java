@@ -57,8 +57,8 @@ public final class Engine {
         Core.assetManager.load("entities/Lich.png", Texture.class);
         Core.assetManager.finishLoading();
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < 500; i++) {
+            for (int j = 0; j < 10; j++) {
                 EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i, 10+j);
                 summon(EntityFactory.createEnemy("Finn", e, this, 5));
             }
@@ -75,7 +75,8 @@ public final class Engine {
             new NodeTrackerSystem(),
             new RangeSystem(),
             new PlayerSystem(),
-            new MovementSystem()
+            new MovementSystem(),
+            new SkillSystem(),
         };
         this.systems = new Array<>(systems);
         this.components = new HashMap<>();

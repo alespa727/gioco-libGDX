@@ -11,6 +11,7 @@ public class SpeedLimiterSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
         for (Entity entity : list) {
+            if (!entity.shouldRender()) continue;
             if (entity instanceof Humanoid h) {
                 Body body = entity.getPhysics().getBody();
                 if (body == null) {

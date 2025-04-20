@@ -11,6 +11,7 @@ public class NodeTrackerSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
+            if (!e.shouldRender()) continue;
             ComponentManager componentManager = e.componentManager;
             if (componentManager.contains(NodeComponent.class)){
                 NodeComponent nodeComponent = componentManager.get(NodeComponent.class);

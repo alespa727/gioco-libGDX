@@ -1,20 +1,17 @@
-package progetto.gameplay.entities.components.specific.humanoid;
+package progetto.gameplay.entities.components.specific;
 
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.gameplay.entities.components.base.Component;
-import progetto.gameplay.entities.components.specific.NodeComponent;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.world.Map;
 import progetto.manager.world.MapManager;
 import progetto.gameplay.world.graph.HeuristicDistance;
 import progetto.gameplay.world.graph.node.Node;
 
-public class EntityPathFinderComponent extends Component implements Disposable {
+public class PathFinderComponent extends Component implements Disposable {
     private final Humanoid entity;
     private final DefaultGraphPath<Node> path;
 
@@ -27,7 +24,7 @@ public class EntityPathFinderComponent extends Component implements Disposable {
 
     public boolean success;
 
-    public EntityPathFinderComponent(Humanoid entity) {
+    public PathFinderComponent(Humanoid entity) {
         this.path = new DefaultGraphPath<>();
         this.entity = entity;
     }

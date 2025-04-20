@@ -3,12 +3,7 @@ package progetto.gameplay.entities.specific.specific.living;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.entities.components.base.Component;
-import progetto.gameplay.entities.components.specific.DrawableComponent;
-import progetto.gameplay.entities.components.specific.AttributeComponent;
-import progetto.gameplay.entities.components.specific.MovementComponent;
-import progetto.gameplay.entities.components.specific.StatusComponent;
-import progetto.gameplay.entities.components.specific.humanoid.*;
-import progetto.gameplay.entities.skills.base.SkillSet;
+import progetto.gameplay.entities.components.specific.*;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
@@ -33,7 +28,7 @@ public abstract class Humanoid extends Entity {
         Component[] components = new Component[]{
             new MovementComponent(),
             new AttributeComponent(instance.speed, instance.maxHealth),
-            new EntityPathFinderComponent(this),
+            new PathFinderComponent(this),
             new SkillSet(),
             new StatusComponent(),
             new DrawableComponent(),
@@ -54,7 +49,7 @@ public abstract class Humanoid extends Entity {
         Component[] components = new Component[]{
             new MovementComponent(),
             new AttributeComponent(config.speed, config.hp),
-            new EntityPathFinderComponent(this),
+            new PathFinderComponent(this),
             new SkillSet(),
             new StatusComponent(),
             new DrawableComponent(),
@@ -190,10 +185,10 @@ public abstract class Humanoid extends Entity {
     /**
      * Restituisce il gestore del percorso dell'umanoide.
      *
-     * @return Il componente {@link EntityPathFinderComponent} dell'umanoide.
+     * @return Il componente {@link PathFinderComponent} dell'umanoide.
      */
-    public EntityPathFinderComponent getPathFinder() {
-        return componentManager.get(EntityPathFinderComponent.class);
+    public PathFinderComponent getPathFinder() {
+        return componentManager.get(PathFinderComponent.class);
     }
 
     // --- METODI DI RENDERING ---

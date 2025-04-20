@@ -18,6 +18,7 @@ public class RangeSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
+            if (!e.shouldRender()) continue;
             ComponentManager componentManager = e.componentManager;
             if(e.componentManager.contains(AttackRangeComponent.class)){
                 AttackRangeComponent range = e.componentManager.get(AttackRangeComponent.class);

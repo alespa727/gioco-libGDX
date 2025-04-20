@@ -12,10 +12,13 @@ import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.systems.base.System;
 import progetto.graphics.shaders.specific.Flash;
+import progetto.manager.input.DebugWindow;
 
 public class DrawingSystem extends System {
     private SpriteBatch batch;
     private float tempoTrascorso=0;
+
+    private float freezeTime=0;
 
     public DrawingSystem(SpriteBatch batch) {
         this.batch = batch;
@@ -28,9 +31,22 @@ public class DrawingSystem extends System {
 
     @Override
     public void update(float delta, Array<Entity> list) {
+        if (!DebugWindow.renderEntities()){
+            batch.begin();
+            for (Entity entity : list) {
+                if (!entity.shouldRender()) continue;
+
+                if (entity.componentManager.contains(DrawableComponent.class)) {
+                    drawDefault(entity, batch, tempoTrascorso);
+                }
+            }
+            batch.end();
+            return;
+        }
         tempoTrascorso += delta;
         batch.begin();
         for (Entity entity : list) {
+            if (!entity.shouldRender()) continue;
             if (entity instanceof Humanoid h) {
                 if (entity.componentManager.contains(DespawnAnimationComponent.class)) {
                     drawDespawnAnimation(h, batch, delta);
@@ -45,7 +61,7 @@ public class DrawingSystem extends System {
         batch.end();
     }
 
-    public void drawDespawnAnimation(Humanoid entity, SpriteBatch batch, float delta) {
+    public void drawDespawnAnimation(Entity entity, SpriteBatch batch, float delta) {
         entity.componentManager.get(DespawnAnimationComponent.class).accumulator += delta;
 
         // Calcola il progresso interpolato
@@ -67,12 +83,15 @@ public class DrawingSystem extends System {
         }
     }
 
-    public void drawDefault(Humanoid entity, SpriteBatch batch, float tempoTrascorso) {
+    public void drawDefault(Entity entity, SpriteBatch batch, float tempoTrascorso) {
         boolean applied = false;
-        if (entity.getHumanStates().hasBeenHit) {
-            Flash.getInstance().apply(batch, Color.RED);
-            applied = true;
+        if (entity instanceof Humanoid h) {
+            if (h.getHumanStates().hasBeenHit) {
+                Flash.getInstance().apply(batch, Color.RED);
+                applied = true;
+            }
         }
+
 
         batch.draw(entity.getTextures().play(entity, "default" ,tempoTrascorso),
             entity.getPosition().x - entity.getConfig().imageWidth / 2,

@@ -1,6 +1,6 @@
 package progetto.gameplay.entities.specific.specific.living;
 
-import progetto.gameplay.entities.skills.base.SkillSet;
+import progetto.gameplay.entities.components.specific.SkillSet;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 
 import java.util.List;
