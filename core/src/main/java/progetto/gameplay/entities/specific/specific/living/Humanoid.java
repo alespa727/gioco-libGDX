@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.specific.DrawableComponent;
 import progetto.gameplay.entities.components.specific.AttributeComponent;
+import progetto.gameplay.entities.components.specific.MovementComponent;
 import progetto.gameplay.entities.components.specific.StatusComponent;
 import progetto.gameplay.entities.components.specific.humanoid.*;
 import progetto.gameplay.entities.skills.base.SkillSet;
@@ -30,7 +31,7 @@ public abstract class Humanoid extends Entity {
     public Humanoid(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
         Component[] components = new Component[]{
-            new EntityMovementComponent(this),
+            new MovementComponent(),
             new AttributeComponent(instance.speed, instance.maxHealth),
             new EntityPathFinderComponent(this),
             new SkillSet(),
@@ -38,7 +39,7 @@ public abstract class Humanoid extends Entity {
             new DrawableComponent(),
         };
         componentManager.add(components);
-        componentManager.get(EntityMovementComponent.class).setAwake(false);
+        componentManager.get(MovementComponent.class).setAwake(false);
     }
 
     /**
@@ -51,7 +52,7 @@ public abstract class Humanoid extends Entity {
     public Humanoid(EntityConfig config, Engine manager) {
         super(config, manager);
         Component[] components = new Component[]{
-            new EntityMovementComponent(this),
+            new MovementComponent(),
             new AttributeComponent(config.speed, config.hp),
             new EntityPathFinderComponent(this),
             new SkillSet(),
@@ -59,7 +60,7 @@ public abstract class Humanoid extends Entity {
             new DrawableComponent(),
         };
         componentManager.add(components);
-        componentManager.get(EntityMovementComponent.class).setAwake(false);
+        componentManager.get(MovementComponent.class).setAwake(false);
     }
 
     // METODI ASTRATTI
@@ -180,10 +181,10 @@ public abstract class Humanoid extends Entity {
     /**
      * Restituisce il gestore del movimento dell'umanoide.
      *
-     * @return Il componente {@link EntityMovementComponent} dell'umanoide.
+     * @return Il componente {@link MovementComponent} dell'umanoide.
      */
-    public EntityMovementComponent getMovementManager() {
-        return componentManager.get(EntityMovementComponent.class);
+    public MovementComponent getMovementManager() {
+        return componentManager.get(MovementComponent.class);
     }
 
     /**
@@ -229,6 +230,6 @@ public abstract class Humanoid extends Entity {
      * @param shapeRenderer Il renderer delle forme per disegnare il percorso.
      */
     public void drawPath(ShapeRenderer shapeRenderer) {
-        getPathFinder().drawPath(shapeRenderer);
+        getMovementManager().drawPath(shapeRenderer);
     }
 }

@@ -21,7 +21,7 @@ public class NodeConnection implements Connection<Node> {
      */
     @Override
     public float getCost() {
-        if (!toNode.isWalkable() || !fromNode.isWalkable()) return 10f;
+        if (!toNode.isWalkable() || !fromNode.isWalkable()) return 4f;
         return cost;
     }
 
