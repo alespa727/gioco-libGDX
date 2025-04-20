@@ -83,23 +83,6 @@ public class EntityPathFinderComponent extends Component implements Disposable {
         }
     }
 
-    public void drawPath(ShapeRenderer shapeRenderer) {
-        if (path.nodes.isEmpty()) {
-            return;
-        }
-        shapeRenderer.setColor(Color.RED);
-        Node previousNode = null;
-        for (Node node : path.nodes) {
-            if (previousNode != null) {
-                shapeRenderer.rectLine(previousNode.getX(), previousNode.getY(), node.getX(), node.getY(), 0.1f);
-            }
-            previousNode = node;
-        }
-        shapeRenderer.circle(startNode.x + 0.5f, startNode.y + 0.5f, 0.2f, 10);
-        shapeRenderer.circle(endNode.x + 0.5f, endNode.y + 0.5f, 0.2f, 10);
-        shapeRenderer.setColor(Color.BLACK);
-    }
-
     public void clear() {
         path.clear();
     }

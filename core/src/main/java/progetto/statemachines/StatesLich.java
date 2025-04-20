@@ -95,8 +95,6 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-            entity.getMovementManager().update(entity.manager.delta);
-
             entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
 
             // ATTACCO AD AREA SPARANDO PROIETTILI IN TUTTE LE DIREZIONI
@@ -196,7 +194,7 @@ public enum StatesLich implements State<Lich> {
     IDLE {
         @Override
         public void enter(Lich entity) {
-            entity.getMovementManager().setReady();
+            entity.getMovementManager().setReady(true);
         }
 
         @Override
