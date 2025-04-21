@@ -13,7 +13,7 @@ public class KnockbackSystem extends System {
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list){
             if (!e.shouldRender()) continue;
-            ComponentManager componentManager = e.componentManager;
+            ComponentManager componentManager = e.components;
             if (componentManager.contains(KnockbackComponent.class)){
                 KnockbackComponent knockbackComponent = componentManager.get(KnockbackComponent.class);
                 Cooldown cooldown = knockbackComponent.cooldown;

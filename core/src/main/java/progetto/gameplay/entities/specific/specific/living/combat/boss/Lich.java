@@ -22,7 +22,7 @@ public class Lich extends Boss{
 
     public Lich(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        componentManager.add(new MortalComponent());
+        components.add(new MortalComponent());
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5));
@@ -31,7 +31,7 @@ public class Lich extends Boss{
 
     public Lich(EntityConfig config, Engine engine) {
         super(config, engine);
-        componentManager.add(new MortalComponent());
+        components.add(new MortalComponent());
         stateMachine = new DefaultStateMachine<>(this);
         stateMachine.changeState(StatesLich.IDLE);
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));

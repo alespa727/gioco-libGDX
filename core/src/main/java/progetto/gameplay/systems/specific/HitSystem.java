@@ -11,8 +11,8 @@ public class HitSystem extends System {
     public void update(float delta, Array<Entity> list) {
         for(Entity e : list){
             if (!e.shouldRender()) continue;
-            if (e.componentManager.contains(StatusComponent.class)){
-                ComponentManager cm = e.componentManager;
+            if (e.components.contains(StatusComponent.class)){
+                ComponentManager cm = e.components;
                 if (cm.get(StatusComponent.class).hasBeenHit) {
 
                     cm.get(StatusComponent.class).cooldown.update(delta);

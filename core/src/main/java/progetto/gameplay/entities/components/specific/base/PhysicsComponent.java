@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.base.Entity;
+import progetto.gameplay.entities.specific.base.EntityConfig;
 
 public class PhysicsComponent extends Component {
     protected final Entity owner;
@@ -19,9 +20,9 @@ public class PhysicsComponent extends Component {
     public FixtureDef fixtureDef;
     public Shape shape;
 
-    public PhysicsComponent(Entity owner) {
+    public PhysicsComponent(Entity owner, EntityConfig config) {
         this.owner = owner;
-        this.position = new Vector2(owner.getConfig().x, owner.getConfig().y);
+        this.position = new Vector2(config.x, config.y);
     }
 
     public PhysicsComponent(Entity owner, Vector2 position) {

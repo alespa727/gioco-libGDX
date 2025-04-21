@@ -28,7 +28,7 @@ public class Player extends Warrior {
             new InRangeListComponent(),
         };
 
-        componentManager.add(components);
+        this.components.add(components);
 
         getAttackCooldown().reset(0.8f);
         getDashCooldown().reset(1f);
@@ -46,11 +46,11 @@ public class Player extends Warrior {
     }
 
     public AttackCooldown getAttackCooldown(){
-        return componentManager.get(AttackCooldown.class);
+        return components.get(AttackCooldown.class);
     }
 
     public DashCooldown getDashCooldown(){
-        return componentManager.get(DashCooldown.class);
+        return components.get(DashCooldown.class);
     }
 
     // === GESTIONE ENTITÀ IN RANGE ===

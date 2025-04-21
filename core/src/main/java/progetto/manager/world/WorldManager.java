@@ -37,8 +37,8 @@ public class WorldManager {
                 instance.destroyBody(body);
             }
 
-            if (body.getUserData() instanceof Warrior warrior && warrior.componentManager.contains(AttackRangeComponent.class)) {
-                AttackRangeComponent range = warrior.componentManager.get(AttackRangeComponent.class);
+            if (body.getUserData() instanceof Warrior warrior && warrior.components.contains(AttackRangeComponent.class)) {
+                AttackRangeComponent range = warrior.components.get(AttackRangeComponent.class);
                 if (range.getDirectionalRange() != null) {
                     instance.destroyBody(range.getDirectionalRange());
                     range.directionalRange = null;

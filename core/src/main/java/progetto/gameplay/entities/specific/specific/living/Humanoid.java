@@ -1,6 +1,5 @@
 package progetto.gameplay.entities.specific.specific.living;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.specific.*;
@@ -33,8 +32,8 @@ public abstract class Humanoid extends Entity {
             new StatusComponent(),
             new DrawableComponent(),
         };
-        componentManager.add(components);
-        componentManager.get(MovementComponent.class).setAwake(false);
+        this.components.add(components);
+        this.components.get(MovementComponent.class).setAwake(false);
     }
 
     /**
@@ -54,8 +53,8 @@ public abstract class Humanoid extends Entity {
             new StatusComponent(),
             new DrawableComponent(),
         };
-        componentManager.add(components);
-        componentManager.get(MovementComponent.class).setAwake(false);
+        this.components.add(components);
+        this.components.get(MovementComponent.class).setAwake(false);
     }
 
     // METODI ASTRATTI
@@ -83,7 +82,7 @@ public abstract class Humanoid extends Entity {
      * @return Il {@link SkillSet} dell'umanoide.
      */
     public final SkillSet getSkillset() {
-        return componentManager.get(SkillSet.class);
+        return components.get(SkillSet.class);
     }
 
     /**
@@ -92,7 +91,7 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link StatusComponent} dell'umanoide.
      */
     public StatusComponent getHumanStates() {
-        return componentManager.get(StatusComponent.class);
+        return components.get(StatusComponent.class);
     }
 
     /**
@@ -101,7 +100,7 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link AttributeComponent} dell'umanoide.
      */
     public AttributeComponent getStats() {
-        return componentManager.get(AttributeComponent.class);
+        return components.get(AttributeComponent.class);
     }
 
     /**
@@ -158,14 +157,6 @@ public abstract class Humanoid extends Entity {
     }
 
     /**
-     * Uccide l'umanoide, infliggendo danno pari alla sua salute massima.
-     */
-    public void kill() {
-        inflictDamage(getStats().maxHealth);
-        setDead();
-    }
-
-    /**
      * Fa resuscitare l'umanoide, ripristinando la sua salute e stato.
      */
     public void respawn() {
@@ -179,7 +170,7 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link MovementComponent} dell'umanoide.
      */
     public MovementComponent getMovementManager() {
-        return componentManager.get(MovementComponent.class);
+        return components.get(MovementComponent.class);
     }
 
     /**
@@ -188,34 +179,13 @@ public abstract class Humanoid extends Entity {
      * @return Il componente {@link PathFinderComponent} dell'umanoide.
      */
     public PathFinderComponent getPathFinder() {
-        return componentManager.get(PathFinderComponent.class);
+        return components.get(PathFinderComponent.class);
     }
 
     // --- METODI DI RENDERING ---
 
-    /**
-     * Disegna l'umanoide sullo schermo utilizzando il batch.
-     *
-     * @param batch Il batch di disegno.
-     * @param elapsedTime Il tempo trascorso dall'ultimo frame.
-     */
-    @Override
-    public void draw(SpriteBatch batch, float elapsedTime) {
-    }
-
 
     // --- METODI DI AGGIORNAMENTO ---
-
-    /**
-     * Metodo chiamato per aggiornare lo stato dell'umanoide.
-     * Viene eseguito ogni frame.
-     *
-     * @param delta Il delta di tempo.
-     */
-    @Override
-    public void updateEntity(float delta) {
-
-    }
 
     // --- METODI DI DEBUG ---
 

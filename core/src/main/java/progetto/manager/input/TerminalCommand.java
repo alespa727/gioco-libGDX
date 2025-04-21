@@ -144,7 +144,7 @@ public class TerminalCommand extends Thread {
 
     private void killPlayer() {
         // Uccide il player
-        gameScreen.getEntityManager().player().kill();
+        gameScreen.getEntityManager().player().inflictDamage(10000000);
     }
 
     public static void printMessage(String message) {

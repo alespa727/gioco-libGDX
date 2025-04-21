@@ -39,10 +39,10 @@ public class EventManager implements ContactListener {
         // Gestione del range del player
         // ---------------------------------------------
         if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
-            ((Player) dataA).componentManager.get(InRangeListComponent.class).inRange.add((Warrior) dataB);
+            ((Player) dataA).components.get(InRangeListComponent.class).inRange.add((Warrior) dataB);
         }
         if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
-            ((Player) dataB).componentManager.get(InRangeListComponent.class).inRange.add((Warrior) dataA);
+            ((Player) dataB).components.get(InRangeListComponent.class).inRange.add((Warrior) dataA);
         }
 
         // ---------------------------------------------
@@ -64,7 +64,7 @@ public class EventManager implements ContactListener {
             // ACCETTA anche sottoclassi di targetClass
             if (!((Bullet) dataB).getTargetClass().isAssignableFrom(dataA.getClass())) return;
 
-            ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).componentManager.get(BulletComponent.class).damage, 2);
+            ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).components.get(BulletComponent.class).damage, 2);
             ((Bullet) dataB).despawn();
         }
 
@@ -74,7 +74,7 @@ public class EventManager implements ContactListener {
             // ACCETTA anche sottoclassi di targetClass
             if (!((Bullet) dataA).getTargetClass().isAssignableFrom(dataB.getClass())) return;
 
-            ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).componentManager.get(BulletComponent.class).damage, 2);
+            ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).components.get(BulletComponent.class).damage, 2);
             ((Bullet) dataA).despawn();
         }
 
@@ -96,10 +96,10 @@ public class EventManager implements ContactListener {
         // Se dataA è un Player e dataB è un CombatEntity (ma non un Player)
         // e se il filtro del fixtureB non indica RANGE, rimuovo la CombatEntity dal Player.
         if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
-            ((Player) dataA).componentManager.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataB, false);
+            ((Player) dataA).components.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataB, false);
         }
         if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
-            ((Player) dataB).componentManager.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataA, false);
+            ((Player) dataB).components.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataA, false);
         }
 
         // ----------------------------------------------------

@@ -22,6 +22,7 @@ import progetto.manager.input.DebugWindow;
 import progetto.manager.input.TerminalCommand;
 import progetto.gameplay.player.PlayerManager;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,6 +78,7 @@ public final class Engine {
             new PlayerSystem(),
             new MovementSystem(),
             new SkillSystem(),
+            new StatemachineSystem()
         };
         this.systems = new Array<>(systems);
         this.components = new HashMap<>();
@@ -166,7 +168,6 @@ public final class Engine {
         for (System s : systems) {
             if (s instanceof DrawingSystem && s.isActive()) systems.get(1).update(Gdx.graphics.getDeltaTime(), entities);
         }
-
     }
 
     /**

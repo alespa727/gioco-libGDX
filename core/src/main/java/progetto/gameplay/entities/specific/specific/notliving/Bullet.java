@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
 import progetto.gameplay.entities.components.specific.BulletComponent;
@@ -52,11 +50,11 @@ public class Bullet extends GameObject{
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
-        componentManager.add(new BulletComponent(damage, velocity, radius));
-        componentManager.get(NodeComponent.class).setAwake(false);
-        componentManager.add(new Cooldown(2));
-        componentManager.get(Cooldown.class).reset();
-        componentManager.get(Cooldown.class).setAwake(false);
+        components.add(new BulletComponent(damage, velocity, radius));
+        components.get(NodeComponent.class).setAwake(false);
+        components.add(new Cooldown(2));
+        components.get(Cooldown.class).reset();
+        components.get(Cooldown.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
         effect.scaleEffect(getConfig().radius/2);
@@ -80,11 +78,11 @@ public class Bullet extends GameObject{
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
         this.getDirection().set(config.direzione); // Imposta la direzione
 
-        componentManager.add(new BulletComponent(damage, velocity, radius));
-        componentManager.get(NodeComponent.class).setAwake(false);
-        componentManager.add(new Cooldown(2));
-        componentManager.get(Cooldown.class).reset();
-        componentManager.get(Cooldown.class).setAwake(false);
+        components.add(new BulletComponent(damage, velocity, radius));
+        components.get(NodeComponent.class).setAwake(false);
+        components.add(new Cooldown(2));
+        components.get(Cooldown.class).reset();
+        components.get(Cooldown.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
         effect.scaleEffect(getConfig().radius/2);
@@ -97,8 +95,8 @@ public class Bullet extends GameObject{
      * @param time durata del cooldown in secondi
      */
     public void startCooldown(float time) {
-        componentManager.get(Cooldown.class).reset(time);
-        componentManager.get(Cooldown.class).setAwake(true);
+        components.get(Cooldown.class).reset(time);
+        components.get(Cooldown.class).setAwake(true);
     }
 
     /**
@@ -111,15 +109,6 @@ public class Bullet extends GameObject{
     }
 
     // === Override metodi principali ===
-
-    /**
-     * Aggiorna la logica del proiettile (es. cooldown e distruzione).
-     *
-     * @param delta tempo trascorso dall'ultimo aggiornamento
-     */
-    @Override
-    public void updateEntity(float delta) {
-    }
 
     /**
      * Aggiorna la logica specifica del tipo di entità (vuoto per i proiettili).
@@ -141,9 +130,9 @@ public class Bullet extends GameObject{
             despawn();
             return;
         }
-        componentManager.get(ColorComponent.class).color.set(Color.BLACK);
+        components.get(ColorComponent.class).color.set(Color.BLACK);
         getPhysics().getBody().setLinearDamping(0f); // Impedisce rallentamenti
-        getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(componentManager.get(BulletComponent.class).velocity)); // Imposta la velocità
+        getPhysics().getBody().setLinearVelocity(new Vector2(getDirection()).scl(components.get(BulletComponent.class).velocity)); // Imposta la velocità
         getPhysics().getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
         getPhysics().getBody().setUserData(this); // Associa il proiettile al corpo fisico
     }
@@ -173,14 +162,4 @@ public class Bullet extends GameObject{
         }
     }
 
-    /**
-     * Disegna il proiettile sullo schermo.
-     *
-     * @param batch {@link SpriteBatch} per disegnare il proiettile
-     * @param elapsedTime tempo trascorso dall'ultimo frame
-     */
-    @Override
-    public void draw(SpriteBatch batch, float elapsedTime) {
-
-    }
 }
