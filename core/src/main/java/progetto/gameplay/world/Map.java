@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.factories.BodyFactory;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.player.ManagerCamera;
 import progetto.manager.entities.Engine;
 import progetto.manager.world.WorldManager;
@@ -68,7 +69,7 @@ public class Map implements Disposable {
 
         this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
 
-        Gdx.app.postRunnable(() -> engine.player().getPhysics().teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+        Gdx.app.postRunnable(() -> engine.player().components.get(PhysicsComponent.class).teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
         ManagerCamera.getInstance().position.set(engine.player().getPosition(), 0);
         ManagerCamera.getInstance().update();
 

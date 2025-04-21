@@ -2,11 +2,11 @@ package progetto.gameplay.player;
 
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.entities.components.base.Component;
-import progetto.gameplay.entities.components.specific.InRangeListComponent;
-import progetto.gameplay.entities.components.specific.ShadowComponent;
-import progetto.gameplay.entities.components.specific.player.DashCooldown;
-import progetto.gameplay.entities.components.specific.UserControllable;
-import progetto.gameplay.entities.components.specific.warrior.AttackCooldown;
+import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
+import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
+import progetto.gameplay.entities.components.specific.graphics.ShadowComponent;
+import progetto.gameplay.entities.components.specific.base.Cooldown;
+import progetto.gameplay.entities.components.specific.control.UserControllable;
 import progetto.gameplay.entities.skills.specific.player.PlayerDash;
 import progetto.gameplay.entities.skills.specific.player.PlayerRangedAttack;
 import progetto.gameplay.entities.skills.specific.player.PlayerSwordAttack;
@@ -22,13 +22,15 @@ public class Player extends Warrior {
 
         Component[] components = new Component[]{
             new UserControllable(),
-            new AttackCooldown(0.8f),
-            new DashCooldown(1f),
+            new MultiCooldownComponent(),
             new ShadowComponent(this),
             new InRangeListComponent(),
         };
 
         this.components.add(components);
+
+        this.components.get(MultiCooldownComponent.class).add("attack", new Cooldown(0.8f, true));
+        this.components.get(MultiCooldownComponent.class).add("dash", new Cooldown(1f, true));
 
         getAttackCooldown().reset(0.8f);
         getDashCooldown().reset(1f);
@@ -40,17 +42,12 @@ public class Player extends Warrior {
         getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
     }
 
-    @Override
-    public void updateEntityType(float delta) {
-
+    public Cooldown getAttackCooldown(){
+        return this.components.get(MultiCooldownComponent.class).getCooldown("attack");
     }
 
-    public AttackCooldown getAttackCooldown(){
-        return components.get(AttackCooldown.class);
-    }
-
-    public DashCooldown getDashCooldown(){
-        return components.get(DashCooldown.class);
+    public Cooldown getDashCooldown(){
+        return this.components.get(MultiCooldownComponent.class).getCooldown("dash");
     }
 
     // === GESTIONE ENTITÀ IN RANGE ===
@@ -68,7 +65,7 @@ public class Player extends Warrior {
     }
 
     @Override
-    public EntityInstance despawn() {
+    public EntityInstance unregister() {
         return null;
     }
 

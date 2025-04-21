@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.game.GameScreen;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.world.Map;
 
 public class DebugWindow extends Window {
@@ -55,7 +56,7 @@ public class DebugWindow extends Window {
                 }
 
                 if (coordX > 0 && coordY > 0 && coordX < Map.width() && coordY < Map.height()) {
-                    gameScreen.getEntityManager().player().getPhysics().teleport(new Vector2(coordX, coordY));
+                    gameScreen.getEntityManager().player().components.get(PhysicsComponent.class).teleport(new Vector2(coordX, coordY));
                 } else {
                     xCoord.setMessageText("Errore di coordinate");
                     yCoord.setMessageText("Errore di coordinate");

@@ -2,8 +2,9 @@ package progetto.gameplay.entities.skills.specific.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import progetto.gameplay.entities.components.specific.InRangeListComponent;
+import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.skills.base.Skill;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.Player;
@@ -18,12 +19,12 @@ public class PlayerDash extends Skill {
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
         if (isBeingUsed) {
-            elapsedTime += owner.manager.delta;
-            cooldown.update(owner.manager.delta);
+            elapsedTime += delta;
+            cooldown.update(delta);
             if (owner.components.get(InRangeListComponent.class).inRange.size > 0){
-                owner.manager.info.screen.setTimeScale(0.1f, 1f);
+                owner.engine.info.screen.setTimeScale(0.1f, 1f);
                 isBeingUsed = false;
             }
             if (cooldown.isReady){
@@ -41,7 +42,7 @@ public class PlayerDash extends Skill {
 
     @Override
     public void execute() {
-        Body body = owner.getPhysics().getBody();
+        Body body = owner.components.get(PhysicsComponent.class).getBody();
         body.setLinearVelocity(body.getLinearVelocity().x * dodgeSpeed, body.getLinearVelocity().y * dodgeSpeed);
         cooldown.reset(0.5f);
         if (((Player) owner).components.get(InRangeListComponent.class).inRange.size == 0) setBeingUsed(true);

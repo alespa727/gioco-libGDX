@@ -1,9 +1,13 @@
 package progetto.gameplay.entities.specific.specific.living.combat.boss;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.ai.fsm.State;
+import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
+import progetto.gameplay.entities.components.specific.ai.StatemachineComponent;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.statemachines.StatesLich;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.MortalComponent;
+import progetto.gameplay.entities.components.specific.combat.MortalComponent;
 import progetto.gameplay.entities.skills.specific.boss.LichFireDomain;
 import progetto.gameplay.entities.skills.specific.boss.LichFireball;
 import progetto.gameplay.entities.specific.base.EntityConfig;
@@ -12,54 +16,48 @@ import progetto.gameplay.entities.specific.specific.living.HumanoidInstances;
 import progetto.manager.entities.Engine;
 import progetto.manager.world.WorldManager;
 
-public class Lich extends Boss{
+public class Lich extends Boss {
 
-    public final Cooldown prepareToFireball = new Cooldown(2f);
-    public final Cooldown prepareFireDomain = new Cooldown(0);
-    public final Cooldown prepareToChangeStates = new Cooldown(0.5f);
+    // === Campi ===
+    public String[] types;
 
-    private final DefaultStateMachine<Lich, StatesLich> stateMachine;
-
+    // === Costruttori ===
     public Lich(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        components.add(new MortalComponent());
-        stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(StatesLich.IDLE);
-        getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5));
-        getSkillset().add(new LichFireDomain(this, "", "", 20));
+        init(engine);
     }
 
     public Lich(EntityConfig config, Engine engine) {
         super(config, engine);
+        init(engine);
+    }
+
+    // === Inizializzazione comune ===
+    private void init(Engine engine) {
+        this.types = new String[]{"fireball", "firedomain", "changestates"};
+        Cooldown[] cooldowns = {new Cooldown(2f), new Cooldown(0), new Cooldown(0.5f, true)};
+        cooldowns[2].autoUpdate();
+        components.add(new MultiCooldownComponent(types, cooldowns));
         components.add(new MortalComponent());
-        stateMachine = new DefaultStateMachine<>(this);
-        stateMachine.changeState(StatesLich.IDLE);
+        components.add(new StatemachineComponent<>(this, StatesLich.IDLE));
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
     }
 
-    @Override
-    public void updateEntityType(float delta) {
-        prepareToChangeStates.update(delta);
-        stateMachine.update();
-    }
-
+    // === Override: Metodi di lifecycle ===
     @Override
     public void create() {
         super.create();
     }
 
     @Override
-    public EntityInstance despawn() {
-        // Rimuove l'entità dal manager
-        manager.remove(this);
-
-        // Distrugge il corpo dell'entità e la sua area di range nel mondo
-        WorldManager.destroyBody(getPhysics().getBody());
-
+    public EntityInstance unregister() {
+        engine.remove(this);
+        WorldManager.destroyBody(components.get(PhysicsComponent.class).getBody());
         return new BossInstance(this);
     }
 
+    // === Azioni custom ===
     public void fireball() {
         getSkillset().execute(LichFireball.class);
     }
@@ -68,7 +66,9 @@ public class Lich extends Boss{
         getSkillset().execute(LichFireDomain.class);
     }
 
-    public DefaultStateMachine<Lich,StatesLich> getStateMachine(){
-        return stateMachine;
+    // === Getter per lo statemachine ===
+    @SuppressWarnings("unchecked")
+    public <E extends Lich, S extends State<E>> DefaultStateMachine<E, S> getStateMachine() {
+        return getComponent(StatemachineComponent.class).getStateMachine();
     }
 }

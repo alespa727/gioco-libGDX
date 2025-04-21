@@ -86,7 +86,7 @@ public abstract class Skill {
     /**
      * Metodo che aggiorna lo stato della skill.
      */
-    public abstract void update();
+    public abstract void update(float delta);
 
     /**
      * Metodo per disegnare la skill.

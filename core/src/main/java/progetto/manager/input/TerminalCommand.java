@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import org.fusesource.jansi.Ansi;
 import progetto.core.game.GameScreen;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 
 import java.util.Scanner;
 
@@ -139,7 +140,7 @@ public class TerminalCommand extends Thread {
 
     private void teleportPlayer(int x, int y) {
         // Teletrasporta il giocatore
-        gameScreen.getEntityManager().player().getPhysics().teleport(new Vector2(x, y));
+        gameScreen.getEntityManager().player().components.get(PhysicsComponent.class).teleport(new Vector2(x, y));
     }
 
     private void killPlayer() {

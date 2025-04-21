@@ -3,7 +3,9 @@ package progetto.manager.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.gameplay.entities.components.specific.StateComponent;
+import progetto.gameplay.entities.components.specific.ai.StateComponent;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.graphics.ZLevelComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.ManagerCamera;
@@ -29,9 +31,14 @@ public class EntityRenderer {
      */
     public EntityRenderer(Engine engine) {
         this.engine = engine;
+
         comparator = (o1, o2) -> {
-            if (o2.getZ() != o1.getZ()) {
-                return Integer.compare(o1.getZ(), o2.getZ());
+            if (o1.components.contains(ZLevelComponent.class) && o2.components.contains(ZLevelComponent.class)) {
+                ZLevelComponent zLevelComponent1 = o1.components.get(ZLevelComponent.class);
+                ZLevelComponent zLevelComponent2 = o2.components.get(ZLevelComponent.class);
+                if (zLevelComponent2.getZ() != zLevelComponent1.getZ()) {
+                    return Integer.compare(zLevelComponent1.getZ(), zLevelComponent2.getZ());
+                }
             }
             return Float.compare(o2.getPosition().y, o1.getPosition().y);
         };
@@ -105,14 +112,10 @@ public class EntityRenderer {
         if(DebugWindow.renderEntities()){
             for (Entity e : entities) {
                 if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
-                    e.render(this.deltaTime);
-                    e.update(this.deltaTime);
                     e.setShouldRender(true);
                 } else e.setShouldRender(false);
             }
         }else{
-            engine.player().render(this.deltaTime);
-            engine.player().update(this.deltaTime);
             engine.player().setShouldRender(true);
         }
     }
@@ -123,7 +126,7 @@ public class EntityRenderer {
     private void processQueue() {
         while(queue.size > 0){
             entities.add(queue.first());
-            queue.first().getPhysics().initBody();
+            queue.first().components.get(PhysicsComponent.class).initBody();
             queue.first().create();
             queue.removeFirst().components.get(StateComponent.class).setLoaded(true);
         }

@@ -1,8 +1,17 @@
 package progetto.gameplay.entities.specific.specific.living;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.gameplay.entities.components.base.Component;
-import progetto.gameplay.entities.components.specific.*;
+import progetto.gameplay.entities.components.specific.ai.StateComponent;
+import progetto.gameplay.entities.components.specific.ai.StatusComponent;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.general.AttributeComponent;
+import progetto.gameplay.entities.components.specific.general.SkillSet;
+import progetto.gameplay.entities.components.specific.graphics.CustomAnimationComponent;
+import progetto.gameplay.entities.components.specific.graphics.DrawableComponent;
+import progetto.gameplay.entities.components.specific.movement.MovementComponent;
+import progetto.gameplay.entities.components.specific.movement.PathFinderComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
@@ -24,15 +33,22 @@ public abstract class Humanoid extends Entity {
      */
     public Humanoid(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        Component[] components = new Component[]{
+
+        String[] string = new String[1];
+        string[0] = "default";
+        Texture[] img = new Texture[1];
+        img[0] = instance.config.img;
+
+        addComponents(
             new MovementComponent(),
             new AttributeComponent(instance.speed, instance.maxHealth),
             new PathFinderComponent(this),
             new SkillSet(),
             new StatusComponent(),
             new DrawableComponent(),
-        };
-        this.components.add(components);
+            new CustomAnimationComponent(string, img)
+        );
+
         this.components.get(MovementComponent.class).setAwake(false);
     }
 
@@ -45,15 +61,22 @@ public abstract class Humanoid extends Entity {
      */
     public Humanoid(EntityConfig config, Engine manager) {
         super(config, manager);
-        Component[] components = new Component[]{
+
+        String[] string = new String[1];
+        string[0] = "default";
+        Texture[] img = new Texture[1];
+        img[0] = config.img;
+
+        addComponents(
             new MovementComponent(),
             new AttributeComponent(config.speed, config.hp),
             new PathFinderComponent(this),
             new SkillSet(),
             new StatusComponent(),
             new DrawableComponent(),
-        };
-        this.components.add(components);
+            new CustomAnimationComponent(string, img)
+        );
+
         this.components.get(MovementComponent.class).setAwake(false);
     }
 
@@ -61,18 +84,10 @@ public abstract class Humanoid extends Entity {
 
     @Override
     public void create() {
-        if (getPhysics().getBody() == null) {
-            despawn();
+        if (components.get(PhysicsComponent.class).getBody() == null) {
+            unregister();
         }
     }
-
-    /**
-     * Metodo astratto per gestire la scomparsa dell'umanoide dal gioco.
-     *
-     * @return L'istanza dell'entità che si sta rimuovendo.
-     */
-    public abstract EntityInstance despawn();
-
 
     // --- METODI DI ACCESSO AI COMPONENTI ---
 
@@ -109,14 +124,12 @@ public abstract class Humanoid extends Entity {
      * @param target L'entità target verso cui l'umanoide deve dirigersi.
      */
     public void searchPath(Entity target) {
-        getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, manager.delta);
+        getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, engine.delta);
     }
 
     public boolean searchPathIdle(Entity target) {
-        return getPathFinder().render(target.getPosition().x, target.getPosition().y, manager.delta);
+        return getPathFinder().render(target.getPosition().x, target.getPosition().y, engine.delta);
     }
-
-    // --- GESTIONE SALUTE ---
 
     /**
      * Restituisce la salute attuale dell'umanoide.
@@ -125,15 +138,6 @@ public abstract class Humanoid extends Entity {
      */
     public float getHealth() {
         return getStats().getHealth();
-    }
-
-    /**
-     * Restituisce la velocità attuale dell'umanoide.
-     *
-     * @return La velocità dell'umanoide.
-     */
-    public float getSpeed() {
-        return getPhysics().getBody().getLinearVelocity().len();
     }
 
     /**
@@ -160,7 +164,8 @@ public abstract class Humanoid extends Entity {
      * Fa resuscitare l'umanoide, ripristinando la sua salute e stato.
      */
     public void respawn() {
-        setAlive();
+        StateComponent state = this.components.get(StateComponent.class);
+        state.setAlive(true);
         getHumanStates().hasBeenHit=false;
     }
 

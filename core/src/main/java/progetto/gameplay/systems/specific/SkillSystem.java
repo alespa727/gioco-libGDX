@@ -2,7 +2,7 @@ package progetto.gameplay.systems.specific;
 
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.skills.base.Skill;
-import progetto.gameplay.entities.components.specific.SkillSet;
+import progetto.gameplay.entities.components.specific.general.SkillSet;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.System;
 
@@ -11,14 +11,14 @@ public class SkillSystem extends System {
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
             if (!e.shouldRender()) continue;
-            if (!e.components.contains(SkillSet.class)) return;
+            if (!e.components.contains(SkillSet.class)) continue;
 
             SkillSet s = e.components.get(SkillSet.class);
 
             Array<Skill> skills = s.getSkills();
 
             for (int i = 0; i < skills.size; i++) {
-                skills.get(i).update();
+                skills.get(i).update(delta);
             }
         }
     }

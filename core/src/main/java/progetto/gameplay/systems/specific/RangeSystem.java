@@ -9,7 +9,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entities.components.base.ComponentManager;
-import progetto.gameplay.entities.components.specific.AttackRangeComponent;
+import progetto.gameplay.entities.components.specific.combat.AttackRangeComponent;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.System;
 import progetto.manager.entities.Engine;
@@ -22,7 +23,7 @@ public class RangeSystem extends System {
             ComponentManager componentManager = e.components;
             if(e.components.contains(AttackRangeComponent.class)){
                 AttackRangeComponent range = e.components.get(AttackRangeComponent.class);
-                Body body = e.getPhysics().getBody();
+                Body body = e.components.get(PhysicsComponent.class).getBody();
                 if (body == null) {
                     return;
                 }

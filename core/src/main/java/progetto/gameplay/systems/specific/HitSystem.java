@@ -2,7 +2,7 @@ package progetto.gameplay.systems.specific;
 
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.components.base.ComponentManager;
-import progetto.gameplay.entities.components.specific.StatusComponent;
+import progetto.gameplay.entities.components.specific.ai.StatusComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.System;
 

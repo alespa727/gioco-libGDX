@@ -1,8 +1,8 @@
 package progetto.manager.world;
 
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.gameplay.entities.components.specific.BulletComponent;
-import progetto.gameplay.entities.components.specific.InRangeListComponent;
+import progetto.gameplay.entities.components.specific.general.BulletComponent;
+import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.entities.specific.specific.living.combat.boss.Boss;
@@ -65,7 +65,7 @@ public class EventManager implements ContactListener {
             if (!((Bullet) dataB).getTargetClass().isAssignableFrom(dataA.getClass())) return;
 
             ((Warrior) dataA).hit((Entity) dataB, ((Bullet) dataB).components.get(BulletComponent.class).damage, 2);
-            ((Bullet) dataB).despawn();
+            ((Bullet) dataB).unregister();
         }
 
         if (dataB instanceof Warrior && !isRangeA && dataA instanceof Bullet) {
@@ -75,7 +75,7 @@ public class EventManager implements ContactListener {
             if (!((Bullet) dataA).getTargetClass().isAssignableFrom(dataB.getClass())) return;
 
             ((Warrior) dataB).hit((Entity) dataA, ((Bullet) dataA).components.get(BulletComponent.class).damage, 2);
-            ((Bullet) dataA).despawn();
+            ((Bullet) dataA).unregister();
         }
 
 

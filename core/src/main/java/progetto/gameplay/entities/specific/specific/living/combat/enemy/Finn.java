@@ -1,6 +1,6 @@
 package progetto.gameplay.entities.specific.specific.living.combat.enemy;
 
-import progetto.statemachines.StatesEnemy;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.skills.specific.boss.LichFireball;
 import progetto.gameplay.entities.skills.specific.enemy.EnemySwordAttack;
 import progetto.gameplay.entities.specific.base.EntityConfig;
@@ -27,8 +27,6 @@ public final class Finn extends Enemy {
     @Override
     public void create() {
         super.create();
-        // Imposta lo stato iniziale
-        statemachine.changeState(StatesEnemy.PATROLLING);
 
         // Aggiungi le skill
         getSkillset().add(new EnemySwordAttack(this, "pugno", "un pugno molto forte!", 20));
@@ -44,12 +42,12 @@ public final class Finn extends Enemy {
     }
 
     @Override
-    public EntityInstance despawn() {
+    public EntityInstance unregister() {
         // Rimuove l'entità dal manager
-        manager.remove(this);
+        engine.remove(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
-        WorldManager.destroyBody(getPhysics().getBody());
+        WorldManager.destroyBody(components.get(PhysicsComponent.class).getBody());
 
         return new EnemyInstance(this);
     }

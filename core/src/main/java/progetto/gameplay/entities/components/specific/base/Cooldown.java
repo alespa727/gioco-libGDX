@@ -1,7 +1,5 @@
 package progetto.gameplay.entities.components.specific.base;
 
-import progetto.gameplay.entities.components.base.IteratableComponent;
-
 /**
  * Classe che gestisce un cooldown, ovvero un timer che impedisce l'esecuzione
  * di un'azione prima che un determinato intervallo di tempo sia trascorso.
@@ -9,10 +7,11 @@ import progetto.gameplay.entities.components.base.IteratableComponent;
  *
  * @author alesp
  */
-public class Cooldown extends IteratableComponent {
+public class Cooldown{
     public float time; // Tempo rimanente per il cooldown
     public final float maxTime; // Tempo massimo (durata del cooldown)
     public boolean isReady; // Indica se il cooldown è pronto per essere resettato
+    public boolean shouldAutoUpdate=false;
 
     /**
      * Costruttore che inizializza il cooldown con un tempo massimo.
@@ -27,12 +26,32 @@ public class Cooldown extends IteratableComponent {
     }
 
     /**
+     * Costruttore che inizializza il cooldown con un tempo massimo.
+     * Imposta il tempo rimanente uguale al tempo massimo e imposta isReady su true.
+     *
+     * @param maxTime Durata del cooldown
+     * @param shouldAutoUpdate aggiornamento automatico opzionale se dentro un entità
+     */
+    public Cooldown(float maxTime, boolean shouldAutoUpdate) {
+        this.maxTime = maxTime;
+        this.time = maxTime; // Imposta il tempo rimanente uguale al tempo massimo
+        this.isReady = true; // Il cooldown è pronto a partire
+        this.shouldAutoUpdate = shouldAutoUpdate;
+    }
+
+    /**
+     * Dovrebbe aggiornarsi automaticamente se dentro un entità
+     */
+    public void autoUpdate(){
+        shouldAutoUpdate=true;
+    }
+
+    /**
      * Aggiorna il timer del cooldown. Se il cooldown non è pronto, riduce il tempo
      * rimanente. Se il tempo arriva a 0, imposta isReady su true.
      *
      * @param delta Tempo trascorso dall'ultimo aggiornamento
      */
-    @Override
     public void update(float delta) {
         if (!isReady) { // Se il cooldown non è pronto
             time -= delta; // Diminuisci il tempo rimanente in base al delta

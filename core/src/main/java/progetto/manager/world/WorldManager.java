@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.gameplay.entities.components.specific.AttackRangeComponent;
+import progetto.gameplay.entities.components.specific.combat.AttackRangeComponent;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.world.events.base.MapEvent;
 

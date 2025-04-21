@@ -3,7 +3,8 @@ package progetto.gameplay.systems.specific;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.specific.UserControllable;
+import progetto.gameplay.entities.components.specific.control.UserControllable;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.systems.base.System;
@@ -33,7 +34,7 @@ public class UserInputSystem extends System {
     }
 
     public void oppostoY(Humanoid entity) {
-        Body body = entity.getPhysics().getBody();
+        Body body = entity.components.get(PhysicsComponent.class).getBody();
         body.setLinearDamping(20f);
         if (sinistra || destra) {
             body.setLinearDamping(3f);
@@ -46,7 +47,7 @@ public class UserInputSystem extends System {
     }
 
     public void oppostoX(Humanoid entity) {
-        Body body = entity.getPhysics().getBody();
+        Body body = entity.components.get(PhysicsComponent.class).getBody();
         body.setLinearDamping(20f);
         if (su || giu) {
             body.setLinearDamping(3f);
@@ -59,7 +60,7 @@ public class UserInputSystem extends System {
     }
 
     public void moving(Humanoid entity) {
-        Body body = entity.getPhysics().getBody();
+        Body body = entity.components.get(PhysicsComponent.class).getBody();
         body.setLinearDamping(3f);
         aggiornaDirezione(entity);
         muoviAsseY(entity);
@@ -68,7 +69,7 @@ public class UserInputSystem extends System {
     }
 
     public void notMoving(Humanoid entity) {
-        Body body = entity.getPhysics().getBody();
+        Body body = entity.components.get(PhysicsComponent.class).getBody();
         body.setLinearDamping(20f);
         stopMovement(entity);
     }
@@ -93,7 +94,7 @@ public class UserInputSystem extends System {
 
     private void muoviAsseX(Humanoid entity) {
         if (sinistra || destra) {
-            Body body = entity.getPhysics().getBody();
+            Body body = entity.components.get(PhysicsComponent.class).getBody();
             body.applyForceToCenter(getForce(entity).scl(5), true);
             body.setLinearDamping(3f);
         }
@@ -101,7 +102,7 @@ public class UserInputSystem extends System {
 
     private void muoviAsseY(Humanoid entity) {
         if (su || giu) {
-            Body body = entity.getPhysics().getBody();
+            Body body = entity.components.get(PhysicsComponent.class).getBody();
             body.applyForceToCenter(getForce(entity).scl(5), true);
             body.setLinearDamping(3f);
         }
@@ -109,7 +110,7 @@ public class UserInputSystem extends System {
 
     public Vector2 getForce(Humanoid entity) {
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
-        Body body = entity.getPhysics().getBody();
+        Body body = entity.components.get(PhysicsComponent.class).getBody();
         if (diagonale) {
             return new Vector2(entity.getDirection())
                 .scl(body.getMass() * entity.getMaxSpeed() / 1.41f)

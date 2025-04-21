@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.Core;
 import progetto.core.Gui;
+import progetto.gameplay.entities.components.specific.ai.StateComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.world.Map;
 import progetto.manager.entities.Engine;
@@ -130,7 +131,8 @@ public class GameScreen implements Screen {
     }
 
     private void checkPlayerRespawn() {
-        if (!getEntityManager().player().getState().isAlive()) {
+        StateComponent state = getEntityManager().player().components.get(StateComponent.class);
+        if (!state.isAlive()) {
             getEntityManager().player().respawn();
         }
     }
@@ -168,7 +170,8 @@ public class GameScreen implements Screen {
 
     private void checkPlayerDeath() {
         Player player = this.info.engine.player();
-        if (!player.getState().isAlive()) {
+        StateComponent state = player.components.get(StateComponent.class);
+        if (!state.isAlive()) {
             info.core.setScreen(new DefeatScreen(info.core));
         }
     }
