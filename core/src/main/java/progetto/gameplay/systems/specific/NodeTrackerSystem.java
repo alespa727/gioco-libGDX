@@ -12,7 +12,7 @@ public class NodeTrackerSystem extends System {
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
             if (!e.shouldRender()) continue;
-            ComponentManager componentManager = e.componentManager;
+            ComponentManager componentManager = e.components;
             if (componentManager.contains(NodeComponent.class)){
                 NodeComponent nodeComponent = componentManager.get(NodeComponent.class);
                 if (nodeComponent.lastNode != null && nodeComponent.node != null) {

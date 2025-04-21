@@ -24,7 +24,7 @@ public abstract class Warrior extends Humanoid {
             new KnockbackComponent()
         };
 
-        componentManager.add(components);
+        this.components.add(components);
     }
 
     public Warrior(EntityConfig config, Engine manager) {
@@ -35,7 +35,7 @@ public abstract class Warrior extends Humanoid {
             new KnockbackComponent()
         };
 
-        componentManager.add(components);
+        this.components.add(components);
     }
 
     @Override
@@ -44,21 +44,21 @@ public abstract class Warrior extends Humanoid {
     }
 
     public float getRangeRadius() {
-        return  componentManager.get(AttackRangeComponent.class).getRangeRadius();
+        return  components.get(AttackRangeComponent.class).getRangeRadius();
     }
 
     public Body getDirectionalRange() {
-        return componentManager.get(AttackRangeComponent.class).getDirectionalRange();
+        return components.get(AttackRangeComponent.class).getDirectionalRange();
     }
 
     public void setDirectionalRange(Body directionalRange) {
-        componentManager.get(AttackRangeComponent.class).directionalRange = directionalRange;
+        components.get(AttackRangeComponent.class).directionalRange = directionalRange;
     }
 
     // === RANGE ===
 
     public AttackRangeComponent getDirectionRangeComponent() {
-        return componentManager.get(AttackRangeComponent.class);
+        return components.get(AttackRangeComponent.class);
     }
 
     // === COMBATTIMENTO ===
@@ -66,9 +66,9 @@ public abstract class Warrior extends Humanoid {
         Body bodyThatHits = entity.getPhysics().getBody();
         Body bodyToHit = getPhysics().getBody();
         if (!getHumanStates().isInvulnerable()){
-            componentManager.get(KnockbackComponent.class).hit.set(new Vector2(bodyThatHits.getPosition()).sub(bodyToHit.getPosition()).nor().scl(-1*hitForce));
+            components.get(KnockbackComponent.class).hit.set(new Vector2(bodyThatHits.getPosition()).sub(bodyToHit.getPosition()).nor().scl(-1*hitForce));
             inflictDamage(damage);
-            componentManager.get(KnockbackComponent.class).cooldown.reset();
+            components.get(KnockbackComponent.class).cooldown.reset();
         }
     }
 }

@@ -22,7 +22,7 @@ public class PlayerDash extends Skill {
         if (isBeingUsed) {
             elapsedTime += owner.manager.delta;
             cooldown.update(owner.manager.delta);
-            if (owner.componentManager.get(InRangeListComponent.class).inRange.size > 0){
+            if (owner.components.get(InRangeListComponent.class).inRange.size > 0){
                 owner.manager.info.screen.setTimeScale(0.1f, 1f);
                 isBeingUsed = false;
             }
@@ -44,6 +44,6 @@ public class PlayerDash extends Skill {
         Body body = owner.getPhysics().getBody();
         body.setLinearVelocity(body.getLinearVelocity().x * dodgeSpeed, body.getLinearVelocity().y * dodgeSpeed);
         cooldown.reset(0.5f);
-        if (((Player) owner).componentManager.get(InRangeListComponent.class).inRange.size == 0) setBeingUsed(true);
+        if (((Player) owner).components.get(InRangeListComponent.class).inRange.size == 0) setBeingUsed(true);
     }
 }

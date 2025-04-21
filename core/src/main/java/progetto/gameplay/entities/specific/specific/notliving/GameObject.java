@@ -28,16 +28,6 @@ public class GameObject extends Entity{
     }
 
     /**
-     * Aggiorna il comportamento base dell'entità.
-     *
-     * @param delta tempo trascorso dall'ultimo frame
-     */
-    @Override
-    public void updateEntity(float delta) {
-
-    }
-
-    /**
      * Aggiorna il comportamento specifico di questo tipo di entità.
      *
      * @param delta tempo trascorso dall'ultimo frame
@@ -65,14 +55,4 @@ public class GameObject extends Entity{
         return new EntityInstance(this);
     }
 
-    /**
-     * Disegna l'entità sullo schermo.
-     *
-     * @param batch          il disegnatore
-     * @param tempoTrascorso tempo passato per l’animazione
-     */
-    @Override
-    public void draw(SpriteBatch batch, float tempoTrascorso) {
-
-    }
 }

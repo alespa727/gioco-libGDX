@@ -36,7 +36,7 @@ public class DrawingSystem extends System {
             for (Entity entity : list) {
                 if (!entity.shouldRender()) continue;
 
-                if (entity.componentManager.contains(DrawableComponent.class)) {
+                if (entity.components.contains(DrawableComponent.class)) {
                     drawDefault(entity, batch, tempoTrascorso);
                 }
             }
@@ -54,12 +54,12 @@ public class DrawingSystem extends System {
             }
 
             if (entity instanceof Humanoid h) {
-                if (entity.componentManager.contains(DespawnAnimationComponent.class)) {
+                if (entity.components.contains(DespawnAnimationComponent.class)) {
                     drawDespawnAnimation(h, batch, delta);
                     continue;
                 }
 
-                if (entity.componentManager.contains(DrawableComponent.class)) {
+                if (entity.components.contains(DrawableComponent.class)) {
                     drawDefault(h, batch, tempoTrascorso);
                     if (entity instanceof Warrior w) {
                         drawWarrior(w);
@@ -83,19 +83,19 @@ public class DrawingSystem extends System {
         bullet.effect.setPosition(bullet.getPosition().x, bullet.getPosition().y); // o qualsiasi posizione iniziale
         bullet.effect.update(bullet.manager.delta);
         bullet.effect.draw(batch);
-        float radius = bullet.componentManager.get(BulletComponent.class).radius;
+        float radius = bullet.components.get(BulletComponent.class).radius;
         Sprite sprite = new Sprite(bullet.texture); // Crea uno sprite per il proiettile
-        sprite.setColor(bullet.componentManager.get(ColorComponent.class).color);
+        sprite.setColor(bullet.components.get(ColorComponent.class).color);
         sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio
         sprite.setPosition(bullet.getPosition().x - sprite.getWidth() / 2, bullet.getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite
         sprite.draw(batch); // Disegna lo sprite
     }
 
     public void drawDespawnAnimation(Entity entity, SpriteBatch batch, float delta) {
-        entity.componentManager.get(DespawnAnimationComponent.class).accumulator += delta;
+        entity.components.get(DespawnAnimationComponent.class).accumulator += delta;
 
         // Calcola il progresso interpolato
-        float progress = Math.min(entity.componentManager.get(DespawnAnimationComponent.class).accumulator / entity.componentManager.get(DespawnAnimationComponent.class).dissolve_duration, 1f);
+        float progress = Math.min(entity.components.get(DespawnAnimationComponent.class).accumulator / entity.components.get(DespawnAnimationComponent.class).dissolve_duration, 1f);
         float alpha = Interpolation.fade.apply(1f - progress);
 
         // Applica trasparenza
@@ -107,7 +107,7 @@ public class DrawingSystem extends System {
         batch.setColor(1, 1, 1, 1);
 
         // Despawn quando finisce
-        if (entity.componentManager.get(DespawnAnimationComponent.class).accumulator >= entity.componentManager.get(DespawnAnimationComponent.class).dissolve_duration) {
+        if (entity.components.get(DespawnAnimationComponent.class).accumulator >= entity.components.get(DespawnAnimationComponent.class).dissolve_duration) {
             entity.despawn();
         }
     }
@@ -127,8 +127,8 @@ public class DrawingSystem extends System {
             entity.getPosition().y - entity.getConfig().imageHeight / 2,
             entity.getConfig().imageWidth, entity.getConfig().imageHeight);
 
-        if (entity.componentManager.contains(ShadowComponent.class)) {
-            batch.draw(entity.componentManager.get(ShadowComponent.class).animation.play(entity, "default" ,tempoTrascorso),
+        if (entity.components.contains(ShadowComponent.class)) {
+            batch.draw(entity.components.get(ShadowComponent.class).animation.play(entity, "default" ,tempoTrascorso),
                 entity.getPosition().x - entity.getConfig().imageWidth / 2,
                 entity.getPosition().y - entity.getConfig().imageHeight / 2,
                 entity.getConfig().imageWidth, entity.getConfig().imageHeight);

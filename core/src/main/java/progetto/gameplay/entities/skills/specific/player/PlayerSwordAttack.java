@@ -50,7 +50,7 @@ public class PlayerSwordAttack extends CombatSkill {
         ManagerCamera.shakeTheCamera(0.1f, 0.01f);
         owner.manager.info.screen.setTimeScale(1f, 1f);
         cooldown.reset();
-        Array<Warrior> inRange = owner.componentManager.get(InRangeListComponent.class).inRange;
+        Array<Warrior> inRange = owner.components.get(InRangeListComponent.class).inRange;
         for (Warrior warrior : inRange) {
             warrior.hit(owner, damage, 2);
         }

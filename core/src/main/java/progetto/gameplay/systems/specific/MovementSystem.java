@@ -21,8 +21,8 @@ public class MovementSystem extends System {
             for (Entity entity : entities) {
                 if (entity instanceof Player) continue;
                 if (!entity.shouldRender()) continue;
-                if (!entity.componentManager.contains(MovementComponent.class)) continue;
-                if (!entity.componentManager.contains(PhysicsComponent.class)) continue;
+                if (!entity.components.contains(MovementComponent.class)) continue;
+                if (!entity.components.contains(PhysicsComponent.class)) continue;
 
                 entity.getPhysics().getBody().setLinearVelocity(new Vector2(0, 0));
             }
@@ -30,11 +30,11 @@ public class MovementSystem extends System {
         }
         for (Entity entity : entities) {
             if (!entity.shouldRender()) continue;
-            if (!entity.componentManager.contains(MovementComponent.class)) continue;
-            if (!entity.componentManager.contains(PhysicsComponent.class)) continue;
+            if (!entity.components.contains(MovementComponent.class)) continue;
+            if (!entity.components.contains(PhysicsComponent.class)) continue;
 
 
-            MovementComponent movement = entity.componentManager.get(MovementComponent.class);
+            MovementComponent movement = entity.components.get(MovementComponent.class);
             movement.cooldown.update(delta);
 
             if (movement.isAwake()){

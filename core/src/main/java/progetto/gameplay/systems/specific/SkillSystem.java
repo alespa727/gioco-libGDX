@@ -11,9 +11,9 @@ public class SkillSystem extends System {
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
             if (!e.shouldRender()) continue;
-            if (!e.componentManager.contains(SkillSet.class)) return;
+            if (!e.components.contains(SkillSet.class)) return;
 
-            SkillSet s = e.componentManager.get(SkillSet.class);
+            SkillSet s = e.components.get(SkillSet.class);
 
             Array<Skill> skills = s.getSkills();
 

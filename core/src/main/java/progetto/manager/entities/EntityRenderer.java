@@ -3,6 +3,7 @@ package progetto.manager.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import progetto.gameplay.entities.components.specific.StateComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.ManagerCamera;
@@ -59,7 +60,6 @@ public class EntityRenderer {
         entities.sort(comparator);
 
         info.core.batch.begin();
-        drawEntities();
         drawSkills();
         info.core.batch.end();
     }
@@ -75,21 +75,6 @@ public class EntityRenderer {
         for (Entity e : entities) {
             if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
                 ((Humanoid) e).getSkillset().draw(info.core.batch, elapsedTime);
-            }
-        }
-    }
-
-    /**
-     * Disegna le entità
-     */
-    private void drawEntities() {
-        for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
-                try {
-                    e.draw(info.core.batch, this.elapsedTime);
-                } catch (Exception ex) {
-                    System.out.println("ERRORE" + e.getDirection());
-                }
             }
         }
     }
@@ -121,13 +106,13 @@ public class EntityRenderer {
             for (Entity e : entities) {
                 if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
                     e.render(this.deltaTime);
-                    e.componentManager(this.deltaTime);
+                    e.update(this.deltaTime);
                     e.setShouldRender(true);
                 } else e.setShouldRender(false);
             }
         }else{
             engine.player().render(this.deltaTime);
-            engine.player().componentManager(this.deltaTime);
+            engine.player().update(this.deltaTime);
             engine.player().setShouldRender(true);
         }
     }
@@ -140,7 +125,7 @@ public class EntityRenderer {
             entities.add(queue.first());
             queue.first().getPhysics().initBody();
             queue.first().create();
-            queue.removeFirst().load();
+            queue.removeFirst().components.get(StateComponent.class).setLoaded(true);
         }
     }
 

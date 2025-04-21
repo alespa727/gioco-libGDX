@@ -19,9 +19,9 @@ public class RangeSystem extends System {
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
             if (!e.shouldRender()) continue;
-            ComponentManager componentManager = e.componentManager;
-            if(e.componentManager.contains(AttackRangeComponent.class)){
-                AttackRangeComponent range = e.componentManager.get(AttackRangeComponent.class);
+            ComponentManager componentManager = e.components;
+            if(e.components.contains(AttackRangeComponent.class)){
+                AttackRangeComponent range = e.components.get(AttackRangeComponent.class);
                 Body body = e.getPhysics().getBody();
                 if (body == null) {
                     return;
@@ -31,8 +31,8 @@ public class RangeSystem extends System {
                     range.directionalRange = BodyFactory.createBody(e, range.getBodyDef(), range.getFixtureDef());
                 }
 
-                if (e.componentManager.get(AttackRangeComponent.class).directionalRange != null) {
-                    e.componentManager.get(AttackRangeComponent.class).directionalRange.setTransform(body.getPosition(), e.getDirection().angleRad() - 60 * MathUtils.degreesToRadians);
+                if (e.components.get(AttackRangeComponent.class).directionalRange != null) {
+                    e.components.get(AttackRangeComponent.class).directionalRange.setTransform(body.getPosition(), e.getDirection().angleRad() - 60 * MathUtils.degreesToRadians);
                 }
 
 

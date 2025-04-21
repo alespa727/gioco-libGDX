@@ -2,9 +2,7 @@ package progetto.gameplay.entities.specific.base;
 
 // Importazioni
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.ComponentManager;
@@ -21,23 +19,20 @@ import progetto.manager.entities.Engine;
  */
 public abstract class Entity {
 
+    /** Variabile globale per avere un id unico per ogni entità */
     private static int nextId = 0;
 
+    /** Id identificativo dell'entità */
     public final int id;
+
     /** Gestore generale delle entità (dove è registrata questa entità). {@link Engine} */
     public final Engine manager;
 
-    /** Configurazione iniziale dell'entità. {@link EntityConfig} */
-    private final EntityConfig config;
-
-    private boolean awake = true;
-
-    /**
-     * Gestione delle animazioni
-     */
+    /** Gestione delle animazioni */
     private final CustomAnimation textures;
 
-    public ComponentManager componentManager;
+    /** Gestore componenti */
+    public ComponentManager components;
 
     /**
      * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).
@@ -45,19 +40,8 @@ public abstract class Entity {
      * @param manager il gestore delle entità {@link Engine}
      */
     public Entity(EntityInstance instance, Engine manager) {
-        nextId++;
-        this.config = instance.config;
-        this.id = nextId;
-        this.config.id = nextId;
-        System.out.println(config.id);
-        this.manager = manager;
-        String[] string = new String[1];
-        string[0] = "default";
-        Texture[] img = new Texture[1];
-        img[0] = config.img;
-        this.textures = new CustomAnimation(string, img);
-
         Component[] components = new Component[]{
+            new ConfigComponent(instance.config, nextId),
             new ZLevelComponent(0),
             new StateComponent(),
             new PhysicsComponent(this, instance.coordinate),
@@ -66,9 +50,18 @@ public abstract class Entity {
             new ColorComponent(),
         };
 
-        componentManager = new ComponentManager();
-        componentManager.add(components);
-        componentManager.get(PhysicsComponent.class).createBody();
+        this.components = new ComponentManager();
+        this.components.add(components);
+        this.components.get(PhysicsComponent.class).createBody();
+
+        nextId++;
+        this.id = nextId;
+        this.manager = manager;
+        String[] string = new String[1];
+        string[0] = "default";
+        Texture[] img = new Texture[1];
+        img[0] = instance.config.img;
+        this.textures = new CustomAnimation(string, img);
     }
 
     /**
@@ -77,10 +70,22 @@ public abstract class Entity {
      * @param manager il gestore delle entità {@link Engine}
      */
     public Entity(EntityConfig config, Engine manager) {
+        Component[] components = new Component[]{
+            new ConfigComponent(config, nextId),
+            new ZLevelComponent(0),
+            new StateComponent(),
+            new PhysicsComponent(this, config),
+            new NodeComponent(),
+            new DirectionComponent(),
+            new ColorComponent(),
+        };
+
+        this.components = new ComponentManager();
+        this.components.add(components);
+        this.components.get(PhysicsComponent.class).createBody();
+
         nextId++;
-        this.config = config;
         this.id = nextId;
-        this.config.id = nextId;
         System.out.println(config.id);
         this.manager = manager;
         String[] string = new String[1];
@@ -89,29 +94,8 @@ public abstract class Entity {
         img[0] = config.img;
         this.textures = new CustomAnimation(string, img);
 
-        Component[] components = new Component[]{
-            new ZLevelComponent(0),
-            new StateComponent(),
-            new PhysicsComponent(this),
-            new NodeComponent(),
-            new DirectionComponent(),
-            new ColorComponent(),
-        };
 
-        componentManager = new ComponentManager();
-        componentManager.add(components);
-        componentManager.get(PhysicsComponent.class).createBody();
     }
-
-    public void setAwake(boolean awake) {
-        this.awake = awake;
-    }
-
-    /**
-     * Aggiorna il comportamento base dell'entità.
-     * @param delta tempo trascorso dall'ultimo frame
-     */
-    public abstract void updateEntity(float delta);
 
     /**
      * Aggiorna il comportamento specifico di questo tipo di entità.
@@ -131,18 +115,11 @@ public abstract class Entity {
     public abstract EntityInstance despawn();
 
     /**
-     * Imposta l'entità come "caricata", permettendole di aggiornarsi.
-     */
-    public void load() {
-        getState().setLoaded(true);
-    }
-
-    /**
      * Restituisce la configurazione dell'entità.
      * @return configurazione {@link EntityConfig}
      */
     public final EntityConfig getConfig() {
-        return new EntityConfig(config);
+        return new EntityConfig(components.get(ConfigComponent.class).getConfig());
     }
 
     /**
@@ -150,7 +127,7 @@ public abstract class Entity {
      * @return fisica {@link PhysicsComponent}
      */
     public PhysicsComponent getPhysics() {
-        return componentManager.get(PhysicsComponent.class);
+        return components.get(PhysicsComponent.class);
     }
 
     /**
@@ -158,7 +135,7 @@ public abstract class Entity {
      * @return direzione {@link DirectionComponent}
      */
     public final Vector2 getDirection() {
-        return componentManager.get(DirectionComponent.class).direction;
+        return components.get(DirectionComponent.class).direction;
     }
 
     /**
@@ -166,12 +143,12 @@ public abstract class Entity {
      * @return stato {@link StateComponent}
      */
     public final StateComponent getState() {
-        return componentManager.get(StateComponent.class);
+        return components.get(StateComponent.class);
     }
 
 
     public final int getZ() {
-        return componentManager.get(ZLevelComponent.class).getZ();
+        return components.get(ZLevelComponent.class).getZ();
     }
 
     /**
@@ -181,13 +158,6 @@ public abstract class Entity {
     public Vector2 getPosition() {
         return getPhysics().getPosition();
     }
-
-    /**
-     * Disegna l'entità sullo schermo.
-     * @param batch il disegnatore
-     * @param tempoTrascorso tempo passato per l’animazione
-     */
-    public abstract void draw(SpriteBatch batch, float tempoTrascorso);
 
     /**
      * Restituisce le texture e animazioni associate.
@@ -204,17 +174,14 @@ public abstract class Entity {
     public void render(float delta) {
         if (getState().isLoaded()) {
             updateEntityType(delta);
-            updateEntity(delta);
         }
     }
 
-    public void componentManager(float delta) {
-        if (awake) {
-            for (int i = 0; i < componentManager.components().length; i++) {
-                Component c = (Component) componentManager.components()[i];
-                if (c instanceof IteratableComponent && c.isAwake()) {
-                    ((IteratableComponent) c).update(delta);
-                }
+    public void update(float delta) {
+        for (int i = 0; i < components.components().length; i++) {
+            Component c = (Component) components.components()[i];
+            if (c instanceof IteratableComponent && c.isAwake()) {
+                ((IteratableComponent) c).update(delta);
             }
         }
     }

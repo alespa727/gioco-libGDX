@@ -60,7 +60,7 @@ public class PathFinderComponent extends Component implements Disposable {
         //System.out.println("Calcolo del percorso!");
         path.clear();
         //setta il nodo di inizio e fine
-        startNode = entity.componentManager.get(NodeComponent.class).node;
+        startNode = entity.components.get(NodeComponent.class).node;
         endNode = Map.getGraph().getClosestNode(x, y);
 
         //nodi validi?

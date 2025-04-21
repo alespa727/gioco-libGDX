@@ -39,8 +39,8 @@ public abstract class Enemy extends Warrior {
         super.create();
         statemachine = new DefaultStateMachine<>(this);
         statemachine.setInitialState(StatesEnemy.PATROLLING);
-        componentManager.add(new MortalComponent());
-        componentManager.add(new AttackCooldown(1.5f));
+        components.add(new MortalComponent());
+        components.add(new AttackCooldown(1.5f));
         getAttackCooldown().reset();
 
 
@@ -49,7 +49,7 @@ public abstract class Enemy extends Warrior {
     }
 
     public Cooldown getAttackCooldown(){
-        return componentManager.get(AttackCooldown.class);
+        return components.get(AttackCooldown.class);
     }
 
     // === METODI DI ACCESSO ===
