@@ -189,11 +189,6 @@ public abstract class Humanoid extends Entity {
 
     // --- METODI DI RENDERING ---
 
-
-    // --- METODI DI AGGIORNAMENTO ---
-
-    // --- METODI DI DEBUG ---
-
     /**
      * Disegna il percorso dell'umanoide.
      *

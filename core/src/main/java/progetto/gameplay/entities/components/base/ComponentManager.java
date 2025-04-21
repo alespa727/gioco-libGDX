@@ -1,5 +1,6 @@
 package progetto.gameplay.entities.components.base;
 
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 
 public class ComponentManager {
@@ -44,8 +45,28 @@ public class ComponentManager {
         return componentClass.cast(component);
     }
 
+    /**
+     * Verifica se esiste un determinato componente nalla mappa
+     * @param componentClass classe del componente
+     * @return esistenza del componente
+     */
     public boolean contains(Class<? extends Component> componentClass) {
         return components.containsKey(componentClass);
+    }
+
+    /**
+     * Verifica se esistono determinati componenti nalla mappa
+     * @param components classi del componente
+     * @return esistenza del componente
+     */
+    public final boolean contains(Array<Class<? extends Component>> components) {
+        for (int i = 0; i < components.size; i++) {
+            Class<? extends Component> component = components.get(i);
+            if (!contains(component)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

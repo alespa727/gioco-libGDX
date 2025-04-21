@@ -42,7 +42,7 @@ public class SpawnEnemyEvent extends MapEvent {
     public void trigger(Entity entity) {
         engine.summon(EntityFactory.createEnemy(
             type,
-            EntityConfigFactory.createEntityConfig(type, engine.getIdCount(), position.x,  position.y),
+            EntityConfigFactory.createEntityConfig(type, position.x,  position.y),
             engine,
             1.5f
         ));

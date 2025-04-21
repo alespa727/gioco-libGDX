@@ -3,6 +3,7 @@ package progetto.gameplay.entities.specific.base;
 // Importazioni
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.ComponentManager;
 import progetto.gameplay.entities.components.specific.ai.StateComponent;
@@ -79,6 +80,33 @@ public abstract class Entity {
         System.out.println(config.id);
     }
 
+
+    /**
+     * @param componentClass classe del componente che si vuole {@link Class}
+     * @return componete richiesto {@link Component}
+     * @param <T> tipo di componente trovato
+     */
+    public <T extends Component> T getComponent(Class<T> componentClass) {
+        Component component = components.get(componentClass);
+        if (component == null) {
+            throw new IllegalArgumentException("Component " + componentClass.getSimpleName() + " non trovato");
+        }
+        return componentClass.cast(component);
+    }
+
+    /**
+     * Aggiunge uno o più componenti all'entità.
+     * @param components array di componenti da aggiungere
+     */
+    public void addComponents(Component... components) {
+        this.components.add(components);
+    }
+
+
+    public boolean containsComponents(Array<Class<? extends Component>> components) {
+        return this.components.contains(components);
+    }
+
     /**
      * Restituisce la configurazione dell'entità.
      * @return configurazione {@link EntityConfig}
@@ -130,27 +158,6 @@ public abstract class Entity {
      * Viene chiamato dopo la creazione per inizializzare comportamenti specifici.
      */
     public abstract void create();
-
-    /**
-     * @param componentClass classe del componente che si vuole {@link Class}
-     * @return componete richiesto {@link Component}
-     * @param <T> tipo di componente trovato
-     */
-    public <T extends Component> T getComponent(Class<T> componentClass) {
-        Component component = components.get(componentClass);
-        if (component == null) {
-            throw new IllegalArgumentException("Component " + componentClass.getSimpleName() + " non trovato");
-        }
-        return componentClass.cast(component);
-    }
-
-    /**
-     * Aggiunge uno o più componenti all'entità.
-     * @param components array di componenti da aggiungere
-     */
-    public void addComponents(Component... components) {
-        this.components.add(components);
-    }
 
     @Override
     public String toString() {
