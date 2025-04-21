@@ -15,7 +15,7 @@ public class LichFireDomain extends CombatSkill {
      * Metodo che aggiorna lo stato della skill.
      */
     @Override
-    public void update() {
+    public void update(float delta) {
 
     }
 
@@ -36,7 +36,7 @@ public class LichFireDomain extends CombatSkill {
         for (int i = 0; i < 10; i++) {
             float angle = (float)(2 * Math.PI * i / 10);
             Vector2 direction = new Vector2((float)Math.cos(angle), (float)Math.sin(angle)).nor();
-            owner.manager.summon(EntityFactory.createBullet(owner.getPosition().x + direction.x, owner.getPosition().y + direction.y, direction, 0.1f, 2f, 10, owner.manager.player()));
+            owner.engine.summon(EntityFactory.createBullet(owner.getPosition().x + direction.x, owner.getPosition().y + direction.y, direction, 0.1f, 2f, 10, owner.engine.player()));
         }
     }
 }

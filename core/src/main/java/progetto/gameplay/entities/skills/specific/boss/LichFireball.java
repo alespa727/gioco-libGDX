@@ -15,10 +15,10 @@ public class LichFireball extends CombatSkill {
     public LichFireball(Humanoid entity, String name, String description, float damage, float speed) {
         super(entity, name, description, damage);
         this.speed = speed;
-        this.player = entity.manager.player();
+        this.player = entity.engine.player();
     }
     @Override
-    public void update() {
+    public void update(float delta) {
 
     }
 
@@ -32,7 +32,7 @@ public class LichFireball extends CombatSkill {
         Vector2 direction = new Vector2(player.getPosition().x - owner.getPosition().x, player.getPosition().y - owner.getPosition().y);
         direction.nor();
         Vector2 position = new Vector2(owner.getPosition()).add(direction);
-        owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.2f, this.speed, this.damage, player));
+        owner.engine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.2f, this.speed, this.damage, player));
     }
 
 

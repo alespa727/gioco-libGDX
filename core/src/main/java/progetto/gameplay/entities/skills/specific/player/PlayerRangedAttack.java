@@ -28,7 +28,7 @@ public class PlayerRangedAttack extends CombatSkill {
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
 
     }
 
@@ -46,8 +46,7 @@ public class PlayerRangedAttack extends CombatSkill {
             direction.nor();
             Vector2 position=new Vector2(owner.getPosition()).add(direction);
 
-            Bullet bullet = (Bullet) owner.manager.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.manager, Warrior.class));
-            bullet.startCooldown(3f);
+            Bullet bullet = (Bullet) owner.engine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.engine, Warrior.class));
         }else{
             System.out.println("FINITI I PROIETTILI");
         }

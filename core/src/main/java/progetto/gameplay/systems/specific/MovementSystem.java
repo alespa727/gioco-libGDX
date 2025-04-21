@@ -3,7 +3,7 @@ package progetto.gameplay.systems.specific;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.specific.MovementComponent;
+import progetto.gameplay.entities.components.specific.movement.MovementComponent;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
@@ -24,7 +24,7 @@ public class MovementSystem extends System {
                 if (!entity.components.contains(MovementComponent.class)) continue;
                 if (!entity.components.contains(PhysicsComponent.class)) continue;
 
-                entity.getPhysics().getBody().setLinearVelocity(new Vector2(0, 0));
+                entity.components.get(PhysicsComponent.class).getBody().setLinearVelocity(new Vector2(0, 0));
             }
             return;
         }
@@ -65,7 +65,7 @@ public class MovementSystem extends System {
     }
 
     private void towards(MovementComponent movement, Entity e, Node target) {
-        Body body = e.getPhysics().getBody();
+        Body body = e.components.get(PhysicsComponent.class).getBody();
         if (body == null) {
             return;
         }

@@ -12,6 +12,7 @@ import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.EnemyInstance;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.Finn;
 import progetto.gameplay.entities.specific.specific.notliving.Bullet;
+import progetto.gameplay.entities.specific.specific.notliving.Sword;
 import progetto.manager.entities.Engine;
 
 public class EntityFactory {
@@ -57,7 +58,7 @@ public class EntityFactory {
         config.direzione = direction;
         config.isAlive = true;
         config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
-        return new Bullet(config, target.manager, radius, speed, damage, target);
+        return new Bullet(config, target.engine, radius, speed, damage, target);
     }
 
     public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Engine engine, Class<? extends Entity> target) {
@@ -71,5 +72,18 @@ public class EntityFactory {
         config.isAlive = true;
         config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
         return new Bullet(config, engine, radius, speed, damage, target);
+    }
+
+    public static Sword createSword(float x, float y, float hitboxRadius, float drawingRadius, Vector2 direction, float damage, Engine engine, Entity target) {
+        EntityConfig config = new EntityConfig();
+        config.nome = "Sword";
+        config.x = x;
+        config.y = y;
+        config.img = new Texture("entities/Finn.png");
+        config.radius = hitboxRadius;
+        config.descrizione = "fa male";
+        config.direzione = direction;
+        config.isAlive = true;
+        return new Sword(config, engine, drawingRadius);
     }
 }

@@ -2,7 +2,7 @@ package progetto.manager.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.core.Core;
@@ -22,7 +22,6 @@ import progetto.manager.input.DebugWindow;
 import progetto.manager.input.TerminalCommand;
 import progetto.gameplay.player.PlayerManager;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,13 +54,14 @@ public final class Engine {
         this.playerManager = new PlayerManager(this);
         this.summon(playerManager.getPlayer());
         Core.assetManager.load("entities/Lich.png", Texture.class);
-        Core.assetManager.load("entities/Lich.png", Texture.class);
+        Core.assetManager.load("entities/nemico.png", Texture.class);
         Core.assetManager.finishLoading();
 
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 1; j++) {
-                EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", getIdCount(), 8+i*0.3f, 10+j*0.3f);
-                summon(EntityFactory.createEnemy("Finn", e, this, 5));
+                EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", getIdCount(), 8+i*0.3f, 10+j*0.3f);
+//                summon(EntityFactory.createBoss("Lich", e, this));
+                summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, this, null));
             }
         }
 
@@ -78,7 +78,8 @@ public final class Engine {
             new PlayerSystem(),
             new MovementSystem(),
             new SkillSystem(),
-            new StatemachineSystem()
+            new StatemachineSystem(),
+            new CooldownSystem()
         };
         this.systems = new Array<>(systems);
         this.components = new HashMap<>();
@@ -118,7 +119,7 @@ public final class Engine {
         Player p = playerManager.getPlayer();
 
         for (Entity e : entitiesCopy) {
-            EntityInstance in = e.despawn();
+            EntityInstance in = e.unregister();
             if (in != null) {
                 instances.add(in);
             }

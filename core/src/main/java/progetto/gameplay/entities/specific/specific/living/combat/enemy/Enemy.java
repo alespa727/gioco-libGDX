@@ -1,11 +1,13 @@
 package progetto.gameplay.entities.specific.specific.living.combat.enemy;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
+import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.utils.Array;
+import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
+import progetto.gameplay.entities.components.specific.ai.StatemachineComponent;
 import progetto.statemachines.StatesEnemy;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.MortalComponent;
-import progetto.gameplay.entities.components.specific.warrior.AttackCooldown;
+import progetto.gameplay.entities.components.specific.combat.MortalComponent;
 import progetto.gameplay.entities.skills.specific.enemy.EnemySwordAttack;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
@@ -18,8 +20,6 @@ public abstract class Enemy extends Warrior {
     public final float pursueMaxDistance;
 
     private Array<Warrior> inRange;
-
-    public DefaultStateMachine<Enemy, StatesEnemy> statemachine;
 
     // === COSTRUTTORI ===
     public Enemy(EnemyInstance instance, Engine manager) {
@@ -37,10 +37,13 @@ public abstract class Enemy extends Warrior {
     @Override
     public void create() {
         super.create();
-        statemachine = new DefaultStateMachine<>(this);
-        statemachine.setInitialState(StatesEnemy.PATROLLING);
-        components.add(new MortalComponent());
-        components.add(new AttackCooldown(1.5f));
+        addComponents(
+            new StatemachineComponent<>(this, StatesEnemy.PATROLLING),
+            new MortalComponent(),
+            new MultiCooldownComponent()
+        );
+
+        getComponent(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f));
         getAttackCooldown().reset();
 
 
@@ -49,7 +52,7 @@ public abstract class Enemy extends Warrior {
     }
 
     public Cooldown getAttackCooldown(){
-        return components.get(AttackCooldown.class);
+        return getComponent(MultiCooldownComponent.class).getCooldown("attack");
     }
 
     // === METODI DI ACCESSO ===
@@ -66,13 +69,9 @@ public abstract class Enemy extends Warrior {
         inRange.removeValue(entity, false);
     }
 
-    public DefaultStateMachine<Enemy, StatesEnemy> getStateMachine(){
-        return statemachine;
-    }
-    // === AGGIORNAMENTO E GESTIONE STATO ===
-    @Override
-    public void updateEntityType(float delta) {
-        statemachine.update();
+    @SuppressWarnings("unchecked")
+    public <E extends Enemy, S extends State<E>> DefaultStateMachine<E, S> getStateMachine() {
+        return getComponent(StatemachineComponent.class).getStateMachine();
     }
 
     // === ATTACCO ===

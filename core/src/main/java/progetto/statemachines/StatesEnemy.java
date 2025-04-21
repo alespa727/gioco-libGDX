@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
 import progetto.gameplay.world.Map;
 import progetto.gameplay.player.Player;
@@ -15,17 +16,17 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void enter(Enemy entity) {
-            entity.getPhysics().getBody().setLinearDamping(20f);
+            entity.components.get(PhysicsComponent.class).getBody().setLinearDamping(20f);
         }
 
         @Override
         public void update(Enemy entity) {
             if (player == null)
-                player = entity.manager.player();
+                player = entity.engine.player();
 
             entity.attack();
 
-            entity.getDirection().set(calculateVector(entity.getPosition(), entity.manager.player().getPosition()));
+            entity.getDirection().set(calculateVector(entity.getPosition(), entity.engine.player().getPosition()));
             if (entity.getDirection().x != 0f && (entity.getDirection().x == 1f || entity.getDirection().x == -1f)) {
                 entity.getDirection().scl(0.5f, 1f);
             }
@@ -73,9 +74,9 @@ public enum StatesEnemy implements State<Enemy> {
         @Override
         public void update(Enemy entity) {
             if (player == null)
-                player = entity.manager.player();
+                player = entity.engine.player();
 
-            entity.getPhysics().getBody().setLinearDamping(3f);
+            entity.components.get(PhysicsComponent.class).getBody().setLinearDamping(3f);
 
             entity.getStateMachine().changeState(CHOOSE_STATE);
         }
@@ -102,9 +103,9 @@ public enum StatesEnemy implements State<Enemy> {
         @Override
         public void update(Enemy entity) {
             if (player == null)
-                player = entity.manager.player();
+                player = entity.engine.player();
 
-            accumulator+=entity.manager.delta;
+            accumulator+=entity.engine.delta;
 
             Vector2 direction = entity.getDirection();
 
@@ -137,12 +138,14 @@ public enum StatesEnemy implements State<Enemy> {
 
         @Override
         public void update(Enemy entity) {
-            if(Map.isGraphLoaded) entity.searchPathIdle(entity.manager.player());
+            Player p = entity.engine.player();
+            if(Map.isGraphLoaded) entity.searchPathIdle(p);
+
             if(!entity.getPathFinder().success){
                 entity.getStateMachine().changeState(StatesEnemy.PATROLLING);
                 return;
             }
-            if (entity.getPosition().dst(entity.manager.player().getPosition()) > entity.getRangeRadius()) {
+            if (entity.getPosition().dst(entity.engine.player().getPosition()) > entity.getRangeRadius()) {
                 entity.getStateMachine().changeState(StatesEnemy.PURSUE);
             }else{
                 entity.getStateMachine().changeState(StatesEnemy.ATTACKING);

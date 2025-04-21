@@ -2,15 +2,16 @@ package progetto.gameplay.entities.specific.base;
 
 // Importazioni
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.ComponentManager;
-import progetto.gameplay.entities.components.base.IteratableComponent;
-import progetto.gameplay.entities.components.specific.*;
-import progetto.gameplay.entities.components.specific.base.*;
-import progetto.graphics.animations.CustomAnimation;
-import progetto.graphics.animations.DefaultAnimationSet;
+import progetto.gameplay.entities.components.specific.ai.StateComponent;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.general.ConfigComponent;
+import progetto.gameplay.entities.components.specific.graphics.ColorComponent;
+import progetto.gameplay.entities.components.specific.graphics.ZLevelComponent;
+import progetto.gameplay.entities.components.specific.movement.DirectionComponent;
+import progetto.gameplay.entities.components.specific.movement.NodeComponent;
 import progetto.manager.entities.Engine;
 
 /**
@@ -26,129 +27,64 @@ public abstract class Entity {
     public final int id;
 
     /** Gestore generale delle entità (dove è registrata questa entità). {@link Engine} */
-    public final Engine manager;
-
-    /** Gestione delle animazioni */
-    private final CustomAnimation textures;
+    public final Engine engine;
 
     /** Gestore componenti */
     public ComponentManager components;
 
     /**
-     * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).
+     * Crea un'entità a partire da un'istanza salvata (es. Caricata da un file).
      * @param instance l'entità salvata {@link EntityInstance}
-     * @param manager il gestore delle entità {@link Engine}
+     * @param engine il gestore delle entità {@link Engine}
      */
-    public Entity(EntityInstance instance, Engine manager) {
-        Component[] components = new Component[]{
-            new ConfigComponent(instance.config, nextId),
+    public Entity(EntityInstance instance, Engine engine) {
+        this.engine = engine;
+        this.id = nextId++;
+
+        this.components = new ComponentManager();
+        addComponents(
+            new ConfigComponent(instance.config, id),
             new ZLevelComponent(0),
             new StateComponent(),
             new PhysicsComponent(this, instance.coordinate),
             new NodeComponent(),
             new DirectionComponent(),
-            new ColorComponent(),
-        };
+            new ColorComponent()
+        );
 
-        this.components = new ComponentManager();
-        this.components.add(components);
-        this.components.get(PhysicsComponent.class).createBody();
-
-        nextId++;
-        this.id = nextId;
-        this.manager = manager;
-        String[] string = new String[1];
-        string[0] = "default";
-        Texture[] img = new Texture[1];
-        img[0] = instance.config.img;
-        this.textures = new CustomAnimation(string, img);
+        getComponent(PhysicsComponent.class).createBody();
     }
 
     /**
      * Crea un'entità a partire da una configurazione personalizzata.
      * @param config configurazione dell'entità {@link EntityConfig}
-     * @param manager il gestore delle entità {@link Engine}
+     * @param engine il gestore delle entità {@link Engine}
      */
-    public Entity(EntityConfig config, Engine manager) {
-        Component[] components = new Component[]{
-            new ConfigComponent(config, nextId),
+    public Entity(EntityConfig config, Engine engine) {
+        this.engine = engine;
+        this.id = nextId++;
+
+        this.components = new ComponentManager();
+        addComponents(
+            new ConfigComponent(config, id),
             new ZLevelComponent(0),
             new StateComponent(),
             new PhysicsComponent(this, config),
             new NodeComponent(),
             new DirectionComponent(),
-            new ColorComponent(),
-        };
+            new ColorComponent()
+        );
 
-        this.components = new ComponentManager();
-        this.components.add(components);
-        this.components.get(PhysicsComponent.class).createBody();
-
-        nextId++;
-        this.id = nextId;
+        getComponent(PhysicsComponent.class).createBody();
         System.out.println(config.id);
-        this.manager = manager;
-        String[] string = new String[1];
-        string[0] = "default";
-        Texture[] img = new Texture[1];
-        img[0] = config.img;
-        this.textures = new CustomAnimation(string, img);
-
-
     }
-
-    /**
-     * Aggiorna il comportamento specifico di questo tipo di entità.
-     * @param delta tempo trascorso dall'ultimo frame
-     */
-    public abstract void updateEntityType(float delta);
-
-    /**
-     * Viene chiamato dopo la creazione per inizializzare comportamenti specifici.
-     */
-    public abstract void create();
-
-    /**
-     * Rimuove l'entità dal mondo e restituisce un oggetto che la rappresenta.
-     * @return l'entità salvabile {@link EntityInstance}
-     */
-    public abstract EntityInstance despawn();
 
     /**
      * Restituisce la configurazione dell'entità.
      * @return configurazione {@link EntityConfig}
      */
     public final EntityConfig getConfig() {
-        return new EntityConfig(components.get(ConfigComponent.class).getConfig());
-    }
-
-    /**
-     * Restituisce il componente fisico dell'entità.
-     * @return fisica {@link PhysicsComponent}
-     */
-    public PhysicsComponent getPhysics() {
-        return components.get(PhysicsComponent.class);
-    }
-
-    /**
-     * Restituisce la direzione in cui si sta muovendo l'entità.
-     * @return direzione {@link DirectionComponent}
-     */
-    public final Vector2 getDirection() {
-        return components.get(DirectionComponent.class).direction;
-    }
-
-    /**
-     * Restituisce lo stato dell'entità.
-     * @return stato {@link StateComponent}
-     */
-    public final StateComponent getState() {
-        return components.get(StateComponent.class);
-    }
-
-
-    public final int getZ() {
-        return components.get(ZLevelComponent.class).getZ();
+        return new EntityConfig(getComponent(ConfigComponent.class).getConfig());
     }
 
     /**
@@ -156,34 +92,15 @@ public abstract class Entity {
      * @return posizione corrente
      */
     public Vector2 getPosition() {
-        return getPhysics().getPosition();
+        return getComponent(PhysicsComponent.class).getPosition();
     }
 
     /**
-     * Restituisce le texture e animazioni associate.
-     * @return immagini {@link DefaultAnimationSet}
+     * Restituisce la direzione in cui si sta muovendo l'entità.
+     * @return direzione {@link DirectionComponent}
      */
-    public CustomAnimation getTextures() {
-        return textures;
-    }
-
-    /**
-     * Aggiorna l'entità se è attiva e pronta.
-     * @param delta tempo trascorso dall’ultimo frame
-     */
-    public void render(float delta) {
-        if (getState().isLoaded()) {
-            updateEntityType(delta);
-        }
-    }
-
-    public void update(float delta) {
-        for (int i = 0; i < components.components().length; i++) {
-            Component c = (Component) components.components()[i];
-            if (c instanceof IteratableComponent && c.isAwake()) {
-                ((IteratableComponent) c).update(delta);
-            }
-        }
+    public final Vector2 getDirection() {
+        return getComponent(DirectionComponent.class).direction;
     }
 
     /**
@@ -191,7 +108,7 @@ public abstract class Entity {
      * @return true se va disegnata
      */
     public boolean shouldRender() {
-        return getState().shouldRender();
+        return getComponent(StateComponent.class).shouldRender();
     }
 
     /**
@@ -199,33 +116,52 @@ public abstract class Entity {
      * @param shouldRender true per disegnarla
      */
     public void setShouldRender(boolean shouldRender) {
-        getPhysics().setActive(shouldRender);
-        getState().setShouldRender(shouldRender);
+        getComponent(PhysicsComponent.class).setActive(shouldRender);
+        getComponent(StateComponent.class).setShouldRender(shouldRender);
     }
 
     /**
-     * Imposta l’entità come viva.
+     * Rimuove l'entità dal mondo e restituisce un oggetto che la rappresenta.
+     * @return l'entità salvabile {@link EntityInstance}
      */
-    public void setAlive() {
-        getState().setAlive(true);
+    public abstract EntityInstance unregister();
+
+    /**
+     * Viene chiamato dopo la creazione per inizializzare comportamenti specifici.
+     */
+    public abstract void create();
+
+    /**
+     * @param componentClass classe del componente che si vuole {@link Class}
+     * @return componete richiesto {@link Component}
+     * @param <T> tipo di componente trovato
+     */
+    public <T extends Component> T getComponent(Class<T> componentClass) {
+        Component component = components.get(componentClass);
+        if (component == null) {
+            throw new IllegalArgumentException("Component " + componentClass.getSimpleName() + " non trovato");
+        }
+        return componentClass.cast(component);
     }
 
     /**
-     * Imposta l’entità come morta.
+     * Aggiunge uno o più componenti all'entità.
+     * @param components array di componenti da aggiungere
      */
-    public void setDead() {
-        getState().setAlive(false);
+    public void addComponents(Component... components) {
+        this.components.add(components);
     }
 
     @Override
     public String toString() {
+        EntityConfig config = getConfig();
         return getClass().getSimpleName() + "{" +
             "posizione=" + getPosition() +
             ", direzione=" + getDirection() +
-            ", isAlive=" + getState().isAlive() +
+            ", isAlive=" + getComponent(StateComponent.class).isAlive() +
             ", shouldRender=" + shouldRender() +
-            ", id=" + getConfig().id +
-            ", nome='" + getConfig().nome + '\'' +
+            ", id=" + config.id +
+            ", nome='" + config.nome + '\'' +
             '}';
     }
 }
