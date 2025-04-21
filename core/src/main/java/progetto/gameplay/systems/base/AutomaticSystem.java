@@ -11,6 +11,8 @@ public abstract class AutomaticSystem{
     private final Queue<Entity> entitiesToRemove;
     private final Array<Class<? extends Component>> componentsForFilter;
 
+    // DA FARE L?HASHSET
+
     public AutomaticSystem(Array<Class<? extends Component>> requiredComponents) {
         filteredEntities = new Array<>();
         componentsForFilter = new Array<>(requiredComponents);
