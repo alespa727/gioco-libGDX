@@ -4,15 +4,11 @@ import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.components.specific.ai.StatemachineComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.AutomaticSystem;
-import progetto.gameplay.systems.base.System;
 
 public class StatemachineSystem extends AutomaticSystem {
 
-    @Override
-    public void update(float delta, Array<Entity> list) {
-        for (Entity e : list) {
-
-        }
+    public StatemachineSystem() {
+        super(Array.with(new StatemachineComponent<>()));
     }
 
     @Override

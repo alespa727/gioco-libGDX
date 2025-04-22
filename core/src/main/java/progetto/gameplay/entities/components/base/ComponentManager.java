@@ -3,22 +3,51 @@ package progetto.gameplay.entities.components.base;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 
+/**
+ * Classe che gestisce i {@link Component} associati a un'entità.
+ * <p>
+ * Ogni componente è identificato dalla sua classe. Può essere aggiunto, rimosso,
+ * recuperato oppure verificato se presente.
+ * </p>
+ * Questa classe è spesso usata internamente da una {@code Entity}.
+ */
 public class ComponentManager {
+
+    /**
+     * Mappa dei componenti dove la chiave è la classe del componente
+     * e il valore è l'istanza effettiva.
+     */
     private final ArrayMap<Class<? extends Component>, Component> components;
 
+    /**
+     * Costruttore che inizializza il manager con una mappa già esistente.
+     *
+     * @param components mappa dei componenti da usare
+     */
     public ComponentManager(ArrayMap<Class<? extends Component>, Component> components) {
         this.components = components;
     }
 
+    /**
+     * Costruttore di default: inizializza una mappa vuota.
+     */
     public ComponentManager() {
         components = new ArrayMap<>();
     }
 
+    /**
+     * Ritorna tutti i componenti attualmente presenti nel manager.
+     *
+     * @return array di oggetti {@code Component}
+     */
     public Object[] components() {
         return components.values;
     }
 
     /**
+     * Aggiunge un componente al manager.
+     * Se un componente della stessa classe era già presente, viene sovrascritto.
+     *
      * @param component componente da aggiungere {@link Component}
      */
     public void add(Component component) {
@@ -26,6 +55,11 @@ public class ComponentManager {
         components.put(componentClass, component);
     }
 
+    /**
+     * Aggiunge un array di componenti al manager.
+     *
+     * @param components array di componenti da aggiungere
+     */
     public void add(Component[] components) {
         for (Component component : components) {
             add(component);
@@ -33,9 +67,12 @@ public class ComponentManager {
     }
 
     /**
-     * @param componentClass classe del componente che si vuole {@link Class}
-     * @param <T>            tipo di componente trovato
-     * @return componete richiesto {@link Component}
+     * Ottiene un componente a partire dalla sua classe.
+     *
+     * @param componentClass classe del componente da recuperare {@link Class}
+     * @param <T>            tipo del componente
+     * @return il componente trovato {@link Component}
+     * @throws IllegalArgumentException se il componente non è presente
      */
     public <T extends Component> T get(Class<T> componentClass) {
         Component component = components.get(componentClass);
@@ -46,20 +83,20 @@ public class ComponentManager {
     }
 
     /**
-     * Verifica se esiste un determinato componente nalla mappa
+     * Controlla se un certo componente è presente nel manager.
      *
-     * @param componentClass classe del componente
-     * @return esistenza del componente
+     * @param componentClass classe del componente da cercare
+     * @return {@code true} se il componente è presente, altrimenti {@code false}
      */
     public boolean contains(Class<? extends Component> componentClass) {
         return components.containsKey(componentClass);
     }
 
     /**
-     * Verifica se esistono determinati componenti nalla mappa
+     * Controlla se sono presenti tutti i componenti specificati.
      *
-     * @param components classi del componente
-     * @return esistenza del componente
+     * @param components array delle classi dei componenti richiesti
+     * @return {@code true} se tutti i componenti sono presenti, altrimenti {@code false}
      */
     public final boolean contains(Array<Class<? extends Component>> components) {
         for (int i = 0; i < components.size; i++) {
@@ -72,8 +109,10 @@ public class ComponentManager {
     }
 
     /**
-     * @param componentClass componente da rimuovere {@link Component}
-     * @param <T>            tipo di componente da rimuovere
+     * Rimuove un componente dalla mappa.
+     *
+     * @param componentClass classe del componente da rimuovere {@link Component}
+     * @param <T>            tipo del componente da rimuovere
      */
     public <T extends Component> void remove(Class<T> componentClass) {
         components.removeKey(componentClass);

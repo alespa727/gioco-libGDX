@@ -13,11 +13,15 @@ import static progetto.manager.input.KeyHandler.*;
 
 public class UserInputSystem extends AutomaticSystem {
 
+    public UserInputSystem() {
+        super(Array.with(new UserControllable(), new PhysicsComponent()));
+    }
+
     @Override
     public void processEntity(Entity entity, float delta) {
 
         if (!entity.shouldRender()) return;
-        if (entity.containsComponents(new Array<>(UserControllable.class)) && entity instanceof Humanoid humanoid) {
+        if (entity.containsComponent(UserControllable.class) && entity instanceof Humanoid humanoid) {
             if (!(su || giu || sinistra || destra)) {
                 notMoving(humanoid);
             } else if (destra && sinistra && su && giu) {

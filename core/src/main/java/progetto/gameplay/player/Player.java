@@ -5,6 +5,7 @@ import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
 import progetto.gameplay.entities.components.specific.control.UserControllable;
+import progetto.gameplay.entities.components.specific.general.PlayerComponent;
 import progetto.gameplay.entities.components.specific.graphics.ShadowComponent;
 import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
 import progetto.gameplay.entities.skills.specific.player.PlayerDash;
@@ -25,6 +26,7 @@ public class Player extends Warrior {
             new MultiCooldownComponent(),
             new ShadowComponent(this),
             new InRangeListComponent(),
+            new PlayerComponent()
         };
 
         this.components.add(components);

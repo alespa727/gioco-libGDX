@@ -13,6 +13,10 @@ import progetto.gameplay.systems.base.System;
 
 public class DeathSystem extends AutomaticSystem {
 
+    public DeathSystem() {
+        super(Array.with(new StateComponent()));
+    }
+
     @Override
     public void processEntity(Entity entity, float delta) {
         if (!entity.shouldRender()) return;

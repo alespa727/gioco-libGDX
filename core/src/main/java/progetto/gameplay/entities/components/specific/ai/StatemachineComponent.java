@@ -14,6 +14,10 @@ public class StatemachineComponent<E extends Entity, S extends State<E>> extends
         this.stateMachine.setInitialState(state);
     }
 
+    public StatemachineComponent() {
+        stateMachine = null;
+    }
+
     public DefaultStateMachine<E, S> getStateMachine() {
         return stateMachine;
     }

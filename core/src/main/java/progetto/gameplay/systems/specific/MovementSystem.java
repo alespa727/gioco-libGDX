@@ -16,6 +16,10 @@ import progetto.manager.input.DebugWindow;
 
 public class MovementSystem extends AutomaticSystem {
 
+    public MovementSystem() {
+        super(Array.with(new MovementComponent(), new PhysicsComponent()));
+    }
+
     @Override
     public void processEntity(Entity entity, float delta) {
         if (!entity.shouldRender()) return;

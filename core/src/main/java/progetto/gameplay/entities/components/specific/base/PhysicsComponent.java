@@ -30,6 +30,11 @@ public class PhysicsComponent extends Component {
         this.position = position;
     }
 
+    public PhysicsComponent() {
+        this.owner = null;
+        this.position = null;
+    }
+
     // === Corpo e fisica ===
 
     public void createBody() {

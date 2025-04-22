@@ -9,6 +9,8 @@ import progetto.core.Core;
 import progetto.core.game.GameInfo;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
+import progetto.gameplay.entities.components.base.Component;
+import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
@@ -62,6 +64,7 @@ public final class Engine {
 
         this.renderer = new EntityRenderer(this);
 
+
         this.systemManager.add(
             new CooldownSystem(),
             new UserInputSystem(),
@@ -76,6 +79,14 @@ public final class Engine {
             new HitSystem(),
             new KnockbackSystem()
         );
+    }
+
+    public void addEntityToSystems(Entity e) {
+        systemManager.addEntities(e);
+    }
+
+    public void removeEntitiesFromSystems(Entity e) {
+        systemManager.removeEntities(e);
     }
 
     public void addSystem(System... systems) {
@@ -150,6 +161,7 @@ public final class Engine {
     }
 
     public void remove(Entity e) {
+        removeEntitiesFromSystems(e);
         entities.removeValue(e, false);
         entities.shrink();
     }

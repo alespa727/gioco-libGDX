@@ -2,6 +2,7 @@ package progetto.manager.entities;
 
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.specific.base.Entity;
+import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 import progetto.gameplay.systems.specific.DrawingSystem;
 
@@ -30,6 +31,22 @@ public class SystemManager {
         for (System s : logicSystems.values()) {
             if (s.isActive()) {
                 s.update(delta, entities);
+            }
+        }
+    }
+
+    public void addEntities(Entity... entities) {
+        for (System s : logicSystems.values()) {
+            if(s instanceof AutomaticSystem system){
+                system.addEntity(entities);
+            }
+        }
+    }
+
+    public void removeEntities(Entity e) {
+        for (System s : logicSystems.values()) {
+            if(s instanceof AutomaticSystem system){
+                system.removeEntity(e);
             }
         }
     }

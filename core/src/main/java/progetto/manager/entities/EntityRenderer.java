@@ -129,6 +129,7 @@ public class EntityRenderer {
             entities.add(queue.first());
             queue.first().components.get(PhysicsComponent.class).initBody();
             queue.first().create();
+            engine.addEntityToSystems(queue.first());
             queue.removeFirst().components.get(StateComponent.class).setLoaded(true);
         }
     }

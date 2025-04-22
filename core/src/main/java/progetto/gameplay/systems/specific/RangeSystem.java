@@ -8,20 +8,21 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import progetto.factories.BodyFactory;
-import progetto.gameplay.entities.components.base.ComponentManager;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.components.specific.combat.AttackRangeComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.AutomaticSystem;
-import progetto.gameplay.systems.base.System;
 import progetto.manager.entities.Engine;
 
 public class RangeSystem extends AutomaticSystem {
 
+    public RangeSystem() {
+        super(Array.with(new AttackRangeComponent()));
+    }
+
     @Override
     public void processEntity(Entity entity, float delta) {
         if (!entity.shouldRender()) return;
-        ComponentManager componentManager = entity.components;
         if (entity.components.contains(AttackRangeComponent.class)) {
             AttackRangeComponent range = entity.components.get(AttackRangeComponent.class);
             Body body = entity.components.get(PhysicsComponent.class).getBody();

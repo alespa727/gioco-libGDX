@@ -3,12 +3,17 @@ package progetto.gameplay.systems.specific;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.general.SkillSet;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 
 public class SpeedLimiterSystem extends AutomaticSystem {
+
+    public SpeedLimiterSystem() {
+        super(Array.with(new PhysicsComponent()));
+    }
 
     @Override
     public void processEntity(Entity entity, float delta) {
@@ -18,6 +23,7 @@ public class SpeedLimiterSystem extends AutomaticSystem {
             if (body == null) {
                 return;
             }
+            // Da trasferire in sistema a parte
             if (body.getLinearVelocity().len() > h.getMaxSpeed()) {
                 body.applyLinearImpulse(body.getLinearVelocity().scl(-1), body.getWorldCenter(), true);
                 h.getHumanStates().setInvulnerable(true);

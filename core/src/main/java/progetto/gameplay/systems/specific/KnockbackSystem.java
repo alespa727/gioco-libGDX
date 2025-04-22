@@ -11,6 +11,11 @@ import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 
 public class KnockbackSystem extends AutomaticSystem {
+
+    public KnockbackSystem() {
+        super(Array.with(new KnockbackComponent()));
+    }
+
     @Override
     public void processEntity(Entity entity, float delta) {
         if (!entity.shouldRender()) return;

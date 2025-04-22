@@ -8,6 +8,11 @@ import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 
 public class SkillSystem extends AutomaticSystem {
+
+    public SkillSystem() {
+        super(Array.with(new SkillSet()));
+    }
+
     @Override
     public void processEntity(Entity entity, float delta) {
         if (!entity.shouldRender()) return;

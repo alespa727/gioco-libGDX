@@ -60,7 +60,7 @@ public abstract class Entity {
             new PhysicsComponent(this, instance.coordinate),
             new NodeComponent(),
             new DirectionComponent(),
-            new ColorComponent(),
+            new ColorComponent()
         );
 
         getComponent(PhysicsComponent.class).createBody();
@@ -84,7 +84,7 @@ public abstract class Entity {
             new PhysicsComponent(this, config),
             new NodeComponent(),
             new DirectionComponent(),
-            new ColorComponent(),
+            new ColorComponent()
         );
 
         getComponent(PhysicsComponent.class).createBody();
@@ -116,6 +116,13 @@ public abstract class Entity {
 
 
     public boolean containsComponents(Array<Class<? extends Component>> components) {
+        if (components.size == 0) {
+            return false;
+        }
+        return this.components.contains(components);
+    }
+
+    public boolean containsComponent(Class<? extends Component> components) {
         return this.components.contains(components);
     }
 
@@ -188,5 +195,19 @@ public abstract class Entity {
             ", id=" + config.id +
             ", nome='" + config.nome + '\'' +
             '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Entity other)) {
+            return false;
+        }
+        return this.id == other.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
     }
 }
