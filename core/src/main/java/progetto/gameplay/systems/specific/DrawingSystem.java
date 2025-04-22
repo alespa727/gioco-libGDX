@@ -133,18 +133,17 @@ public class DrawingSystem extends AutomaticSystem {
             }
         }
 
-
-        batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
-            entity.getPosition().x - entity.getConfig().imageWidth / 2,
-            entity.getPosition().y - entity.getConfig().imageHeight / 2,
-            entity.getConfig().imageWidth, entity.getConfig().imageHeight);
-
         if (entity.components.contains(ShadowComponent.class)) {
             batch.draw(entity.components.get(ShadowComponent.class).animation.play(entity, "default", tempoTrascorso),
                 entity.getPosition().x - entity.getConfig().imageWidth / 2,
                 entity.getPosition().y - entity.getConfig().imageHeight / 2,
                 entity.getConfig().imageWidth, entity.getConfig().imageHeight);
         }
+
+        batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
+            entity.getPosition().x - entity.getConfig().imageWidth / 2,
+            entity.getPosition().y - entity.getConfig().imageHeight / 2,
+            entity.getConfig().imageWidth, entity.getConfig().imageHeight);
 
         if (applied) {
             batch.setShader(null);
