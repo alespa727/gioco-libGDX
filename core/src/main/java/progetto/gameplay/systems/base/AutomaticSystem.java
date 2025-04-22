@@ -5,7 +5,9 @@ import com.badlogic.gdx.utils.Queue;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.base.Entity;
 
-public abstract class AutomaticSystem {
+public abstract class AutomaticSystem extends System{
+
+    private float elapsedTime;
 
     private final Array<Entity> filteredEntities;
     private final Queue<Entity> entitiesToRemove;
@@ -13,21 +15,33 @@ public abstract class AutomaticSystem {
 
     // DA FARE L?HASHSET
 
+    public AutomaticSystem() {
+        filteredEntities = new Array<>();
+        entitiesToRemove = new Queue<>();
+        componentsForFilter = new Array<>();
+    }
+
     public AutomaticSystem(Array<Class<? extends Component>> requiredComponents) {
         filteredEntities = new Array<>();
         componentsForFilter = new Array<>(requiredComponents);
         entitiesToRemove = new Queue<>();
     }
 
-    public void update(float delta) {
+    public void update(float delta, Array<Entity> entities) {
         if (!entitiesToRemove.isEmpty()) {
             filteredEntities.removeValue(entitiesToRemove.removeFirst(), false);
         }
 
-        for (int i = 0; i < filteredEntities.size; i++) {
-            Entity e = filteredEntities.get(i);
+        elapsedTime += delta;
+
+        for (int i = 0; i < entities.size; i++) {
+            Entity e = entities.get(i);
             processEntity(e, delta);
         }
+    }
+
+    public float getElapsedTime() {
+        return elapsedTime;
     }
 
     public void addEntity(Entity e) {
@@ -42,5 +56,5 @@ public abstract class AutomaticSystem {
         }
     }
 
-    protected abstract void processEntity(Entity entity, float delta);
+    public abstract void processEntity(Entity entity, float delta);
 }

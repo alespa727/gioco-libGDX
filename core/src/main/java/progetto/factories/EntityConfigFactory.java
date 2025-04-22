@@ -42,7 +42,7 @@ public class EntityConfigFactory {
         config.descrizione = "Nemico pericoloso";
         config.x = x;
         config.y = y;
-        config.img = Core.assetManager.get("entities/Lich.png", Texture.class);
+        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
         config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;

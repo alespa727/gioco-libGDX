@@ -8,6 +8,7 @@ import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.base.ComponentManager;
 import progetto.gameplay.entities.components.specific.ai.StateComponent;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.control.UserControllable;
 import progetto.gameplay.entities.components.specific.general.ConfigComponent;
 import progetto.gameplay.entities.components.specific.graphics.ColorComponent;
 import progetto.gameplay.entities.components.specific.graphics.ZLevelComponent;
@@ -59,7 +60,7 @@ public abstract class Entity {
             new PhysicsComponent(this, instance.coordinate),
             new NodeComponent(),
             new DirectionComponent(),
-            new ColorComponent()
+            new ColorComponent(),
         );
 
         getComponent(PhysicsComponent.class).createBody();
@@ -83,7 +84,7 @@ public abstract class Entity {
             new PhysicsComponent(this, config),
             new NodeComponent(),
             new DirectionComponent(),
-            new ColorComponent()
+            new ColorComponent(),
         );
 
         getComponent(PhysicsComponent.class).createBody();

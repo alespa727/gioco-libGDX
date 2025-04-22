@@ -54,8 +54,8 @@ public final class Engine {
 
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 1; j++) {
-                EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", 8 + i * 0.3f, 10 + j * 0.3f);
-                summon(EntityFactory.createBoss("Lich", e, this));
+                EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i * 0.3f, 10 + j * 0.3f);
+                summon(EntityFactory.createEnemy("Finn", e, this, 4));
                 summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, this, null));
             }
         }

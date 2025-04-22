@@ -43,7 +43,7 @@ public abstract class Enemy extends Warrior {
             new MultiCooldownComponent()
         );
 
-        getComponent(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f));
+        getComponent(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f, true));
         getAttackCooldown().reset();
 
 

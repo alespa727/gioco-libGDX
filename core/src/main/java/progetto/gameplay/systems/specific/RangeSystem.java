@@ -12,31 +12,29 @@ import progetto.gameplay.entities.components.base.ComponentManager;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.components.specific.combat.AttackRangeComponent;
 import progetto.gameplay.entities.specific.base.Entity;
+import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 import progetto.manager.entities.Engine;
 
-public class RangeSystem extends System {
+public class RangeSystem extends AutomaticSystem {
+
     @Override
-    public void update(float delta, Array<Entity> list) {
-        for (Entity e : list) {
-            if (!e.shouldRender()) continue;
-            ComponentManager componentManager = e.components;
-            if (e.components.contains(AttackRangeComponent.class)) {
-                AttackRangeComponent range = e.components.get(AttackRangeComponent.class);
-                Body body = e.components.get(PhysicsComponent.class).getBody();
-                if (body == null) {
-                    return;
-                }
-                if (range.fixtureDef == null) {
-                    createRange(range);
-                    range.directionalRange = BodyFactory.createBody(e, range.getBodyDef(), range.getFixtureDef());
-                }
+    public void processEntity(Entity entity, float delta) {
+        if (!entity.shouldRender()) return;
+        ComponentManager componentManager = entity.components;
+        if (entity.components.contains(AttackRangeComponent.class)) {
+            AttackRangeComponent range = entity.components.get(AttackRangeComponent.class);
+            Body body = entity.components.get(PhysicsComponent.class).getBody();
+            if (body == null) {
+                return;
+            }
+            if (range.fixtureDef == null) {
+                createRange(range);
+                range.directionalRange = BodyFactory.createBody(entity, range.getBodyDef(), range.getFixtureDef());
+            }
 
-                if (e.components.get(AttackRangeComponent.class).directionalRange != null) {
-                    e.components.get(AttackRangeComponent.class).directionalRange.setTransform(body.getPosition(), e.getDirection().angleRad() - 60 * MathUtils.degreesToRadians);
-                }
-
-
+            if (entity.components.get(AttackRangeComponent.class).directionalRange != null) {
+                entity.components.get(AttackRangeComponent.class).directionalRange.setTransform(body.getPosition(), entity.getDirection().angleRad() - 60 * MathUtils.degreesToRadians);
             }
         }
     }

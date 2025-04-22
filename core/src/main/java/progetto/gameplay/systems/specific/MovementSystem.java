@@ -8,49 +8,42 @@ import progetto.gameplay.entities.components.specific.movement.MovementComponent
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.Player;
+import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 import progetto.gameplay.world.Map;
 import progetto.gameplay.world.graph.node.Node;
 import progetto.manager.input.DebugWindow;
 
-public class MovementSystem extends System {
+public class MovementSystem extends AutomaticSystem {
 
     @Override
-    public void update(float delta, Array<Entity> entities) {
-        if (!DebugWindow.renderEntities()) {
-            for (Entity entity : entities) {
-                if (entity instanceof Player) continue;
-                if (!entity.shouldRender()) continue;
-                if (!entity.components.contains(MovementComponent.class)) continue;
-                if (!entity.components.contains(PhysicsComponent.class)) continue;
+    public void processEntity(Entity entity, float delta) {
+        if (!entity.shouldRender()) return;
+        if (!entity.components.contains(MovementComponent.class)) return;
+        if (!entity.components.contains(PhysicsComponent.class)) return;
 
+        if (!DebugWindow.renderEntities()) {
+                if (entity instanceof Player) return;
                 entity.components.get(PhysicsComponent.class).getBody().setLinearVelocity(new Vector2(0, 0));
-            }
             return;
         }
-        for (Entity entity : entities) {
-            if (!entity.shouldRender()) continue;
-            if (!entity.components.contains(MovementComponent.class)) continue;
-            if (!entity.components.contains(PhysicsComponent.class)) continue;
 
+        MovementComponent movement = entity.components.get(MovementComponent.class);
+        movement.cooldown.update(delta);
 
-            MovementComponent movement = entity.components.get(MovementComponent.class);
-            movement.cooldown.update(delta);
+        if (movement.isAwake()) {
+            movement.setReady(false);
 
-            if (movement.isAwake()) {
-                movement.setReady(false);
-
-                if (movement.stepIndex > movement.getPath().size - 1 || movement.cooldown.isReady) {
-                    movement.stepIndex = 0;
-                    movement.setReady(true);
-                    movement.cooldown.reset();
-                }
-                if (movement.getPath().size == 0) {
-                    continue;
-                }
-                direzione(movement, entity);
-                towards(movement, entity, movement.getPath().get(movement.stepIndex));
+            if (movement.stepIndex > movement.getPath().size - 1 || movement.cooldown.isReady) {
+                movement.stepIndex = 0;
+                movement.setReady(true);
+                movement.cooldown.reset();
             }
+            if (movement.getPath().size == 0) {
+                return;
+            }
+            direzione(movement, entity);
+            towards(movement, entity, movement.getPath().get(movement.stepIndex));
         }
     }
 

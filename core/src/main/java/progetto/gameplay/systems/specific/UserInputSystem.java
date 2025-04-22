@@ -7,28 +7,27 @@ import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.components.specific.control.UserControllable;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
-import progetto.gameplay.systems.base.System;
+import progetto.gameplay.systems.base.AutomaticSystem;
 
 import static progetto.manager.input.KeyHandler.*;
 
-public class UserInputSystem extends System {
+public class UserInputSystem extends AutomaticSystem {
 
     @Override
-    public void update(float delta, Array<Entity> list) {
-        for (Entity e : list) {
-            if (!e.shouldRender()) continue;
-            if (e.components.contains(UserControllable.class) && e instanceof Humanoid humanoid) {
-                if (!(su || giu || sinistra || destra)) {
-                    notMoving(humanoid);
-                } else if (destra && sinistra && su && giu) {
-                    notMoving(humanoid);
-                } else if (su && giu) {
-                    oppostoY(humanoid);
-                } else if (sinistra && destra) {
-                    oppostoX(humanoid);
-                } else {
-                    moving(humanoid);
-                }
+    public void processEntity(Entity entity, float delta) {
+
+        if (!entity.shouldRender()) return;
+        if (entity.containsComponents(new Array<>(UserControllable.class)) && entity instanceof Humanoid humanoid) {
+            if (!(su || giu || sinistra || destra)) {
+                notMoving(humanoid);
+            } else if (destra && sinistra && su && giu) {
+                notMoving(humanoid);
+            } else if (su && giu) {
+                oppostoY(humanoid);
+            } else if (sinistra && destra) {
+                oppostoX(humanoid);
+            } else {
+                moving(humanoid);
             }
         }
     }

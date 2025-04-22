@@ -8,39 +8,39 @@ import progetto.gameplay.entities.components.specific.graphics.DespawnAnimationC
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.Player;
+import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 
-public class DeathSystem extends System {
+public class DeathSystem extends AutomaticSystem {
+
     @Override
-    public void update(float delta, Array<Entity> list) {
-        for (Entity e : list) {
-            if (!e.shouldRender()) continue;
+    public void processEntity(Entity entity, float delta) {
+        if (!entity.shouldRender()) return;
 
-            if (e instanceof Player player) {
-                StateComponent state = e.components.get(StateComponent.class);
-                if (player.getHealth() <= 0) {
-                    state.setAlive(false);
-                    player.getStats().health = 100;
-                }
-                continue;
+        if (entity instanceof Player player) {
+            StateComponent state = entity.components.get(StateComponent.class);
+            if (player.getHealth() <= 0) {
+                state.setAlive(false);
+                player.getStats().health = 100;
             }
-
-            if (e.components.contains(BulletComponent.class)) {
-                StateComponent state = e.components.get(StateComponent.class);
-                e.components.get(BulletComponent.class).cooldown.update(delta);
-                if (e.components.get(BulletComponent.class).cooldown.isReady || !state.shouldRender()) {
-                    e.unregister();
-                }
-            }
-
-            if (e instanceof Humanoid h && e.components.contains(MortalComponent.class)) {
-                StateComponent state = e.components.get(StateComponent.class);
-                if (h.getHealth() <= 0 && state.isAlive()) {
-                    state.setAlive(false);
-                    h.components.add(new DespawnAnimationComponent());
-                }
-            }
-
+            return;
         }
+
+        if (entity.components.contains(BulletComponent.class)) {
+            StateComponent state = entity.components.get(StateComponent.class);
+            entity.components.get(BulletComponent.class).cooldown.update(delta);
+            if (entity.components.get(BulletComponent.class).cooldown.isReady || !state.shouldRender()) {
+                entity.unregister();
+            }
+        }
+
+        if (entity instanceof Humanoid h && entity.components.contains(MortalComponent.class)) {
+            StateComponent state = entity.components.get(StateComponent.class);
+            if (h.getHealth() <= 0 && state.isAlive()) {
+                state.setAlive(false);
+                h.components.add(new DespawnAnimationComponent());
+            }
+        }
+
     }
 }

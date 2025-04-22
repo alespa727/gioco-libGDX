@@ -12,15 +12,17 @@ import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.entities.specific.specific.notliving.Bullet;
 import progetto.gameplay.entities.specific.specific.notliving.GameObject;
+import progetto.gameplay.systems.base.AutomaticSystem;
 import progetto.gameplay.systems.base.System;
 import progetto.graphics.shaders.specific.Flash;
 import progetto.manager.input.DebugWindow;
 
-public class DrawingSystem extends System {
+public class DrawingSystem extends AutomaticSystem {
     private SpriteBatch batch;
     private float tempoTrascorso = 0;
 
     public DrawingSystem(SpriteBatch batch) {
+        super();
         this.batch = batch;
     }
 
@@ -30,43 +32,55 @@ public class DrawingSystem extends System {
     }
 
     @Override
-    public void update(float delta, Array<Entity> list) {
+    public void processEntity(Entity entity, float delta) {
         if (!DebugWindow.renderEntities()) {
             batch.begin();
-            for (Entity entity : list) {
-                if (!entity.shouldRender()) continue;
+            if (!entity.shouldRender()){
+                batch.end();
+                return;
+            }
 
-                if (entity.components.contains(DrawableComponent.class)) {
-                    drawDefault(entity, batch, tempoTrascorso);
-                }
+            if (entity.components.contains(DrawableComponent.class)) {
+                drawDefault(entity, batch, tempoTrascorso);
             }
             batch.end();
             return;
         }
-        tempoTrascorso += delta;
+
+        tempoTrascorso = getElapsedTime();
+
         batch.begin();
-        for (Entity entity : list) {
-            if (!entity.shouldRender()) continue;
+        if (!entity.shouldRender()){
+            if (batch.isDrawing()) {
+                batch.end();
+            }
+            return;
+        }
 
-            if (entity instanceof GameObject object) {
-                drawBullet(object);
-                continue;
+        if (entity instanceof GameObject object) {
+            drawBullet(object);
+            if (batch.isDrawing()) {
+                batch.end();
+            }
+            return;
+        }
+
+        if (entity instanceof Humanoid h) {
+            if (entity.components.contains(DespawnAnimationComponent.class)) {
+                drawDespawnAnimation(h, batch, delta);
+                if (batch.isDrawing()) {
+                    batch.end();
+                }
+                return;
             }
 
-            if (entity instanceof Humanoid h) {
-                if (entity.components.contains(DespawnAnimationComponent.class)) {
-                    drawDespawnAnimation(h, batch, delta);
-                    continue;
+            if (entity.components.contains(DrawableComponent.class)) {
+                drawDefault(h, batch, tempoTrascorso);
+                if (entity instanceof Warrior w) {
+                    drawWarrior(w);
                 }
-
-                if (entity.components.contains(DrawableComponent.class)) {
-                    drawDefault(h, batch, tempoTrascorso);
-                    if (entity instanceof Warrior w) {
-                        drawWarrior(w);
-                    }
-                }
-
             }
+
         }
         batch.end();
     }

@@ -24,6 +24,7 @@ public enum StatesEnemy implements State<Enemy> {
             if (player == null)
                 player = entity.engine.player();
 
+            System.out.println("AA");
             entity.attack();
 
             entity.getDirection().set(calculateVector(entity.getPosition(), entity.engine.player().getPosition()));
