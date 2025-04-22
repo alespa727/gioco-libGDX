@@ -6,10 +6,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.Core;
@@ -97,7 +103,12 @@ public class GameScreen implements Screen {
     private void initializeDebugWindow() {
         Skin skin = new Skin(Gdx.files.internal("skins/metal-ui.json"));
         debugWindow = new DebugWindow(this, "Debug", skin);
-        inventory = new Inventory(this, "Inventory", skin);
+        Window.WindowStyle style = new Window.WindowStyle();
+        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("WindowUi.png")), 7, 7, 7, 7 );
+        NinePatchDrawable drawable = new NinePatchDrawable(patch);
+        style.background = drawable;
+        style.titleFont = new BitmapFont();
+        inventory = new Inventory(this, "Inventory", style);
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(debugWindow.getStage());   // Processa gli input per la scena principale
         inputMultiplexer.addProcessor(inventory.getStage());  // Processa gli input per la finestra di debug

@@ -18,23 +18,26 @@ public class Inventory extends Window {
     final Table table;
 
     final boolean[][] slots;
-    final int width = 5, height = 5;
+    final int width = 1, height = 5;
     final int itemSize = 100;
     int itemCount = 0;
 
-    public Inventory(GameScreen screen, String title, Skin skin) {
+    public Inventory(GameScreen screen, String title, WindowStyle skin) {
         super(title, skin);
+
         slots = new boolean[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 slots[i][j] = false;
             }
         }
-        setMovable(true);
         setKeepWithinStage(false);
+        getTitleLabel().setVisible(false);     // nasconde il testo
+        getTitleTable().clear();               // rimuove la barra
         setSize(width * itemSize, height * itemSize);
         setVisible(false);
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()));
+        setPosition(stage.getWidth() / 2 - getWidth()/2, stage.getHeight() / 2 - getHeight()/2);
         stage.addActor(this);
         table = new Table();
         addActor(table);
@@ -42,12 +45,6 @@ public class Inventory extends Window {
         table.setDebug(true);
         items = new Array<>();
         Gdx.input.setInputProcessor(stage);
-        addItem(new Item("", "", new Texture(Gdx.files.internal("lich.jpg"))));
-        addItem(new Item("", "", new Texture(Gdx.files.internal("lich.jpg"))));
-        addItem(new Item("", "", new Texture(Gdx.files.internal("lich.jpg"))));
-        addItem(new Item("", "", new Texture(Gdx.files.internal("lich.jpg"))));
-        addItem(new Item("", "", new Texture(Gdx.files.internal("lich.jpg"))));
-        addItem(new Item("", "", new Texture(Gdx.files.internal("lich.jpg"))));
     }
 
     public void addItem(Item item) {

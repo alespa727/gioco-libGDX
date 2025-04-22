@@ -1,17 +1,22 @@
 package progetto.core.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import progetto.gameplay.player.ManagerCamera;
+import progetto.gameplay.player.Player;
 import progetto.graphics.shaders.base.Shader;
 
 public class GameDrawer {
+    private final TextDrawer textDrawer;
     private final Array<Shader> shaders;
     private final GameScreen game;
 
     public GameDrawer(GameScreen game) {
         shaders = new Array<>();
         this.game = game;
-
+        this.textDrawer = new TextDrawer();
     }
 
     public void addShader(Shader shader) {
@@ -39,5 +44,9 @@ public class GameDrawer {
         Shader finalOutput = shaders.get(shaders.size - 1);
         finalOutput.draw(batch);
 
+        Player player = game.getEntityManager().player();
+        Vector3 position = ManagerCamera.getInstance().project(new Vector3(player.getPosition(), 0));
+
+        textDrawer.drawText(position.x, position.y+100);
     }
 }
