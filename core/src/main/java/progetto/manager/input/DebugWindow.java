@@ -15,15 +15,14 @@ import progetto.gameplay.world.Map;
 
 public class DebugWindow extends Window {
 
+    private static boolean entityAI = true;
+    private static boolean hitboxes = false;
+    private static boolean pathfinding = false;
     private final Stage stage;
     private final Label fpsLabel;
     private final Label memoryLabel;
     private final TextField xCoord;
     private final TextField yCoord;
-
-    private static boolean entityAI=true;
-    private static boolean hitboxes=false;
-    private static boolean pathfinding=false;
 
 
     public DebugWindow(GameScreen gameScreen, String title, Skin skin) {
@@ -126,14 +125,6 @@ public class DebugWindow extends Window {
         hide();
     }
 
-    public void show(){
-        setVisible(true);
-    }
-
-    public void hide(){
-        setVisible(false);
-    }
-
     public static boolean renderEntities() {
         return entityAI;
     }
@@ -147,16 +138,16 @@ public class DebugWindow extends Window {
     }
 
     public static void setDebugMode(boolean state) {
-        if (hitboxes==state) {
+        if (hitboxes == state) {
             TerminalCommand.printError("Hitboxes mode is already active.");
-        }else{
+        } else {
             TerminalCommand.printMessage("Debug mode is now active.");
             hitboxes = state;
         }
 
-        if (pathfinding==state) {
+        if (pathfinding == state) {
             TerminalCommand.printError("Pathfinding mode is already active.");
-        }else{
+        } else {
             TerminalCommand.printMessage("Pathfinding mode is now active.");
             pathfinding = state;
         }
@@ -167,12 +158,20 @@ public class DebugWindow extends Window {
         DebugWindow.entityAI = entityAI;
     }
 
+    public void show() {
+        setVisible(true);
+    }
+
+    public void hide() {
+        setVisible(false);
+    }
+
     public Stage getStage() {
         return stage;
     }
 
     public void update() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)) {
             setVisible(!isVisible());
         }
         stage.getViewport().apply();

@@ -14,23 +14,23 @@ public class AudioManager {
 
     }
 
-    public static void addSound(String path){
+    public static void addSound(String path) {
         sounds.add(Gdx.audio.newSound(Gdx.files.internal(path)));
     }
 
-    public static void addMusic(String path){
+    public static void addMusic(String path) {
         playlist.add(Gdx.audio.newMusic(Gdx.files.internal(path)));
     }
 
-    public static void playMusic(int index){
+    public static void playMusic(int index) {
         playlist.get(index).play();
     }
 
-    public static void playSound(int index){
+    public static void playSound(int index) {
         sounds.get(index).play();
     }
 
-    public static void stopMusic(int index){
+    public static void stopMusic(int index) {
         playlist.get(index).stop();
     }
 

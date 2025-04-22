@@ -16,21 +16,21 @@ import progetto.core.Core;
 import progetto.core.Gui;
 import progetto.gameplay.entities.components.specific.ai.StateComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.world.Map;
-import progetto.manager.entities.Engine;
-import progetto.manager.input.DebugWindow;
-import progetto.manager.input.TerminalCommand;
-import progetto.manager.world.MapManager;
-import progetto.manager.world.EventManager;
-import progetto.manager.world.WorldManager;
 import progetto.gameplay.player.ManagerCamera;
 import progetto.gameplay.player.Player;
 import progetto.gameplay.player.inventory.Inventory;
-import progetto.screens.DefeatScreen;
-import progetto.statemachines.ManagerGame;
+import progetto.gameplay.world.Map;
 import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.graphics.shaders.specific.PlayerLight;
 import progetto.graphics.shaders.specific.Vignette;
+import progetto.manager.entities.Engine;
+import progetto.manager.input.DebugWindow;
+import progetto.manager.input.TerminalCommand;
+import progetto.manager.world.EventManager;
+import progetto.manager.world.MapManager;
+import progetto.manager.world.WorldManager;
+import progetto.screens.DefeatScreen;
+import progetto.statemachines.ManagerGame;
 
 public class GameScreen implements Screen {
 
@@ -38,26 +38,22 @@ public class GameScreen implements Screen {
     public static final float STEP = 1 / 60f;
 
     private final TerminalCommand terminalCommand;
-    private DebugWindow debugWindow;
-    private Inventory inventory;
-
-    public FitViewport viewport;
     private final GameTime time;
-    private Gui gui;
-
+    private final GameDrawer drawer;
+    public FitViewport viewport;
     GameInfo info;
     DefaultStateMachine<GameScreen, ManagerGame> state;
     Cooldown resetTimeScale;
-
     Box2DDebugRenderer debugHitbox;
-
+    private DebugWindow debugWindow;
+    private Inventory inventory;
+    private Gui gui;
     private float timeScale = 1f;
-
     private boolean loaded = false;
 
-    private final GameDrawer drawer;
     /**
      * Costruttore del gioco
+     *
      * @param core gestore degli schermi
      */
     public GameScreen(final Core core) {
@@ -70,6 +66,7 @@ public class GameScreen implements Screen {
         this.loadGame(core);
         EventManager listener = new EventManager();
         WorldManager.getInstance().setContactListener(listener);
+
     }
 
     public GameDrawer getGameDrawer() {
@@ -149,6 +146,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        //info.screen.setTimeScale(3f, 1f);
         // Controlla se il giocatore è morto
         checkPlayerDeath();
 
@@ -187,6 +185,7 @@ public class GameScreen implements Screen {
 
     /**
      * Aggiorna lo stato di gioco
+     *
      * @param delta tempo trascorso dall'ultimo frame
      */
     public void update(float delta) {
@@ -249,7 +248,7 @@ public class GameScreen implements Screen {
         mapRenderer.setView(ManagerCamera.getInstance());
 
         mapRenderer.render();
-        if(DebugWindow.renderPathfinding()){
+        if (DebugWindow.renderPathfinding()) {
             Map.getGraph().drawConnections(info.core.renderer);
             Map.getGraph().drawNodes(info.core.renderer);
         }
@@ -282,6 +281,7 @@ public class GameScreen implements Screen {
 
     /**
      * Carica il gioco
+     *
      * @param core core del programma, gestore degli schermi
      */
     public void loadGame(final Core core) {
@@ -298,8 +298,9 @@ public class GameScreen implements Screen {
 
     /**
      * Imposta la velocità del tempo
+     *
      * @param timeScale velocità del tempo
-     * @param time per quanto tempo
+     * @param time      per quanto tempo
      */
     public void setTimeScale(float timeScale, float time) {
         this.timeScale = timeScale;
@@ -316,6 +317,7 @@ public class GameScreen implements Screen {
 
     /**
      * Aggiorna la telecamera
+     *
      * @param boundaries richiesta di controllare i bordi della mappa
      */
     public void updateCamera(boolean boundaries) {
@@ -331,16 +333,23 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
+
     @Override
-    public void resume() {}
+    public void resume() {
+    }
+
     @Override
-    public void hide() {}
+    public void hide() {
+    }
+
     @Override
     public void resize(int width, int height) {
         // Gestisce il ridimensionamento della finestra
         viewport.update(width, height, false);
     }
+
     @Override
     public void dispose() {
         // Pulisce le risorse utilizzate

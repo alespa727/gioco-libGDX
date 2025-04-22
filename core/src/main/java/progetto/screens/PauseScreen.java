@@ -28,14 +28,16 @@ import progetto.graphics.shaders.specific.ColorFilter;
 public class PauseScreen implements Screen {
     final Core game;
     final GameScreen gameScreen;
+    final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+    final FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    private final ColorFilter darken;
+    private final float duration = 1f; // quanto deve durare l'interpolazione in secondi
     boolean resumeRequest;
     boolean pauseRequest;
     Cooldown pause;
     Cooldown resume;
     FitViewport viewport;
     TextButton MainMenu;
-    final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-    final FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
     BitmapFont font;
     float alpha;
     Vector3[] corners;
@@ -46,9 +48,7 @@ public class PauseScreen implements Screen {
     private Stage stage;
     private Table root;
     private Table table;
-
-
-    private final ColorFilter darken;
+    private float transitionTime = 0; // quanto tempo è passato
 
     public PauseScreen(Core game, GameScreen gameScreen) {
         this.game = game;
@@ -113,7 +113,7 @@ public class PauseScreen implements Screen {
         pause = new Cooldown(0.7f);
         pause.reset();
         resume.reset();
-        gameScreen.getEntityManager().player().getHumanStates().hasBeenHit=false;
+        gameScreen.getEntityManager().player().getHumanStates().hasBeenHit = false;
 
         stage.setDebugAll(true);
     }
@@ -168,10 +168,6 @@ public class PauseScreen implements Screen {
         stage.act();
         stage.draw();
     }
-
-
-    private float transitionTime = 0; // quanto tempo è passato
-    private final float duration = 1f; // quanto deve durare l'interpolazione in secondi
 
     public void transitionIn(float delta) {
         // Incrementa il tempo passato

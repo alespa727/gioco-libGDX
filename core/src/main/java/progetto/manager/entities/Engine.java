@@ -9,7 +9,6 @@ import progetto.core.Core;
 import progetto.core.game.GameInfo;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
-import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
@@ -21,9 +20,6 @@ import progetto.gameplay.systems.base.System;
 import progetto.gameplay.systems.specific.*;
 import progetto.manager.input.DebugWindow;
 import progetto.manager.input.TerminalCommand;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Engine {
 
@@ -59,7 +55,7 @@ public final class Engine {
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 1; j++) {
                 EntityConfig e = EntityConfigFactory.createEntityConfig("Lich", 8 + i * 0.3f, 10 + j * 0.3f);
-                // summon(EntityFactory.createBoss("Lich", e, this));
+                summon(EntityFactory.createBoss("Lich", e, this));
                 summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, this, null));
             }
         }

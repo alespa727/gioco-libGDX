@@ -11,14 +11,12 @@ public abstract class Skill {
 
     // === CAMPI ===
 
-    protected Texture[] texture;               // Array per i frame della texture
-    protected TextureRegion[] textureRegion;    // Array per le regioni della texture
-    protected Animation<TextureRegion> animation; // Animazione basata su TextureRegion
-
     public final String name;                  // Nome della skill
     public final String description;           // Descrizione della skill
     protected final Humanoid owner;        // Entità che possiede la skill
-
+    protected Texture[] texture;               // Array per i frame della texture
+    protected TextureRegion[] textureRegion;    // Array per le regioni della texture
+    protected Animation<TextureRegion> animation; // Animazione basata su TextureRegion
     protected boolean isBeingUsed = false;     // Flag per verificare se la skill è in uso
     protected Cooldown cooldown;               // Gestore del cooldown per la skill
 
@@ -42,9 +40,17 @@ public abstract class Skill {
     }
 
     /**
+     * Imposta se la skill è in uso.
+     */
+    public void setBeingUsed(boolean isBeingUsed) {
+        this.isBeingUsed = isBeingUsed;
+    }
+
+    /**
      * Carica la texture e prepara l'animazione della skill.
-     * @param path Percorso delle immagini per i frame della skill.
-     * @param frames Numero di frame dell'animazione.
+     *
+     * @param path            Percorso delle immagini per i frame della skill.
+     * @param frames          Numero di frame dell'animazione.
      * @param framesPerSecond Numero di fotogrammi al secondo per l'animazione.
      */
     public void loadTexture(String path, int frames, int framesPerSecond) {
@@ -74,13 +80,6 @@ public abstract class Skill {
         return animation;
     }
 
-    /**
-     * Imposta se la skill è in uso.
-     */
-    public void setBeingUsed(boolean isBeingUsed) {
-        this.isBeingUsed = isBeingUsed;
-    }
-
     // === METODI ABSTRACT ===
 
     /**
@@ -90,6 +89,7 @@ public abstract class Skill {
 
     /**
      * Metodo per disegnare la skill.
+     *
      * @param batch SpriteBatch utilizzato per il rendering.
      */
     public abstract void draw(SpriteBatch batch);

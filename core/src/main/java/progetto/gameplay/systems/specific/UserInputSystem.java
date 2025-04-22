@@ -3,8 +3,8 @@ package progetto.gameplay.systems.specific;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.specific.control.UserControllable;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.control.UserControllable;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.systems.base.System;
@@ -15,14 +15,14 @@ public class UserInputSystem extends System {
 
     @Override
     public void update(float delta, Array<Entity> list) {
-        for (Entity e : list){
-            if(!e.shouldRender()) continue;
-            if (e.components.contains(UserControllable.class) && e instanceof Humanoid humanoid){
+        for (Entity e : list) {
+            if (!e.shouldRender()) continue;
+            if (e.components.contains(UserControllable.class) && e instanceof Humanoid humanoid) {
                 if (!(su || giu || sinistra || destra)) {
                     notMoving(humanoid);
-                }else if(destra && sinistra && su && giu){
+                } else if (destra && sinistra && su && giu) {
                     notMoving(humanoid);
-                }else if (su && giu) {
+                } else if (su && giu) {
                     oppostoY(humanoid);
                 } else if (sinistra && destra) {
                     oppostoX(humanoid);

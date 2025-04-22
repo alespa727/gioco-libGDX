@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
-public abstract class Shader{
-    private boolean active=false;
-
+public abstract class Shader {
     protected ShaderProgram program;
     protected FrameBuffer frameBuffer;
+    private boolean active = false;
 
     public abstract void begin();
+
     public abstract void end();
 
     public abstract void draw(SpriteBatch batch);

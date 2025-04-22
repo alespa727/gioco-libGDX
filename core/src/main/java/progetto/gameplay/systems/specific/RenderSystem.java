@@ -1,7 +1,6 @@
 package progetto.gameplay.systems.specific;
 
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.System;
 

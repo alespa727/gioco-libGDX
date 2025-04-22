@@ -42,12 +42,12 @@ public class PlayerRangedAttack extends CombatSkill {
         if (bullets > 0) {
             bullets--;
             Vector3 mouse = ManagerCamera.getInstance().unproject(KeyHandler.mouse);
-            Vector2 direction=new Vector2(mouse.x- owner.getPosition().x, mouse.y- owner.getPosition().y);
+            Vector2 direction = new Vector2(mouse.x - owner.getPosition().x, mouse.y - owner.getPosition().y);
             direction.nor();
-            Vector2 position=new Vector2(owner.getPosition()).add(direction);
+            Vector2 position = new Vector2(owner.getPosition()).add(direction);
 
             Bullet bullet = (Bullet) owner.engine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.engine, Warrior.class));
-        }else{
+        } else {
             System.out.println("FINITI I PROIETTILI");
         }
 

@@ -1,14 +1,14 @@
 package progetto.gameplay.systems.specific;
 
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.specific.combat.MortalComponent;
-import progetto.gameplay.entities.components.specific.graphics.DespawnAnimationComponent;
-import progetto.gameplay.entities.components.specific.general.BulletComponent;
 import progetto.gameplay.entities.components.specific.ai.StateComponent;
+import progetto.gameplay.entities.components.specific.combat.MortalComponent;
+import progetto.gameplay.entities.components.specific.general.BulletComponent;
+import progetto.gameplay.entities.components.specific.graphics.DespawnAnimationComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
-import progetto.gameplay.systems.base.System;
 import progetto.gameplay.player.Player;
+import progetto.gameplay.systems.base.System;
 
 public class DeathSystem extends System {
     @Override
@@ -16,7 +16,7 @@ public class DeathSystem extends System {
         for (Entity e : list) {
             if (!e.shouldRender()) continue;
 
-            if (e instanceof Player player){
+            if (e instanceof Player player) {
                 StateComponent state = e.components.get(StateComponent.class);
                 if (player.getHealth() <= 0) {
                     state.setAlive(false);
@@ -25,10 +25,10 @@ public class DeathSystem extends System {
                 continue;
             }
 
-            if(e.components.contains(BulletComponent.class)){
+            if (e.components.contains(BulletComponent.class)) {
                 StateComponent state = e.components.get(StateComponent.class);
                 e.components.get(BulletComponent.class).cooldown.update(delta);
-                if (e.components.get(BulletComponent.class).cooldown.isReady || !state.shouldRender()){
+                if (e.components.get(BulletComponent.class).cooldown.isReady || !state.shouldRender()) {
                     e.unregister();
                 }
             }

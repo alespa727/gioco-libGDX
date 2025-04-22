@@ -8,64 +8,96 @@ import progetto.gameplay.entities.components.base.Component;
  * Contiene tutte le informazioni di base per configurare un'entità.
  * Questa classe viene usata per creare, salvare o duplicare entità.
  */
-public class EntityConfig extends Component{
+public class EntityConfig extends Component {
 
     // === Identificatori e descrizione ===
 
-    /** Identificatore univoco dell'entità */
+    /**
+     * Identificatore univoco dell'entità
+     */
     public int id;
 
-    /** Nome dell'entità (es. "Goblin", "Player") */
+    /**
+     * Nome dell'entità (es. "Goblin", "Player")
+     */
     public String nome;
 
-    /** Descrizione dell'entità, utile per testi o debugging */
+    /**
+     * Descrizione dell'entità, utile per testi o debugging
+     */
     public String descrizione;
 
     // === Posizione e dimensioni ===
 
-    /** Posizione X iniziale dell'entità */
+    /**
+     * Posizione X iniziale dell'entità
+     */
     public float x;
 
-    /** Posizione Y iniziale dell'entità */
+    /**
+     * Posizione Y iniziale dell'entità
+     */
     public float y;
 
-    /** Raggio dell'entità, usato per collisioni e hitbox */
+    /**
+     * Raggio dell'entità, usato per collisioni e hitbox
+     */
     public float radius;
 
-    /** Direzione iniziale in cui guarda o si muove l'entità (Vector2) */
+    /**
+     * Direzione iniziale in cui guarda o si muove l'entità (Vector2)
+     */
     public Vector2 direzione;
 
     // === Stato e comportamento ===
 
-    /** Indica se l'entità è viva o no */
+    /**
+     * Indica se l'entità è viva o no
+     */
     public boolean isAlive;
 
-    /** Indica se l'entità è attualmente in collisione */
+    /**
+     * Indica se l'entità è attualmente in collisione
+     */
     public boolean inCollisione;
 
-    /** Indica se l'entità si sta muovendo */
+    /**
+     * Indica se l'entità si sta muovendo
+     */
     public boolean isMoving;
 
     // === Statistiche ===
 
-    /** Punti vita dell'entità */
+    /**
+     * Punti vita dell'entità
+     */
     public float hp;
 
-    /** Velocità di movimento */
+    /**
+     * Velocità di movimento
+     */
     public float speed;
 
-    /** Danno che infligge quando attacca */
+    /**
+     * Danno che infligge quando attacca
+     */
     public float attackdmg;
 
     // === Grafica ===
 
-    /** Immagine o sprite principale dell'entità (Texture di LibGDX) */
+    /**
+     * Immagine o sprite principale dell'entità (Texture di LibGDX)
+     */
     public transient Texture img;
 
-    /** Larghezza dell'immagine da disegnare a schermo */
+    /**
+     * Larghezza dell'immagine da disegnare a schermo
+     */
     public float imageWidth;
 
-    /** Altezza dell'immagine da disegnare a schermo */
+    /**
+     * Altezza dell'immagine da disegnare a schermo
+     */
     public float imageHeight;
 
     // === Costruttori ===
@@ -78,6 +110,7 @@ public class EntityConfig extends Component{
 
     /**
      * Crea una copia di un'altra configurazione.
+     *
      * @param config la configurazione da copiare (EntityConfig)
      */
     public EntityConfig(EntityConfig config) {

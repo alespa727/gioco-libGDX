@@ -29,14 +29,14 @@ public class GameDrawer {
         shaders.get(0).end();
 
         for (int i = 1; i < shaders.size; i++) {
-            Shader input = shaders.get(i-1);
+            Shader input = shaders.get(i - 1);
             Shader output = shaders.get(i);
             output.begin();
             input.draw(batch);
             output.end();
         }
 
-        Shader finalOutput = shaders.get(shaders.size-1);
+        Shader finalOutput = shaders.get(shaders.size - 1);
         finalOutput.draw(batch);
 
     }

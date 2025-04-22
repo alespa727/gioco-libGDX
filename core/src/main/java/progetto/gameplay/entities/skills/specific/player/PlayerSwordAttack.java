@@ -26,8 +26,8 @@ public class PlayerSwordAttack extends CombatSkill {
         if (isBeingUsed) {
             elapsedTime += delta;
             cooldown.update(delta);
-            if (cooldown.isReady){
-                isBeingUsed=false;
+            if (cooldown.isReady) {
+                isBeingUsed = false;
                 elapsedTime = 0;
                 System.out.println("FINITA");
             }
@@ -55,8 +55,8 @@ public class PlayerSwordAttack extends CombatSkill {
             warrior.hit(owner, damage, 2);
         }
         direction.set(owner.getDirection().x, owner.getDirection().y).setLength(((Player) owner).getRangeRadius());
-        angle = owner.getDirection().angleDeg()-90;
-        isBeingUsed=true;
+        angle = owner.getDirection().angleDeg() - 90;
+        isBeingUsed = true;
     }
 
 }

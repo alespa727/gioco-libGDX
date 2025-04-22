@@ -21,6 +21,7 @@ public class LichFireDomain extends CombatSkill {
 
     /**
      * Metodo per disegnare la skill.
+     *
      * @param batch SpriteBatch utilizzato per il rendering.
      */
     @Override
@@ -34,8 +35,8 @@ public class LichFireDomain extends CombatSkill {
     @Override
     public void execute() {
         for (int i = 0; i < 10; i++) {
-            float angle = (float)(2 * Math.PI * i / 10);
-            Vector2 direction = new Vector2((float)Math.cos(angle), (float)Math.sin(angle)).nor();
+            float angle = (float) (2 * Math.PI * i / 10);
+            Vector2 direction = new Vector2((float) Math.cos(angle), (float) Math.sin(angle)).nor();
             owner.engine.summon(EntityFactory.createBullet(owner.getPosition().x + direction.x, owner.getPosition().y + direction.y, direction, 0.1f, 2f, 10, owner.engine.player()));
         }
     }

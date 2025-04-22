@@ -7,11 +7,11 @@ package progetto.gameplay.entities.components.specific.base;
  *
  * @author alesp
  */
-public class Cooldown{
-    public float time; // Tempo rimanente per il cooldown
+public class Cooldown {
     public final float maxTime; // Tempo massimo (durata del cooldown)
+    public float time; // Tempo rimanente per il cooldown
     public boolean isReady; // Indica se il cooldown è pronto per essere resettato
-    public boolean shouldAutoUpdate=false;
+    public boolean shouldAutoUpdate = false;
 
     /**
      * Costruttore che inizializza il cooldown con un tempo massimo.
@@ -29,7 +29,7 @@ public class Cooldown{
      * Costruttore che inizializza il cooldown con un tempo massimo.
      * Imposta il tempo rimanente uguale al tempo massimo e imposta isReady su true.
      *
-     * @param maxTime Durata del cooldown
+     * @param maxTime          Durata del cooldown
      * @param shouldAutoUpdate aggiornamento automatico opzionale se dentro un entità
      */
     public Cooldown(float maxTime, boolean shouldAutoUpdate) {
@@ -42,8 +42,8 @@ public class Cooldown{
     /**
      * Dovrebbe aggiornarsi automaticamente se dentro un entità
      */
-    public void autoUpdate(){
-        shouldAutoUpdate=true;
+    public void autoUpdate() {
+        shouldAutoUpdate = true;
     }
 
     /**

@@ -2,7 +2,6 @@ package progetto.gameplay.entities.specific.specific.living;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.specific.ai.StateComponent;
 import progetto.gameplay.entities.components.specific.ai.StatusComponent;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
@@ -14,7 +13,6 @@ import progetto.gameplay.entities.components.specific.movement.MovementComponent
 import progetto.gameplay.entities.components.specific.movement.PathFinderComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
-import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.manager.entities.Engine;
 
 /**
@@ -29,7 +27,7 @@ public abstract class Humanoid extends Entity {
      * Aggiunge i componenti necessari per la gestione del movimento, salute, abilità e velocità.
      *
      * @param instance L'istanza dell'umanoide da usare per la configurazione.
-     * @param engine Il gestore delle entità del gioco.
+     * @param engine   Il gestore delle entità del gioco.
      */
     public Humanoid(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
@@ -56,7 +54,7 @@ public abstract class Humanoid extends Entity {
      * Costruttore per creare un'entità umanoide utilizzando una configurazione di entità.
      * Aggiunge i componenti necessari per la gestione del movimento, salute, abilità e velocità.
      *
-     * @param config La configurazione dell'umanoide (velocità, salute, ecc.).
+     * @param config  La configurazione dell'umanoide (velocità, salute, ecc.).
      * @param manager Il gestore delle entità del gioco.
      */
     public Humanoid(EntityConfig config, Engine manager) {
@@ -156,7 +154,7 @@ public abstract class Humanoid extends Entity {
      * @param damage Il danno da infliggere.
      */
     public void inflictDamage(float damage) {
-        getHumanStates().hasBeenHit=true;
+        getHumanStates().hasBeenHit = true;
         getStats().health = getStats().health - damage;
     }
 
@@ -166,7 +164,7 @@ public abstract class Humanoid extends Entity {
     public void respawn() {
         StateComponent state = this.components.get(StateComponent.class);
         state.setAlive(true);
-        getHumanStates().hasBeenHit=false;
+        getHumanStates().hasBeenHit = false;
     }
 
     /**

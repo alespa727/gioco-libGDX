@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.components.specific.general.BulletComponent;
 import progetto.gameplay.entities.components.specific.graphics.ColorComponent;
 import progetto.gameplay.entities.components.specific.movement.NodeComponent;
-import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
@@ -21,25 +21,28 @@ import progetto.manager.world.WorldManager;
  * Il proiettile ha una velocità, danno e raggio specifici.
  * Una volta lanciato, si muove in una direzione e può causare danni agli oggetti con cui entra in collisione.
  */
-public class Bullet extends GameObject{
+public class Bullet extends GameObject {
 
     // === Attributi specifici ===
-    /** Classe del target, ovvero l'entità che avrà collisione con il proiettile ({@link Entity}) */
+    /**
+     * Classe del target, ovvero l'entità che avrà collisione con il proiettile ({@link Entity})
+     */
     private final Class<? extends Entity> target;
 
     public ParticleEffect effect = new ParticleEffect();
 
     // === Costruttore ===
+
     /**
      * Costruttore del proiettile.
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
-     * @param config configurazione dell'entità ({@link EntityConfig})
-     * @param manager gestore delle entità nel gioco ({@link Engine})
-     * @param radius raggio del proiettile
+     * @param config   configurazione dell'entità ({@link EntityConfig})
+     * @param manager  gestore delle entità nel gioco ({@link Engine})
+     * @param radius   raggio del proiettile
      * @param velocity velocità del proiettile
-     * @param damage danno inflitto dal proiettile
-     * @param target entità a cui è sparato il proiettile ({@link Entity})
+     * @param damage   danno inflitto dal proiettile
+     * @param target   entità a cui è sparato il proiettile ({@link Entity})
      */
     public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager, 0.1f);
@@ -51,7 +54,7 @@ public class Bullet extends GameObject{
         components.get(NodeComponent.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
-        effect.scaleEffect(getConfig().radius/2);
+        effect.scaleEffect(getConfig().radius / 2);
         effect.start();
     }
 
@@ -59,12 +62,12 @@ public class Bullet extends GameObject{
      * Costruttore del proiettile.
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
-     * @param config configurazione dell'entità ({@link EntityConfig})
-     * @param manager gestore delle entità nel gioco ({@link Engine})
-     * @param radius raggio del proiettile
+     * @param config   configurazione dell'entità ({@link EntityConfig})
+     * @param manager  gestore delle entità nel gioco ({@link Engine})
+     * @param radius   raggio del proiettile
      * @param velocity velocità del proiettile
-     * @param damage danno inflitto dal proiettile
-     * @param target classe dell'entità a cui è sparato il proiettile ({@link Entity})
+     * @param damage   danno inflitto dal proiettile
+     * @param target   classe dell'entità a cui è sparato il proiettile ({@link Entity})
      */
     public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
         super(config, manager, 0.1f);
@@ -76,7 +79,7 @@ public class Bullet extends GameObject{
         components.get(NodeComponent.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
-        effect.scaleEffect(getConfig().radius/2);
+        effect.scaleEffect(getConfig().radius / 2);
         effect.start();
     }
 

@@ -13,7 +13,7 @@ public class WorldManager {
     private static World instance;
     private static Queue<Body> bodyToDestroy;
 
-    public static void init(){
+    public static void init() {
         if (instance == null) {
             instance = new World(new Vector2(0, 0), true);
             bodyToDestroy = new Queue<>();

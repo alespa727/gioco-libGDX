@@ -18,9 +18,9 @@ public class Inventory extends Window {
     final Table table;
 
     final boolean[][] slots;
-    int itemCount=0;
     final int width = 5, height = 5;
     final int itemSize = 100;
+    int itemCount = 0;
 
     public Inventory(GameScreen screen, String title, Skin skin) {
         super(title, skin);
@@ -32,7 +32,7 @@ public class Inventory extends Window {
         }
         setMovable(true);
         setKeepWithinStage(false);
-        setSize(width*itemSize, height*itemSize);
+        setSize(width * itemSize, height * itemSize);
         setVisible(false);
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera()));
         stage.addActor(this);
@@ -72,7 +72,7 @@ public class Inventory extends Window {
         }
 
         // Calcola il numero di celle vuote da aggiungere per arrivare a 50
-        int totalCells = width*height;
+        int totalCells = width * height;
         int cellsToAdd = totalCells - itemCount;  // Celle vuote da aggiungere
 
         // Se ci sono celle da aggiungere
@@ -88,16 +88,16 @@ public class Inventory extends Window {
         return stage;
     }
 
-    public void show(){
+    public void show() {
         setVisible(true);
     }
 
-    public void hide(){
+    public void hide() {
         setVisible(false);
     }
 
     public void update() {
-        if (Gdx.input.isKeyJustPressed(CoreConfig.getAPRIINVENTARIO())){
+        if (Gdx.input.isKeyJustPressed(CoreConfig.getAPRIINVENTARIO())) {
             setVisible(!isVisible());
         }
         stage.getViewport().apply();

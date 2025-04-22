@@ -18,7 +18,7 @@ import progetto.manager.input.DebugWindow;
 
 public class DrawingSystem extends System {
     private SpriteBatch batch;
-    private float tempoTrascorso=0;
+    private float tempoTrascorso = 0;
 
     public DrawingSystem(SpriteBatch batch) {
         this.batch = batch;
@@ -31,7 +31,7 @@ public class DrawingSystem extends System {
 
     @Override
     public void update(float delta, Array<Entity> list) {
-        if (!DebugWindow.renderEntities()){
+        if (!DebugWindow.renderEntities()) {
             batch.begin();
             for (Entity entity : list) {
                 if (!entity.shouldRender()) continue;
@@ -48,7 +48,7 @@ public class DrawingSystem extends System {
         for (Entity entity : list) {
             if (!entity.shouldRender()) continue;
 
-            if (entity instanceof GameObject object){
+            if (entity instanceof GameObject object) {
                 drawBullet(object);
                 continue;
             }
@@ -98,7 +98,7 @@ public class DrawingSystem extends System {
 
         // Applica trasparenza
         batch.setColor(1, 1, 1, alpha);
-        batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default" ,tempoTrascorso),
+        batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
             entity.getPosition().x - entity.getConfig().imageWidth / 2,
             entity.getPosition().y - entity.getConfig().imageHeight / 2,
             entity.getConfig().imageWidth, entity.getConfig().imageHeight);
@@ -120,19 +120,19 @@ public class DrawingSystem extends System {
         }
 
 
-        batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default" ,tempoTrascorso),
+        batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
             entity.getPosition().x - entity.getConfig().imageWidth / 2,
             entity.getPosition().y - entity.getConfig().imageHeight / 2,
             entity.getConfig().imageWidth, entity.getConfig().imageHeight);
 
         if (entity.components.contains(ShadowComponent.class)) {
-            batch.draw(entity.components.get(ShadowComponent.class).animation.play(entity, "default" ,tempoTrascorso),
+            batch.draw(entity.components.get(ShadowComponent.class).animation.play(entity, "default", tempoTrascorso),
                 entity.getPosition().x - entity.getConfig().imageWidth / 2,
                 entity.getPosition().y - entity.getConfig().imageHeight / 2,
                 entity.getConfig().imageWidth, entity.getConfig().imageHeight);
         }
 
-        if(applied) {
+        if (applied) {
             batch.setShader(null);
         }
     }

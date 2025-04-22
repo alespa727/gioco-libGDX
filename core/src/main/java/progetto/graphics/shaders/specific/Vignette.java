@@ -13,13 +13,6 @@ import progetto.graphics.shaders.base.Shader;
 public class Vignette extends Shader {
     private static Vignette instance;
 
-    public static Vignette getInstance() {
-        if (instance == null) {
-            instance = new Vignette();
-        }
-        return instance;
-    }
-
     private Vignette() {
         // Carica e crea il programma shader (per effetti grafici avanzati)
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
@@ -32,13 +25,20 @@ public class Vignette extends Shader {
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
     }
 
+    public static Vignette getInstance() {
+        if (instance == null) {
+            instance = new Vignette();
+        }
+        return instance;
+    }
+
     @Override
-    public void begin(){
+    public void begin() {
         frameBuffer.begin();
     }
 
     @Override
-    public void end(){
+    public void end() {
         frameBuffer.end();
     }
 

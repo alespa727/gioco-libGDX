@@ -16,6 +16,16 @@ public class ColorFilter extends Shader {
 
     public final Color color;
 
+    private ColorFilter() {
+        // Carica e crea il programma shader (per effetti grafici avanzati)
+        frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        String vertexShader = Gdx.files.internal("shaders/darken/vertex.glsl").readString();
+        String fragmentShader = Gdx.files.internal("shaders/darken/fragment.glsl").readString();
+        this.program = new ShaderProgram(vertexShader, fragmentShader);
+        ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
+        color = new Color(0.6f, 0.8f, 1.0f, 1.0f);
+    }
+
     public static ColorFilter getInstance() {
         if (instance == null) {
             instance = new ColorFilter();
@@ -31,29 +41,19 @@ public class ColorFilter extends Shader {
         return instance;
     }
 
-    private ColorFilter() {
-        // Carica e crea il programma shader (per effetti grafici avanzati)
-        frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        String vertexShader = Gdx.files.internal("shaders/darken/vertex.glsl").readString();
-        String fragmentShader = Gdx.files.internal("shaders/darken/fragment.glsl").readString();
-        this.program = new ShaderProgram(vertexShader, fragmentShader);
-        ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
-        color = new Color(0.6f, 0.8f, 1.0f, 1.0f);
-    }
-
     @Override
-    public void begin(){
+    public void begin() {
         frameBuffer.begin();
     }
 
-    public void begin(Color color){
+    public void begin(Color color) {
         frameBuffer.begin();
         this.color.set(color);
     }
 
 
     @Override
-    public void end(){
+    public void end() {
         frameBuffer.end();
     }
 

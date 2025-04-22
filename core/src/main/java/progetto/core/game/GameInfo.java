@@ -10,6 +10,7 @@ public class GameInfo {
     public Engine engine;
     public MapManager mapManager;
 
-    public GameInfo() {}
+    public GameInfo() {
+    }
 
 }

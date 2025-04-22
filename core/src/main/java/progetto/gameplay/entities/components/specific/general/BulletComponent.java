@@ -3,14 +3,20 @@ package progetto.gameplay.entities.components.specific.general;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 
-public class BulletComponent extends Component{
-    /** Danno che il proiettile infligge alle altre entità */
+public class BulletComponent extends Component {
+    /**
+     * Danno che il proiettile infligge alle altre entità
+     */
     public final float damage;
 
-    /** Velocità di movimento del proiettile */
+    /**
+     * Velocità di movimento del proiettile
+     */
     public final float velocity;
 
-    /** Raggio del proiettile */
+    /**
+     * Raggio del proiettile
+     */
     public final float radius;
 
     public final Cooldown cooldown = new Cooldown(3f);

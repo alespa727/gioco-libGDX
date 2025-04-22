@@ -11,6 +11,7 @@ public class BodyFactory {
         bodyDef.position.set(x, y);
         return bodyDef;
     }
+
     public static Shape createCircle(float radius) {
         Shape shape = new CircleShape();
         shape.setRadius(radius);

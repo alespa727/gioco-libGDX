@@ -7,9 +7,11 @@ import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 import progetto.manager.entities.Engine;
 
-public class GameObject extends Entity{
+public class GameObject extends Entity {
 
-    /** Texture del proiettile */
+    /**
+     * Texture del proiettile
+     */
     public Texture texture;
 
     /**

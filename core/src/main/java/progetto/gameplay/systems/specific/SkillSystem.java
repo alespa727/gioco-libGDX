@@ -1,8 +1,8 @@
 package progetto.gameplay.systems.specific;
 
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.skills.base.Skill;
 import progetto.gameplay.entities.components.specific.general.SkillSet;
+import progetto.gameplay.entities.skills.base.Skill;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.System;
 

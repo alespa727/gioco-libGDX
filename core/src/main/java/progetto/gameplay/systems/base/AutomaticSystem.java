@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Queue;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.base.Entity;
 
-public abstract class AutomaticSystem{
+public abstract class AutomaticSystem {
 
     private final Array<Entity> filteredEntities;
     private final Queue<Entity> entitiesToRemove;
@@ -31,13 +31,13 @@ public abstract class AutomaticSystem{
     }
 
     public void addEntity(Entity e) {
-        if (e.containsComponents(componentsForFilter)){
+        if (e.containsComponents(componentsForFilter)) {
             filteredEntities.add(e);
         }
     }
 
     public void removeEntity(Entity e) {
-        if (e.containsComponents(componentsForFilter)){
+        if (e.containsComponents(componentsForFilter)) {
             entitiesToRemove.addLast(e);
         }
     }

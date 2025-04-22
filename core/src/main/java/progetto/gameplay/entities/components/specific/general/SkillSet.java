@@ -30,12 +30,13 @@ public class SkillSet extends Component {
 
     /**
      * Disegna le skill che sono in esecuzione sullo schermo.
-     * @param batch SpriteBatch per il rendering
+     *
+     * @param batch       SpriteBatch per il rendering
      * @param elapsedTime Tempo trascorso per l'animazione delle skill
      */
     public void draw(SpriteBatch batch, float elapsedTime) {
         for (Skill skill : skillList) {
-            if(skill.isBeingUsed()) {
+            if (skill.isBeingUsed()) {
                 skill.draw(batch); // Disegna solo le skill in uso
             }
         }
@@ -43,6 +44,7 @@ public class SkillSet extends Component {
 
     /**
      * Aggiunge una skill al set.
+     *
      * @param skill La skill da aggiungere
      */
     public void add(Skill skill) {
@@ -51,6 +53,7 @@ public class SkillSet extends Component {
 
     /**
      * Rimuove una skill dal set.
+     *
      * @param skill La skill da rimuovere
      */
     public void remove(Skill skill) {
@@ -59,6 +62,7 @@ public class SkillSet extends Component {
 
     /**
      * Restituisce una skill in base alla sua classe.
+     *
      * @param skillClass La classe della skill da cercare
      * @return La skill corrispondente alla classe specificata, o null se non trovata
      */
@@ -75,6 +79,7 @@ public class SkillSet extends Component {
 
     /**
      * Restituisce la lista delle skill nel set.
+     *
      * @return Lista di tutte le skill nel set
      */
     public Array<Skill> getSkillList() {
@@ -97,6 +102,7 @@ public class SkillSet extends Component {
 
     /**
      * Esegue una skill specificata dalla sua classe.
+     *
      * @param skillClass La classe della skill da eseguire
      */
     public void execute(Class<? extends Skill> skillClass) {
@@ -106,7 +112,7 @@ public class SkillSet extends Component {
         }
     }
 
-    public List<String> getSkillNames(){
+    public List<String> getSkillNames() {
         List<String> skillNames = new ArrayList<>();
         for (Skill skill : skillList) {
             skillNames.add(skill.getClass().getSimpleName());

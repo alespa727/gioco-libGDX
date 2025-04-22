@@ -45,8 +45,8 @@ public class ManagerCamera {
 
     public static void smoothTransitionTo(Vector2 coords) {
         Vector3 position = new Vector3();
-        position.x = camera.position.x + (coords.x - camera.position.x) * 1/16f;
-        position.y = camera.position.y + (coords.y - camera.position.y) * 1/16f;
+        position.x = camera.position.x + (coords.x - camera.position.x) * 1 / 16f;
+        position.y = camera.position.y + (coords.y - camera.position.y) * 1 / 16f;
         position.z = 0;
         camera.position.set(position);
     }
@@ -91,9 +91,9 @@ public class ManagerCamera {
         //System.out.println();
     }
 
-    private static void shake(){
-        float offsetX = (float) (Math.random() * 2 - 1)*shakeForce;
-        float offsetY = (float) (Math.random() * 2 - 1)*shakeForce;
+    private static void shake() {
+        float offsetX = (float) (Math.random() * 2 - 1) * shakeForce;
+        float offsetY = (float) (Math.random() * 2 - 1) * shakeForce;
         camera.position.add(offsetX, offsetY, 0);
         camera.update();
     }

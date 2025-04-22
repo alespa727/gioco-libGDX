@@ -4,16 +4,17 @@ import progetto.gameplay.entities.components.specific.general.SkillSet;
 import progetto.gameplay.entities.specific.base.EntityInstance;
 
 import java.util.List;
+
 public class HumanoidInstances extends EntityInstance {
 
     // === Attributi specifici dell'umano ===
     public final transient SkillSet skillset;
-    public List<String> skillNames;
     public final float speed;
     public final float maxHealth;
     public final float health;
+    public List<String> skillNames;
 
-    public HumanoidInstances(){
+    public HumanoidInstances() {
         super();
         this.skillset = new SkillSet();
         this.maxHealth = 0;

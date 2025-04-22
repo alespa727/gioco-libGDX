@@ -20,9 +20,10 @@ public class SpawnEnemyEvent extends MapEvent {
      * <p>
      * L'evento ha una posizione e un raggio. Viene subito creata la zona in cui può essere attivato.
      * </p>
-     * @param position posizione centrale dell’evento
-     * @param radius raggio entro cui l’evento può attivarsi
-     * @param engine gestore entità
+     *
+     * @param position  posizione centrale dell’evento
+     * @param radius    raggio entro cui l’evento può attivarsi
+     * @param engine    gestore entità
      * @param enemyType tipo di nemico
      */
     public SpawnEnemyEvent(Vector2 position, float radius, Engine engine, String enemyType) {
@@ -42,7 +43,7 @@ public class SpawnEnemyEvent extends MapEvent {
     public void trigger(Entity entity) {
         engine.summon(EntityFactory.createEnemy(
             type,
-            EntityConfigFactory.createEntityConfig(type, position.x,  position.y),
+            EntityConfigFactory.createEntityConfig(type, position.x, position.y),
             engine,
             1.5f
         ));

@@ -12,13 +12,12 @@ import progetto.gameplay.player.Player;
 public class Gui {
     private final GameScreen gamescreen; // Riferimento allo schermo di gioco
     private final ShapeRenderer shapeRenderer; // Strumento per disegnare forme (come la barra della vita)
-    private float height; // Altezza della finestra
-    private float width;  // Larghezza della finestra
-
-    Player player; // Riferimento al giocatore
-    private float healthPercentage; // Percentuale di vita del giocatore
     @SuppressWarnings("unused")
     private final SpriteBatch batch; // Batch per disegnare le immagini (non usato per ora)
+    Player player; // Riferimento al giocatore
+    private float height; // Altezza della finestra
+    private float width;  // Larghezza della finestra
+    private float healthPercentage; // Percentuale di vita del giocatore
 
     // Costruttore che prepara la GUI
     public Gui(GameScreen gamescreen) {

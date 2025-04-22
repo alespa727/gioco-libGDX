@@ -25,7 +25,7 @@ public class EntityFactory {
     }
 
     public static Boss createBoss(String type, EntityConfig config, Engine manager) {
-        return switch (type){
+        return switch (type) {
             case null -> null;
             case "Lich" -> new Lich(config, manager);
             default -> throw new IllegalArgumentException("Tipo di boss sconosciuto: " + type);
@@ -33,7 +33,7 @@ public class EntityFactory {
     }
 
     public static Boss createBoss(String type, HumanoidInstances instance, Engine manager) {
-        return switch (type){
+        return switch (type) {
             case null -> null;
             case "Lich" -> new Lich(instance, manager);
             default -> throw new IllegalArgumentException("Tipo di boss sconosciuto: " + type);

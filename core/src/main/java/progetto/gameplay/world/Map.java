@@ -17,24 +17,21 @@ import com.badlogic.gdx.utils.Disposable;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.player.ManagerCamera;
-import progetto.manager.entities.Engine;
-import progetto.manager.world.WorldManager;
-import progetto.gameplay.world.events.specific.ChangeMapEvent;
 import progetto.gameplay.world.events.base.MapEvent;
+import progetto.gameplay.world.events.specific.ChangeMapEvent;
 import progetto.gameplay.world.graph.GameGraph;
+import progetto.manager.entities.Engine;
 import progetto.manager.world.MapManager;
+import progetto.manager.world.WorldManager;
 
 public class Map implements Disposable {
-    public final String nome;
-
     public static boolean isGraphLoaded = false;
     public static boolean isLoaded = false;
-
     private static int width;
     private static int height;
     private static boolean[][] collisions;
     private static GameGraph graph;
-
+    public final String nome;
     private final TiledMapTileLayer collisionLayer;
     private final MapLayer eventLayer;
     private final MapLayer customCollisionLayer;
@@ -147,14 +144,14 @@ public class Map implements Disposable {
 
     public void createCollision() {
         MapObjects objects = customCollisionLayer.getObjects();
-        for(MapObject object : objects) {
+        for (MapObject object : objects) {
             if (object instanceof RectangleMapObject) {  // Check if it's a rectangle, adjust if necessary
-                float x = ((RectangleMapObject) object).getRectangle().x*MapManager.TILE_SIZE;
-                float y = ((RectangleMapObject) object).getRectangle().y*MapManager.TILE_SIZE;
-                float width = ((RectangleMapObject) object).getRectangle().width*MapManager.TILE_SIZE;
-                float height = ((RectangleMapObject) object).getRectangle().height*MapManager.TILE_SIZE;
-                BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x+width/2, y+height/2);
-                Shape boxShape = BodyFactory.createPolygonShape(width/2, height/2);
+                float x = ((RectangleMapObject) object).getRectangle().x * MapManager.TILE_SIZE;
+                float y = ((RectangleMapObject) object).getRectangle().y * MapManager.TILE_SIZE;
+                float width = ((RectangleMapObject) object).getRectangle().width * MapManager.TILE_SIZE;
+                float height = ((RectangleMapObject) object).getRectangle().height * MapManager.TILE_SIZE;
+                BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x + width / 2, y + height / 2);
+                Shape boxShape = BodyFactory.createPolygonShape(width / 2, height / 2);
 
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = Engine.WALL;

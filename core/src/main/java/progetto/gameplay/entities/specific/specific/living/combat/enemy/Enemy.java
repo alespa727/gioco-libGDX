@@ -3,15 +3,15 @@ package progetto.gameplay.entities.specific.specific.living.combat.enemy;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
 import progetto.gameplay.entities.components.specific.ai.StatemachineComponent;
-import progetto.statemachines.StatesEnemy;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.components.specific.combat.MortalComponent;
+import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
 import progetto.gameplay.entities.skills.specific.enemy.EnemySwordAttack;
 import progetto.gameplay.entities.specific.base.EntityConfig;
 import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.manager.entities.Engine;
+import progetto.statemachines.StatesEnemy;
 
 public abstract class Enemy extends Warrior {
 
@@ -51,7 +51,7 @@ public abstract class Enemy extends Warrior {
         getSkillset().add(new EnemySwordAttack(this, "", "", 10));
     }
 
-    public Cooldown getAttackCooldown(){
+    public Cooldown getAttackCooldown() {
         return getComponent(MultiCooldownComponent.class).getCooldown("attack");
     }
 

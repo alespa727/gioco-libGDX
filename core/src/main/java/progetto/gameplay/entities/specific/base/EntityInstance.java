@@ -10,17 +10,22 @@ import progetto.core.Core;
  */
 public class EntityInstance {
 
-    /** Nome della classe dell'entità (es. "Player", "Enemy", ecc.) */
+    /**
+     * Nome della classe dell'entità (es. "Player", "Enemy", ecc.)
+     */
     public final String type;
-
-    /** {@link EntityConfig} contenente tutte le informazioni sull'entità (statistiche, immagine, stato, ecc.) */
-    public EntityConfig config;
-
-    /** Posizione corrente dell'entità nel mondo ({@link Vector2}) */
+    /**
+     * Posizione corrente dell'entità nel mondo ({@link Vector2})
+     */
     public final Vector2 coordinate;
-
-    /** Direzione verso cui l'entità è rivolta o si sta muovendo ({@link Vector2}) */
+    /**
+     * Direzione verso cui l'entità è rivolta o si sta muovendo ({@link Vector2})
+     */
     public final Vector2 direction;
+    /**
+     * {@link EntityConfig} contenente tutte le informazioni sull'entità (statistiche, immagine, stato, ecc.)
+     */
+    public EntityConfig config;
 
     /**
      * Costruisce un'istanza a partire da una {@link Entity}.
@@ -42,7 +47,7 @@ public class EntityInstance {
         this.type = "null";
     }
 
-    public void loadTexture(){
+    public void loadTexture() {
         config.img = Core.assetManager.get("entities/" + type + ".png", Texture.class);
     }
 

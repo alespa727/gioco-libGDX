@@ -6,7 +6,7 @@ import progetto.gameplay.entities.specific.base.Entity;
 /**
  * Classe astratta che rappresenta un sistema nel paradigma ECS (Entity-Component-System).
  * Ogni sistema definisce una logica che viene applicata a una lista di entità.
- *
+ * <p>
  * I sistemi possono essere attivati o disattivati dinamicamente.
  */
 public abstract class System {
@@ -44,7 +44,7 @@ public abstract class System {
      * Viene chiamato ad ogni frame per aggiornare lo stato delle entità rilevanti.
      *
      * @param delta Tempo trascorso dall'ultimo aggiornamento (in secondi).
-     * @param list Lista di entità da processare.
+     * @param list  Lista di entità da processare.
      */
     public abstract void update(float delta, Array<Entity> list);
 }

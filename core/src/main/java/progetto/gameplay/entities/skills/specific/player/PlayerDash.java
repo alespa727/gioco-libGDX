@@ -2,9 +2,9 @@ package progetto.gameplay.entities.skills.specific.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
 import progetto.gameplay.entities.skills.base.Skill;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.Player;
@@ -23,12 +23,12 @@ public class PlayerDash extends Skill {
         if (isBeingUsed) {
             elapsedTime += delta;
             cooldown.update(delta);
-            if (owner.components.get(InRangeListComponent.class).inRange.size > 0){
+            if (owner.components.get(InRangeListComponent.class).inRange.size > 0) {
                 owner.engine.info.screen.setTimeScale(0.1f, 1f);
                 isBeingUsed = false;
             }
-            if (cooldown.isReady){
-                isBeingUsed=false;
+            if (cooldown.isReady) {
+                isBeingUsed = false;
                 elapsedTime = 0;
             }
         }

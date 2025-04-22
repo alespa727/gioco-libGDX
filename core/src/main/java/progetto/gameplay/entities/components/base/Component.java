@@ -3,7 +3,7 @@ package progetto.gameplay.entities.components.base;
 /**
  * Classe astratta base per tutti i componenti nel paradigma ECS (Entity-Component-System).
  * I componenti contengono solo dati e vengono associati a entità.
- *
+ * <p>
  * Il flag {@code awake} consente di abilitare o disabilitare temporaneamente il componente.
  */
 public abstract class Component {

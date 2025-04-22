@@ -7,22 +7,19 @@ import com.badlogic.gdx.utils.Disposable;
 import progetto.gameplay.entities.components.base.Component;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.world.Map;
-import progetto.manager.world.MapManager;
 import progetto.gameplay.world.graph.HeuristicDistance;
 import progetto.gameplay.world.graph.node.Node;
+import progetto.manager.world.MapManager;
 
 public class PathFinderComponent extends Component implements Disposable {
     private final Humanoid entity;
     private final DefaultGraphPath<Node> path;
-
+    public boolean success;
     private Node startNode;
     private Node endNode;
-
     private volatile int map = -1;
     private Heuristic<Node> heuristic;
     private IndexedAStarPathFinder<Node> pathFinder;
-
-    public boolean success;
 
     public PathFinderComponent(Humanoid entity) {
         this.path = new DefaultGraphPath<>();
@@ -36,7 +33,7 @@ public class PathFinderComponent extends Component implements Disposable {
             pathFinder = new IndexedAStarPathFinder<>(Map.getGraph());
         }
 
-        if (entity.getMovementManager().isReady()){
+        if (entity.getMovementManager().isReady()) {
             search(x, y);
         }
 

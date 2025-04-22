@@ -9,10 +9,14 @@ import progetto.gameplay.entities.components.specific.base.Cooldown;
 import progetto.gameplay.world.graph.node.Node;
 
 public class MovementComponent extends Component {
-    private boolean isReady = true;
     private final Array<Node> path = new Array<>();
     public Cooldown cooldown = new Cooldown(5);
     public int stepIndex = 0;
+    private boolean isReady = true;
+
+    public Array<Node> getPath() {
+        return path;
+    }
 
     public void setPath(DefaultGraphPath<Node> path) {
         if (isReady) {
@@ -25,10 +29,6 @@ public class MovementComponent extends Component {
                 node.setWalkable(true);
             }
         }
-    }
-
-    public Array<Node> getPath(){
-        return path;
     }
 
     public boolean isReady() {

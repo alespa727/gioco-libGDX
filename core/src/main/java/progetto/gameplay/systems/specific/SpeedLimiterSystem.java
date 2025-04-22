@@ -21,7 +21,7 @@ public class SpeedLimiterSystem extends System {
                 if (body.getLinearVelocity().len() > h.getMaxSpeed()) {
                     body.applyLinearImpulse(body.getLinearVelocity().scl(-1), body.getWorldCenter(), true);
                     h.getHumanStates().setInvulnerable(true);
-                }else h.getHumanStates().setInvulnerable(false);
+                } else h.getHumanStates().setInvulnerable(false);
             }
         }
     }

@@ -27,9 +27,9 @@ public class Lwjgl3Launcher {
         configuration.setTitle("Game");
         configuration.setDecorated(false);
         // V-sync
-        configuration.useVsync(true);
+        //configuration.useVsync(true);
         // RefreshRate adattato agli hz del monitor
-        configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
+        configuration.setForegroundFPS(10000);
         // Modalità finestra
         //configuration.setWindowedMode(1920, 1080);
         //configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());

@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
-import progetto.gameplay.world.Map;
 import progetto.gameplay.player.Player;
+import progetto.gameplay.world.Map;
 
 public enum StatesEnemy implements State<Enemy> {
 
@@ -105,7 +105,7 @@ public enum StatesEnemy implements State<Enemy> {
             if (player == null)
                 player = entity.engine.player();
 
-            accumulator+=entity.engine.delta;
+            accumulator += entity.engine.delta;
 
             Vector2 direction = entity.getDirection();
 
@@ -139,15 +139,15 @@ public enum StatesEnemy implements State<Enemy> {
         @Override
         public void update(Enemy entity) {
             Player p = entity.engine.player();
-            if(Map.isGraphLoaded) entity.searchPathIdle(p);
+            if (Map.isGraphLoaded) entity.searchPathIdle(p);
 
-            if(!entity.getPathFinder().success){
+            if (!entity.getPathFinder().success) {
                 entity.getStateMachine().changeState(StatesEnemy.PATROLLING);
                 return;
             }
             if (entity.getPosition().dst(entity.engine.player().getPosition()) > entity.getRangeRadius()) {
                 entity.getStateMachine().changeState(StatesEnemy.PURSUE);
-            }else{
+            } else {
                 entity.getStateMachine().changeState(StatesEnemy.ATTACKING);
             }
         }

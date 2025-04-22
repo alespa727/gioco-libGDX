@@ -18,6 +18,7 @@ public class MapManager {
     public static final float TILE_SIZE = 1 / 16f;
     // Numero della mappa attuale
     private static int currentMapNum;
+    public final HashMap<String, Array<EntityInstance>> mapEntityInstances;
     // Mappa default
     private final int defaultMap = 0;
     // Reference utili
@@ -28,8 +29,6 @@ public class MapManager {
     private String nome;
     private boolean ambienteAperto;
 
-    public final HashMap<String, Array<EntityInstance>> mapEntityInstances;
-
     /**
      * Creazione manager delle mappe
      */
@@ -39,10 +38,17 @@ public class MapManager {
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
-        float defaultx = 11 , defaulty = 11;
+        float defaultx = 11, defaulty = 11;
 
         this.changeMap(defaultMap, defaultx, defaulty); // Cambio mappa
         mapEntityInstances = new HashMap<>();
+    }
+
+    /**
+     * Index mappa
+     */
+    public static int getMapIndex() {
+        return currentMapNum;
     }
 
     /**
@@ -50,7 +56,7 @@ public class MapManager {
      */
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
-           saveMapEntities();
+            saveMapEntities();
         }
 
         chooseMap(map);
@@ -68,11 +74,11 @@ public class MapManager {
         viewport.apply();
     }
 
-    public void render(){
+    public void render() {
         currentMap.render();
     }
 
-    public void chooseMap(int map){
+    public void chooseMap(int map) {
         // Cambio mappa
         switch (map) {
             case 1 -> {
@@ -96,7 +102,7 @@ public class MapManager {
     }
 
     public void loadMapEntities() {
-        FileHandle file = Gdx.files.local("/save/maps/"+ currentMap.nome +".json");
+        FileHandle file = Gdx.files.local("/save/maps/" + currentMap.nome + ".json");
         if (file.exists()) {
             Json json = new Json();
             @SuppressWarnings("unchecked")
@@ -110,7 +116,7 @@ public class MapManager {
         }
     }
 
-    public void saveMapEntities(){
+    public void saveMapEntities() {
         FileHandle fileHandle = Gdx.files.local("/save/maps/" + currentMap.nome + ".json");
 
         Json json = new Json();
@@ -136,14 +142,6 @@ public class MapManager {
     public Map getMap() {
         return currentMap;
     }
-
-    /**
-     * Index mappa
-     */
-    public static int getMapIndex() {
-        return currentMapNum;
-    }
-
 
     /**
      * Restituisce il tipo di ambiente

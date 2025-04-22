@@ -9,8 +9,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import progetto.factories.BodyFactory;
 import progetto.gameplay.entities.components.base.ComponentManager;
-import progetto.gameplay.entities.components.specific.combat.AttackRangeComponent;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.combat.AttackRangeComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.System;
 import progetto.manager.entities.Engine;
@@ -21,13 +21,13 @@ public class RangeSystem extends System {
         for (Entity e : list) {
             if (!e.shouldRender()) continue;
             ComponentManager componentManager = e.components;
-            if(e.components.contains(AttackRangeComponent.class)){
+            if (e.components.contains(AttackRangeComponent.class)) {
                 AttackRangeComponent range = e.components.get(AttackRangeComponent.class);
                 Body body = e.components.get(PhysicsComponent.class).getBody();
                 if (body == null) {
                     return;
                 }
-                if(range.fixtureDef == null){
+                if (range.fixtureDef == null) {
                     createRange(range);
                     range.directionalRange = BodyFactory.createBody(e, range.getBodyDef(), range.getFixtureDef());
                 }
@@ -40,6 +40,7 @@ public class RangeSystem extends System {
             }
         }
     }
+
     public void createRange(AttackRangeComponent rangeC) {
         rangeC.rangeRadius = 1.5f;
 

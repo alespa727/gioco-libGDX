@@ -9,14 +9,14 @@ import progetto.gameplay.systems.base.System;
 public class HitSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
-        for(Entity e : list){
+        for (Entity e : list) {
             if (!e.shouldRender()) continue;
-            if (e.components.contains(StatusComponent.class)){
+            if (e.components.contains(StatusComponent.class)) {
                 ComponentManager cm = e.components;
                 if (cm.get(StatusComponent.class).hasBeenHit) {
 
                     cm.get(StatusComponent.class).cooldown.update(delta);
-                    if (cm.get(StatusComponent.class).cooldown.isReady){
+                    if (cm.get(StatusComponent.class).cooldown.isReady) {
                         cm.get(StatusComponent.class).cooldown.reset();
                         cm.get(StatusComponent.class).hasBeenHit = false;
                     }

@@ -65,6 +65,7 @@ public class PhysicsComponent extends Component {
 
     /**
      * Sposta istantaneamente l'entità in una nuova posizione.
+     *
      * @param pos nuova posizione
      */
     public void teleport(Vector2 pos) {

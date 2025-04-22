@@ -16,7 +16,7 @@ public class EnemyInstance extends HumanoidInstances {
         this.pursueMaxDistance = e.pursueMaxDistance;
     }
 
-    public EnemyInstance(){
+    public EnemyInstance() {
         super();
     }
 }

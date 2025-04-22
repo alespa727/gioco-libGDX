@@ -8,7 +8,7 @@ import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
 public class EnemySwordAttack extends CombatSkill {
 
     public EnemySwordAttack(Warrior entity, String name, String description, float damage) {
-        super(entity, name, description,  damage);
+        super(entity, name, description, damage);
     }
 
 
@@ -25,7 +25,7 @@ public class EnemySwordAttack extends CombatSkill {
 
     @Override
     public void execute() {
-        if (((Enemy) owner).getInRange().size>0){
+        if (((Enemy) owner).getInRange().size > 0) {
             owner.engine.player().hit((Warrior) owner, damage, 5);
         }
     }

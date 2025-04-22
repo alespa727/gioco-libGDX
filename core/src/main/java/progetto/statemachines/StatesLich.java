@@ -4,16 +4,17 @@ import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
-import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
+import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
 import progetto.gameplay.entities.specific.specific.living.combat.boss.Lich;
-import progetto.gameplay.world.Map;
 import progetto.gameplay.player.Player;
+import progetto.gameplay.world.Map;
 
 public enum StatesLich implements State<Lich> {
-    FIREDOMAIN{
+    FIREDOMAIN {
         private final Cooldown useFireDomain = new Cooldown(0);
         private final Cooldown interval = new Cooldown(0.33f);
+
         @Override
         public void enter(Lich entity) {
             useFireDomain.reset(MathUtils.random(3f, 5f));
@@ -21,7 +22,7 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-            if (!entity.searchPathIdle(entity.engine.player())){
+            if (!entity.searchPathIdle(entity.engine.player())) {
                 entity.getStateMachine().changeState(StatesLich.IDLE);
                 return;
             }
@@ -40,13 +41,13 @@ public enum StatesLich implements State<Lich> {
             return false;
         }
 
-        public void fireDomain(Lich entity){
+        public void fireDomain(Lich entity) {
             DefaultStateMachine<Lich, StatesLich> stateMachine = entity.getStateMachine();
             if (interval.isReady) {
                 entity.fireDomain();
                 interval.reset();
             }
-            if (useFireDomain.isReady){
+            if (useFireDomain.isReady) {
                 entity.engine.clearQueue();
                 entity.getStateMachine().changeState(StatesLich.LONG_RANGE_ATTACKS);
             }
@@ -54,8 +55,9 @@ public enum StatesLich implements State<Lich> {
 
     },
 
-    FIREBALL{
+    FIREBALL {
         private final Cooldown useFireball = new Cooldown(0);
+
         @Override
         public void enter(Lich entity) {
             useFireball.reset(MathUtils.random(1.2f, 1.5f));
@@ -63,12 +65,12 @@ public enum StatesLich implements State<Lich> {
 
         @Override
         public void update(Lich entity) {
-            if (!entity.searchPathIdle(entity.engine.player())){
+            if (!entity.searchPathIdle(entity.engine.player())) {
                 entity.getStateMachine().changeState(StatesLich.IDLE);
                 return;
             }
             useFireball.update(entity.engine.delta);
-            if (useFireball.isReady){
+            if (useFireball.isReady) {
                 fireball(entity);
             }
         }
@@ -123,14 +125,14 @@ public enum StatesLich implements State<Lich> {
             return false;
         }
 
-        public void initiateFireDomain(Lich entity){
-            if (entity.components.get(MultiCooldownComponent.class).getCooldown("firedomain").isReady){
+        public void initiateFireDomain(Lich entity) {
+            if (entity.components.get(MultiCooldownComponent.class).getCooldown("firedomain").isReady) {
                 entity.getStateMachine().changeState(StatesLich.FIREDOMAIN);
             }
         }
 
         public void initiateFireball(Lich entity) {
-            if (entity.components.get(MultiCooldownComponent.class).getCooldown("fireball").isReady){
+            if (entity.components.get(MultiCooldownComponent.class).getCooldown("fireball").isReady) {
                 entity.getStateMachine().changeState(StatesLich.FIREBALL);
             }
         }
@@ -158,22 +160,22 @@ public enum StatesLich implements State<Lich> {
         }
     },
 
-    CHOOSING_STATE{
+    CHOOSING_STATE {
         @Override
         public void enter(Lich entity) {
-            if (entity.components.get(MultiCooldownComponent.class).getCooldown("changestates").isReady){
+            if (entity.components.get(MultiCooldownComponent.class).getCooldown("changestates").isReady) {
                 entity.components.get(MultiCooldownComponent.class).getCooldown("changestates").reset(1);
-                if(Map.isGraphLoaded) entity.searchPath(entity.engine.player());
-                if(!entity.getPathFinder().success){
+                if (Map.isGraphLoaded) entity.searchPath(entity.engine.player());
+                if (!entity.getPathFinder().success) {
                     entity.getStateMachine().changeState(StatesLich.IDLE);
                     return;
                 }
                 if (entity.getPosition().dst(entity.engine.player().getPosition()) > 2f) {
                     entity.getStateMachine().changeState(StatesLich.LONG_RANGE_ATTACKS);
-                }else{
+                } else {
                     entity.getStateMachine().changeState(StatesLich.CLOSE_RANGE_ATTACKS);
                 }
-            }else{
+            } else {
                 entity.getStateMachine().revertToPreviousState();
             }
         }
@@ -203,7 +205,7 @@ public enum StatesLich implements State<Lich> {
         @Override
         public void update(Lich entity) {
             boolean success = entity.searchPathIdle(entity.engine.player());
-            if(!success) return;
+            if (!success) return;
 
             entity.getStateMachine().changeState(StatesLich.CHOOSING_STATE);
         }

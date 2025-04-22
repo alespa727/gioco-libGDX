@@ -10,12 +10,12 @@ public class ComponentManager {
         this.components = components;
     }
 
-    public Object[] components() {
-        return components.values;
-    }
-
     public ComponentManager() {
         components = new ArrayMap<>();
+    }
+
+    public Object[] components() {
+        return components.values;
     }
 
     /**
@@ -34,8 +34,8 @@ public class ComponentManager {
 
     /**
      * @param componentClass classe del componente che si vuole {@link Class}
+     * @param <T>            tipo di componente trovato
      * @return componete richiesto {@link Component}
-     * @param <T> tipo di componente trovato
      */
     public <T extends Component> T get(Class<T> componentClass) {
         Component component = components.get(componentClass);
@@ -47,6 +47,7 @@ public class ComponentManager {
 
     /**
      * Verifica se esiste un determinato componente nalla mappa
+     *
      * @param componentClass classe del componente
      * @return esistenza del componente
      */
@@ -56,6 +57,7 @@ public class ComponentManager {
 
     /**
      * Verifica se esistono determinati componenti nalla mappa
+     *
      * @param components classi del componente
      * @return esistenza del componente
      */
@@ -70,9 +72,8 @@ public class ComponentManager {
     }
 
     /**
-     *
      * @param componentClass componente da rimuovere {@link Component}
-     * @param <T> tipo di componente da rimuovere
+     * @param <T>            tipo di componente da rimuovere
      */
     public <T extends Component> void remove(Class<T> componentClass) {
         components.removeKey(componentClass);

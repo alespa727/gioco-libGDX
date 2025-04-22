@@ -8,10 +8,10 @@ import progetto.gameplay.entities.specific.specific.living.combat.Warrior;
 import progetto.gameplay.entities.specific.specific.living.combat.boss.Boss;
 import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
 import progetto.gameplay.entities.specific.specific.notliving.Bullet;
-import progetto.gameplay.world.events.specific.ChangeMapEvent;
-import progetto.gameplay.world.events.base.MapEvent;
-import progetto.manager.entities.Engine;
 import progetto.gameplay.player.Player;
+import progetto.gameplay.world.events.base.MapEvent;
+import progetto.gameplay.world.events.specific.ChangeMapEvent;
+import progetto.manager.entities.Engine;
 
 public class EventManager implements ContactListener {
 

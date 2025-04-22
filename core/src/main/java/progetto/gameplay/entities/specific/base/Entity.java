@@ -21,22 +21,31 @@ import progetto.manager.entities.Engine;
  */
 public abstract class Entity {
 
-    /** Variabile globale per avere un id unico per ogni entità */
+    /**
+     * Variabile globale per avere un id unico per ogni entità
+     */
     private static int nextId = 0;
 
-    /** Id identificativo dell'entità */
+    /**
+     * Id identificativo dell'entità
+     */
     public final int id;
 
-    /** Gestore generale delle entità (dove è registrata questa entità). {@link Engine} */
+    /**
+     * Gestore generale delle entità (dove è registrata questa entità). {@link Engine}
+     */
     public final Engine engine;
 
-    /** Gestore componenti */
+    /**
+     * Gestore componenti
+     */
     public ComponentManager components;
 
     /**
      * Crea un'entità a partire da un'istanza salvata (es. Caricata da un file).
+     *
      * @param instance l'entità salvata {@link EntityInstance}
-     * @param engine il gestore delle entità {@link Engine}
+     * @param engine   il gestore delle entità {@link Engine}
      */
     public Entity(EntityInstance instance, Engine engine) {
         this.engine = engine;
@@ -58,6 +67,7 @@ public abstract class Entity {
 
     /**
      * Crea un'entità a partire da una configurazione personalizzata.
+     *
      * @param config configurazione dell'entità {@link EntityConfig}
      * @param engine il gestore delle entità {@link Engine}
      */
@@ -83,8 +93,8 @@ public abstract class Entity {
 
     /**
      * @param componentClass classe del componente che si vuole {@link Class}
+     * @param <T>            tipo di componente trovato
      * @return componete richiesto {@link Component}
-     * @param <T> tipo di componente trovato
      */
     public <T extends Component> T getComponent(Class<T> componentClass) {
         Component component = components.get(componentClass);
@@ -96,6 +106,7 @@ public abstract class Entity {
 
     /**
      * Aggiunge uno o più componenti all'entità.
+     *
      * @param components array di componenti da aggiungere
      */
     public void addComponents(Component... components) {
@@ -109,6 +120,7 @@ public abstract class Entity {
 
     /**
      * Restituisce la configurazione dell'entità.
+     *
      * @return configurazione {@link EntityConfig}
      */
     public final EntityConfig getConfig() {
@@ -117,6 +129,7 @@ public abstract class Entity {
 
     /**
      * Restituisce la posizione dell'entità.
+     *
      * @return posizione corrente
      */
     public Vector2 getPosition() {
@@ -125,6 +138,7 @@ public abstract class Entity {
 
     /**
      * Restituisce la direzione in cui si sta muovendo l'entità.
+     *
      * @return direzione {@link DirectionComponent}
      */
     public final Vector2 getDirection() {
@@ -133,6 +147,7 @@ public abstract class Entity {
 
     /**
      * Indica se l’entità deve essere disegnata sullo schermo.
+     *
      * @return true se va disegnata
      */
     public boolean shouldRender() {
@@ -141,6 +156,7 @@ public abstract class Entity {
 
     /**
      * Imposta se l’entità va disegnata o no.
+     *
      * @param shouldRender true per disegnarla
      */
     public void setShouldRender(boolean shouldRender) {
@@ -150,6 +166,7 @@ public abstract class Entity {
 
     /**
      * Rimuove l'entità dal mondo e restituisce un oggetto che la rappresenta.
+     *
      * @return l'entità salvabile {@link EntityInstance}
      */
     public abstract EntityInstance unregister();

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
-public class Flash{
+public class Flash {
     private static Flash instance;
     private final ShaderProgram program;
 
@@ -29,7 +29,7 @@ public class Flash{
         batch.setShader(program);
     }
 
-    public void apply(SpriteBatch batch, Color color){
+    public void apply(SpriteBatch batch, Color color) {
         batch.setShader(program);
         program.setUniformf("u_color", color);
     }

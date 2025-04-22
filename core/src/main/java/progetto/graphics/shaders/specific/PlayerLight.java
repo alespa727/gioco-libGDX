@@ -75,7 +75,7 @@ public class PlayerLight extends Shader {
         program.setUniformf("u_lightPos", position.x, position.y);
         program.setUniformf("u_lightRadius", 0.5f);
         program.setUniformf("u_lightIntensity", intensity);
-        program.setUniformf("u_lightColor", Color.ORANGE.cpy());
+        program.setUniformf("u_lightColor", Color.WHITE.cpy());
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
             ManagerCamera.getFrustumCorners()[0].x,

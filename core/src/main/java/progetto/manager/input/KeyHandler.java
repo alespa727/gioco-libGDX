@@ -7,14 +7,12 @@ import progetto.core.CoreConfig;
 
 public class KeyHandler {
 
+    // Posizione del mouse sullo schermo
+    public static final Vector3 mouse = new Vector3(0, 0, 0);
     // Stati dei tasti direzionali e azioni
     public static boolean su, giu, sinistra, destra, sprint, usa;
     public static boolean debug;
-
     private static boolean usePressedLastFrame = false;
-
-    // Posizione del mouse sullo schermo
-    public static final Vector3 mouse = new Vector3(0, 0, 0);
 
     /**
      * Legge lo stato attuale dei tasti premuti e del mouse

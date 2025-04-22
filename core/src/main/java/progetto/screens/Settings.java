@@ -23,14 +23,13 @@ import java.util.LinkedHashMap;
 
 public class Settings implements Screen {
     private final Core game;
+    private final LinkedHashMap<String, Integer> comandi = new LinkedHashMap<>();
     private TextButton.TextButtonStyle buttonStyle;
     private Label.LabelStyle labelStyle;
     private Skin skin;
     private Stage stage;
     private Table root;
     private Table table;
-
-    private final LinkedHashMap<String, Integer> comandi = new LinkedHashMap<>();
 
     public Settings(Core game) {
         this.game = game;

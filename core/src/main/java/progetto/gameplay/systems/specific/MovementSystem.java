@@ -3,8 +3,8 @@ package progetto.gameplay.systems.specific;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.entities.components.specific.movement.MovementComponent;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
+import progetto.gameplay.entities.components.specific.movement.MovementComponent;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.Player;
@@ -17,7 +17,7 @@ public class MovementSystem extends System {
 
     @Override
     public void update(float delta, Array<Entity> entities) {
-        if(!DebugWindow.renderEntities()){
+        if (!DebugWindow.renderEntities()) {
             for (Entity entity : entities) {
                 if (entity instanceof Player) continue;
                 if (!entity.shouldRender()) continue;
@@ -37,7 +37,7 @@ public class MovementSystem extends System {
             MovementComponent movement = entity.components.get(MovementComponent.class);
             movement.cooldown.update(delta);
 
-            if (movement.isAwake()){
+            if (movement.isAwake()) {
                 movement.setReady(false);
 
                 if (movement.stepIndex > movement.getPath().size - 1 || movement.cooldown.isReady) {
@@ -70,11 +70,11 @@ public class MovementSystem extends System {
             return;
         }
 
-        if (e.getPosition().dst(target.getPosition()) < 8/16f) {
+        if (e.getPosition().dst(target.getPosition()) < 8 / 16f) {
             body.setLinearDamping(50f);
             movement.stepIndex++;
-            for (Node node: movement.getPath()){
-                if (Map.getGraph().getClosestNode(node.x, node.y)!=null && Map.getGraph().getClosestNode(node.x, node.y).isWalkable()){
+            for (Node node : movement.getPath()) {
+                if (Map.getGraph().getClosestNode(node.x, node.y) != null && Map.getGraph().getClosestNode(node.x, node.y).isWalkable()) {
                     movement.setReady(true);
                     break;
                 }

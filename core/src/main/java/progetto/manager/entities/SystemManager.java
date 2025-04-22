@@ -1,11 +1,11 @@
 package progetto.manager.entities;
 
-import java.util.LinkedHashMap;
-
 import com.badlogic.gdx.utils.Array;
 import progetto.gameplay.entities.specific.base.Entity;
 import progetto.gameplay.systems.base.System;
 import progetto.gameplay.systems.specific.DrawingSystem;
+
+import java.util.LinkedHashMap;
 
 public class SystemManager {
     private final LinkedHashMap<Class<?>, System> logicSystems;
@@ -28,7 +28,7 @@ public class SystemManager {
 
     public void update(float delta, Array<Entity> entities) {
         for (System s : logicSystems.values()) {
-            if(s.isActive()){
+            if (s.isActive()) {
                 s.update(delta, entities);
             }
         }

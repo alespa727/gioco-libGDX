@@ -15,20 +15,20 @@ public class PlayerSystem extends System {
     @Override
     public void update(float delta, Array<Entity> list) {
         for (Entity e : list) {
-            if (!(e instanceof Player)){
+            if (!(e instanceof Player)) {
                 continue;
             }
             Player p = (Player) e;
 
             if (Gdx.input.isKeyPressed(Input.Keys.R)) {
-                if(p.getAttackCooldown().isReady) {
+                if (p.getAttackCooldown().isReady) {
                     p.getSkillset().getSkill(PlayerSwordAttack.class).execute();
                     p.getAttackCooldown().reset();
                 }
             }
 
-            if(Gdx.input.isKeyPressed(Input.Keys.Q)){
-                if(p.getAttackCooldown().isReady) {
+            if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+                if (p.getAttackCooldown().isReady) {
                     p.getSkillset().getSkill(PlayerRangedAttack.class).execute();
                     p.getAttackCooldown().reset();
                 }

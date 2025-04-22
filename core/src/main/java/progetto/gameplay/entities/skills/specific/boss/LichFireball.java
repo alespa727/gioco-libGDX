@@ -12,11 +12,13 @@ public class LichFireball extends CombatSkill {
     private final float speed;
     private final Player player;
     private AudioManager mng;
+
     public LichFireball(Humanoid entity, String name, String description, float damage, float speed) {
         super(entity, name, description, damage);
         this.speed = speed;
         this.player = entity.engine.player();
     }
+
     @Override
     public void update(float delta) {
 

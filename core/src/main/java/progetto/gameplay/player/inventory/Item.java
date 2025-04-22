@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class Item{
-    String name;
+public class Item {
     final String description;
     final ImageButton image;
+    String name;
 
     public Item(String name, String description, Texture image) {
         this.name = name;

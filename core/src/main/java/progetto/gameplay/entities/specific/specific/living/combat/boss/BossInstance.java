@@ -7,7 +7,7 @@ public class BossInstance extends HumanoidInstances {
         super(e);
     }
 
-    public BossInstance(){
+    public BossInstance() {
         super();
     }
 }

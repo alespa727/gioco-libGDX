@@ -3,6 +3,7 @@ package progetto.manager.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import progetto.core.game.GameInfo;
 import progetto.gameplay.entities.components.specific.ai.StateComponent;
 import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
 import progetto.gameplay.entities.components.specific.graphics.ZLevelComponent;
@@ -11,7 +12,6 @@ import progetto.gameplay.entities.specific.specific.living.Humanoid;
 import progetto.gameplay.player.ManagerCamera;
 import progetto.gameplay.player.Player;
 import progetto.manager.input.DebugWindow;
-import progetto.core.game.GameInfo;
 
 import java.util.Comparator;
 
@@ -27,6 +27,7 @@ public class EntityRenderer {
 
     /**
      * Costruttore
+     *
      * @param engine manager delle entità
      */
     public EntityRenderer(Engine engine) {
@@ -61,7 +62,7 @@ public class EntityRenderer {
      * Disegna entità e skill
      */
     public void draw() {
-        if(DebugWindow.renderPathfinding()){
+        if (DebugWindow.renderPathfinding()) {
             drawPaths();
         }
         entities.sort(comparator);
@@ -71,7 +72,7 @@ public class EntityRenderer {
         info.core.batch.end();
     }
 
-    public void sort(){
+    public void sort() {
         entities.sort(comparator);
     }
 
@@ -94,7 +95,7 @@ public class EntityRenderer {
         for (Entity e : entities) {
             if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
                 try {
-                    if(e instanceof Humanoid human) {
+                    if (e instanceof Humanoid human) {
                         human.drawPath(info.core.renderer);
                     }
                 } catch (Exception ex) {
@@ -108,14 +109,14 @@ public class EntityRenderer {
     /**
      * Aggiorna le entità
      */
-    public void updateEntityLogic(){
-        if(DebugWindow.renderEntities()){
+    public void updateEntityLogic() {
+        if (DebugWindow.renderEntities()) {
             for (Entity e : entities) {
                 if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
                     e.setShouldRender(true);
                 } else e.setShouldRender(false);
             }
-        }else{
+        } else {
             engine.player().setShouldRender(true);
         }
     }
@@ -124,7 +125,7 @@ public class EntityRenderer {
      * Processa la coda, svuotandola e evocando entità dalla coda
      */
     private void processQueue() {
-        while(queue.size > 0){
+        while (queue.size > 0) {
             entities.add(queue.first());
             queue.first().components.get(PhysicsComponent.class).initBody();
             queue.first().create();

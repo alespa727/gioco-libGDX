@@ -11,7 +11,7 @@ public class ShadowComponent extends Component {
 
     public ShadowComponent(Humanoid entity) {
         String[] string = new String[]{"default"};
-        Texture texture = new Texture(Gdx.files.internal("entities/"+ entity.getClass().getSimpleName()+"_shadow.png"));
+        Texture texture = new Texture(Gdx.files.internal("entities/" + entity.getClass().getSimpleName() + "_shadow.png"));
         Texture[] textures = new Texture[]{texture};
         animation = new CustomAnimation(string, textures);
     }

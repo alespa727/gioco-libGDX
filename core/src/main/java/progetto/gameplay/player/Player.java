@@ -2,11 +2,11 @@ package progetto.gameplay.player;
 
 import org.fusesource.jansi.Ansi;
 import progetto.gameplay.entities.components.base.Component;
-import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
-import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
-import progetto.gameplay.entities.components.specific.graphics.ShadowComponent;
 import progetto.gameplay.entities.components.specific.base.Cooldown;
+import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
 import progetto.gameplay.entities.components.specific.control.UserControllable;
+import progetto.gameplay.entities.components.specific.graphics.ShadowComponent;
+import progetto.gameplay.entities.components.specific.sensors.InRangeListComponent;
 import progetto.gameplay.entities.skills.specific.player.PlayerDash;
 import progetto.gameplay.entities.skills.specific.player.PlayerRangedAttack;
 import progetto.gameplay.entities.skills.specific.player.PlayerSwordAttack;
@@ -38,15 +38,15 @@ public class Player extends Warrior {
         ManagerCamera.getInstance().position.set(config.x, config.y, 0);
 
         getSkillset().add(new PlayerDash(this, "", "", 12.5f));
-        getSkillset().add(new PlayerSwordAttack(this, "", "",10));
-        getSkillset().add(new PlayerRangedAttack(this, "", "", 5,25f, 5f));
+        getSkillset().add(new PlayerSwordAttack(this, "", "", 10));
+        getSkillset().add(new PlayerRangedAttack(this, "", "", 5, 25f, 5f));
     }
 
-    public Cooldown getAttackCooldown(){
+    public Cooldown getAttackCooldown() {
         return this.components.get(MultiCooldownComponent.class).getCooldown("attack");
     }
 
-    public Cooldown getDashCooldown(){
+    public Cooldown getDashCooldown() {
         return this.components.get(MultiCooldownComponent.class).getCooldown("dash");
     }
 

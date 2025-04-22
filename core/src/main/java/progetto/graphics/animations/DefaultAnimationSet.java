@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import progetto.gameplay.entities.specific.base.Entity;
 
-public class DefaultAnimationSet extends AnimationSet{
+public class DefaultAnimationSet extends AnimationSet {
 
     private final TextureRegion[] movingUp = new TextureRegion[4];
     private final TextureRegion[] movingDown = new TextureRegion[4];
@@ -80,7 +80,9 @@ public class DefaultAnimationSet extends AnimationSet{
         animations.put(direction, new Animation<>(speed, frames));
     }
 
-    /** Restituisce l'animazione corretta in base alla direzione dell'entità */
+    /**
+     * Restituisce l'animazione corretta in base alla direzione dell'entità
+     */
     @Override
     public TextureRegion play(Entity e, float elapsedTime) {
         return animations.get(e.getDirection()).getKeyFrame(elapsedTime, true);

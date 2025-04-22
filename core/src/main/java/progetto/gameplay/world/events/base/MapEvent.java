@@ -21,18 +21,19 @@ import progetto.manager.world.WorldManager;
  */
 public abstract class MapEvent {
 
-    private Body body;
     protected final Vector2 position; // Posizione fisica dell'evento
     protected final float radius; // Raggio di attivazione evento
     protected boolean isActive; // Switch di attivazione dell'evento
+    private Body body;
 
     /**
      * Crea un evento nella mappa che può essere attivato quando il player entra nel suo raggio.
      * <p>
      * L'evento ha una posizione e un raggio. Viene subito creata la zona in cui può essere attivato.
      * </p>
+     *
      * @param position posizione centrale dell’evento
-     * @param radius raggio entro cui l’evento può attivarsi
+     * @param radius   raggio entro cui l’evento può attivarsi
      */
     public MapEvent(Vector2 position, float radius) {
         this.position = position;
@@ -47,15 +48,15 @@ public abstract class MapEvent {
         return isActive;
     }
 
-    public void setBody(Body body) {
-        this.body = body;
-    }
-
     /**
      * @param status stato dell'evento
      */
     public void setActive(boolean status) {
         this.isActive = status;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
     }
 
     /**
@@ -86,9 +87,9 @@ public abstract class MapEvent {
      * Attiva l'evento
      *
      * @param entity entità che lo ha triggerato
-     * <p>
-     * Gestire l'evento a seconda dell'entità
-     * </p>
+     *               <p>
+     *               Gestire l'evento a seconda dell'entità
+     *               </p>
      */
     public abstract void trigger(Entity entity);  // Da implementare per ogni evento specifico
 

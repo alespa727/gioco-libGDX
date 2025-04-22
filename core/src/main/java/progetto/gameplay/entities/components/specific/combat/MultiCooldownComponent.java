@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MultiCooldownComponent extends Component{
+public class MultiCooldownComponent extends Component {
     Map<String, Cooldown> cooldowns = new HashMap<>();
 
     public MultiCooldownComponent(String[] type, Cooldown[] cooldowns) {
-        for(int i = 0; i < type.length; i++) {
+        for (int i = 0; i < type.length; i++) {
             this.cooldowns.put(type[i], cooldowns[i]);
         }
     }
