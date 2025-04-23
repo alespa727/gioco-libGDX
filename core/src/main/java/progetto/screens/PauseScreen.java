@@ -21,8 +21,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.Core;
 import progetto.core.CoreConfig;
 import progetto.core.game.GameScreen;
-import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.player.ManagerCamera;
+import progetto.entity.components.specific.base.Cooldown;
+import progetto.player.ManagerCamera;
 import progetto.graphics.shaders.specific.ColorFilter;
 
 public class PauseScreen implements Screen {

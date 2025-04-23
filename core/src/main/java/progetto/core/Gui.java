@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import progetto.core.game.GameScreen;
-import progetto.gameplay.player.Player;
+import progetto.player.Player;
 
 public class Gui {
     private final GameScreen gamescreen; // Riferimento allo schermo di gioco

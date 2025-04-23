@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import progetto.gameplay.entities.specific.base.Entity;
+import progetto.entity.entities.base.Entity;
 
 public class DefaultAnimationSet extends AnimationSet {
 

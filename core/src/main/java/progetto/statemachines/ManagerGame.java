@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import progetto.core.CoreConfig;
 import progetto.core.game.GameScreen;
 import progetto.core.game.GameTime;
-import progetto.manager.input.KeyHandler;
-import progetto.manager.world.WorldManager;
+import progetto.input.KeyHandler;
+import progetto.world.WorldManager;
 import progetto.screens.PauseScreen;
 
 import static progetto.core.game.GameScreen.STEP;

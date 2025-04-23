@@ -4,11 +4,11 @@ import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
-import progetto.gameplay.entities.components.specific.base.Cooldown;
-import progetto.gameplay.entities.components.specific.combat.MultiCooldownComponent;
-import progetto.gameplay.entities.specific.specific.living.combat.boss.Lich;
-import progetto.gameplay.player.Player;
-import progetto.gameplay.world.Map;
+import progetto.entity.components.specific.base.Cooldown;
+import progetto.entity.components.specific.combat.MultiCooldownComponent;
+import progetto.entity.entities.specific.living.combat.boss.Lich;
+import progetto.player.Player;
+import progetto.world.map.Map;
 
 public enum StatesLich implements State<Lich> {
     FIREDOMAIN {

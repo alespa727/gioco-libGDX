@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import progetto.gameplay.player.ManagerCamera;
+import progetto.player.ManagerCamera;
 import progetto.graphics.shaders.base.Shader;
 
 public class Vignette extends Shader {

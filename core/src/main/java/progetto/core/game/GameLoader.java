@@ -1,7 +1,7 @@
 package progetto.core.game;
 
 import com.badlogic.gdx.physics.box2d.Box2D;
-import progetto.manager.world.WorldManager;
+import progetto.world.WorldManager;
 
 public class GameLoader {
     public static void loadWorld() {

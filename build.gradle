@@ -21,6 +21,10 @@ allprojects {
       testOutputDir file('build/classes/java/test')
     }
   }
+
+  tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:unchecked"
+  }
 }
 
 configure(subprojects) {

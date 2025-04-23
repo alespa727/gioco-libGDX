@@ -6,8 +6,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import progetto.core.game.GameScreen;
-import progetto.gameplay.player.ManagerCamera;
-import progetto.manager.world.WorldManager;
+import progetto.player.ManagerCamera;
+import progetto.world.WorldManager;
 import progetto.screens.MainScreen;
 
 // Classe principale del gioco, estende Game di libGDX

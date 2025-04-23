@@ -1,11 +1,10 @@
 package progetto.core.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import progetto.gameplay.player.ManagerCamera;
-import progetto.gameplay.player.Player;
+import progetto.player.ManagerCamera;
+import progetto.player.Player;
 import progetto.graphics.shaders.base.Shader;
 
 public class GameDrawer {

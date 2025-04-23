@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import progetto.gameplay.entities.specific.base.Entity;
-import progetto.gameplay.player.ManagerCamera;
+import progetto.entity.entities.base.Entity;
+import progetto.player.ManagerCamera;
 import progetto.graphics.shaders.base.Shader;
 
 public class PlayerLight extends Shader {

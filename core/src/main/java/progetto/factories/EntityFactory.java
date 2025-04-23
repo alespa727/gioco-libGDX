@@ -3,17 +3,17 @@ package progetto.factories;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
-import progetto.gameplay.entities.specific.base.Entity;
-import progetto.gameplay.entities.specific.base.EntityConfig;
-import progetto.gameplay.entities.specific.specific.living.HumanoidInstances;
-import progetto.gameplay.entities.specific.specific.living.combat.boss.Boss;
-import progetto.gameplay.entities.specific.specific.living.combat.boss.Lich;
-import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
-import progetto.gameplay.entities.specific.specific.living.combat.enemy.EnemyInstance;
-import progetto.gameplay.entities.specific.specific.living.combat.enemy.Finn;
-import progetto.gameplay.entities.specific.specific.notliving.Bullet;
-import progetto.gameplay.entities.specific.specific.notliving.Sword;
-import progetto.manager.entities.Engine;
+import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.specific.living.HumanoidInstances;
+import progetto.entity.entities.specific.living.combat.boss.Boss;
+import progetto.entity.entities.specific.living.combat.boss.Lich;
+import progetto.entity.entities.specific.living.combat.enemy.Enemy;
+import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
+import progetto.entity.entities.specific.living.combat.enemy.Finn;
+import progetto.entity.entities.specific.notliving.Bullet;
+import progetto.entity.entities.specific.notliving.Sword;
+import progetto.entity.Engine;
 
 public class EntityFactory {
     public static Enemy createEnemy(String type, EntityConfig config, Engine manager, float attackCooldown) {

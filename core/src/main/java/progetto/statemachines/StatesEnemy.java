@@ -4,10 +4,10 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import progetto.gameplay.entities.components.specific.base.PhysicsComponent;
-import progetto.gameplay.entities.specific.specific.living.combat.enemy.Enemy;
-import progetto.gameplay.player.Player;
-import progetto.gameplay.world.Map;
+import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.entities.specific.living.combat.enemy.Enemy;
+import progetto.player.Player;
+import progetto.world.map.Map;
 
 public enum StatesEnemy implements State<Enemy> {
 
