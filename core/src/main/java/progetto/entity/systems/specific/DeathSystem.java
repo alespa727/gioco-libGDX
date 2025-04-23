@@ -1,16 +1,16 @@
 package progetto.entity.systems.specific;
 
+import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.combat.MortalComponent;
 import progetto.entity.components.specific.general.BulletComponent;
 import progetto.entity.components.specific.graphics.DespawnAnimationComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
+import progetto.entity.systems.base.IterableSystem;
 import progetto.player.Player;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
 
-public class DeathSystem extends AutomaticSystem {
+public class DeathSystem extends IterableSystem {
 
     public DeathSystem() {
         super(ComponentFilter.all(StateComponent.class));
@@ -18,7 +18,7 @@ public class DeathSystem extends AutomaticSystem {
 
     @Override
     public void processEntity(Entity entity, float delta) {
-        if (!entity.shouldRender()) return;
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
 
         if (entity instanceof Player player) {
             StateComponent state = entity.components.get(StateComponent.class);
@@ -32,7 +32,7 @@ public class DeathSystem extends AutomaticSystem {
         if (entity.components.contains(BulletComponent.class)) {
             StateComponent state = entity.components.get(StateComponent.class);
             entity.components.get(BulletComponent.class).cooldown.update(delta);
-            if (entity.components.get(BulletComponent.class).cooldown.isReady || !state.shouldRender()) {
+            if (entity.components.get(BulletComponent.class).cooldown.isReady || !state.shouldBeUpdated()) {
                 entity.unregister();
             }
         }
@@ -44,6 +44,6 @@ public class DeathSystem extends AutomaticSystem {
                 h.components.add(new DespawnAnimationComponent());
             }
         }
-
     }
+
 }

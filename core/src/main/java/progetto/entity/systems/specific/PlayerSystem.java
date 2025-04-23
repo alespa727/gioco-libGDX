@@ -2,16 +2,16 @@ package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.general.PlayerComponent;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerDash;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerRangedAttack;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerSwordAttack;
 import progetto.entity.entities.base.Entity;
+import progetto.entity.systems.base.IterableSystem;
 import progetto.player.Player;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
 
-public class PlayerSystem extends AutomaticSystem {
+public class PlayerSystem extends IterableSystem {
 
     public PlayerSystem() {
         super(ComponentFilter.all(PlayerComponent.class));

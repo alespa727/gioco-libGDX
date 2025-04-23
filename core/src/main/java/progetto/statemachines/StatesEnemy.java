@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.specific.living.combat.enemy.Enemy;
 import progetto.player.Player;
 import progetto.world.map.Map;
@@ -26,12 +27,12 @@ public enum StatesEnemy implements State<Enemy> {
 
             entity.attack();
 
-            entity.getDirection().set(calculateVector(entity.getPosition(), entity.engine.player().getPosition()));
-            if (entity.getDirection().x != 0f && (entity.getDirection().x == 1f || entity.getDirection().x == -1f)) {
-                entity.getDirection().scl(0.5f, 1f);
+            entity.get(DirectionComponent.class).direction.set(calculateVector(entity.get(PhysicsComponent.class).getPosition(), entity.engine.player().get(PhysicsComponent.class).getPosition()));
+            if (entity.get(DirectionComponent.class).direction.x != 0f && (entity.get(DirectionComponent.class).direction.x == 1f || entity.get(DirectionComponent.class).direction.x == -1f)) {
+                entity.get(DirectionComponent.class).direction.scl(0.5f, 1f);
             }
-            if (entity.getDirection().y != 0f && (entity.getDirection().y == 1f || entity.getDirection().y == -1f)) {
-                entity.getDirection().scl(1f, 0.5f);
+            if (entity.get(DirectionComponent.class).direction.y != 0f && (entity.get(DirectionComponent.class).direction.y == 1f || entity.get(DirectionComponent.class).direction.y == -1f)) {
+                entity.get(DirectionComponent.class).direction.scl(1f, 0.5f);
             }
 
             entity.getStateMachine().changeState(CHOOSE_STATE);
@@ -107,7 +108,7 @@ public enum StatesEnemy implements State<Enemy> {
 
             accumulator += entity.engine.delta;
 
-            Vector2 direction = entity.getDirection();
+            Vector2 direction = entity.get(DirectionComponent.class).direction;
 
             if (direction.x == 1f || direction.x == -1f) {
                 direction.scl(0.5f, 1f);
@@ -145,7 +146,7 @@ public enum StatesEnemy implements State<Enemy> {
                 entity.getStateMachine().changeState(StatesEnemy.PATROLLING);
                 return;
             }
-            if (entity.getPosition().dst(entity.engine.player().getPosition()) > entity.getRangeRadius()) {
+            if (entity.get(PhysicsComponent.class).getPosition().dst(entity.engine.player().get(PhysicsComponent.class).getPosition()) > entity.getRangeRadius()) {
                 entity.getStateMachine().changeState(StatesEnemy.PURSUE);
             } else {
                 entity.getStateMachine().changeState(StatesEnemy.ATTACKING);

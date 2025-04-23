@@ -22,8 +22,9 @@ import progetto.core.Core;
 import progetto.core.CoreConfig;
 import progetto.core.game.GameScreen;
 import progetto.entity.components.specific.base.Cooldown;
-import progetto.player.ManagerCamera;
+import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.graphics.shaders.specific.ColorFilter;
+import progetto.player.ManagerCamera;
 
 public class PauseScreen implements Screen {
     final Core game;
@@ -149,7 +150,7 @@ public class PauseScreen implements Screen {
 
         if (resume.isReady) {
             game.setScreen(gameScreen);
-            ManagerCamera.getInstance().position.set(gameScreen.getEntityManager().player().getPosition(), 0);
+            ManagerCamera.getInstance().position.set(gameScreen.getEntityManager().player().get(PhysicsComponent.class).getPosition(), 0);
             ManagerCamera.getInstance().update();
             resumeRequest = false;
             Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);

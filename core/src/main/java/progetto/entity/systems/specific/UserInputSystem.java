@@ -2,14 +2,18 @@ package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.control.UserControllable;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.systems.base.IterableSystem;
 
-public class UserInputSystem extends AutomaticSystem {
+import static progetto.input.KeyHandler.*;
+
+public class UserInputSystem extends IterableSystem {
 
     public UserInputSystem() {
         super(ComponentFilter.all(UserControllable.class, PhysicsComponent.class));
@@ -18,8 +22,8 @@ public class UserInputSystem extends AutomaticSystem {
     @Override
     public void processEntity(Entity entity, float delta) {
 
-        if (!entity.shouldRender()) return;
-        if (entity.containsComponent(UserControllable.class) && entity instanceof Humanoid humanoid) {
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
+        if (entity.contains(UserControllable.class) && entity instanceof Humanoid humanoid) {
             if (!(su || giu || sinistra || destra)) {
                 notMoving(humanoid);
             } else if (destra && sinistra && su && giu) {
@@ -39,7 +43,7 @@ public class UserInputSystem extends AutomaticSystem {
         body.setLinearDamping(20f);
         if (sinistra || destra) {
             body.setLinearDamping(3f);
-            entity.getDirection().y = 0;
+            entity.get(DirectionComponent.class).direction.y = 0;
             aggiornaDirezione(entity);
             muoviAsseX(entity);
         } else {
@@ -52,7 +56,7 @@ public class UserInputSystem extends AutomaticSystem {
         body.setLinearDamping(20f);
         if (su || giu) {
             body.setLinearDamping(3f);
-            entity.getDirection().x = 0;
+            entity.get(DirectionComponent.class).direction.x = 0;
             aggiornaDirezione(entity);
             muoviAsseY(entity);
         } else {
@@ -76,10 +80,10 @@ public class UserInputSystem extends AutomaticSystem {
     }
 
     private void stopMovement(Humanoid entity) {
-        if (entity.getDirection().x == 1f || entity.getDirection().x == -1f)
-            entity.getDirection().scl(0.5f, 1f);
-        if (entity.getDirection().y == 1f || entity.getDirection().y == -1f)
-            entity.getDirection().scl(1f, 0.5f);
+        if (entity.get(DirectionComponent.class).direction.x == 1f || entity.get(DirectionComponent.class).direction.x == -1f)
+            entity.get(DirectionComponent.class).direction.scl(0.5f, 1f);
+        if (entity.get(DirectionComponent.class).direction.y == 1f || entity.get(DirectionComponent.class).direction.y == -1f)
+            entity.get(DirectionComponent.class).direction.scl(1f, 0.5f);
     }
 
     private void aggiornaDirezione(Humanoid entity) {
@@ -90,7 +94,7 @@ public class UserInputSystem extends AutomaticSystem {
         if (su) dir.y += 1;
         if (giu) dir.y -= 1;
 
-        entity.getDirection().set(dir);
+        entity.get(DirectionComponent.class).direction.set(dir);
     }
 
     private void muoviAsseX(Humanoid entity) {
@@ -113,11 +117,11 @@ public class UserInputSystem extends AutomaticSystem {
         boolean diagonale = (su && destra) || (su && sinistra) || (giu && destra) || (giu && sinistra);
         Body body = entity.components.get(PhysicsComponent.class).getBody();
         if (diagonale) {
-            return new Vector2(entity.getDirection())
+            return new Vector2(entity.get(DirectionComponent.class).direction)
                 .scl(body.getMass() * entity.getMaxSpeed() / 1.41f)
                 .scl(1 / 1.41f);
         }
-        return new Vector2(entity.getDirection())
+        return new Vector2(entity.get(DirectionComponent.class).direction)
             .scl(entity.getMaxSpeed())
             .scl(body.getMass());
     }

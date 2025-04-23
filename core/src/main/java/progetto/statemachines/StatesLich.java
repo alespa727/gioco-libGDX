@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.math.MathUtils;
 import progetto.entity.components.specific.base.Cooldown;
+import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.combat.MultiCooldownComponent;
 import progetto.entity.entities.specific.living.combat.boss.Lich;
 import progetto.player.Player;
@@ -170,7 +171,7 @@ public enum StatesLich implements State<Lich> {
                     entity.getStateMachine().changeState(StatesLich.IDLE);
                     return;
                 }
-                if (entity.getPosition().dst(entity.engine.player().getPosition()) > 2f) {
+                if (entity.get(PhysicsComponent.class).getPosition().dst(entity.engine.player().get(PhysicsComponent.class).getPosition()) > 2f) {
                     entity.getStateMachine().changeState(StatesLich.LONG_RANGE_ATTACKS);
                 } else {
                     entity.getStateMachine().changeState(StatesLich.CLOSE_RANGE_ATTACKS);

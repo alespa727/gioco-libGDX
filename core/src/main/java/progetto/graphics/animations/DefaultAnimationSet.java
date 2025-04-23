@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.base.Entity;
 
 public class DefaultAnimationSet extends AnimationSet {
@@ -85,6 +86,6 @@ public class DefaultAnimationSet extends AnimationSet {
      */
     @Override
     public TextureRegion play(Entity e, float elapsedTime) {
-        return animations.get(e.getDirection()).getKeyFrame(elapsedTime, true);
+        return animations.get(e.get(DirectionComponent.class).direction).getKeyFrame(elapsedTime, true);
     }
 }

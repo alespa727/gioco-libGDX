@@ -3,6 +3,7 @@ package progetto.entity.entities.specific.living.combat.enemy;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.utils.Array;
+import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StatemachineComponent;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.combat.MortalComponent;
@@ -10,7 +11,6 @@ import progetto.entity.components.specific.combat.MultiCooldownComponent;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.specific.living.combat.Warrior;
-import progetto.entity.Engine;
 import progetto.statemachines.StatesEnemy;
 
 public abstract class Enemy extends Warrior {
@@ -37,13 +37,13 @@ public abstract class Enemy extends Warrior {
     @Override
     public void create() {
         super.create();
-        addComponents(
+        add(
             new StatemachineComponent<>(this, StatesEnemy.PATROLLING),
             new MortalComponent(),
             new MultiCooldownComponent()
         );
 
-        getComponent(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f, true));
+        get(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f, true));
         getAttackCooldown().reset();
 
 
@@ -52,7 +52,7 @@ public abstract class Enemy extends Warrior {
     }
 
     public Cooldown getAttackCooldown() {
-        return getComponent(MultiCooldownComponent.class).getCooldown("attack");
+        return get(MultiCooldownComponent.class).getCooldown("attack");
     }
 
     // === METODI DI ACCESSO ===
@@ -71,7 +71,7 @@ public abstract class Enemy extends Warrior {
 
     @SuppressWarnings("unchecked")
     public <E extends Enemy, S extends State<E>> DefaultStateMachine<E, S> getStateMachine() {
-        return getComponent(StatemachineComponent.class).getStateMachine();
+        return get(StatemachineComponent.class).getStateMachine();
     }
 
     // === ATTACCO ===

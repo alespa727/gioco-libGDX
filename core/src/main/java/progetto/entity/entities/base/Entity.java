@@ -2,10 +2,10 @@ package progetto.entity.entities.base;
 
 // Importazioni
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import progetto.entity.components.base.Component;
+import progetto.entity.Engine;
 import progetto.entity.components.ComponentManager;
+import progetto.entity.components.base.Component;
 import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
@@ -13,7 +13,6 @@ import progetto.entity.components.specific.graphics.ColorComponent;
 import progetto.entity.components.specific.graphics.ZLevelComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.components.specific.movement.NodeComponent;
-import progetto.entity.Engine;
 
 /**
  * Classe base per ogni entità del gioco (giocatori, nemici, boss, ecc.).
@@ -52,7 +51,7 @@ public abstract class Entity {
         this.id = nextId++;
 
         this.components = new ComponentManager();
-        addComponents(
+        add(
             new ConfigComponent(instance.config, id),
             new ZLevelComponent(0),
             new StateComponent(),
@@ -62,7 +61,7 @@ public abstract class Entity {
             new ColorComponent()
         );
 
-        getComponent(PhysicsComponent.class).createBody();
+        get(PhysicsComponent.class).createBody();
     }
 
     /**
@@ -76,7 +75,7 @@ public abstract class Entity {
         this.id = nextId++;
 
         this.components = new ComponentManager();
-        addComponents(
+        add(
             new ConfigComponent(config, id),
             new ZLevelComponent(0),
             new StateComponent(),
@@ -86,17 +85,16 @@ public abstract class Entity {
             new ColorComponent()
         );
 
-        getComponent(PhysicsComponent.class).createBody();
+        get(PhysicsComponent.class).createBody();
         System.out.println(config.id);
     }
-
 
     /**
      * @param componentClass classe del componente che si vuole {@link Class}
      * @param <T>            tipo di componente trovato
      * @return componete richiesto {@link Component}
      */
-    public <T extends Component> T getComponent(Class<T> componentClass) {
+    public <T extends Component> T get(Class<T> componentClass) {
         Component component = components.get(componentClass);
         if (component == null) {
             throw new IllegalArgumentException("Component " + componentClass.getSimpleName() + " non trovato");
@@ -109,66 +107,20 @@ public abstract class Entity {
      *
      * @param components array di componenti da aggiungere
      */
-    public void addComponents(Component... components) {
+    public void add(Component... components) {
         this.components.add(components);
     }
 
 
-    public boolean containsComponents(Array<Class<? extends Component>> components) {
+    public boolean contains(Array<Class<? extends Component>> components) {
         if (components.size == 0) {
             return false;
         }
         return this.components.contains(components);
     }
 
-    public boolean containsComponent(Class<? extends Component> components) {
+    public boolean contains(Class<? extends Component> components) {
         return this.components.contains(components);
-    }
-
-    /**
-     * Restituisce la configurazione dell'entità.
-     *
-     * @return configurazione {@link EntityConfig}
-     */
-    public final EntityConfig getConfig() {
-        return new EntityConfig(getComponent(ConfigComponent.class).getConfig());
-    }
-
-    /**
-     * Restituisce la posizione dell'entità.
-     *
-     * @return posizione corrente
-     */
-    public Vector2 getPosition() {
-        return getComponent(PhysicsComponent.class).getPosition();
-    }
-
-    /**
-     * Restituisce la direzione in cui si sta muovendo l'entità.
-     *
-     * @return direzione {@link DirectionComponent}
-     */
-    public final Vector2 getDirection() {
-        return getComponent(DirectionComponent.class).direction;
-    }
-
-    /**
-     * Indica se l’entità deve essere disegnata sullo schermo.
-     *
-     * @return true se va disegnata
-     */
-    public boolean shouldRender() {
-        return getComponent(StateComponent.class).shouldRender();
-    }
-
-    /**
-     * Imposta se l’entità va disegnata o no.
-     *
-     * @param shouldRender true per disegnarla
-     */
-    public void setShouldRender(boolean shouldRender) {
-        getComponent(PhysicsComponent.class).setActive(shouldRender);
-        getComponent(StateComponent.class).setShouldRender(shouldRender);
     }
 
     /**
@@ -185,12 +137,12 @@ public abstract class Entity {
 
     @Override
     public String toString() {
-        EntityConfig config = getConfig();
+        EntityConfig config = get(ConfigComponent.class).getConfig();
         return getClass().getSimpleName() + "{" +
-            "posizione=" + getPosition() +
-            ", direzione=" + getDirection() +
-            ", isAlive=" + getComponent(StateComponent.class).isAlive() +
-            ", shouldRender=" + shouldRender() +
+            "posizione=" + get(PhysicsComponent.class).getPosition() +
+            ", direzione=" + get(DirectionComponent.class).direction +
+            ", isAlive=" + get(StateComponent.class).isAlive() +
+            ", shouldRender=" + get(StateComponent.class).shouldBeUpdated() +
             ", id=" + config.id +
             ", nome='" + config.nome + '\'' +
             '}';

@@ -3,6 +3,7 @@ package progetto.factories;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.entity.Engine;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.specific.living.HumanoidInstances;
@@ -13,7 +14,6 @@ import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
 import progetto.entity.entities.specific.living.combat.enemy.Finn;
 import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.entity.entities.specific.notliving.Sword;
-import progetto.entity.Engine;
 
 public class EntityFactory {
     public static Enemy createEnemy(String type, EntityConfig config, Engine manager, float attackCooldown) {

@@ -2,6 +2,7 @@ package progetto.entity.entities.specific.living.combat.boss;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
+import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StatemachineComponent;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.base.PhysicsComponent;
@@ -12,9 +13,8 @@ import progetto.entity.components.specific.general.skills.specific.boss.LichFire
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
 import progetto.entity.entities.specific.living.HumanoidInstances;
-import progetto.entity.Engine;
-import progetto.world.WorldManager;
 import progetto.statemachines.StatesLich;
+import progetto.world.WorldManager;
 
 public class Lich extends Boss {
 
@@ -69,6 +69,6 @@ public class Lich extends Boss {
     // === Getter per lo statemachine ===
     @SuppressWarnings("unchecked")
     public <E extends Lich, S extends State<E>> DefaultStateMachine<E, S> getStateMachine() {
-        return getComponent(StatemachineComponent.class).getStateMachine();
+        return get(StatemachineComponent.class).getStateMachine();
     }
 }

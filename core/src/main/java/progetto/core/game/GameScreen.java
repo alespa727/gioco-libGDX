@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -18,23 +19,27 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.Core;
 import progetto.core.Gui;
+import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.Cooldown;
-import progetto.player.ManagerCamera;
-import progetto.player.Player;
-import progetto.player.inventory.Inventory;
-import progetto.world.map.Map;
+import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.systems.specific.*;
+import progetto.factories.EntityConfigFactory;
+import progetto.factories.EntityFactory;
 import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.graphics.shaders.specific.PlayerLight;
 import progetto.graphics.shaders.specific.Vignette;
-import progetto.entity.Engine;
 import progetto.input.DebugWindow;
 import progetto.input.TerminalCommand;
-import progetto.world.CollisionManager;
-import progetto.world.map.MapManager;
-import progetto.world.WorldManager;
+import progetto.player.ManagerCamera;
+import progetto.player.Player;
+import progetto.player.inventory.Inventory;
 import progetto.screens.DefeatScreen;
 import progetto.statemachines.ManagerGame;
+import progetto.world.CollisionManager;
+import progetto.world.WorldManager;
+import progetto.world.map.Map;
+import progetto.world.map.MapManager;
 
 public class GameScreen implements Screen {
 
@@ -54,6 +59,8 @@ public class GameScreen implements Screen {
     private Gui gui;
     private float timeScale = 1f;
     private boolean loaded = false;
+
+    private Player player;
 
     /**
      * Costruttore del gioco
@@ -75,6 +82,10 @@ public class GameScreen implements Screen {
 
     public GameDrawer getGameDrawer() {
         return drawer;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     @Override
@@ -128,6 +139,39 @@ public class GameScreen implements Screen {
     private void initializeGameObjects() {
         if (!loaded) {
             info.engine = new Engine(this.info);
+
+            Core.assetManager.load("entities/Lich.png", Texture.class);
+            Core.assetManager.load("entities/nemico.png", Texture.class);
+            Core.assetManager.finishLoading();
+
+            EntityConfig p = EntityConfigFactory.createPlayerConfig();
+            player = new Player(p, info.engine);
+
+            info.engine.summon(player);
+
+            for (int i = 0; i < 1; i++) {
+                for (int j = 0; j < 1; j++) {
+                    EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i * 0.3f, 10 + j * 0.3f);
+                    info.engine.summon(EntityFactory.createEnemy("Finn", e, info.engine, 4));
+                    info.engine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, info.engine, null));
+                }
+            }
+
+            info.engine.addSystem(
+                new CullingSystem(),
+                new CooldownSystem(),
+                new UserInputSystem(),
+                new PlayerSystem(),
+                new DeathSystem(),
+                new MovementSystem(),
+                new SpeedLimiterSystem(),
+                new NodeTrackerSystem(),
+                new StatemachineSystem(),
+                new SkillSystem(),
+                new RangeSystem(),
+                new HitSystem(),
+                new KnockbackSystem()
+            );
             info.mapManager = new MapManager(viewport, this.info.engine, 1);
             loaded = true;
             drawer.addShader(Vignette.getInstance());

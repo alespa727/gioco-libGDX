@@ -1,11 +1,11 @@
 package progetto.entity.entities.specific.living.combat.enemy;
 
+import progetto.entity.Engine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.skills.specific.boss.LichFireball;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
-import progetto.entity.Engine;
 import progetto.world.WorldManager;
 
 public final class Finn extends Enemy {

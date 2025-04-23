@@ -3,10 +3,10 @@ package progetto.world.events.specific;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import progetto.entity.entities.base.Entity;
-import progetto.player.Player;
-import progetto.world.events.base.MapEvent;
 import progetto.input.KeyHandler;
 import progetto.input.TerminalCommand;
+import progetto.player.Player;
+import progetto.world.events.base.MapEvent;
 import progetto.world.map.MapManager;
 
 /**

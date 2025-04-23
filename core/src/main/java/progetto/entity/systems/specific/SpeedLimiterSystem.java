@@ -1,13 +1,14 @@
 package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.systems.base.IterableSystem;
 
-public class SpeedLimiterSystem extends AutomaticSystem {
+public class SpeedLimiterSystem extends IterableSystem {
 
     public SpeedLimiterSystem() {
         super(ComponentFilter.all(PhysicsComponent.class));
@@ -15,7 +16,7 @@ public class SpeedLimiterSystem extends AutomaticSystem {
 
     @Override
     public void processEntity(Entity entity, float delta) {
-        if (!entity.shouldRender()) return;
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
         if (entity instanceof Humanoid h) {
             Body body = entity.components.get(PhysicsComponent.class).getBody();
             if (body == null) {

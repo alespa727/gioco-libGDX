@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
+import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.general.RadiusComponent;
 import progetto.entity.components.specific.graphics.*;
 import progetto.entity.entities.base.Entity;
@@ -11,11 +14,11 @@ import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.entity.entities.specific.notliving.GameObject;
-import progetto.entity.systems.base.AutomaticSystem;
+import progetto.entity.systems.base.IterableSystem;
 import progetto.graphics.shaders.specific.Flash;
 import progetto.input.DebugWindow;
 
-public class DrawingSystem extends AutomaticSystem {
+public class DrawingSystem extends IterableSystem {
     private SpriteBatch batch;
     private float tempoTrascorso = 0;
 
@@ -33,7 +36,7 @@ public class DrawingSystem extends AutomaticSystem {
     public void processEntity(Entity entity, float delta) {
         if (!DebugWindow.renderEntities()) {
             batch.begin();
-            if (!entity.shouldRender()){
+            if (!entity.get(StateComponent.class).shouldBeUpdated()){
                 batch.end();
                 return;
             }
@@ -48,7 +51,7 @@ public class DrawingSystem extends AutomaticSystem {
         tempoTrascorso = getElapsedTime();
 
         batch.begin();
-        if (!entity.shouldRender()){
+        if (!entity.get(StateComponent.class).shouldBeUpdated()){
             if (batch.isDrawing()) {
                 batch.end();
             }
@@ -89,7 +92,7 @@ public class DrawingSystem extends AutomaticSystem {
 
     public void drawBullet(GameObject object) {
         if (object instanceof Bullet b) {
-            b.effect.setPosition(object.getPosition().x, object.getPosition().y); // o qualsiasi posizione iniziale
+            b.effect.setPosition(object.get(PhysicsComponent.class).getPosition().x, object.get(PhysicsComponent.class).getPosition().y); // o qualsiasi posizione iniziale
             b.effect.update(object.engine.delta);
             b.effect.draw(batch);
         }
@@ -97,7 +100,7 @@ public class DrawingSystem extends AutomaticSystem {
         Sprite sprite = new Sprite(object.texture); // Crea uno sprite per il proiettile
         sprite.setColor(object.components.get(ColorComponent.class).color);
         sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio
-        sprite.setPosition(object.getPosition().x - sprite.getWidth() / 2, object.getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite
+        sprite.setPosition(object.get(PhysicsComponent.class).getPosition().x - sprite.getWidth() / 2, object.get(PhysicsComponent.class).getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite
         sprite.draw(batch); // Disegna lo sprite
     }
 
@@ -111,9 +114,9 @@ public class DrawingSystem extends AutomaticSystem {
         // Applica trasparenza
         batch.setColor(1, 1, 1, alpha);
         batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
-            entity.getPosition().x - entity.getConfig().imageWidth / 2,
-            entity.getPosition().y - entity.getConfig().imageHeight / 2,
-            entity.getConfig().imageWidth, entity.getConfig().imageHeight);
+            entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
+            entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,
+            entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
         batch.setColor(1, 1, 1, 1);
 
         // Despawn quando finisce
@@ -133,15 +136,15 @@ public class DrawingSystem extends AutomaticSystem {
 
         if (entity.components.contains(ShadowComponent.class)) {
             batch.draw(entity.components.get(ShadowComponent.class).animation.play(entity, "default", tempoTrascorso),
-                entity.getPosition().x - entity.getConfig().imageWidth / 2,
-                entity.getPosition().y - entity.getConfig().imageHeight / 2,
-                entity.getConfig().imageWidth, entity.getConfig().imageHeight);
+                entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
+                entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,
+                entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
         }
 
         batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
-            entity.getPosition().x - entity.getConfig().imageWidth / 2,
-            entity.getPosition().y - entity.getConfig().imageHeight / 2,
-            entity.getConfig().imageWidth, entity.getConfig().imageHeight);
+            entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
+            entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,
+            entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
 
         if (applied) {
             batch.setShader(null);

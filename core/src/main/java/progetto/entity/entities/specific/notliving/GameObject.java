@@ -1,11 +1,11 @@
 package progetto.entity.entities.specific.notliving;
 
 import com.badlogic.gdx.graphics.Texture;
+import progetto.entity.Engine;
 import progetto.entity.components.specific.general.RadiusComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
-import progetto.entity.Engine;
 
 public class GameObject extends Entity {
 

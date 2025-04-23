@@ -6,8 +6,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import progetto.entity.entities.base.EntityInstance;
 import progetto.entity.Engine;
+import progetto.entity.entities.base.EntityInstance;
 
 import java.util.HashMap;
 

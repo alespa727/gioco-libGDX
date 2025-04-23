@@ -8,8 +8,8 @@ import progetto.core.CoreConfig;
 import progetto.core.game.GameScreen;
 import progetto.core.game.GameTime;
 import progetto.input.KeyHandler;
-import progetto.world.WorldManager;
 import progetto.screens.PauseScreen;
+import progetto.world.WorldManager;
 
 import static progetto.core.game.GameScreen.STEP;
 

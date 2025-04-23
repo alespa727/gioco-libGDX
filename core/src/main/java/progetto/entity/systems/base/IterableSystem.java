@@ -14,7 +14,7 @@ import progetto.entity.entities.base.Entity;
  * Chi estende questa classe deve solo scrivere cosa succede nel metodo
  * {@link #processEntity(Entity, float)}.
  */
-public abstract class AutomaticSystem extends System {
+public abstract class IterableSystem extends System {
 
     /**
      * Tempo totale passato dall'inizio dell'esecuzione del sistema.
@@ -39,7 +39,7 @@ public abstract class AutomaticSystem extends System {
     /**
      * Costruttore senza componenti richiesti. Il sistema funzionerà su tutte le entità.
      */
-    public AutomaticSystem() {
+    public IterableSystem() {
         filteredEntities = new ObjectSet<>();
         entitiesToRemove = new ObjectSet<>();
         filter = null;
@@ -50,7 +50,7 @@ public abstract class AutomaticSystem extends System {
      *
      * @param filter componenti che un'entità deve avere per essere gestita
      */
-    public AutomaticSystem(ComponentFilter filter) {
+    public IterableSystem(ComponentFilter filter) {
         filteredEntities = new ObjectSet<>();
         this.filter = filter;
         entitiesToRemove = new ObjectSet<>();

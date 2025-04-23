@@ -4,9 +4,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import progetto.entity.components.specific.base.Cooldown;
-import progetto.world.map.Map;
 import progetto.entity.Engine;
+import progetto.entity.components.specific.base.Cooldown;
+import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.world.map.Map;
 
 public class ManagerCamera {
     private static OrthographicCamera camera;
@@ -79,7 +80,7 @@ public class ManagerCamera {
         cooldown.update(delta);
 
         if (!cooldown.isReady) shake();
-        smoothTransitionTo(new Vector2(entities.player().getPosition().x, entities.player().getPosition().y));
+        smoothTransitionTo(new Vector2(entities.player().get(PhysicsComponent.class).getPosition().x, entities.player().get(PhysicsComponent.class).getPosition().y));
         if (boundaries) boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
         viewport.apply();
         camera.update();

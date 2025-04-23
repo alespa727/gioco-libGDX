@@ -7,21 +7,21 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.core.Core;
 import progetto.core.game.GameInfo;
-import progetto.entity.systems.specific.*;
-import progetto.factories.EntityConfigFactory;
-import progetto.factories.EntityFactory;
+import progetto.entity.entities.EntityManager;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
 import progetto.entity.entities.specific.living.combat.boss.BossInstance;
 import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
-import progetto.entity.entities.EntityManager;
 import progetto.entity.systems.SystemManager;
-import progetto.player.Player;
-import progetto.player.PlayerManager;
 import progetto.entity.systems.base.System;
+import progetto.entity.systems.specific.*;
+import progetto.factories.EntityConfigFactory;
+import progetto.factories.EntityFactory;
 import progetto.input.DebugWindow;
 import progetto.input.TerminalCommand;
+import progetto.player.Player;
+import progetto.player.PlayerManager;
 
 public final class Engine {
 
@@ -31,7 +31,6 @@ public final class Engine {
     public final GameInfo info;
     private final EntityManager renderer;
     private final SystemManager systemManager;
-    private final PlayerManager playerManager;
 
     private final Array<Entity> entities;
     private final Queue<Entity> queue;
@@ -44,39 +43,7 @@ public final class Engine {
         this.entities = new Array<>();
         this.queue = new Queue<>();
         this.systemManager = new SystemManager(this);
-        this.playerManager = new PlayerManager(this);
-
-        this.summon(playerManager.getPlayer());
-
-        Core.assetManager.load("entities/Lich.png", Texture.class);
-        Core.assetManager.load("entities/nemico.png", Texture.class);
-        Core.assetManager.finishLoading();
-
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 1; j++) {
-                EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i * 0.3f, 10 + j * 0.3f);
-                summon(EntityFactory.createEnemy("Finn", e, this, 4));
-                summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, this, null));
-            }
-        }
-
         this.renderer = new EntityManager(this);
-
-
-        addSystem(
-            new CooldownSystem(),
-            new UserInputSystem(),
-            new PlayerSystem(),
-            new DeathSystem(),
-            new MovementSystem(),
-            new SpeedLimiterSystem(),
-            new NodeTrackerSystem(),
-            new StatemachineSystem(),
-            new SkillSystem(),
-            new RangeSystem(),
-            new HitSystem(),
-            new KnockbackSystem()
-        );
     }
 
     public void addEntityToSystems(Entity e) {
@@ -107,7 +74,7 @@ public final class Engine {
         Array<EntityInstance> instances = new Array<>();
         Array<Entity> entitiesCopy = new Array<>(entities);
 
-        Player p = playerManager.getPlayer();
+        Player p = player();
 
         for (Entity e : entitiesCopy) {
             EntityInstance in = e.unregister();
@@ -155,7 +122,7 @@ public final class Engine {
     }
 
     public Player player() {
-        return playerManager.getPlayer();
+        return info.screen.getPlayer();
     }
 
     public void remove(Entity e) {

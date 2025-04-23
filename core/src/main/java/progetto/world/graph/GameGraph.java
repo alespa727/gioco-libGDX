@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import progetto.player.ManagerCamera;
-import progetto.world.map.Map;
 import progetto.world.graph.node.Node;
+import progetto.world.map.Map;
 
 import java.util.HashMap;
 

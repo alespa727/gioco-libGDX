@@ -3,6 +3,9 @@ package progetto.entity.entities.base;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.components.specific.general.ConfigComponent;
+import progetto.entity.components.specific.movement.DirectionComponent;
 
 /**
  * Rappresenta una "fotografia" di un'entità in un certo momento.
@@ -36,9 +39,9 @@ public class EntityInstance {
     public EntityInstance(Entity e) {
         this.type = e.getClass().getSimpleName(); // Nome del tipo (classe)
 
-        this.config = e.getConfig();       // Clona la configurazione
-        this.coordinate = e.getPosition(); // Clona la posizione
-        this.direction = e.getDirection(); // Clona la direzione
+        this.config = e.get(ConfigComponent.class).getConfig();       // Clona la configurazione
+        this.coordinate = e.get(PhysicsComponent.class).getPosition(); // Clona la posizione
+        this.direction = e.get(DirectionComponent.class).direction; // Clona la direzione
     }
 
     public EntityInstance() {

@@ -6,14 +6,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.entity.Engine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.BulletComponent;
+import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.graphics.ColorComponent;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.components.specific.movement.NodeComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
-import progetto.entity.Engine;
 import progetto.world.WorldManager;
 
 /**
@@ -48,13 +50,13 @@ public class Bullet extends GameObject {
         super(config, manager, 0.1f);
         this.target = target.getClass();
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
-        this.getDirection().set(config.direzione); // Imposta la direzione
+        this.get(DirectionComponent.class).direction.set(config.direzione); // Imposta la direzione
 
         components.add(new BulletComponent(damage, velocity, radius));
         components.get(NodeComponent.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
-        effect.scaleEffect(getConfig().radius / 2);
+        effect.scaleEffect(get(ConfigComponent.class).getConfig().radius / 2);
         effect.start();
     }
 
@@ -73,13 +75,13 @@ public class Bullet extends GameObject {
         super(config, manager, 0.1f);
         this.target = target;
         this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
-        this.getDirection().set(config.direzione); // Imposta la direzione
+        this.get(DirectionComponent.class).direction.set(config.direzione); // Imposta la direzione
 
         components.add(new BulletComponent(damage, velocity, radius));
         components.get(NodeComponent.class).setAwake(false);
 
         effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
-        effect.scaleEffect(getConfig().radius / 2);
+        effect.scaleEffect(get(ConfigComponent.class).getConfig().radius / 2);
         effect.start();
     }
 
@@ -107,7 +109,7 @@ public class Bullet extends GameObject {
         }
         components.get(ColorComponent.class).color.set(Color.BLACK.cpy());
         components.get(PhysicsComponent.class).getBody().setLinearDamping(0f); // Impedisce rallentamenti
-        components.get(PhysicsComponent.class).getBody().setLinearVelocity(new Vector2(getDirection()).scl(components.get(BulletComponent.class).velocity)); // Imposta la velocità
+        components.get(PhysicsComponent.class).getBody().setLinearVelocity(new Vector2(get(DirectionComponent.class).direction).scl(components.get(BulletComponent.class).velocity)); // Imposta la velocità
         components.get(PhysicsComponent.class).getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
         components.get(PhysicsComponent.class).getBody().setUserData(this); // Associa il proiettile al corpo fisico
     }
@@ -123,18 +125,4 @@ public class Bullet extends GameObject {
         WorldManager.destroyBody(components.get(PhysicsComponent.class).getBody());
         return null;
     }
-
-    /**
-     * Determina se il proiettile deve essere renderizzato.
-     *
-     * @param rendered true se il proiettile deve essere renderizzato, false altrimenti
-     */
-    @Override
-    public void setShouldRender(boolean rendered) {
-        super.setShouldRender(rendered);
-        if (!rendered) {
-            this.unregister();
-        }
-    }
-
 }

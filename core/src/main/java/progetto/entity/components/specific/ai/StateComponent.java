@@ -24,11 +24,11 @@ public class StateComponent extends Component {
         isLoaded = loaded;
     }
 
-    public boolean shouldRender() {
+    public boolean shouldBeUpdated() {
         return shouldRender;
     }
 
-    public void setShouldRender(boolean shouldRender) {
+    public void setShouldBeUpdated(boolean shouldRender) {
         this.shouldRender = shouldRender;
     }
 }

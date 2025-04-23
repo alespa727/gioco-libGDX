@@ -2,6 +2,7 @@ package progetto.entity.entities.specific.living;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.ai.StatusComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
@@ -13,7 +14,6 @@ import progetto.entity.components.specific.movement.MovementComponent;
 import progetto.entity.components.specific.movement.PathFinderComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
-import progetto.entity.Engine;
 
 /**
  * Classe astratta che rappresenta un'entità umanoide nel gioco.
@@ -37,7 +37,7 @@ public abstract class Humanoid extends Entity {
         Texture[] img = new Texture[1];
         img[0] = instance.config.img;
 
-        addComponents(
+        add(
             new MovementComponent(),
             new AttributeComponent(instance.speed, instance.maxHealth),
             new PathFinderComponent(this),
@@ -65,7 +65,7 @@ public abstract class Humanoid extends Entity {
         Texture[] img = new Texture[1];
         img[0] = config.img;
 
-        addComponents(
+        add(
             new MovementComponent(),
             new AttributeComponent(config.speed, config.hp),
             new PathFinderComponent(this),
@@ -122,11 +122,11 @@ public abstract class Humanoid extends Entity {
      * @param target L'entità target verso cui l'umanoide deve dirigersi.
      */
     public void searchPath(Entity target) {
-        getPathFinder().renderPath(target.getPosition().x, target.getPosition().y, engine.delta);
+        getPathFinder().renderPath(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, engine.delta);
     }
 
     public boolean searchPathIdle(Entity target) {
-        return getPathFinder().render(target.getPosition().x, target.getPosition().y, engine.delta);
+        return getPathFinder().render(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, engine.delta);
     }
 
     /**

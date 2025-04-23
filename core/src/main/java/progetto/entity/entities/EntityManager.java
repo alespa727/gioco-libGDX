@@ -8,11 +8,12 @@ import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.graphics.ZLevelComponent;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
+import progetto.input.DebugWindow;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
-import progetto.input.DebugWindow;
 
 import java.util.Comparator;
 import java.util.concurrent.Semaphore;
@@ -39,11 +40,12 @@ public class EntityManager {
 
         comparator = (o1, o2) -> {
             if (o1.components.contains(ZLevelComponent.class) && o2.components.contains(ZLevelComponent.class)) {
-                int z1 = o1.getComponent(ZLevelComponent.class).getZ();
-                int z2 = o2.getComponent(ZLevelComponent.class).getZ();
+                int z1 = o1.get(ZLevelComponent.class).getZ();
+                int z2 = o2.get(ZLevelComponent.class).getZ();
+                if (z1 == z2) return Float.compare(o2.get(PhysicsComponent.class).getPosition().y, o1.get(PhysicsComponent.class).getPosition().y);
                 return Integer.compare(z1, z2);
             }
-            return Float.compare(o2.getPosition().y, o1.getPosition().y);
+            return Float.compare(o2.get(PhysicsComponent.class).getPosition().y, o1.get(PhysicsComponent.class).getPosition().y);
         };
         info = engine.info;
         queue = engine.getQueue();
@@ -60,7 +62,6 @@ public class EntityManager {
         if (!active) {
             processQueue();
         }
-        updateEntityLogic();
     }
 
     /**
@@ -86,7 +87,7 @@ public class EntityManager {
      */
     private void drawSkills() {
         for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) && e instanceof Humanoid) {
+            if (ManagerCamera.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y) && e instanceof Humanoid) {
                 ((Humanoid) e).getSkillset().draw(info.core.batch, elapsedTime);
             }
         }
@@ -98,32 +99,17 @@ public class EntityManager {
     public void drawPaths() {
         info.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y)) {
+            if (ManagerCamera.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y)) {
                 try {
                     if (e instanceof Humanoid human) {
                         human.drawPath(info.core.renderer);
                     }
                 } catch (Exception ex) {
-                    System.out.println("ERRORE" + e.getDirection());
+                    System.out.println("ERRORE" + e.get(DirectionComponent.class).direction);
                 }
             }
         }
         info.core.renderer.end();
-    }
-
-    /**
-     * Aggiorna le entità
-     */
-    public void updateEntityLogic() {
-        if (DebugWindow.renderEntities()) {
-            for (Entity e : entities) {
-                if (ManagerCamera.isWithinFrustumBounds(e.getPosition().x, e.getPosition().y) || e instanceof Player) {
-                    e.setShouldRender(true);
-                } else e.setShouldRender(false);
-            }
-        } else {
-            engine.player().setShouldRender(true);
-        }
     }
 
     /**

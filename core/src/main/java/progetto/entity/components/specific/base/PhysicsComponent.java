@@ -5,10 +5,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
-import progetto.factories.BodyFactory;
 import progetto.entity.components.base.Component;
+import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
+import progetto.factories.BodyFactory;
 
 public class PhysicsComponent extends Component {
     protected final Entity owner;
@@ -39,7 +40,7 @@ public class PhysicsComponent extends Component {
 
     public void createBody() {
         bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.DynamicBody, position.x, position.y);
-        shape = BodyFactory.createCircle(owner.getConfig().radius);
+        shape = BodyFactory.createCircle(owner.get(ConfigComponent.class).getConfig().radius);
         fixtureDef = BodyFactory.createFixtureDef(shape, 25f, .8f, .1f);
     }
 

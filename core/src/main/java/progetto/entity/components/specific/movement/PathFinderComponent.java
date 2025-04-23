@@ -6,9 +6,9 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.utils.Disposable;
 import progetto.entity.components.base.Component;
 import progetto.entity.entities.specific.living.Humanoid;
-import progetto.world.map.Map;
 import progetto.world.graph.HeuristicDistance;
 import progetto.world.graph.node.Node;
+import progetto.world.map.Map;
 import progetto.world.map.MapManager;
 
 public class PathFinderComponent extends Component implements Disposable {

@@ -1,6 +1,7 @@
 package progetto.world;
 
 import com.badlogic.gdx.physics.box2d.*;
+import progetto.entity.Engine;
 import progetto.entity.components.specific.general.BulletComponent;
 import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.base.Entity;
@@ -11,7 +12,6 @@ import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.player.Player;
 import progetto.world.events.base.MapEvent;
 import progetto.world.events.specific.ChangeMapEvent;
-import progetto.entity.Engine;
 
 public class CollisionManager implements ContactListener {
 

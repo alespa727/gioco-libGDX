@@ -12,6 +12,6 @@ public class ConfigComponent extends Component {
     }
 
     public EntityConfig getConfig() {
-        return config;
+        return new EntityConfig(config);
     }
 }

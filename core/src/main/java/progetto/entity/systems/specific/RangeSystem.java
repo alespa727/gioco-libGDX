@@ -6,15 +6,17 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import progetto.factories.BodyFactory;
+import progetto.entity.Engine;
+import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.combat.AttackRangeComponent;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.Engine;
+import progetto.entity.systems.base.IterableSystem;
+import progetto.factories.BodyFactory;
 
-public class RangeSystem extends AutomaticSystem {
+public class RangeSystem extends IterableSystem {
 
     public RangeSystem() {
         super(ComponentFilter.all(AttackRangeComponent.class));
@@ -22,7 +24,7 @@ public class RangeSystem extends AutomaticSystem {
 
     @Override
     public void processEntity(Entity entity, float delta) {
-        if (!entity.shouldRender()) return;
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
         if (entity.components.contains(AttackRangeComponent.class)) {
             AttackRangeComponent range = entity.components.get(AttackRangeComponent.class);
             Body body = entity.components.get(PhysicsComponent.class).getBody();
@@ -35,7 +37,7 @@ public class RangeSystem extends AutomaticSystem {
             }
 
             if (entity.components.get(AttackRangeComponent.class).directionalRange != null) {
-                entity.components.get(AttackRangeComponent.class).directionalRange.setTransform(body.getPosition(), entity.getDirection().angleRad() - 60 * MathUtils.degreesToRadians);
+                entity.components.get(AttackRangeComponent.class).directionalRange.setTransform(body.getPosition(), entity.get(DirectionComponent.class).direction.angleRad() - 60 * MathUtils.degreesToRadians);
             }
         }
     }

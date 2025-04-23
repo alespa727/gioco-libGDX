@@ -1,13 +1,14 @@
 package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.utils.Array;
+import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.general.skills.SkillSet;
 import progetto.entity.components.specific.general.skills.base.Skill;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.systems.base.IterableSystem;
 
-public class SkillSystem extends AutomaticSystem {
+public class SkillSystem extends IterableSystem {
 
     public SkillSystem() {
         super(ComponentFilter.all(SkillSet.class));
@@ -15,7 +16,7 @@ public class SkillSystem extends AutomaticSystem {
 
     @Override
     public void processEntity(Entity entity, float delta) {
-        if (!entity.shouldRender()) return;
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
         if (!entity.components.contains(SkillSet.class)) return;
 
         SkillSet s = entity.components.get(SkillSet.class);

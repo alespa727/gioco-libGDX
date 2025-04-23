@@ -82,7 +82,7 @@ public class ComponentFilter {
      * @return true se l'entità passa il filtro, false altrimenti
      */
     public boolean matches(Entity e) {
-        boolean hasComponents = e.containsComponents(required);
+        boolean hasComponents = e.contains(required);
 
         return switch (type) {
             case REQUIRE -> hasComponents;

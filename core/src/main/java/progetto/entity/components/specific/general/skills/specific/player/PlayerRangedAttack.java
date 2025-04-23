@@ -3,13 +3,14 @@ package progetto.entity.components.specific.general.skills.specific.player;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import progetto.factories.EntityFactory;
+import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.skills.specific.CombatSkill;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.entity.entities.specific.notliving.Bullet;
-import progetto.player.ManagerCamera;
+import progetto.factories.EntityFactory;
 import progetto.input.KeyHandler;
+import progetto.player.ManagerCamera;
 
 public class PlayerRangedAttack extends CombatSkill {
     final float speed;
@@ -42,9 +43,9 @@ public class PlayerRangedAttack extends CombatSkill {
         if (bullets > 0) {
             bullets--;
             Vector3 mouse = ManagerCamera.getInstance().unproject(KeyHandler.mouse);
-            Vector2 direction = new Vector2(mouse.x - owner.getPosition().x, mouse.y - owner.getPosition().y);
+            Vector2 direction = new Vector2(mouse.x - owner.get(PhysicsComponent.class).getPosition().x, mouse.y - owner.get(PhysicsComponent.class).getPosition().y);
             direction.nor();
-            Vector2 position = new Vector2(owner.getPosition()).add(direction);
+            Vector2 position = new Vector2(owner.get(PhysicsComponent.class).getPosition()).add(direction);
 
             Bullet bullet = (Bullet) owner.engine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.engine, Warrior.class));
         } else {

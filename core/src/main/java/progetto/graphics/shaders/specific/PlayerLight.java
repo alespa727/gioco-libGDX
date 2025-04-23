@@ -10,9 +10,10 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.player.ManagerCamera;
 import progetto.graphics.shaders.base.Shader;
+import progetto.player.ManagerCamera;
 
 public class PlayerLight extends Shader {
 
@@ -43,7 +44,7 @@ public class PlayerLight extends Shader {
     @Override
     public void begin() {
         frameBuffer.begin();
-        Vector3 position = new Vector3(e.getPosition(), 0);
+        Vector3 position = new Vector3(e.get(PhysicsComponent.class).getPosition(), 0);
         Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
         float normX = projectedPosition.x / Gdx.graphics.getWidth();
         float normY = projectedPosition.y / Gdx.graphics.getHeight();

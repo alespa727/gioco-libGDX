@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import progetto.player.ManagerCamera;
 import progetto.graphics.shaders.base.Shader;
+import progetto.player.ManagerCamera;
 
 public class ColorFilter extends Shader {
     private static ColorFilter instance;

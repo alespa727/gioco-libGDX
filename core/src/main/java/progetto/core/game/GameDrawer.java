@@ -3,9 +3,10 @@ package progetto.core.game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.graphics.shaders.base.Shader;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
-import progetto.graphics.shaders.base.Shader;
 
 public class GameDrawer {
     private final TextDrawer textDrawer;
@@ -44,7 +45,7 @@ public class GameDrawer {
         finalOutput.draw(batch);
 
         Player player = game.getEntityManager().player();
-        Vector3 position = ManagerCamera.getInstance().project(new Vector3(player.getPosition(), 0));
+        Vector3 position = ManagerCamera.getInstance().project(new Vector3(player.get(PhysicsComponent.class).getPosition(), 0));
 
         textDrawer.drawText(position.x, position.y+100);
     }

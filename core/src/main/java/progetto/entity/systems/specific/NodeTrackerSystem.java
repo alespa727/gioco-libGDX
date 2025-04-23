@@ -1,14 +1,15 @@
 package progetto.entity.systems.specific;
 
 import progetto.entity.components.ComponentManager;
+import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.movement.NodeComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.systems.base.IterableSystem;
 import progetto.world.map.Map;
 
-public class NodeTrackerSystem extends AutomaticSystem {
+public class NodeTrackerSystem extends IterableSystem {
 
     public NodeTrackerSystem() {
         super(ComponentFilter.all(NodeComponent.class));
@@ -16,7 +17,7 @@ public class NodeTrackerSystem extends AutomaticSystem {
 
     @Override
     public void processEntity(Entity entity, float delta) {
-        if (!entity.shouldRender()) return;
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
         ComponentManager componentManager = entity.components;
         if (componentManager.contains(NodeComponent.class)) {
             NodeComponent nodeComponent = componentManager.get(NodeComponent.class);

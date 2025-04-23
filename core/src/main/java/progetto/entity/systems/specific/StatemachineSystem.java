@@ -1,11 +1,11 @@
 package progetto.entity.systems.specific;
 
+import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.ai.StatemachineComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.systems.base.IterableSystem;
 
-public class StatemachineSystem extends AutomaticSystem {
+public class StatemachineSystem extends IterableSystem {
 
     public StatemachineSystem() {
         super(ComponentFilter.all(StatemachineComponent.class));

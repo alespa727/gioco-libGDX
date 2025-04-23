@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.components.specific.general.skills.base.Skill;
+import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.player.Player;
 

@@ -2,18 +2,20 @@ package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.components.specific.movement.MovementComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
-import progetto.player.Player;
-import progetto.entity.systems.base.AutomaticSystem;
-import progetto.entity.components.base.ComponentFilter;
-import progetto.world.map.Map;
-import progetto.world.graph.node.Node;
+import progetto.entity.systems.base.IterableSystem;
 import progetto.input.DebugWindow;
+import progetto.player.Player;
+import progetto.world.graph.node.Node;
+import progetto.world.map.Map;
 
-public class MovementSystem extends AutomaticSystem {
+public class MovementSystem extends IterableSystem {
 
     public MovementSystem() {
         super(ComponentFilter.all(MovementComponent.class, PhysicsComponent.class));
@@ -21,7 +23,7 @@ public class MovementSystem extends AutomaticSystem {
 
     @Override
     public void processEntity(Entity entity, float delta) {
-        if (!entity.shouldRender()) return;
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
         if (!entity.components.contains(MovementComponent.class)) return;
         if (!entity.components.contains(PhysicsComponent.class)) return;
 
@@ -55,7 +57,7 @@ public class MovementSystem extends AutomaticSystem {
 
         Vector2 direction = new Vector2(movement.getPath().get(movement.stepIndex).x - movement.getPath().get(movement.stepIndex - 1).x, movement.getPath().get(movement.stepIndex).y - movement.getPath().get(movement.stepIndex - 1).y);
         if (!direction.epsilonEquals(0, 0)) {
-            e.getDirection().set(direction);
+            e.get(DirectionComponent.class).direction.set(direction);
         }
 
     }
@@ -66,7 +68,7 @@ public class MovementSystem extends AutomaticSystem {
             return;
         }
 
-        if (e.getPosition().dst(target.getPosition()) < 8 / 16f) {
+        if (e.get(PhysicsComponent.class).getPosition().dst(target.getPosition()) < 8 / 16f) {
             body.setLinearDamping(50f);
             movement.stepIndex++;
             for (Node node : movement.getPath()) {
@@ -79,10 +81,10 @@ public class MovementSystem extends AutomaticSystem {
             body.setLinearDamping(3f);
         }
 
-        Vector2 movementDirection = new Vector2(target.getPosition()).sub(e.getPosition()).nor();
+        Vector2 movementDirection = new Vector2(target.getPosition()).sub(e.get(PhysicsComponent.class).getPosition()).nor();
         float speed = ((Humanoid) e).getMaxSpeed();
         Vector2 direction = movementDirection.scl(speed);
         Vector2 force = new Vector2(direction).scl(speed);
-        body.applyLinearImpulse(force, e.getPosition(), true);
+        body.applyLinearImpulse(force, e.get(PhysicsComponent.class).getPosition(), true);
     }
 }
