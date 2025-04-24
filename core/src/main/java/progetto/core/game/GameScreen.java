@@ -142,6 +142,7 @@ public class GameScreen implements Screen {
 
             Core.assetManager.load("entities/Lich.png", Texture.class);
             Core.assetManager.load("entities/nemico.png", Texture.class);
+            Core.assetManager.load("entities/Finn/attack/sword.png", Texture.class);
             Core.assetManager.finishLoading();
 
             EntityConfig p = EntityConfigFactory.createPlayerConfig();
@@ -149,11 +150,11 @@ public class GameScreen implements Screen {
 
             info.engine.summon(player);
 
-            for (int i = 0; i < 1; i++) {
-                for (int j = 0; j < 1; j++) {
-                    EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i * 0.3f, 10 + j * 0.3f);
+            for (int i = 0; i < 100; i++) {
+                for (int j = 0; j < 100; j++) {
+                    EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i, 10 + j);
                     info.engine.summon(EntityFactory.createEnemy("Finn", e, info.engine, 4));
-                    info.engine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, info.engine, null));
+                    //info.engine.summon(EntityFactory.createSword(10+i, 10+j, 0.2f, 1f, new Vector2(0, -0.5f), 50, info.engine, null));
                 }
             }
 

@@ -95,8 +95,6 @@ public enum StatesEnemy implements State<Enemy> {
 
     PATROLLING {
         Player player;
-        float accumulator = 0;
-
         @Override
         public void enter(Enemy entity) {
         }
@@ -105,8 +103,6 @@ public enum StatesEnemy implements State<Enemy> {
         public void update(Enemy entity) {
             if (player == null)
                 player = entity.engine.player();
-
-            accumulator += entity.engine.delta;
 
             Vector2 direction = entity.get(DirectionComponent.class).direction;
 

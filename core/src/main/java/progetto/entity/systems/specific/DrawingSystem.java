@@ -50,13 +50,9 @@ public class DrawingSystem extends IterableSystem {
 
         tempoTrascorso = getElapsedTime();
 
+        if (!entity.get(StateComponent.class).shouldBeUpdated()) return;
+
         batch.begin();
-        if (!entity.get(StateComponent.class).shouldBeUpdated()){
-            if (batch.isDrawing()) {
-                batch.end();
-            }
-            return;
-        }
 
         if (entity instanceof GameObject object) {
             drawBullet(object);

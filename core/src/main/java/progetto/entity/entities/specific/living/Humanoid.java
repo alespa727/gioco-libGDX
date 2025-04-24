@@ -126,7 +126,7 @@ public abstract class Humanoid extends Entity {
     }
 
     public boolean searchPathIdle(Entity target) {
-        return getPathFinder().render(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, engine.delta);
+        return getPathFinder().renderPath(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, engine.delta);
     }
 
     /**

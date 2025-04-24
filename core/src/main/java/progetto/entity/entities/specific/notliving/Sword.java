@@ -1,6 +1,7 @@
 package progetto.entity.entities.specific.notliving;
 
 import com.badlogic.gdx.graphics.Texture;
+import progetto.core.Core;
 import progetto.entity.Engine;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
@@ -14,7 +15,7 @@ public class Sword extends GameObject {
      */
     public Sword(EntityConfig config, Engine manager, float radius) {
         super(config, manager, radius);
-        this.texture = new Texture("entities/Finn/attack/sword.png");
+        this.texture = Core.assetManager.get("entities/Finn/attack/sword.png", Texture.class);
     }
 
     /**
@@ -25,7 +26,7 @@ public class Sword extends GameObject {
      */
     public Sword(EntityInstance instance, Engine manager, float radius) {
         super(instance, manager, radius);
-        this.texture = new Texture("entities/Finn/attack/sword.png");
+        this.texture = Core.assetManager.get("entities/Finn/attack/sword.png", Texture.class);
     }
 
     /**

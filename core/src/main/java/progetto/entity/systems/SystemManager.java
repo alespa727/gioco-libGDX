@@ -6,6 +6,7 @@ import progetto.entity.entities.base.Entity;
 import progetto.entity.systems.base.IterableSystem;
 import progetto.entity.systems.base.System;
 import progetto.entity.systems.specific.DrawingSystem;
+import progetto.input.DebugWindow;
 
 import java.util.LinkedHashMap;
 
@@ -29,10 +30,9 @@ public class SystemManager {
     }
 
     public void update(float delta, Array<Entity> entities) {
+        if (!DebugWindow.renderEntities()) return;
         for (System s : logicSystems.values()) {
-            if (s.isActive()) {
-                s.update(delta, entities);
-            }
+            s.update(delta, entities);
         }
     }
 

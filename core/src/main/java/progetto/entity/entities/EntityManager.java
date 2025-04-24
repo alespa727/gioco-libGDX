@@ -14,6 +14,7 @@ import progetto.entity.entities.specific.living.Humanoid;
 import progetto.input.DebugWindow;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
+import progetto.world.WorldManager;
 
 import java.util.Comparator;
 import java.util.concurrent.Semaphore;
@@ -28,7 +29,7 @@ public class EntityManager {
     private float elapsedTime;
 
     private final Semaphore semaphore;
-    private boolean active=false;
+    private boolean active = false;
 
     /**
      * Costruttore
@@ -59,9 +60,8 @@ public class EntityManager {
      */
     public void updateEntities() {
         this.elapsedTime = engine.elapsedTime;
-        if (!active) {
-            processQueue();
-        }
+        processQueue();
+
     }
 
     /**
@@ -117,27 +117,13 @@ public class EntityManager {
      */
     private void processQueue() {
         if (queue.isEmpty()) return;
-        active = true;
 
-        new Thread(() -> {
-            try {
-                semaphore.acquire();
-                while (queue.size > 0) {
-                    Entity e = queue.removeFirst();
-                    if(e != null) {
-                        loadEntity(e);
-                    }
-                }
-            } catch (InterruptedException e) {
-                System.err.println("Thread interrotto durante il processQueue");
-                Thread.currentThread().interrupt(); // ripristina lo stato di interruzione
-            }finally {
-                semaphore.release();
-                active = false;
+        while (queue.size > 0) {
+            Entity e = queue.removeFirst();
+            if (e != null) {
+                loadEntity(e);
             }
-
-        }).start();
-
+        }
     }
 
     private void loadEntity(Entity entity) {

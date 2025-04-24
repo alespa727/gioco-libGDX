@@ -79,7 +79,7 @@ public class EntityFactory {
         config.nome = "Sword";
         config.x = x;
         config.y = y;
-        config.img = new Texture("entities/Finn.png");
+        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
         config.radius = hitboxRadius;
         config.descrizione = "fa male";
         config.direzione = direction;

@@ -9,9 +9,12 @@ import progetto.entity.components.specific.combat.AttackRangeComponent;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.world.events.base.MapEvent;
 
+import java.util.concurrent.Semaphore;
+
 public class WorldManager {
     private static World instance;
     private static Queue<Body> bodyToDestroy;
+    public static Semaphore semaphore = new Semaphore(1);
 
     public static void init() {
         if (instance == null) {
