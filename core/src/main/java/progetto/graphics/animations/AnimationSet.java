@@ -21,4 +21,6 @@ public abstract class AnimationSet {
 
     // === Metodi astratti da implementare nelle sottoclassi ===
     public abstract TextureRegion play(Entity e, float elapsedTime);
+
+    public abstract TextureRegion play(Vector2 key, float elapsedTime);
 }

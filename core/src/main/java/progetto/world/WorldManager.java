@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Queue;
 import progetto.entity.components.specific.combat.AttackRangeComponent;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.world.events.base.MapEvent;
+import progetto.world.map.Map;
 
 import java.util.concurrent.Semaphore;
 
@@ -36,7 +37,7 @@ public class WorldManager {
         Array<Body> bodies = new Array<>();
         instance.getBodies(bodies);
         for (Body body : bodies) {
-            if ("map".equals(body.getUserData()) || body.getUserData() instanceof MapEvent) {
+            if (body.getUserData() instanceof Map || body.getUserData() instanceof MapEvent) {
                 instance.destroyBody(body);
             }
 

@@ -130,4 +130,8 @@ public final class Engine {
         entities.removeValue(e, false);
         entities.shrink();
     }
+
+    public void processQueue(){
+        renderer.processQueue();
+    }
 }

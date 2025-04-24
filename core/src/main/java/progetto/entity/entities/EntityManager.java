@@ -115,9 +115,10 @@ public class EntityManager {
     /**
      * Processa la coda, svuotandola e evocando entità dalla coda
      */
-    private void processQueue() {
+    public void processQueue() {
         if (queue.isEmpty()) return;
 
+        System.out.println(queue.size);
         while (queue.size > 0) {
             Entity e = queue.removeFirst();
             if (e != null) {

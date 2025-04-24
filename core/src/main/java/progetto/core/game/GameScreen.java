@@ -151,13 +151,14 @@ public class GameScreen implements Screen {
 
             info.engine.summon(player);
 
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i, 10 + j);
-                    info.engine.summon(EntityFactory.createEnemy("Finn", e, info.engine, 4));
-                    //info.engine.summon(EntityFactory.createSword(10+i, 10+j, 0.2f, 1f, new Vector2(0, -0.5f), 50, info.engine, null));
-                }
-            }
+//            for (int i = 0; i < 10; i++) {
+//                for (int j = 0; j < 10; j++) {
+//                    EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i, 10 + j);
+//                    info.engine.summon(EntityFactory.createEnemy("Finn", e, info.engine, 4));
+//                    //
+//                }
+//            }
+            info.engine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, info.engine, null));
 
             info.engine.addSystem(
                 new CullingSystem(),
@@ -172,7 +173,8 @@ public class GameScreen implements Screen {
                 new SkillSystem(),
                 new RangeSystem(),
                 new HitSystem(),
-                new KnockbackSystem()
+                new KnockbackSystem(),
+                new ItemHoldingSystem()
             );
             info.mapManager = new MapManager(viewport, this.info.engine, 1);
             loaded = true;

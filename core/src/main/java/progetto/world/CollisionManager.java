@@ -12,6 +12,7 @@ import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.player.Player;
 import progetto.world.events.base.MapEvent;
 import progetto.world.events.specific.ChangeMapEvent;
+import progetto.world.map.Map;
 
 public class CollisionManager implements ContactListener {
 
@@ -24,6 +25,14 @@ public class CollisionManager implements ContactListener {
         // Salvataggio corpi
         Object dataA = fixtureA.getBody().getUserData();
         Object dataB = fixtureB.getBody().getUserData();
+
+        if (dataA instanceof Bullet && dataB instanceof Map) {
+            ((Bullet) dataA).unregister();
+        }
+        if (dataB instanceof Bullet && dataA instanceof Map) {
+            ((Bullet) dataB).unregister();
+        }
+
 
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
         if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {

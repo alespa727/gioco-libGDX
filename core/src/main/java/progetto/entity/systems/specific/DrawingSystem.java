@@ -9,6 +9,8 @@ import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.general.RadiusComponent;
 import progetto.entity.components.specific.graphics.*;
+import progetto.entity.components.specific.item.ItemComponent;
+import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.entities.specific.living.combat.Warrior;
@@ -55,7 +57,7 @@ public class DrawingSystem extends IterableSystem {
         batch.begin();
 
         if (entity instanceof GameObject object) {
-            drawBullet(object);
+            drawObject(object);
             if (batch.isDrawing()) {
                 batch.end();
             }
@@ -86,7 +88,7 @@ public class DrawingSystem extends IterableSystem {
         w.getSkillset().draw(batch, tempoTrascorso);
     }
 
-    public void drawBullet(GameObject object) {
+    public void drawObject(GameObject object) {
         if (object instanceof Bullet b) {
             b.effect.setPosition(object.get(PhysicsComponent.class).getPosition().x, object.get(PhysicsComponent.class).getPosition().y); // o qualsiasi posizione iniziale
             b.effect.update(object.engine.delta);
@@ -97,6 +99,12 @@ public class DrawingSystem extends IterableSystem {
         sprite.setColor(object.components.get(ColorComponent.class).color);
         sprite.setSize(radius * 2, radius * 2); // Imposta la dimensione in base al raggio
         sprite.setPosition(object.get(PhysicsComponent.class).getPosition().x - sprite.getWidth() / 2, object.get(PhysicsComponent.class).getPosition().y - sprite.getHeight() / 2); // Posiziona lo sprite
+
+        if (object.contains(ItemComponent.class)){
+            sprite.setRotation(object.get(ItemComponent.class).getAngleDeg()-90);
+            sprite.setOriginCenter();
+        }
+
         sprite.draw(batch); // Disegna lo sprite
     }
 
@@ -137,10 +145,14 @@ public class DrawingSystem extends IterableSystem {
                 entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
         }
 
-        batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
-            entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
-            entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,
-            entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
+        try {
+            batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
+                entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
+                entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,
+                entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
+        }catch (Exception e) {
+            System.err.println(entity.get(DirectionComponent.class).direction);
+        }
 
         if (applied) {
             batch.setShader(null);

@@ -88,4 +88,9 @@ public class DefaultAnimationSet extends AnimationSet {
     public TextureRegion play(Entity e, float elapsedTime) {
         return animations.get(e.get(DirectionComponent.class).direction).getKeyFrame(elapsedTime, true);
     }
+
+    @Override
+    public TextureRegion play(Vector2 key, float elapsedTime) {
+        return animations.get(key).getKeyFrame(elapsedTime, true);
+    }
 }

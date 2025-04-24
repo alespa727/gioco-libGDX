@@ -15,7 +15,7 @@ import progetto.world.map.Map;
 
 public class DebugWindow extends Window {
 
-    private static boolean entityAI = false;
+    private static boolean entityAI = true;
     private static boolean hitboxes = false;
     private static boolean pathfinding = false;
     private final Stage stage;

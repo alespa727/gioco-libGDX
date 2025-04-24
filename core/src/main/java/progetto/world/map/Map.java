@@ -155,7 +155,7 @@ public class Map implements Disposable {
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = Engine.WALL;
 
-                BodyFactory.createBody("map", bodyDef, fixtureDef);
+                BodyFactory.createBody(this, bodyDef, fixtureDef);
             }
         }
     }
