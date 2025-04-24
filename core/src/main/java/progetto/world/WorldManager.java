@@ -57,7 +57,7 @@ public class WorldManager {
     }
 
     public static void update() {
-        if (bodyToDestroy.notEmpty()) {
+        while (bodyToDestroy.notEmpty()) {
             instance.destroyBody(bodyToDestroy.removeFirst());
         }
     }

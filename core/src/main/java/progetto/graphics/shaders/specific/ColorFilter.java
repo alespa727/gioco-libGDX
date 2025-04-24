@@ -77,4 +77,20 @@ public class ColorFilter extends Shader {
         batch.setShader(null);                               // (5) resetta lo shader (opzionale)
     }
 
+    @Override
+    public void draw(SpriteBatch batch, float x, float y, float width, float height) {
+
+        Texture texture = frameBuffer.getColorBufferTexture();
+        TextureRegion region = new TextureRegion(texture);
+        region.flip(false, true);
+
+        program.bind();
+        batch.setShader(program);                            // (1) assegna lo shader
+        program.setUniformf("u_tint", color.r, color.g, color.b);
+        batch.begin();                                       // (3) inizia il batch
+        batch.draw(region, x, y, width, height);
+        batch.end();                                         // (4) finisci il batch
+        batch.setShader(null);                               // (5) resetta lo shader (opzionale)
+    }
+
 }

@@ -132,6 +132,9 @@ public class GameScreen implements Screen {
         Core.assetManager.load("particle/particle.png", Texture.class);
         Core.assetManager.load("sounds/gunshot.mp3", Sound.class);
         Core.assetManager.load("sounds/fireball.mp3", Sound.class);
+        Core.assetManager.load("entities/Lich.png", Texture.class);
+        Core.assetManager.load("entities/nemico.png", Texture.class);
+        Core.assetManager.load("entities/Finn/attack/sword.png", Texture.class);
         Core.assetManager.finishLoading();
 
     }
@@ -140,9 +143,7 @@ public class GameScreen implements Screen {
         if (!loaded) {
             info.engine = new Engine(this.info);
 
-            Core.assetManager.load("entities/Lich.png", Texture.class);
-            Core.assetManager.load("entities/nemico.png", Texture.class);
-            Core.assetManager.load("entities/Finn/attack/sword.png", Texture.class);
+
             Core.assetManager.finishLoading();
 
             EntityConfig p = EntityConfigFactory.createPlayerConfig();
@@ -150,8 +151,8 @@ public class GameScreen implements Screen {
 
             info.engine.summon(player);
 
-            for (int i = 0; i < 100; i++) {
-                for (int j = 0; j < 100; j++) {
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
                     EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8 + i, 10 + j);
                     info.engine.summon(EntityFactory.createEnemy("Finn", e, info.engine, 4));
                     //info.engine.summon(EntityFactory.createSword(10+i, 10+j, 0.2f, 1f, new Vector2(0, -0.5f), 50, info.engine, null));

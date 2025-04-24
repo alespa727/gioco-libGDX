@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.entity.Engine;
 import progetto.entity.entities.base.EntityInstance;
+import progetto.screens.LoadingScreen;
 
 import java.util.HashMap;
 
@@ -56,6 +57,7 @@ public class MapManager {
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
             saveMapEntities();
+            new LoadingScreen(engine.info.core, engine.info.screen, 3, 4);
         }
 
         chooseMap(map);
@@ -67,7 +69,7 @@ public class MapManager {
         currentMap = new Map(nome, engine, this, x, y);
         currentMap.createCollision();
 
-        loadMapEntities();
+        //loadMapEntities();
 
         // Applico la telecamera
         viewport.apply();

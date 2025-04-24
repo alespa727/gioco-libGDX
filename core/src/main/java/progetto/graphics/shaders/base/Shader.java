@@ -15,6 +15,8 @@ public abstract class Shader {
 
     public abstract void draw(SpriteBatch batch);
 
+    public abstract void draw(SpriteBatch batch, float x, float y, float width, float height);
+
 
     public boolean isActive() {
         return active;

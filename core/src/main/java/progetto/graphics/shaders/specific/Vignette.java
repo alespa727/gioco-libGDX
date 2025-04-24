@@ -54,4 +54,16 @@ public class Vignette extends Shader {
         batch.end();
     }
 
+    @Override
+    public void draw(SpriteBatch batch, float x, float y, float width, float height) {
+        Texture texture = frameBuffer.getColorBufferTexture();
+        TextureRegion region = new TextureRegion(texture);
+        region.flip(false, true);
+        batch.begin();
+        batch.setShader(program);
+        batch.draw(region, x, y, width, height);
+        batch.setShader(null);
+        batch.end();
+    }
+
 }

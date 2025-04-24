@@ -86,4 +86,23 @@ public class PlayerLight extends Shader {
         batch.end();                                         // (4) finisci il batch
         batch.setShader(null);
     }
+
+    @Override
+    public void draw(SpriteBatch batch, float x, float y, float width, float height) {
+        Texture texture = frameBuffer.getColorBufferTexture();
+        TextureRegion region = new TextureRegion(texture);
+        region.flip(false, true);
+
+        program.bind();
+        batch.setShader(program);
+        program.setUniformf("u_resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());// (1) assegna lo shader
+        program.setUniformf("u_lightPos", position.x, position.y);
+        program.setUniformf("u_lightRadius", 0.5f);
+        program.setUniformf("u_lightIntensity", intensity);
+        program.setUniformf("u_lightColor", Color.WHITE.cpy());
+        batch.begin();                                       // (3) inizia il batch
+        batch.draw(region, x, y, width, height);
+        batch.end();                                         // (4) finisci il batch
+        batch.setShader(null);
+    }
 }
