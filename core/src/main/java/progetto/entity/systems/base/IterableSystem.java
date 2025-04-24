@@ -106,8 +106,7 @@ public abstract class IterableSystem extends System {
         if (filter == null) return;
 
         for (Entity e : entities) {
-            assert filter != null;
-            if (filter.matches(e)) {
+            if (filter != null && filter.matches(e)) {
                 java.lang.System.out.println(e.getClass().getSimpleName() + " " + this.getClass().getSimpleName());
                 filteredEntities.add(e);
             }
