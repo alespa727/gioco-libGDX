@@ -76,8 +76,10 @@ public final class Engine {
 
         Player p = player();
 
+        int count=0;
         for (Entity e : entitiesCopy) {
             EntityInstance in = e.unregister();
+            count++;
             if (in != null) {
                 instances.add(in);
             }
@@ -88,7 +90,7 @@ public final class Engine {
 
         entities.add(p);
 
-        TerminalCommand.printError("Entità rimosse: " + instances.size + instances);
+        TerminalCommand.printError("Entità rimosse: " + count + instances);
         return instances;
     }
 
@@ -126,8 +128,9 @@ public final class Engine {
     }
 
     public void remove(Entity e) {
-        removeEntitiesFromSystems(e);
         entities.removeValue(e, false);
+        removeEntitiesFromSystems(e);
+
         entities.shrink();
     }
 

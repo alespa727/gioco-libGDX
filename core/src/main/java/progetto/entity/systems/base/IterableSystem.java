@@ -75,8 +75,7 @@ public abstract class IterableSystem extends System {
 
         elapsedTime += delta;
 
-        if (filteredEntities.isEmpty()) {
-            // Se non abbiamo un filtro attivo, processiamo tutto
+        if (filter == null) {
             for (int i = 0; i < entities.size; i++) {
                 Entity e = entities.get(i);
                 processEntity(e, delta);

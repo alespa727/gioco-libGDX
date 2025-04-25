@@ -69,7 +69,7 @@ public class MapManager {
         currentMap = new Map(nome, engine, this, x, y);
         currentMap.createCollision();
 
-        //loadMapEntities();
+        loadMapEntities();
 
         // Applico la telecamera
         viewport.apply();

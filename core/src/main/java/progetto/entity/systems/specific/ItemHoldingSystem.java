@@ -45,7 +45,5 @@ public class ItemHoldingSystem extends IterableSystem {
         float posy = pos.y + distance * MathUtils.sinDeg(item.getAngleDeg());
 
         entity.get(PhysicsComponent.class).getBody().setTransform(posx, posy, 0);
-
-
     }
 }

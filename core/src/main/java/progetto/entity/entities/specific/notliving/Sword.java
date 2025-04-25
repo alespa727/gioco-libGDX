@@ -3,9 +3,11 @@ package progetto.entity.entities.specific.notliving;
 import com.badlogic.gdx.graphics.Texture;
 import progetto.core.Core;
 import progetto.entity.Engine;
+import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.item.ItemComponent;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
+import progetto.world.WorldManager;
 
 public class Sword extends GameObject {
     /**
@@ -49,6 +51,8 @@ public class Sword extends GameObject {
      */
     @Override
     public EntityInstance unregister() {
+        engine.remove(this);
+        WorldManager.destroyBody(get(PhysicsComponent.class).getBody());
         return null;
     }
 }
