@@ -1,7 +1,10 @@
 package progetto.core.game;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class GameTime {
-    private final float timeScale;
+    private float timeScale;
     public float delta;
     public float accumulator;
 
@@ -30,5 +33,22 @@ public class GameTime {
 
     public float getTimeScale() {
         return timeScale;
+    }
+
+    public void setTimeScale(float timeScale, float time) {
+        this.timeScale = timeScale;
+
+        TimerTask task = new TimerTask() {
+            public void run() {
+                resetTimeScale();
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(task, (long) (time*1000));
+    }
+
+    private void resetTimeScale() {
+        this.timeScale = 1f;
     }
 }

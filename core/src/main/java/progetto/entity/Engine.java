@@ -1,28 +1,20 @@
 package progetto.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.core.Core;
-import progetto.core.game.GameInfo;
 import progetto.core.game.GameScreen;
 import progetto.entity.entities.EntityManager;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
 import progetto.entity.entities.specific.living.combat.boss.BossInstance;
 import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
 import progetto.entity.systems.SystemManager;
 import progetto.entity.systems.base.System;
-import progetto.entity.systems.specific.*;
-import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.input.DebugWindow;
 import progetto.input.TerminalCommand;
 import progetto.player.Player;
-import progetto.player.PlayerManager;
 
 public final class Engine {
 

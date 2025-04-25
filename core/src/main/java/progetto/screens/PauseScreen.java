@@ -142,8 +142,6 @@ public class PauseScreen implements Screen {
 
     public void transitionOut(float delta) {
         resume.update(delta);
-        boolean boundaries = gameScreen.getMap().disegnaUI();
-        gameScreen.updateCamera(boundaries);
         gameScreen.render(delta);
 
         gameScreen.getGameDrawer().draw(game.batch);
@@ -181,8 +179,6 @@ public class PauseScreen implements Screen {
         alpha = Interpolation.smoother.apply(0f, 1f, progress);
 
         pause.update(delta);
-        gameScreen.updateCamera(false);
-
         gameScreen.getGameDrawer().draw(game.batch);
 
         if (pause.isReady) {

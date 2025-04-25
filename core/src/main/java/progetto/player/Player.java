@@ -56,7 +56,6 @@ public class Player extends Warrior {
 
     public void hit(Warrior entity, float damage, float hitForce) {
         super.hit(entity, damage, hitForce);
-        ManagerCamera.shakeTheCamera(0.04f, 0.025f);
     }
 
     // === GESTIONE ENTITY ===

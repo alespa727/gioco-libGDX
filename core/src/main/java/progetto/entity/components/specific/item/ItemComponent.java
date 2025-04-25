@@ -9,6 +9,7 @@ public class ItemComponent extends Component {
     private float angleDeg=0;
 
     public ItemComponent(Entity entity) {
+        if (entity==null) return;
         this.entity = entity;
         this.angleDeg = entity.get(DirectionComponent.class).direction.angleDeg();
     }

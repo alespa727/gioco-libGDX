@@ -30,7 +30,7 @@ public class ShaderPipeliner {
     public void draw(SpriteBatch batch) {
 
         shaders.get(0).begin();
-        game.draw();
+        game.getRenderer().draw();
         shaders.get(0).end();
 
         for (int i = 1; i < shaders.size; i++) {

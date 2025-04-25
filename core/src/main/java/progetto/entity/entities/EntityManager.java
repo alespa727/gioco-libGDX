@@ -3,7 +3,6 @@ package progetto.entity.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.core.game.GameInfo;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
@@ -13,8 +12,6 @@ import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.input.DebugWindow;
 import progetto.player.ManagerCamera;
-import progetto.player.Player;
-import progetto.world.WorldManager;
 
 import java.util.Comparator;
 import java.util.concurrent.Semaphore;
@@ -116,7 +113,6 @@ public class EntityManager {
     public void processQueue() {
         if (queue.isEmpty()) return;
 
-        System.out.println(queue.size);
         while (queue.size > 0) {
             Entity e = queue.removeFirst();
             if (e != null) {

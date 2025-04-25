@@ -40,7 +40,7 @@ public class Sword extends GameObject {
     @Override
     public void create() {
         add(
-            new ItemComponent(engine.player())
+            new ItemComponent(null)
         );
     }
 
