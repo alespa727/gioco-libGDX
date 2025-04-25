@@ -34,7 +34,7 @@ public class LoadingScreen implements Screen {
     public final int larghezza = 16;
     public final int altezza = 9;
 
-    private float larghezzaBlocco;
+    private final float larghezzaBlocco;
 
     DefaultAnimationSet animation;
 
@@ -79,11 +79,7 @@ public class LoadingScreen implements Screen {
 
         GameScreen screen1 = (GameScreen) screen;
         EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8, 10);
-        screen1.getEntityManager().summon(EntityFactory.createEnemy("Finn", e, screen1.getEntityManager(), 4));
-
-
-
-
+        //screen1.getEntityManager().summon(EntityFactory.createEnemy("Finn", e, screen1.getEntityManager(), 4));
 
         this.core = core;
         NinePatch loadingBar = new NinePatch(new Texture("WindowUi.png"), 7, 7, 7, 7);
@@ -100,7 +96,7 @@ public class LoadingScreen implements Screen {
     public void drawGrid(){
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED.cpy().mul(0.4f));
+        shapeRenderer.setColor(Color.BLUE.cpy().mul(0.4f));
         for (int i = 0; i < larghezza; i++) {
             shapeRenderer.line(i*larghezzaBlocco, 0, i*larghezzaBlocco, larghezzaBlocco*altezza);
         }
@@ -108,7 +104,7 @@ public class LoadingScreen implements Screen {
             shapeRenderer.line(0, i*larghezzaBlocco, larghezzaBlocco*larghezza, i*larghezzaBlocco);
         }
 
-        shapeRenderer.setColor(Color.BLUE.cpy());
+        shapeRenderer.setColor(Color.RED.cpy());
         shapeRenderer.rect(5*larghezzaBlocco, 4f*larghezzaBlocco, 80, 80);
         shapeRenderer.rect(10*larghezzaBlocco, 4f*larghezzaBlocco, 80, 80);
         shapeRenderer.rect(position.x-size.x/2, position.y-size.y/2, size.x, size.y);
