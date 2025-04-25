@@ -25,8 +25,8 @@ public class DebugWindow extends Window {
     private final TextField yCoord;
 
 
-    public DebugWindow(GameScreen gameScreen, String title, Skin skin) {
-        super(title, skin);
+    public DebugWindow(GameScreen gameScreen) {
+        super("Debug Window", new Skin(Gdx.files.internal("skins/metal-ui.json")));
         setDebug(true);
         setMovable(true);
         setKeepWithinStage(false);
@@ -38,12 +38,12 @@ public class DebugWindow extends Window {
         setPosition(0, 0); // Aggiungi spazio sopra
 
         // Crea i TextField, TextButton e Label
-        xCoord = new TextField("", skin);
-        yCoord = new TextField("", skin);
+        xCoord = new TextField("", getSkin());
+        yCoord = new TextField("", getSkin());
         xCoord.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
         yCoord.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
 
-        TextButton teleport = new TextButton("Teleport player", skin);
+        TextButton teleport = new TextButton("Teleport player", getSkin());
         teleport.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -65,10 +65,10 @@ public class DebugWindow extends Window {
             }
         });
 
-        fpsLabel = new Label("FPS: 0", skin);
-        memoryLabel = new Label("Memory: 0MB", skin);
+        fpsLabel = new Label("FPS: 0", getSkin());
+        memoryLabel = new Label("Memory: 0MB", getSkin());
 
-        TextButton ai = new TextButton("Entity AI interruttore", skin);
+        TextButton ai = new TextButton("Entity AI interruttore", getSkin());
         ai.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,7 +76,7 @@ public class DebugWindow extends Window {
             }
         });
 
-        TextButton hitboxesButton = new TextButton("Attiva debug hitbox", skin);
+        TextButton hitboxesButton = new TextButton("Attiva debug hitbox", getSkin());
         hitboxesButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -84,7 +84,7 @@ public class DebugWindow extends Window {
             }
         });
 
-        TextButton pathfindingButton = new TextButton("Pathfinding", skin);
+        TextButton pathfindingButton = new TextButton("Pathfinding", getSkin());
         pathfindingButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

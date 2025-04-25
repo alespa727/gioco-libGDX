@@ -24,7 +24,7 @@ public class PlayerDash extends Skill {
             elapsedTime += delta;
             cooldown.update(delta);
             if (owner.components.get(InRangeListComponent.class).inRange.size > 0) {
-                owner.engine.info.screen.setTimeScale(0.1f, 1f);
+                owner.engine.game.setTimeScale(0.1f, 1f);
                 isBeingUsed = false;
             }
             if (cooldown.isReady) {

@@ -1,4 +1,4 @@
-package progetto.screens.loading;
+package progetto.core.loading;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

@@ -2,9 +2,13 @@ package progetto.player.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.CoreConfig;
@@ -20,8 +24,8 @@ public class Inventory extends Window {
     final int itemSize = 100;
     int itemCount = 0;
 
-    public Inventory(GameScreen screen, String title, WindowStyle skin) {
-        super(title, skin);
+    public Inventory(WindowStyle skin) {
+        super("Inventory", skin);
 
         slots = new boolean[width][height];
         for (int i = 0; i < width; i++) {

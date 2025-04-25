@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.entity.Engine;
 import progetto.entity.entities.base.EntityInstance;
-import progetto.screens.loading.LoadingScreen;
+import progetto.core.loading.LoadingScreen;
 
 import java.util.HashMap;
 
@@ -57,7 +57,7 @@ public class MapManager {
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
             saveMapEntities();
-            new LoadingScreen(engine.info.core, engine.info.screen, 5, 6);
+            new LoadingScreen(engine.game.core, engine.game, 5, 6);
         }
 
         chooseMap(map);

@@ -8,12 +8,12 @@ import progetto.graphics.shaders.base.Shader;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
 
-public class GameDrawer {
+public class ShaderPipeliner {
     private final TextDrawer textDrawer;
     private final Array<Shader> shaders;
     private final GameScreen game;
 
-    public GameDrawer(GameScreen game) {
+    public ShaderPipeliner(GameScreen game) {
         shaders = new Array<>();
         this.game = game;
         this.textDrawer = new TextDrawer();

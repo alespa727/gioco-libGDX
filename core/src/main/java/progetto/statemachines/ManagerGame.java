@@ -23,25 +23,7 @@ public enum ManagerGame implements State<GameScreen> {
 
         @Override
         public void update(GameScreen screen) {
-            SpriteBatch batch = screen.getInfo().core.batch;
 
-            GameTime time = screen.getTime();
-            if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
-                screen.getInfo().core.setScreen(new PauseScreen(screen.getInfo().core, screen));
-            }
-
-            // Aggiorna il gioco finché necessario
-            while (time.getAccumulator() >= STEP) {
-                float scaledTime = STEP * screen.getTimeScale();
-                WorldManager.getInstance().step(scaledTime, 8, 8);
-                // Disegna il gioco
-                screen.update(scaledTime);
-                screen.updateWorld();
-                time.setAccumulator(time.getAccumulator() - STEP);
-                KeyHandler.input();
-            }
-
-            screen.getGameDrawer().draw(batch);
         }
 
         @Override

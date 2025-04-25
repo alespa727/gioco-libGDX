@@ -9,8 +9,4 @@ public class GameInfo {
     public GameScreen screen;
     public Engine engine;
     public MapManager mapManager;
-
-    public GameInfo() {
-    }
-
 }

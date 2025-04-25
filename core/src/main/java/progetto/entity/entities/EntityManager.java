@@ -20,7 +20,6 @@ import java.util.Comparator;
 import java.util.concurrent.Semaphore;
 
 public class EntityManager {
-    final GameInfo info;
     final Engine engine;
     final Comparator<Entity> comparator;
     final Array<Entity> entities;
@@ -48,7 +47,6 @@ public class EntityManager {
             }
             return Float.compare(o2.get(PhysicsComponent.class).getPosition().y, o1.get(PhysicsComponent.class).getPosition().y);
         };
-        info = engine.info;
         queue = engine.getQueue();
         entities = engine.getEntities();
 
@@ -73,9 +71,9 @@ public class EntityManager {
         }
         entities.sort(comparator);
 
-        info.core.batch.begin();
+        engine.game.core.batch.begin();
         drawSkills();
-        info.core.batch.end();
+        engine.game.core.batch.end();
     }
 
     public void sort() {
@@ -88,7 +86,7 @@ public class EntityManager {
     private void drawSkills() {
         for (Entity e : entities) {
             if (ManagerCamera.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y) && e instanceof Humanoid) {
-                ((Humanoid) e).getSkillset().draw(info.core.batch, elapsedTime);
+                ((Humanoid) e).getSkillset().draw(engine.game.core.batch, elapsedTime);
             }
         }
     }
@@ -97,19 +95,19 @@ public class EntityManager {
      * Disegna le entità
      */
     public void drawPaths() {
-        info.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
+        engine.game.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entities) {
             if (ManagerCamera.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y)) {
                 try {
                     if (e instanceof Humanoid human) {
-                        human.drawPath(info.core.renderer);
+                        human.drawPath(engine.game.core.renderer);
                     }
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.get(DirectionComponent.class).direction);
                 }
             }
         }
-        info.core.renderer.end();
+        engine.game.core.renderer.end();
     }
 
     /**

@@ -9,15 +9,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.Core;
+import progetto.core.CoreConfig;
 import progetto.core.Gui;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StateComponent;
@@ -30,11 +31,13 @@ import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.graphics.shaders.specific.PlayerLight;
 import progetto.graphics.shaders.specific.Vignette;
 import progetto.input.DebugWindow;
+import progetto.input.KeyHandler;
 import progetto.input.TerminalCommand;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
 import progetto.player.inventory.Inventory;
 import progetto.screens.DefeatScreen;
+import progetto.screens.PauseScreen;
 import progetto.statemachines.ManagerGame;
 import progetto.world.CollisionManager;
 import progetto.world.WorldManager;
@@ -46,21 +49,31 @@ public class GameScreen implements Screen {
     // Costante per il passo fisico (60Hz)
     public static final float STEP = 1 / 60f;
 
-    private final TerminalCommand terminalCommand;
+
+
+    private Player player;
+
     private final GameTime time;
-    private final GameDrawer drawer;
+    private final ShaderPipeliner shaders;
+
+    private TerminalCommand terminal;
+    public Engine engine;
+    public MapManager map;
+    public Core core;
+    public SpriteBatch batch;
+
     public FitViewport viewport;
-    GameInfo info;
+
+
+
     DefaultStateMachine<GameScreen, ManagerGame> state;
     Cooldown resetTimeScale;
-    Box2DDebugRenderer debugHitbox;
+    Box2DDebugRenderer debug;
     private DebugWindow debugWindow;
     private Inventory inventory;
     private Gui gui;
     private float timeScale = 1f;
     private boolean loaded = false;
-
-    private Player player;
 
     /**
      * Costruttore del gioco
@@ -69,23 +82,73 @@ public class GameScreen implements Screen {
      */
     public GameScreen(final Core core) {
         GameLoader.loadWorld();
-        drawer = new GameDrawer(this);
+        this.core = core;
+        this.batch = core.batch;
+        this.shaders = new ShaderPipeliner(this);
         this.time = new GameTime();
 
-        this.terminalCommand = new TerminalCommand(this);
-        this.terminalCommand.start();
+        this.terminal = new TerminalCommand(this);
+        this.terminal.start();
+
         this.loadGame(core);
         CollisionManager listener = new CollisionManager();
         WorldManager.getInstance().setContactListener(listener);
 
     }
 
-    public GameDrawer getGameDrawer() {
-        return drawer;
+    public void update(float delta) {
+
+        time.update(delta); // Tempo aggiornato
+        SpriteBatch batch = core.batch;
+
+        if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
+            core.setScreen(new PauseScreen(core, this));
+        }
+
+        // Aggiorna il gioco finché necessario
+        while (time.getAccumulator() >= STEP) {
+            float scaledTime = STEP * getTimeScale();
+            WorldManager.getInstance().step(scaledTime, 8, 8);
+            // Disegna il gioco
+            step(scaledTime);
+            WorldManager.update();
+            time.setAccumulator(time.getAccumulator() - STEP);
+            KeyHandler.input();
+        }
+
+        getGameDrawer().draw(batch);
+
     }
 
-    public Player getPlayer() {
-        return player;
+    /**
+     * Aggiorna lo stato di gioco
+     * @param delta tempo trascorso dall'ultimo frame
+     */
+    public void step(float delta) {
+
+        Player player = engine.player();
+        StateComponent state = player.components.get(StateComponent.class);
+        if (!state.isAlive()) {
+            core.setScreen(new DefeatScreen(core));
+        }
+
+        // Aggiorna la logica delle entità
+        engine.render(delta);
+
+        // Aggiorna la mappa
+        map.render();
+
+        // Aggiorna la telecamera
+        ManagerCamera.update(engine, viewport, time.delta, false);
+
+        this.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
+        this.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
+
+        // Gestisci la scala del tempo
+        this.resetTimeScale.update(delta);
+        if (this.resetTimeScale.isReady) {
+            this.timeScale = 1f;
+        }
     }
 
     @Override
@@ -93,37 +156,42 @@ public class GameScreen implements Screen {
         // Inizializza la finestra di debug
         initializeDebugWindow();
 
-        // Carica gli asset
-        loadAssets();
-
         // Inizializza gli oggetti di gioco
-        initializeGameObjects();
+        loadGameEngine();
 
         // Inizializza il renderer di Box2D
-        initializeBox2DRenderer();
+        debug = new Box2DDebugRenderer();
+        debug.setDrawVelocities(true);
 
         // Verifica lo stato del giocatore e gestisci il respawn
-        checkPlayerRespawn();
+        StateComponent state = player.get(StateComponent.class);
+        if (!state.isAlive()) {
+            player.respawn();
+        }
 
         // Imposta la posizione della telecamera
-        updateCameraPosition();
+        ManagerCamera.getInstance().update();
     }
 
     private void initializeDebugWindow() {
-        Skin skin = new Skin(Gdx.files.internal("skins/metal-ui.json"));
-        debugWindow = new DebugWindow(this, "Debug", skin);
-        Window.WindowStyle style = new Window.WindowStyle();
-        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("WindowUi.png")), 7, 7, 7, 7 );
-        NinePatchDrawable drawable = new NinePatchDrawable(patch);
-        style.background = drawable;
-        style.titleFont = new BitmapFont();
-        inventory = new Inventory(this, "Inventory", style);
+        debugWindow = new DebugWindow(this);
+        inventory = new Inventory(getWindowStyle());
+
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(debugWindow.getStage());   // Processa gli input per la scena principale
         inputMultiplexer.addProcessor(inventory.getStage());  // Processa gli input per la finestra di debug
 
         // Imposta l'input processor globale
         Gdx.input.setInputProcessor(inputMultiplexer);
+    }
+
+    public Window.WindowStyle getWindowStyle() {
+        Window.WindowStyle style = new Window.WindowStyle();
+        NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("WindowUi.png")), 7, 7, 7, 7 );
+        NinePatchDrawable drawable = new NinePatchDrawable(patch);
+        style.background = drawable;
+        style.titleFont = new BitmapFont();
+        return style;
     }
 
     private void loadAssets() {
@@ -136,20 +204,20 @@ public class GameScreen implements Screen {
         Core.assetManager.load("entities/nemico.png", Texture.class);
         Core.assetManager.load("entities/Finn/attack/sword.png", Texture.class);
         Core.assetManager.finishLoading();
-
     }
 
-    private void initializeGameObjects() {
+    private void loadGameEngine() {
         if (!loaded) {
-            info.engine = new Engine(this.info);
-
-
+            this.loadAssets();
             Core.assetManager.finishLoading();
 
-            EntityConfig p = EntityConfigFactory.createPlayerConfig();
-            player = new Player(p, info.engine);
+            engine = new Engine(this);
 
-            info.engine.summon(player);
+
+            EntityConfig p = EntityConfigFactory.createPlayerConfig();
+            player = new Player(p, engine);
+
+            engine.summon(player);
 
 //            for (int i = 0; i < 10; i++) {
 //                for (int j = 0; j < 10; j++) {
@@ -158,9 +226,9 @@ public class GameScreen implements Screen {
 //                    //
 //                }
 //            }
-            info.engine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, info.engine, null));
+            engine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, engine, null));
 
-            info.engine.addSystem(
+            engine.addSystem(
                 new CullingSystem(),
                 new CooldownSystem(),
                 new UserInputSystem(),
@@ -176,107 +244,29 @@ public class GameScreen implements Screen {
                 new KnockbackSystem(),
                 new ItemHoldingSystem()
             );
-            info.mapManager = new MapManager(viewport, this.info.engine, 1);
+
+            map = new MapManager(viewport, engine, 1);
+
             loaded = true;
-            drawer.addShader(Vignette.getInstance());
-            drawer.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
-            drawer.addShader(PlayerLight.getInstance(getEntityManager().player(), 0.10f));
+            shaders.addShader(Vignette.getInstance());
+            shaders.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
+            shaders.addShader(PlayerLight.getInstance(engine.player(), 0.10f));
         }
-    }
-
-    private void checkPlayerRespawn() {
-        StateComponent state = getEntityManager().player().components.get(StateComponent.class);
-        if (!state.isAlive()) {
-            getEntityManager().player().respawn();
-        }
-    }
-
-    private void updateCameraPosition() {
-
-        ManagerCamera.getInstance().update();
-    }
-
-    private void initializeBox2DRenderer() {
-        debugHitbox = new Box2DDebugRenderer();
-        debugHitbox.setDrawVelocities(true);
     }
 
     @Override
     public void render(float delta) {
-        //info.screen.setTimeScale(3f, 1f);
-        // Controlla se il giocatore è morto
-        checkPlayerDeath();
-
-        // Aggiorna la scala del tempo
-        updateTimeScale(delta);
 
         // Gestisci il rendering della vignetta
-        drawWithShaders(delta);
+        update(delta);
 
         // Disegna la finestra di debug
         debugWindow.updateDebugInfo(Gdx.graphics.getFramesPerSecond(), Gdx.app.getJavaHeap());
         debugWindow.update();
         inventory.update();
-    }
-
-    public void updateWorld() {
-        WorldManager.update();
-    }
-
-    private void checkPlayerDeath() {
-        Player player = this.info.engine.player();
-        StateComponent state = player.components.get(StateComponent.class);
-        if (!state.isAlive()) {
-            info.core.setScreen(new DefeatScreen(info.core));
-        }
-    }
-
-    public void drawWithShaders(float delta) {
-        //Lettura dello schermo
-
-        time.update(delta); // Tempo aggiornato
-        state.update(); // Aggiorno il gioco
-
 
     }
 
-    /**
-     * Aggiorna lo stato di gioco
-     *
-     * @param delta tempo trascorso dall'ultimo frame
-     */
-    public void update(float delta) {
-        // Aggiorna la logica delle entità
-        updateEntities(delta);
-
-        // Aggiorna la mappa
-        updateMap();
-
-        // Aggiorna la telecamera
-        updateCamera();
-
-        // Gestisci la scala del tempo
-        updateTimeScale(delta);
-    }
-
-    private void updateEntities(float delta) {
-        this.getEntityManager().render(delta);
-    }
-
-    private void updateMap() {
-        this.getMapManager().render();
-    }
-
-    private void updateCamera() {
-        this.updateCamera(this.getMapManager().disegnaUI());
-    }
-
-    private void updateTimeScale(float delta) {
-        this.resetTimeScale.update(delta);
-        if (this.resetTimeScale.isReady) {
-            this.timeScale = 1f;
-        }
-    }
 
     /**
      * Disegna il gioco (Mappa, entità, ui)
@@ -286,54 +276,42 @@ public class GameScreen implements Screen {
         Color darkGray = new Color(0.3f, 0.3f, 0.3f, 1.0f); // Grigio scuro
         ScreenUtils.clear(darkGray); // Clear dello schermo
         // Renderizza la mappa
-        renderMap();
+        this.drawMap();
         // Renderizza le entità
-        renderEntities();
+        engine.draw();
 
         // Esegui il rendering del debug se attivato
-        if (DebugWindow.renderHitboxes()) debug();
+        if (DebugWindow.renderHitboxes()) debug.render(WorldManager.getInstance(), ManagerCamera.getInstance().combined);
 
         // Se necessario, disegna la GUI
-        if (getMapManager().disegnaUI()) {
-            renderGUI();
+        if (map.disegnaUI()) {
+            gui.draw();
         }
     }
 
-    private void renderMap() {
-        OrthogonalTiledMapRenderer mapRenderer = this.info.mapManager.getMap().getMapRenderer();
+    private void drawMap() {
+        OrthogonalTiledMapRenderer mapRenderer = map.getMap().getMapRenderer();
         ManagerCamera.getInstance().update();
         mapRenderer.setView(ManagerCamera.getInstance());
 
         mapRenderer.render();
         if (DebugWindow.renderPathfinding()) {
-            Map.getGraph().drawConnections(info.core.renderer);
-            Map.getGraph().drawNodes(info.core.renderer);
+            Map.getGraph().drawConnections(core.renderer);
+            Map.getGraph().drawNodes(core.renderer);
         }
-    }
-
-    private void renderEntities() {
-        this.getEntityManager().draw();
-    }
-
-    private void renderGUI() {
-        gui.draw();
     }
 
     // Getter per variabili principali
     public Engine getEntityManager() {
-        return this.info.engine;
+        return engine;
     }
 
-    public MapManager getMapManager() {
-        return this.info.mapManager;
+    public MapManager getMap() {
+        return map;
     }
 
     public float getTimeScale() {
         return timeScale;
-    }
-
-    public GameInfo getInfo() {
-        return this.info;
     }
 
     /**
@@ -344,9 +322,7 @@ public class GameScreen implements Screen {
     public void loadGame(final Core core) {
         this.state = new DefaultStateMachine<>(this);
         this.state.changeState(ManagerGame.PLAYING);
-        this.info = new GameInfo();
-        this.info.core = core;
-        this.info.screen = this;
+        this.core = core;
         this.resetTimeScale = new Cooldown(0);
         this.gui = new Gui(this);
         this.viewport = new FitViewport(16f, 9f, ManagerCamera.getInstance());
@@ -364,31 +340,6 @@ public class GameScreen implements Screen {
         resetTimeScale.reset(time);
     }
 
-    /**
-     * Disegna le hitbox di gioco
-     */
-    private void debug() {
-        // Renderizza il debug di Box2D
-        debugHitbox.render(WorldManager.getInstance(), ManagerCamera.getInstance().combined);
-    }
-
-    /**
-     * Aggiorna la telecamera
-     *
-     * @param boundaries richiesta di controllare i bordi della mappa
-     */
-    public void updateCamera(boolean boundaries) {
-        // Aggiorna la posizione della telecamera
-        ManagerCamera.update(info.engine, viewport, time.delta, false);
-
-        this.info.core.batch.setProjectionMatrix(ManagerCamera.getInstance().combined);
-        this.info.core.renderer.setProjectionMatrix(ManagerCamera.getInstance().combined);
-    }
-
-    public GameTime getTime() {
-        return time;
-    }
-
     @Override
     public void pause() {
     }
@@ -399,6 +350,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
+        this.terminal.stopRunning();
     }
 
     @Override
@@ -410,8 +362,18 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         // Pulisce le risorse utilizzate
-        this.info.core.batch.dispose();
-        this.info.core.renderer.dispose();
-        this.terminalCommand.stopRunning();
+        this.core.batch.dispose();
+        this.core.renderer.dispose();
+        this.terminal.stopRunning();
     }
+
+
+    public ShaderPipeliner getGameDrawer() {
+        return shaders;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
 }

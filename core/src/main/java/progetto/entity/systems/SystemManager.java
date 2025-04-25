@@ -16,7 +16,7 @@ public class SystemManager {
 
     public SystemManager(Engine engine) {
         logicSystems = new LinkedHashMap<>();
-        drawingSystem = new DrawingSystem(engine.info.core.batch);
+        drawingSystem = new DrawingSystem(engine.game.core.batch);
     }
 
     public void add(System... systems) {

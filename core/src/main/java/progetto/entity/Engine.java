@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.core.Core;
 import progetto.core.game.GameInfo;
+import progetto.core.game.GameScreen;
 import progetto.entity.entities.EntityManager;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
@@ -28,7 +29,7 @@ public final class Engine {
     public static final short WALL = 0;
     public static final short RANGE = 0x0010;
 
-    public final GameInfo info;
+    public final GameScreen game;
     private final EntityManager renderer;
     private final SystemManager systemManager;
 
@@ -38,8 +39,8 @@ public final class Engine {
     public float delta;
     public float elapsedTime;
 
-    public Engine(GameInfo info) {
-        this.info = info;
+    public Engine(GameScreen gameScreen) {
+        this.game = gameScreen;
         this.entities = new Array<>();
         this.queue = new Queue<>();
         this.systemManager = new SystemManager(this);
@@ -124,7 +125,7 @@ public final class Engine {
     }
 
     public Player player() {
-        return info.screen.getPlayer();
+        return game.getPlayer();
     }
 
     public void remove(Entity e) {

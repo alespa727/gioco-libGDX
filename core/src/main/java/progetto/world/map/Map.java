@@ -46,7 +46,7 @@ public class Map implements Disposable {
         this.nome = name;
 
         TiledMap map = new TmxMapLoader().load("maps/".concat(name).concat(".tmx")); // Carico il file dalla memoria
-        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, manager.info.core.batch); // Inizializzazione map renderer
+        mapRenderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, manager.game.batch); // Inizializzazione map renderer
 
         for (TiledMapTileSet tileset : map.getTileSets()) {
             for (TiledMapTile tile : tileset) {
