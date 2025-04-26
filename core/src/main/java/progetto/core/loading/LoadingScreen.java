@@ -227,7 +227,7 @@ public class LoadingScreen implements Screen {
         batch.draw(animation.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
         batch.draw(shadow.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
         batch.end();
-
+        drawGridDebug();
     }
 
     public void drawMap(){

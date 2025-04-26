@@ -13,6 +13,7 @@ import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.systems.specific.*;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
+import progetto.input.DebugWindow;
 import progetto.input.KeyHandler;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
@@ -87,7 +88,7 @@ public class GameEngine {
         }
 
         game.getGameDrawer().draw(batch);
-//        game.getRenderer().draw();
+        if (DebugWindow.renderHitboxes()) game.getRenderer().draw();
 
 
     }

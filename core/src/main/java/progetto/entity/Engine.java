@@ -1,14 +1,19 @@
 package progetto.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import progetto.core.Core;
 import progetto.core.game.GameScreen;
 import progetto.entity.entities.EntityManager;
 import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
 import progetto.entity.entities.specific.living.combat.boss.BossInstance;
 import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
+import progetto.entity.entities.specific.notliving.Casa;
 import progetto.entity.systems.SystemManager;
 import progetto.entity.systems.base.System;
 import progetto.factories.EntityFactory;
@@ -37,6 +42,26 @@ public final class Engine {
         this.queue = new Queue<>();
         this.systemManager = new SystemManager(this);
         this.renderer = new EntityManager(this);
+//
+//        EntityConfig config = new EntityConfig();
+//        config.nome = "Casa";
+//        config.descrizione = "Spada tagliente";
+//        config.x = 1;
+//        config.y = 1;
+//        config.img = Core.assetManager.get("entities/Finn/attack/sword.png", Texture.class);
+//        config.radius = 10 / 32f;
+//        config.direzione = new Vector2(0, -0.5f);
+//        config.isAlive = true;
+//        config.inCollisione = false;
+//        config.isMoving = false;
+//        config.hp = 100;
+//        config.speed = 1.25f;
+//        config.attackdmg = 20;
+//        config.imageHeight = 2f;
+//        config.imageWidth = 2f;
+//
+//        summon(new Casa(config, this, 5));
+
     }
 
     public void addEntityToSystems(Entity e) {
