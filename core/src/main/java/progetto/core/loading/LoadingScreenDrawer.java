@@ -8,14 +8,12 @@ import progetto.graphics.shaders.base.Shader;
 
 
 public class LoadingScreenDrawer{
-    private final TextDrawer textDrawer;
     private final Array<Shader> shaders;
     private final LoadingScreen screen;
 
     public LoadingScreenDrawer(LoadingScreen screen) {
         shaders = new Array<>();
         this.screen = screen;
-        this.textDrawer = new TextDrawer();
     }
 
     public void addShader(Shader shader) {
@@ -28,7 +26,7 @@ public class LoadingScreenDrawer{
 
     public void draw(SpriteBatch batch) {
 
-        if (shaders.size == 0) {
+        if (shaders.size <= 0) {
             screen.draw();
             return;
         }
@@ -47,6 +45,5 @@ public class LoadingScreenDrawer{
 
         Shader finalOutput = shaders.get(shaders.size - 1);
         finalOutput.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
     }
 }

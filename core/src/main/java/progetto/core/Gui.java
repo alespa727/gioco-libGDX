@@ -58,7 +58,7 @@ public class Gui {
 
     public void barravita() {
         batch.begin();
-        progressBar.draw(batch);
+        progressBar.draw(batch, Color.RED, 1);
         batch.end();
     }
 
