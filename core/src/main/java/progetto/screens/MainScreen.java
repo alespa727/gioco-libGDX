@@ -83,7 +83,7 @@ public class MainScreen implements Screen {
         button.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                final Style style = new Style("skins/metal-ui.json", "fonts/MonicaGarden-G3OGD.ttf", 30, Color.BLACK, "fonts/MonicaGarden-G3OGD.ttf", 30, Color.BLACK, null, null, null);
+                final Style style = new Style("skins/metal-ui.json", "fonts/myfont2.ttf", 30, Color.BLACK, "fonts/myfont2.ttf", 30, Color.BLACK, null, null, null);
                 ControllerImpostazioni controllerImpostazioni = new ControllerImpostazioni(game, style);
 
                 controllerImpostazioni.setViewImpostazioni(controllerImpostazioni.creaImpostazioni(controllerImpostazioni.getModelImpostazioni()));

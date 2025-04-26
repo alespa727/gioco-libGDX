@@ -654,8 +654,8 @@ public class ControllerImpostazioni {
             })
         );
 
-        this.aggiungiActorATabella(tableInterna, labelTesto, 5);
-        this.aggiungiActorATabella(tableInterna, slider, 5);
+        tableInterna.add(labelTesto).pad(5).size(100, 50);
+        tableInterna.add(slider).pad(5).size(100, 50);
 
         this.aggiungiActorATabella(table, tableInterna, 5);
     }
