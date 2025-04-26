@@ -25,7 +25,7 @@ public class DefaultAnimationSet extends AnimationSet {
 
         salvaAnimazioni();
 
-        float offset = MathUtils.random(0f, 0.2f);
+        float offset = MathUtils.random(0f, 0.1f);
         float animSpeed = 1f / 5f + offset;
         float idleSpeed = 0.5f + offset;
 

@@ -24,15 +24,17 @@ public class LoadingScreenDrawer{
         shaders.removeValue(shader, false);
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, float delta) {
 
         if (shaders.size <= 0) {
-            screen.draw();
+            screen.draw(delta);
+            screen.drawUI(delta);
             return;
         }
 
         shaders.get(0).begin();
-        screen.draw();
+        screen.draw(delta);
+        screen.drawUI(delta);
         shaders.get(0).end();
 
         for (int i = 1; i < shaders.size; i++) {

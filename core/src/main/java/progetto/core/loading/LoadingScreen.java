@@ -6,21 +6,30 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import progetto.core.Core;
 import progetto.core.game.GameScreen;
 import progetto.core.game.TextDrawer;
+import progetto.entity.components.specific.base.Cooldown;
 import progetto.graphics.animations.DefaultAnimationSet;
 import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.graphics.shaders.specific.Vignette;
@@ -29,183 +38,285 @@ import progetto.world.WorldManager;
 
 public class LoadingScreen implements Screen {
 
-    // Constanti
-    public final int larghezza = 16;
-    public final int altezza = 9;
-    private final float larghezzaBlocco;
+    // Costanti e variabili di configurazione
+    private static final int LARGHEZZA = 16;
+    private static final int ALTEZZA = 9;
 
-    // Game variabili
-    DefaultAnimationSet animation;
-    DefaultAnimationSet shadow;
-    Vector2 direction;
-    Vector2 speed;
-    Vector2 position;
-    Vector2 objective;
-    Vector2 size;
-    float time;
-    float accumulator = 0;
+    // Variabili grafiche e di gioco
+    private float larghezzaBlocco;
+    private DefaultAnimationSet animation;
+    private DefaultAnimationSet shadow;
+    private Vector2 direction;
+    private Vector2 speed;
+    private Vector2 position;
+    private Vector2 objective;
+    private Vector2 size;
+    private float time;
+    private float accumulator = 0;
+    private Cooldown cooldown;
 
-    // Drawing component
-    ShapeRenderer shapeRenderer;
-    SpriteBatch batch;
-    LoadingScreenDrawer drawer;
+    // Componenti di disegno
+    private ShapeRenderer shapeRenderer;
+    private SpriteBatch batch;
+    SpriteBatch mapBatch;
+    private LoadingScreenDrawer drawer;
 
-    // UI component
-    ProgressBar progressBar;
-    Stage stage;
-    OrthographicCamera camera;
-    Viewport viewport;
+    // Componenti UI
+    private ProgressBar progressBar;
+    private TextButton textButton;
+    private Stage stage;
+    private OrthographicCamera camera;
+    private OrthographicCamera camera2;
+    private Viewport viewport;
+    private Viewport viewport2;
+    private Table table;
+    private TextDrawer textDrawer;
 
-    // Game state
-    Screen screen;
-    Core core;
-    TextDrawer textDrawer;
+    // Stato di gioco
+    private Screen nextScreen;
+    private Core core;
+
+    TiledMap map;
+    TiledMapRenderer renderer;
 
     public LoadingScreen(Core core, Screen nextScreen, float minTime, float maxTime) {
+        this.core = core;
+        this.nextScreen = nextScreen;
         core.setScreen(this);
+        cooldown = new Cooldown(0.4f);
+        cooldown.reset();
+
+        initAssetLoading();
+        initGameVariables(minTime, maxTime);
+        initGraphics();
+        initUI();
+    }
+
+    // --- SETUP ---
+
+    private void initAssetLoading() {
         Core.assetManager.load("entities/Player_shadow.png", Texture.class);
         Core.assetManager.finishLoading();
-        this.core = core;
-        this.textDrawer = new TextDrawer();
+    }
 
+    private void initGameVariables(float minTime, float maxTime) {
         time = MathUtils.random(minTime, maxTime);
-        larghezzaBlocco = (float) Gdx.graphics.getWidth() / larghezza;
+        larghezzaBlocco = (float) Gdx.graphics.getWidth() / LARGHEZZA;
 
-        // Game setup
+        animation = new DefaultAnimationSet(Core.assetManager.get("entities/Finn.png"));
+        shadow = new DefaultAnimationSet(Core.assetManager.get("entities/Player_shadow.png"));
+
+        position = new Vector2(5 * larghezzaBlocco, 4.5f * larghezzaBlocco);
+        objective = new Vector2(11 * larghezzaBlocco, 4.5f * larghezzaBlocco);
+        size = new Vector2(larghezzaBlocco*1.5f, larghezzaBlocco*1.5f);
+        speed = new Vector2(position.dst(objective) / time / larghezzaBlocco, 0);
+        direction = new Vector2(1, 0);
+    }
+
+    private void initGraphics() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         drawer = new LoadingScreenDrawer(this);
-        drawer.addShader(Vignette.getInstance());
-        drawer.addShader(ColorFilter.getInstance(0.9f, 0.9f, 0.9f));
-        this.screen = nextScreen;
 
-        // Animazione setup
-        animation = new DefaultAnimationSet(Core.assetManager.get("entities/Finn.png"));
-        shadow = new DefaultAnimationSet(Core.assetManager.get("entities/Player_shadow.png"));
-        position = new Vector2(5 * larghezzaBlocco, 4.5f * larghezzaBlocco);
-        objective = new Vector2(11 * larghezzaBlocco, 4.5f * larghezzaBlocco);
-        size = new Vector2(larghezzaBlocco * 1f, larghezzaBlocco * 1f);
-        speed = new Vector2(position.dst(objective) / time / larghezzaBlocco, 0);
-        direction = new Vector2(1, 0);
-        // UI Setup
+        drawer.addShader(Vignette.getInstance());
+        drawer.addShader(ColorFilter.getInstance(0.8f, 0.8f, 0.86f));
+    }
+
+    private void initUI() {
+        textDrawer = new TextDrawer();
+        textDrawer.setColor(Color.BLACK.cpy());
+
         progressBar = new ProgressBar(new Texture("WindowUi.png"), new Texture("ProgressBar2.png"));
         progressBar.setPosition(0.5f * larghezzaBlocco, 0.5f * larghezzaBlocco);
         progressBar.setSize(new Vector2(5 * larghezzaBlocco, 0.75f * larghezzaBlocco));
-        textDrawer.setColor(Color.BLACK.cpy());
     }
 
-    public void move(Vector2 speed) {
-        position.add(speed.scl(Gdx.graphics.getDeltaTime() * larghezzaBlocco));
-    }
-
-    public void drawGrid() {
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.BLUE.cpy().mul(0.4f));
-
-        for (int i = 0; i < larghezza; i++) {
-            shapeRenderer.line(i * larghezzaBlocco, 0, i * larghezzaBlocco, larghezzaBlocco * altezza);
-        }
-        for (int i = 0; i < altezza; i++) {
-            shapeRenderer.line(0, i * larghezzaBlocco, larghezzaBlocco * larghezza, i * larghezzaBlocco);
-        }
-
-        shapeRenderer.setColor(Color.RED.cpy());
-        shapeRenderer.rect(5 * larghezzaBlocco, 4f * larghezzaBlocco, 80, 80);
-        shapeRenderer.rect(10 * larghezzaBlocco, 4f * larghezzaBlocco, 80, 80);
-        shapeRenderer.rect(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
-        shapeRenderer.rectLine(position.x, position.y, objective.x, objective.y, 10);
-        shapeRenderer.end();
-    }
-
-    @Override
-    public void show() {
-        // Stage setup
+    private void setupStage() {
         stage = new Stage(new ScreenViewport());
-        stage.setDebugAll(true);
-        Table table = new Table();
+        stage.setDebugAll(false);
+        table = new Table();
+        table.top().left();
         table.setFillParent(true);
         stage.addActor(table);
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont2.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 25;
-        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        parameter.size = 40;
+        BitmapFont font = generator.generateFont(parameter);
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
-        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.fontColor = Color.BLACK;
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = font;
 
+        textButton = new TextButton("Loading...", buttonStyle);
+
+        textButton.getLabel().setAlignment(Align.left);
+        textButton.getLabelCell().padLeft(larghezzaBlocco*0.25f);
+
+        table.add(textButton)
+            .width(larghezzaBlocco * 5)
+            .height(larghezzaBlocco)
+            .minSize(larghezzaBlocco * 5, larghezzaBlocco)
+            .prefSize(larghezzaBlocco * 5, larghezzaBlocco)
+            .maxSize(larghezzaBlocco * 5, larghezzaBlocco)
+            .padLeft(larghezzaBlocco * 0.5f)
+            .padTop(larghezzaBlocco * 0.5f);
+    }
+
+    private void setupCamera() {
         camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
         viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
+        camera2 = new OrthographicCamera();
+        viewport2 = new ScreenViewport(camera);
+        camera2.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera2.update();
+        viewport2.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
     }
 
-    @Override
-    public void render(float delta) {
-        progressBar.setProgress(accumulator / time);
+    // --- METODI DI LOGICA ---
+
+    private void move(Vector2 speed) {
+        position.add(speed.scl(Gdx.graphics.getDeltaTime() * larghezzaBlocco));
+    }
+
+    private void updateLoading(float delta) {
         accumulator += delta;
-
-
-        WorldManager.update();
-        GameScreen screen1 = (GameScreen) screen;
-        screen1.getEntityManager().processQueue();
-
-        move(speed.cpy());;
-        drawer.draw(batch);
-        drawGrid();
+        cooldown.update(delta);
+        progressBar.setProgress(accumulator / time);
 
         if (accumulator >= time) {
-            core.setScreen(screen);
+            core.setScreen(nextScreen);
         }
 
-        stage.act(delta);
-        stage.draw();
+        if(cooldown.isReady){
+            cooldown.reset();
+            textButton.setText(getLoadingText(textButton.getText().toString()));
+        }
     }
 
-    public void draw() {
+    public String getLoadingText(String currentText) {
+        String baseText = currentText.replaceAll("\\.*$", ""); // Elimina i puntini
+        String dots = currentText.substring(baseText.length()); // Ottiene i puntini
+
+        dots = switch (dots.length()) {
+            case 0 -> "."; // Un puntino
+            case 1 -> ".."; // Due puntini
+            case 2 -> "..."; // Tre puntini
+            default -> ""; // Reset
+        };
+
+        return baseText + dots;
+    }
+
+    // --- DISEGNO ---
+
+    public void draw(float delta) {
         ScreenUtils.clear(Color.WHITE);
         viewport.apply();
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+        viewport2.apply();
 
+        batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
         progressBar.draw(batch, Color.BLACK, 0.5f);
         batch.draw(animation.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
         batch.draw(shadow.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
         batch.end();
-        textDrawer.drawText(batch, "LOADING..", larghezzaBlocco*0.75f, larghezzaBlocco*8.25f);
+
     }
+
+    public void drawMap(){
+        int mapWidth = map.getProperties().get("width", Integer.class);       // numero di tile in larghezza
+        int mapHeight = map.getProperties().get("height", Integer.class);     // numero di tile in altezza
+        int tilePixelWidth = map.getProperties().get("tilewidth", Integer.class);  // pixel di un tile
+        int tilePixelHeight = map.getProperties().get("tileheight", Integer.class); // pixel di un tile
+
+        float mapPixelWidth = mapWidth * tilePixelWidth;
+        float mapPixelHeight = mapHeight * tilePixelHeight;
+        camera2.zoom=0.4f;
+        camera2.position.set(mapPixelWidth / 2f, mapPixelHeight / 2f, 0);
+        camera2.update();
+        renderer.setView(camera2);
+        renderer.render();
+        //drawGridDebug();
+    }
+
+    public void drawUI(float delta) {
+        stage.act(delta);
+        stage.draw();
+    }
+
+    private void drawGridDebug() {
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLUE.cpy().mul(0.4f));
+
+        for (int i = 0; i < LARGHEZZA; i++) {
+            shapeRenderer.line(i * larghezzaBlocco, 0, i * larghezzaBlocco, larghezzaBlocco * ALTEZZA);
+        }
+        for (int i = 0; i < ALTEZZA; i++) {
+            shapeRenderer.line(0, i * larghezzaBlocco, larghezzaBlocco * LARGHEZZA, i * larghezzaBlocco);
+        }
+
+        shapeRenderer.setColor(Color.RED.cpy());
+        shapeRenderer.rect(5 * larghezzaBlocco, 4f * larghezzaBlocco, larghezzaBlocco, larghezzaBlocco);
+        shapeRenderer.rect(10 * larghezzaBlocco, 4f * larghezzaBlocco, larghezzaBlocco, larghezzaBlocco);
+        shapeRenderer.rect(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
+        shapeRenderer.rectLine(position.x, position.y, objective.x, objective.y, 10);
+        shapeRenderer.end();
+    }
+
+    // --- OVERRIDE SCREEN ---
+
+    @Override
+    public void show() {
+        larghezzaBlocco = (float) Gdx.graphics.getWidth() / LARGHEZZA;
+        setupStage();
+        setupCamera();
+
+        mapBatch = new SpriteBatch();
+        mapBatch.setProjectionMatrix(viewport2.getCamera().combined);
+
+        map = new TmxMapLoader().load("maps/loading.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, mapBatch);
+
+    }
+
+    @Override
+    public void render(float delta) {
+        WorldManager.update();
+        GameScreen screen1 = (GameScreen) nextScreen;
+        screen1.getEntityManager().processQueue();
+
+        move(speed.cpy());
+        drawer.draw(batch, delta);
+
+        updateLoading(delta);
+
+
+
+        //drawGridDebug(); // Debug opzionale
+    }
+
 
     @Override
     public void resize(int width, int height) {
-
         viewport.update(width, height, true);
         camera.setToOrtho(false, width, height);
         camera.update();
+
+        viewport2.update(width, height, true);
+        camera2.setToOrtho(false, width, height);
+        camera2.update();
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
+    @Override public void pause() {}
+    @Override public void resume() {}
+    @Override public void hide() {}
+    @Override public void dispose() {}
 }

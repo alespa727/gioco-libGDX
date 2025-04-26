@@ -12,16 +12,23 @@ public class TextDrawer{
     SpriteBatch batch;
     BitmapFont font;
     GlyphLayout layout;
+    FreeTypeFontGenerator generator;
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
     String text = "ciao";
 
     public TextDrawer(){
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont2.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont2.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 40;
         this.font = generator.generateFont(parameter);
         this.batch = new SpriteBatch();
         this.layout = new GlyphLayout();
+    }
+
+    public BitmapFont generateFont(int size) {
+        parameter.size = size;
+        return generator.generateFont(parameter);
     }
 
     public void setColor(Color color){
@@ -51,4 +58,16 @@ public class TextDrawer{
         this.font.draw(batch, text, x, y);
         batch.end();
     }
+
+    public void drawText(Batch batch, String text, float x, float y, int size){
+        // Calcola la posizione finale in base alla dimensione del testo
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(font, text);
+
+        // Imposta il batch per iniziare a disegnare
+        batch.begin();
+        font .draw(batch, layout, x, y);
+        batch.end();
+    }
+
 }

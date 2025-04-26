@@ -1,4 +1,4 @@
-package progetto.settings;
+package progetto.core.settings;
 
 import com.badlogic.gdx.Input;
 

@@ -65,7 +65,6 @@ public class Map implements Disposable {
 
         this.eventLayer = map.getLayers().get("eventi"); // Layer eventi
 
-        System.out.println("CIAO");
         Gdx.app.postRunnable(() -> engine.player().components.get(PhysicsComponent.class).teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
         ManagerCamera.getInstance().position.set(engine.player().get(PhysicsComponent.class).getPosition(), 0);
         ManagerCamera.getInstance().update();

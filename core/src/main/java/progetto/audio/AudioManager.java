@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 
-import progetto.settings.ModelImpostazioni;
+import progetto.core.settings.ModelImpostazioni;
 
 public class AudioManager {
 
