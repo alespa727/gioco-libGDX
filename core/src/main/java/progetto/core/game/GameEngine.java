@@ -87,6 +87,8 @@ public class GameEngine {
         }
 
         game.getGameDrawer().draw(batch);
+//        game.getRenderer().draw();
+
 
     }
 

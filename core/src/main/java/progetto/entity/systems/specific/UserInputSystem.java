@@ -82,6 +82,7 @@ public class UserInputSystem extends IterableSystem {
     private void stopMovement(Humanoid entity) {
         if (entity.get(DirectionComponent.class).direction.x == 1f || entity.get(DirectionComponent.class).direction.x == -1f)
             entity.get(DirectionComponent.class).direction.scl(0.5f, 1f);
+
         if (entity.get(DirectionComponent.class).direction.y == 1f || entity.get(DirectionComponent.class).direction.y == -1f)
             entity.get(DirectionComponent.class).direction.scl(1f, 0.5f);
     }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import progetto.core.Gui;
+import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.DebugWindow;
 import progetto.player.ManagerCamera;
 import progetto.player.inventory.Inventory;
@@ -30,6 +31,7 @@ public class GameRenderer {
 
     public void draw() {
         //Impostazione dello sfondo
+        ColorFilter.setColor(0.5f, 0.5f, 0.55f);
         Color darkGray = new Color(0.3f, 0.3f, 0.3f, 1.0f); // Grigio scuro
         ScreenUtils.clear(darkGray); // Clear dello schermo
         // Renderizza la mappa

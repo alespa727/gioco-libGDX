@@ -47,6 +47,6 @@ public class ShaderPipeliner {
         Player player = game.getEntityManager().player();
         Vector3 position = ManagerCamera.getInstance().project(new Vector3(player.get(PhysicsComponent.class).getPosition(), 0));
 
-        textDrawer.drawText(position.x, position.y+100);
+        textDrawer.drawCenteredText(position.x, position.y+100);
     }
 }

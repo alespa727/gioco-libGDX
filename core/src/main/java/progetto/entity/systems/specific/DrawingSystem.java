@@ -138,14 +138,15 @@ public class DrawingSystem extends IterableSystem {
             }
         }
 
-        if (entity.components.contains(ShadowComponent.class)) {
-            batch.draw(entity.components.get(ShadowComponent.class).animation.play(entity, "default", tempoTrascorso),
-                entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
-                entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,
-                entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
-        }
-
         try {
+            if (entity.components.contains(ShadowComponent.class)) {
+                batch.draw(entity.components.get(ShadowComponent.class).animation.play(entity, "default", tempoTrascorso),
+                    entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
+                    entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,
+                    entity.get(ConfigComponent.class).getConfig().imageWidth, entity.get(ConfigComponent.class).getConfig().imageHeight);
+            }
+
+
             batch.draw(entity.components.get(CustomAnimationComponent.class).getAnimation().play(entity, "default", tempoTrascorso),
                 entity.get(PhysicsComponent.class).getPosition().x - entity.get(ConfigComponent.class).getConfig().imageWidth / 2,
                 entity.get(PhysicsComponent.class).getPosition().y - entity.get(ConfigComponent.class).getConfig().imageHeight / 2,

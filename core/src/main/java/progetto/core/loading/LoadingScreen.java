@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,15 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import progetto.core.Core;
 import progetto.core.game.GameScreen;
-import progetto.entity.entities.base.EntityConfig;
-import progetto.factories.EntityConfigFactory;
+import progetto.core.game.TextDrawer;
 import progetto.graphics.animations.DefaultAnimationSet;
+import progetto.graphics.shaders.specific.ColorFilter;
+import progetto.graphics.shaders.specific.Vignette;
 import progetto.ui.ProgressBar;
 import progetto.world.WorldManager;
 
@@ -37,6 +36,7 @@ public class LoadingScreen implements Screen {
 
     // Game variabili
     DefaultAnimationSet animation;
+    DefaultAnimationSet shadow;
     Vector2 direction;
     Vector2 speed;
     Vector2 position;
@@ -59,10 +59,14 @@ public class LoadingScreen implements Screen {
     // Game state
     Screen screen;
     Core core;
+    TextDrawer textDrawer;
 
     public LoadingScreen(Core core, Screen nextScreen, float minTime, float maxTime) {
         core.setScreen(this);
+        Core.assetManager.load("entities/Player_shadow.png", Texture.class);
+        Core.assetManager.finishLoading();
         this.core = core;
+        this.textDrawer = new TextDrawer();
 
         time = MathUtils.random(minTime, maxTime);
         larghezzaBlocco = (float) Gdx.graphics.getWidth() / larghezza;
@@ -71,24 +75,23 @@ public class LoadingScreen implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         drawer = new LoadingScreenDrawer(this);
+        drawer.addShader(Vignette.getInstance());
+        drawer.addShader(ColorFilter.getInstance(0.9f, 0.9f, 0.9f));
         this.screen = nextScreen;
 
         // Animazione setup
         animation = new DefaultAnimationSet(Core.assetManager.get("entities/Finn.png"));
+        shadow = new DefaultAnimationSet(Core.assetManager.get("entities/Player_shadow.png"));
         position = new Vector2(5 * larghezzaBlocco, 4.5f * larghezzaBlocco);
         objective = new Vector2(11 * larghezzaBlocco, 4.5f * larghezzaBlocco);
-        size = new Vector2(larghezzaBlocco * 1.5f, larghezzaBlocco * 1.5f);
+        size = new Vector2(larghezzaBlocco * 1f, larghezzaBlocco * 1f);
         speed = new Vector2(position.dst(objective) / time / larghezzaBlocco, 0);
         direction = new Vector2(1, 0);
-
-        // GameScreen setup
-        GameScreen screen1 = (GameScreen) screen;
-        EntityConfig e = EntityConfigFactory.createEntityConfig("Finn", 8, 10);
-
         // UI Setup
         progressBar = new ProgressBar(new Texture("WindowUi.png"), new Texture("ProgressBar2.png"));
         progressBar.setPosition(0.5f * larghezzaBlocco, 0.5f * larghezzaBlocco);
         progressBar.setSize(new Vector2(5 * larghezzaBlocco, 0.75f * larghezzaBlocco));
+        textDrawer.setColor(Color.BLACK.cpy());
     }
 
     public void move(Vector2 speed) {
@@ -135,7 +138,6 @@ public class LoadingScreen implements Screen {
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
-        labelStyle.fontColor = Color.BLACK;
 
         camera = new OrthographicCamera();
         viewport = new ScreenViewport(camera);
@@ -146,7 +148,6 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.BLACK);
         progressBar.setProgress(accumulator / time);
         accumulator += delta;
 
@@ -155,9 +156,9 @@ public class LoadingScreen implements Screen {
         GameScreen screen1 = (GameScreen) screen;
         screen1.getEntityManager().processQueue();
 
-        move(speed.cpy());
-        drawGrid();
+        move(speed.cpy());;
         drawer.draw(batch);
+        drawGrid();
 
         if (accumulator >= time) {
             core.setScreen(screen);
@@ -168,14 +169,16 @@ public class LoadingScreen implements Screen {
     }
 
     public void draw() {
+        ScreenUtils.clear(Color.WHITE);
         viewport.apply();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        progressBar.draw(batch);
+        progressBar.draw(batch, Color.BLACK, 0.5f);
         batch.draw(animation.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
-
+        batch.draw(shadow.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
         batch.end();
+        textDrawer.drawText(batch, "LOADING..", larghezzaBlocco*0.75f, larghezzaBlocco*8.25f);
     }
 
     @Override

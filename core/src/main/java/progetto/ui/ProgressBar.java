@@ -1,5 +1,6 @@
 package progetto.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -57,6 +58,13 @@ public class ProgressBar {
     public void draw(Batch batch) {
         background.draw(batch, pos.x, pos.y, size.x, size.y);
         foreground.draw(batch, pos.x, pos.y, progress*size.x, size.y);
+    }
+
+    public void draw(Batch batch, Color color, float alpha) {
+        batch.setColor(color.cpy().mul(alpha));
+        background.draw(batch, pos.x, pos.y, size.x, size.y);
+        foreground.draw(batch, pos.x, pos.y, progress*size.x, size.y);
+        batch.setColor(Color.WHITE);
     }
 
 }
