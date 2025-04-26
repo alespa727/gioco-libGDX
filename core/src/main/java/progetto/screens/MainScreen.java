@@ -2,6 +2,7 @@ package progetto.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.Core;
+import progetto.settings.ControllerImpostazioni;
+import progetto.ui.Style;
 
 public class MainScreen implements Screen {
     private final Core game;
@@ -80,7 +83,14 @@ public class MainScreen implements Screen {
         button.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new Settings(game));
+                final Style style = new Style("skins/metal-ui.json", "fonts/MonicaGarden-G3OGD.ttf", 30, Color.BLACK, "fonts/MonicaGarden-G3OGD.ttf", 30, Color.BLACK, null, null, null);
+                ControllerImpostazioni controllerImpostazioni = new ControllerImpostazioni(game, style);
+
+                controllerImpostazioni.setViewImpostazioni(controllerImpostazioni.creaImpostazioni(controllerImpostazioni.getModelImpostazioni()));
+
+                controllerImpostazioni.getViewImpostazioni().setActorStage(controllerImpostazioni.getViewImpostazioni().getRoot());
+                game.setScreen(controllerImpostazioni.getViewImpostazioni());
+
                 return true;
             }
         });

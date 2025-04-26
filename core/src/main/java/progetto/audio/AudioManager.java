@@ -5,6 +5,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 
+import progetto.settings.ModelImpostazioni;
+
 public class AudioManager {
 
     private static final Array<Music> playlist = new Array<>();
@@ -23,11 +25,12 @@ public class AudioManager {
     }
 
     public static void playMusic(int index) {
+        playlist.get(index).setVolume(ModelImpostazioni.getMUSICA().getPosizione());
         playlist.get(index).play();
     }
 
     public static void playSound(int index) {
-        sounds.get(index).play();
+        sounds.get(index).play(ModelImpostazioni.getSUONI().getPosizione());
     }
 
     public static void stopMusic(int index) {
