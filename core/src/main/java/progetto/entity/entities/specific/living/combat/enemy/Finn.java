@@ -18,8 +18,8 @@ public final class Finn extends Enemy {
     }
 
     // Costruttore con EntityConfig
-    public Finn(EntityConfig config, Engine manager, Float attackcooldown) {
-        super(config, manager, attackcooldown);
+    public Finn(EntityConfig config, Engine manager) {
+        super(config, manager);
     }
 
     // === METODI ===

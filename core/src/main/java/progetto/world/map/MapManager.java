@@ -67,7 +67,7 @@ public class MapManager {
 
         // Creazione mappa e crea corpi/eventi rilevanti
         currentMap = new Map(nome, engine, this, x, y);
-        currentMap.createCollision();
+        currentMap.generateCollisions();
 
         loadMapEntities();
 

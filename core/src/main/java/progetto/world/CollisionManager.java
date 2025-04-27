@@ -11,7 +11,7 @@ import progetto.entity.entities.specific.living.combat.enemy.Enemy;
 import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.player.Player;
 import progetto.world.events.base.MapEvent;
-import progetto.world.events.specific.ChangeMapEvent;
+import progetto.world.events.specific.ChangeMap;
 import progetto.world.map.Map;
 
 public class CollisionManager implements ContactListener {
@@ -35,11 +35,11 @@ public class CollisionManager implements ContactListener {
 
 
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
-        if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {
+        if (dataA instanceof Player && dataB instanceof ChangeMap) {
             ((MapEvent) dataB).setActive(true);
             ((MapEvent) dataB).trigger((Entity) dataA);
             return;
-        } else if (dataB instanceof Player && dataA instanceof ChangeMapEvent) {
+        } else if (dataB instanceof Player && dataA instanceof ChangeMap) {
             ((MapEvent) dataA).setActive(true);
             ((MapEvent) dataA).trigger((Entity) dataB);
             return;
@@ -128,9 +128,9 @@ public class CollisionManager implements ContactListener {
         // e disattivo il MapEvent
 
         // Gestione eventi della mappa, controllando entrambe le configurazioni:
-        if (dataA instanceof Player && dataB instanceof ChangeMapEvent) {
+        if (dataA instanceof Player && dataB instanceof ChangeMap) {
             ((MapEvent) dataB).setActive(false);
-        } else if (dataB instanceof Player && dataA instanceof ChangeMapEvent) {
+        } else if (dataB instanceof Player && dataA instanceof ChangeMap) {
             ((MapEvent) dataA).setActive(false);
         }
 

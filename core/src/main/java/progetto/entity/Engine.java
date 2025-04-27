@@ -42,25 +42,6 @@ public final class Engine {
         this.queue = new Queue<>();
         this.systemManager = new SystemManager(this);
         this.renderer = new EntityManager(this);
-//
-//        EntityConfig config = new EntityConfig();
-//        config.nome = "Casa";
-//        config.descrizione = "Spada tagliente";
-//        config.x = 1;
-//        config.y = 1;
-//        config.img = Core.assetManager.get("entities/Finn/attack/sword.png", Texture.class);
-//        config.radius = 10 / 32f;
-//        config.direzione = new Vector2(0, -0.5f);
-//        config.isAlive = true;
-//        config.inCollisione = false;
-//        config.isMoving = false;
-//        config.hp = 100;
-//        config.speed = 1.25f;
-//        config.attackdmg = 20;
-//        config.imageHeight = 2f;
-//        config.imageWidth = 2f;
-//
-//        summon(new Casa(config, this, 5));
 
     }
 

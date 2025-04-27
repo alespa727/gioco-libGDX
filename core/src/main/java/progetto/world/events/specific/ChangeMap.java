@@ -12,15 +12,13 @@ import progetto.world.map.MapManager;
 /**
  * Evento di cambio mappa tramite {@link MapManager}
  */
-public class ChangeMapEvent extends MapEvent {
+public class ChangeMap extends MapEvent {
     private final MapManager mapManager;
     // Coordinate della prossima mappa
     private final float x;
     private final float y;
     // Prossima mappa
     private final int map;
-    // Gestore mappa
-    private Entity lastEntity;
 
     /**
      * Crea un evento di cambio mappa
@@ -35,7 +33,7 @@ public class ChangeMapEvent extends MapEvent {
      * @param x          coordinata x
      * @param y          coordinata y
      */
-    public ChangeMapEvent(Vector2 position, float radius, MapManager mapManager, int map, float x, float y) {
+    public ChangeMap(Vector2 position, float radius, MapManager mapManager, int map, float x, float y) {
         super(position, radius);
         this.x = x;
         this.y = y;

@@ -28,7 +28,7 @@ public abstract class Enemy extends Warrior {
         pursueMaxDistance = instance.pursueMaxDistance;
     }
 
-    public Enemy(EntityConfig config, Engine manager, float attackcooldown) {
+    public Enemy(EntityConfig config, Engine manager) {
         super(config, manager);
         viewDistance = 11f;
         pursueMaxDistance = 12f;

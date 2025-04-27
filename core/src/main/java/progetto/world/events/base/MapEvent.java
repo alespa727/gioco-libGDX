@@ -24,6 +24,7 @@ public abstract class MapEvent {
     protected final Vector2 position; // Posizione fisica dell'evento
     protected final float radius; // Raggio di attivazione evento
     protected boolean isActive; // Switch di attivazione dell'evento
+    protected boolean shouldRemove=false;
     private Body body;
 
     /**
@@ -46,6 +47,10 @@ public abstract class MapEvent {
      */
     public boolean isActive() {
         return isActive;
+    }
+
+    public boolean getShouldbeRemove() {
+        return shouldRemove;
     }
 
     /**
@@ -98,5 +103,6 @@ public abstract class MapEvent {
      */
     public void destroy() {
         WorldManager.destroyBody(body);
+        shouldRemove=true;
     }
 }

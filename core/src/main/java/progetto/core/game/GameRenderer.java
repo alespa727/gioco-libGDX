@@ -1,7 +1,6 @@
 package progetto.core.game;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -48,7 +47,7 @@ public class GameRenderer {
     }
 
     private void drawMap() {
-        OrthogonalTiledMapRenderer mapRenderer = game.getMap().getMap().getMapRenderer();
+        OrthogonalTiledMapRenderer mapRenderer = game.getMap().getMap().getRenderer();
         ManagerCamera.getInstance().update();
         mapRenderer.setView(ManagerCamera.getInstance());
 

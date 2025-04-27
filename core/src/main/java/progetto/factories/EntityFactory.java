@@ -16,9 +16,9 @@ import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.entity.entities.specific.notliving.Sword;
 
 public class EntityFactory {
-    public static Enemy createEnemy(String type, EntityConfig config, Engine manager, float attackCooldown) {
+    public static Enemy createEnemy(String type, EntityConfig config, Engine manager) {
         return switch (type) {
-            case "Finn" -> new Finn(config, manager, attackCooldown);
+            case "Finn" -> new Finn(config, manager);
             case null -> null;
             default -> throw new IllegalArgumentException("Tipo di nemico sconosciuto: " + type);
         };
