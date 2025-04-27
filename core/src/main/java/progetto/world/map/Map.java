@@ -42,7 +42,7 @@ public class Map implements Disposable {
         this.map = new TmxMapLoader().load("maps/".concat(nome).concat(".tmx"));
         this.renderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, engine.game.batch);
         loadTextureFilter();
-        this.eventManager = new EventManager(this, mapManager);
+        this.eventManager = new EventManager(this, mapManager, engine);
         this.eventManager.create(map.getLayers().get("eventi"));
 
         // Salvataggio grandezza mappa
@@ -50,12 +50,14 @@ public class Map implements Disposable {
         height = (Integer) map.getProperties().get("height");
 
         // Crea un grafo basatosi sulle collisioni
-        this.generator = new CollisionGenerator((TiledMapTileLayer) map.getLayers().get("collisioni"));
+        this.generator = new CollisionGenerator((TiledMapTileLayer) map.getLayers().get("collisioni"), this);
         graph = new GameGraph(width, height, generator.getCollision());
 
-        Gdx.app.postRunnable(() -> engine.player().get(PhysicsComponent.class).teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
-        ManagerCamera.getInstance().position.set(engine.player().get(PhysicsComponent.class).getPosition(), 0);
-        ManagerCamera.getInstance().update();
+        if (engine.player().contains(PhysicsComponent.class)) {
+            Gdx.app.postRunnable(() -> engine.player().get(PhysicsComponent.class).teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+            ManagerCamera.getInstance().position.set(engine.player().get(PhysicsComponent.class).getPosition(), 0);
+            ManagerCamera.getInstance().update();
+        }
 
         // Variabili di controllo
         isGraphLoaded = true;

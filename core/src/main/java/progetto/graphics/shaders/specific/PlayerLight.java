@@ -43,6 +43,9 @@ public class PlayerLight extends Shader {
 
     @Override
     public void begin() {
+        if (!e.contains(PhysicsComponent.class)) {
+            return;
+        }
         frameBuffer.begin();
         Vector3 position = new Vector3(e.get(PhysicsComponent.class).getPosition(), 0);
         Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
@@ -52,6 +55,9 @@ public class PlayerLight extends Shader {
     }
 
     public void begin(Vector3 position, float intensity) {
+        if (!e.contains(PhysicsComponent.class)) {
+            return;
+        }
         frameBuffer.begin();
         float normX = position.x / Gdx.graphics.getWidth();
         float normY = position.y / Gdx.graphics.getHeight();
@@ -61,11 +67,17 @@ public class PlayerLight extends Shader {
 
     @Override
     public void end() {
+        if (!e.contains(PhysicsComponent.class)) {
+            return;
+        }
         frameBuffer.end();
     }
 
     @Override
     public void draw(SpriteBatch batch) {
+        if (!e.contains(PhysicsComponent.class)) {
+            return;
+        }
         Texture texture = frameBuffer.getColorBufferTexture();
         TextureRegion region = new TextureRegion(texture);
         region.flip(false, true);

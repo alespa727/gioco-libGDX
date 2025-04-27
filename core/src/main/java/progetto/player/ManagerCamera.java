@@ -40,8 +40,9 @@ public class ManagerCamera {
     }
 
     public static boolean isWithinFrustumBounds(float x, float y) {
+        float offset = 5f;
         // Check if x and y are within the frustum's bounds
-        return x > frustumCorners[0].x - 2f && y > frustumCorners[0].y - 2f && x < frustumCorners[2].x + 2f && y < frustumCorners[2].y + 2f;
+        return x > frustumCorners[0].x - offset && y > frustumCorners[0].y - offset && x < frustumCorners[2].x + offset && y < frustumCorners[2].y + offset;
     }
 
     public static void smoothTransitionTo(Vector2 coords) {
@@ -80,7 +81,9 @@ public class ManagerCamera {
         cooldown.update(delta);
 
         if (!cooldown.isReady) shake();
-        smoothTransitionTo(new Vector2(entities.player().get(PhysicsComponent.class).getPosition().x, entities.player().get(PhysicsComponent.class).getPosition().y));
+        if (entities.player().contains(PhysicsComponent.class)) {
+            smoothTransitionTo(new Vector2(entities.player().get(PhysicsComponent.class).getPosition().x, entities.player().get(PhysicsComponent.class).getPosition().y));
+        }
         if (boundaries) boundaries(new Vector3(x, y, 0), Map.width() - x * 2, Map.height() - y * 2);
         viewport.apply();
         camera.update();

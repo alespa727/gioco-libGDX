@@ -22,9 +22,8 @@ public class SpawnCasa extends MapEvent {
      * @param position  posizione centrale dell’evento
      * @param radius    raggio entro cui l’evento può attivarsi
      * @param engine    gestore entità
-     * @param enemyType tipo di nemico
      */
-    public SpawnCasa(Vector2 position, float radius, Engine engine, String enemyType) {
+    public SpawnCasa(Vector2 position, float radius, Engine engine) {
         super(position, radius);
         this.engine = engine;
         this.trigger(null);
@@ -41,8 +40,8 @@ public class SpawnCasa extends MapEvent {
         EntityConfig config = new EntityConfig();
         config.nome = "Casa";
         config.descrizione = "Spada tagliente";
-        config.x = 1;
-        config.y = 1;
+        config.x = position.x;
+        config.y = position.y;
         config.img = Core.assetManager.get("entities/Finn/attack/sword.png", Texture.class);
         config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
@@ -55,6 +54,6 @@ public class SpawnCasa extends MapEvent {
         config.imageHeight = 2f;
         config.imageWidth = 2f;
 
-        engine.summon(new Casa(config, engine, 5));
+        engine.summon(new Casa(config, engine, 6));
     }
 }

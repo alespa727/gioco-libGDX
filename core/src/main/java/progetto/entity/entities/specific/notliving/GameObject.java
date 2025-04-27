@@ -51,7 +51,7 @@ public class GameObject extends Entity {
      */
     @Override
     public EntityInstance unregister() {
-        return new EntityInstance(this);
+        return null;
     }
 
 }

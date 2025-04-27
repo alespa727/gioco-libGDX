@@ -61,7 +61,9 @@ public abstract class Entity {
             new ColorComponent()
         );
 
-        get(PhysicsComponent.class).createBody();
+        if (contains(PhysicsComponent.class)) {
+            get(PhysicsComponent.class).createBody();
+        }
     }
 
     /**
@@ -85,7 +87,10 @@ public abstract class Entity {
             new ColorComponent()
         );
 
-        get(PhysicsComponent.class).createBody();
+        if (contains(PhysicsComponent.class)) {
+            get(PhysicsComponent.class).createBody();
+        }
+
         System.out.println(config.id);
     }
 

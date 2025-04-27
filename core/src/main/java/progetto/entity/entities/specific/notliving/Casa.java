@@ -28,4 +28,5 @@ public class Casa extends GameObject {
         super(config, manager, radius);
         this.texture = new Texture("entities/casa.png");
     }
+
 }

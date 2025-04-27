@@ -38,9 +38,8 @@ public class MapManager {
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
-        float defaultx = 11, defaulty = 11;
 
-        this.changeMap(defaultMap, defaultx, defaulty); // Cambio mappa
+        this.changeMap(defaultMap, 11, 11); // Cambio mappa
         mapEntityInstances = new HashMap<>();
     }
 
@@ -89,10 +88,11 @@ public class MapManager {
             }
 
             case 2 -> {
-                nome = "bossroom";
+                nome = "fuori1";
                 ambienteAperto = false;
-                viewport.setWorldSize(22f, 12f * 9 / 16f);
+                viewport.setWorldSize(22f, 22f * 9 / 16f);
             }
+
 
             default -> {
                 nome = "stanza"; // Nome file

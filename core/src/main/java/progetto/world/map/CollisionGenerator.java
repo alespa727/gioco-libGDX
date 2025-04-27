@@ -17,8 +17,9 @@ public class CollisionGenerator {
 
     boolean[][] collision;
 
-    public CollisionGenerator(TiledMapTileLayer collisionLayer) {
+    public CollisionGenerator(TiledMapTileLayer collisionLayer, Map map) {
         collision = new boolean[Map.width()][Map.height()];
+        this.map = map;
         for (int i = 0; i < Map.width(); i++) {
             for (int j = 0; j < Map.height(); j++) {
                 TiledMapTileLayer.Cell tile = collisionLayer.getCell(i, j);
@@ -43,7 +44,7 @@ public class CollisionGenerator {
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = Engine.WALL;
 
-                BodyFactory.createBody(this, bodyDef, fixtureDef);
+                BodyFactory.createBody(map, bodyDef, fixtureDef);
             }
         }
     }

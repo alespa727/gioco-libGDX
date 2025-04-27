@@ -36,11 +36,14 @@ public class EntityManager {
         this.engine = engine;
 
         comparator = (o1, o2) -> {
-            if (o1.components.contains(ZLevelComponent.class) && o2.components.contains(ZLevelComponent.class)) {
+            if (o1.contains(ZLevelComponent.class) && o2.contains(ZLevelComponent.class)) {
                 int z1 = o1.get(ZLevelComponent.class).getZ();
                 int z2 = o2.get(ZLevelComponent.class).getZ();
-                if (z1 == z2) return Float.compare(o2.get(PhysicsComponent.class).getPosition().y, o1.get(PhysicsComponent.class).getPosition().y);
+                if (z1 == z2 && o1.contains(PhysicsComponent.class) && o2.contains(PhysicsComponent.class)) return Float.compare(o2.get(PhysicsComponent.class).getPosition().y, o1.get(PhysicsComponent.class).getPosition().y);
                 return Integer.compare(z1, z2);
+            }
+            if (!o1.contains(PhysicsComponent.class) && !o2.contains(PhysicsComponent.class)) {
+                return 0;
             }
             return Float.compare(o2.get(PhysicsComponent.class).getPosition().y, o1.get(PhysicsComponent.class).getPosition().y);
         };
@@ -123,10 +126,12 @@ public class EntityManager {
 
     private void loadEntity(Entity entity) {
         entities.add(entity);
-        entity.components.get(PhysicsComponent.class).initBody();
+        if (entity.contains(PhysicsComponent.class)) {
+            entity.get(PhysicsComponent.class).initBody();
+        }
         entity.create();
         engine.addEntityToSystems(entity);
-        entity.components.get(StateComponent.class).setLoaded(true);
+        entity.get(StateComponent.class).setLoaded(true);
     }
 
 }
