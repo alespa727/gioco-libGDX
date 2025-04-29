@@ -9,6 +9,7 @@ import progetto.core.Core;
 import progetto.core.CoreConfig;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.systems.specific.*;
 import progetto.factories.EntityConfigFactory;
@@ -129,6 +130,15 @@ public class GameEngine {
         this.player = new Player(p, engine);
 
         engine.summon(player);
+
+//        for (int i = 0; i < 5; i++) {
+//            for (int j = 0; j < 5; j++) {
+//
+//            }
+//        }
+        EntityConfig config = EntityConfigFactory.createEntityConfig("Finn", 10, 10);
+        Entity e = EntityFactory.createEnemy("Finn", config, engine);
+        engine.summon(e);
 
         engine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, engine, null));
 

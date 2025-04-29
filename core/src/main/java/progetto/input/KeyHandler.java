@@ -11,7 +11,6 @@ public class KeyHandler {
     public static final Vector3 mouse = new Vector3(0, 0, 0);
     // Stati dei tasti direzionali e azioni
     public static boolean su, giu, sinistra, destra, sprint, usa;
-    public static boolean debug;
     private static boolean usePressedLastFrame = false;
 
     /**
@@ -32,9 +31,6 @@ public class KeyHandler {
         // Ottiene la posizione del mouse (in coordinate schermo)
         mouse.x = Gdx.input.getX();
         mouse.y = Gdx.input.getY();
-
-        // Attiva il debug se CTRL sinistro è premuto
-        debug = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
     }
 }
 

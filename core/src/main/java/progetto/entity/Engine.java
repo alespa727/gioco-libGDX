@@ -16,6 +16,7 @@ import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
 import progetto.entity.entities.specific.notliving.Casa;
 import progetto.entity.systems.SystemManager;
 import progetto.entity.systems.base.System;
+import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.input.DebugWindow;
 import progetto.input.TerminalCommand;
@@ -42,7 +43,6 @@ public final class Engine {
         this.queue = new Queue<>();
         this.systemManager = new SystemManager(this);
         this.renderer = new EntityManager(this);
-
     }
 
     public void addEntityToSystems(Entity e) {

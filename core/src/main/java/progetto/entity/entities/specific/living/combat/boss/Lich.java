@@ -10,6 +10,7 @@ import progetto.entity.components.specific.combat.MortalComponent;
 import progetto.entity.components.specific.combat.MultiCooldownComponent;
 import progetto.entity.components.specific.general.skills.specific.boss.LichFireDomain;
 import progetto.entity.components.specific.general.skills.specific.boss.LichFireball;
+import progetto.entity.components.specific.movement.MovementComponent;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
 import progetto.entity.entities.specific.living.HumanoidInstances;
@@ -39,6 +40,7 @@ public class Lich extends Boss {
         cooldowns[2].autoUpdate();
         components.add(new MultiCooldownComponent(types, cooldowns));
         components.add(new MortalComponent());
+        components.add(new MovementComponent());
         components.add(new StatemachineComponent<>(this, StatesLich.IDLE));
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));
         getSkillset().add(new LichFireDomain(this, "", "", 20));

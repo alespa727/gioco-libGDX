@@ -8,7 +8,7 @@ import progetto.entity.entities.base.Entity;
 import progetto.entity.systems.base.AsynchronusIterableSystem;
 import progetto.entity.systems.base.IterableSystem;
 
-public class StatemachineSystem extends AsynchronusIterableSystem {
+public class StatemachineSystem extends IterableSystem {
 
     public StatemachineSystem() {
         super(ComponentFilter.all(StatemachineComponent.class));
