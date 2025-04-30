@@ -1,4 +1,4 @@
-package progetto.core.settings;
+package progetto.core.settings.model;
 
 import com.badlogic.gdx.Input;
 
@@ -82,7 +82,7 @@ public class ModelImpostazioni {
         /**
          * <p>ATTACCO BASE, MODIFICABILE----------------------------------------------------</p>
          */
-        comandiModificabili.getHashMap().put("ATTACCO SPADA", Input.Keys.F); //4
+        comandiModificabili.getHashMap().put("ATTACCO SPADA", Input.Keys.R); //4
 
         /**
          * <p>ATTACCO AVANZATO, MODIFICABILE----------------------------------------------------</p>
@@ -97,7 +97,7 @@ public class ModelImpostazioni {
         /**
          * <p>VELOCITÀ, MODIFICABILE-------------------------------------------</p>
          */
-        comandiModificabili.getHashMap().put("CORRI", Input.Keys.SHIFT_LEFT); //7
+        comandiModificabili.getHashMap().put("CORRI", Input.Keys.F); //7
 
         /**
          * <p>FERMA GIOCO, MODIFICABILE---------------------------------------</p>

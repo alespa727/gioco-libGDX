@@ -1,7 +1,6 @@
 package progetto.input;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.game.GameScreen;
+import progetto.core.settings.model.ModelImpostazioni;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.world.map.Map;
 
@@ -171,7 +171,7 @@ public class DebugWindow extends Window {
     }
 
     public void update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)) {
+        if (Gdx.input.isKeyJustPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("IMPOSTAZIONI DEBUG"))) {
             setVisible(!isVisible());
         }
         stage.getViewport().apply();

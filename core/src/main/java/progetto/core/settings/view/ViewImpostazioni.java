@@ -1,4 +1,4 @@
-package progetto.core.settings;
+package progetto.core.settings.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,8 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import java.awt.Toolkit;
 
 /**
  * La classe {@code ViewImpostazioni} implementa l'interfaccia {@code Screen} di LibGDX

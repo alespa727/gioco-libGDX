@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.Core;
-import progetto.core.settings.ControllerImpostazioni;
+import progetto.core.settings.controller.ControllerImpostazioni;
 import progetto.ui.Style;
 
 public class MainScreen implements Screen {
