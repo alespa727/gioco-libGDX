@@ -1,4 +1,4 @@
-package progetto.core.settings;
+package progetto.core.settings.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -25,6 +25,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import progetto.core.Core;
+import progetto.core.settings.view.ViewImpostazioni;
+import progetto.core.settings.model.ModelImpostazioni;
 import progetto.screens.MainScreen;
 import progetto.ui.CustomChangeListener;
 import progetto.ui.CustomClickListener;

@@ -1,9 +1,9 @@
 package progetto.input;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector3;
-import progetto.core.CoreConfig;
+
+import progetto.core.settings.model.ModelImpostazioni;
 
 public class KeyHandler {
 
@@ -17,14 +17,14 @@ public class KeyHandler {
      * Legge lo stato attuale dei tasti premuti e del mouse
      */
     public static void input() {
-        su = Gdx.input.isKeyPressed(CoreConfig.getDirezioneNord());
-        giu = Gdx.input.isKeyPressed(CoreConfig.getDirezioneSud());
-        sinistra = Gdx.input.isKeyPressed(CoreConfig.getDirezioneOvest());
-        destra = Gdx.input.isKeyPressed(CoreConfig.getDirezioneEst());
-        sprint = Gdx.input.isKeyPressed(CoreConfig.getCORRI());
+        su = Gdx.input.isKeyPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("DIREZIONE NORD"));
+        giu = Gdx.input.isKeyPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("DIREZIONE SUD"));
+        sinistra = Gdx.input.isKeyPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("DIREZIONE OVEST"));
+        destra = Gdx.input.isKeyPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("DIREZIONE EST"));
+        sprint = Gdx.input.isKeyPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("CORRI"));
 
         // Gestione manuale del tasto "usa"
-        boolean usaCurrentlyPressed = Gdx.input.isKeyPressed(CoreConfig.getUSA());
+        boolean usaCurrentlyPressed = Gdx.input.isKeyPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("USA"));
         usa = usaCurrentlyPressed && !usePressedLastFrame; // true solo se premuto adesso e non nel frame precedente
         usePressedLastFrame = usaCurrentlyPressed; // aggiorna lo stato
 

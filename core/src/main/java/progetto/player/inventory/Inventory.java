@@ -2,17 +2,13 @@ package progetto.player.inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import progetto.core.CoreConfig;
-import progetto.core.game.GameScreen;
+
+import progetto.core.settings.model.ModelImpostazioni;
 
 public class Inventory extends Window {
     final Array<Item> items;
@@ -96,7 +92,7 @@ public class Inventory extends Window {
     }
 
     public void update() {
-        if (Gdx.input.isKeyJustPressed(CoreConfig.getAPRIINVENTARIO())) {
+        if (Gdx.input.isKeyJustPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("APRI INVENTARIO"))) {
             setVisible(!isVisible());
         }
         stage.getViewport().apply();

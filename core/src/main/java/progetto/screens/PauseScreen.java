@@ -19,8 +19,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.Core;
-import progetto.core.CoreConfig;
 import progetto.core.game.GameScreen;
+import progetto.core.settings.model.ModelImpostazioni;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.graphics.shaders.specific.ColorFilter;
@@ -156,7 +156,7 @@ public class PauseScreen implements Screen {
     }
 
     public void drawPauseMenu(float delta) {
-        if (Gdx.input.isKeyJustPressed(CoreConfig.getRIPRENDIGIOCO())) {
+        if (Gdx.input.isKeyJustPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("RIPRENDI GIOCO"))) {
             resumeRequest = true;
         }
 

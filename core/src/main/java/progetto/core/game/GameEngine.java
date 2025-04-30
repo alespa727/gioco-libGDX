@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
-import progetto.core.CoreConfig;
+import progetto.core.settings.model.ModelImpostazioni;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.entities.base.Entity;
@@ -73,7 +73,7 @@ public class GameEngine {
         time.update(delta); // Tempo aggiornato
         SpriteBatch batch = core.batch;
 
-        if (Gdx.input.isKeyJustPressed(CoreConfig.getFERMAGIOCO())) {
+        if (Gdx.input.isKeyJustPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("FERMA GIOCO"))) {
             core.setScreen(new PauseScreen(core, game));
         }
 
