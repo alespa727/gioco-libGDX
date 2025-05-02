@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
 import progetto.core.settings.model.ModelImpostazioni;
 import progetto.entity.Engine;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.systems.specific.*;
@@ -18,8 +18,8 @@ import progetto.input.DebugWindow;
 import progetto.input.KeyHandler;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
-import progetto.screens.DefeatScreen;
-import progetto.screens.PauseScreen;
+import progetto.core.defeat.DefeatScreen;
+import progetto.core.pause.PauseScreen;
 import progetto.world.WorldManager;
 import progetto.world.map.MapManager;
 
@@ -136,9 +136,9 @@ public class GameEngine {
 //
 //            }
 //        }
-        EntityConfig config = EntityConfigFactory.createEntityConfig("Finn", 10, 10);
-        Entity e = EntityFactory.createEnemy("Finn", config, engine);
-        engine.summon(e);
+//        EntityConfig config = EntityConfigFactory.createEntityConfig("Finn", 10, 10);
+//        Entity e = EntityFactory.createEnemy("Finn", config, engine);
+//        engine.summon(e);
 
         engine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, engine, null));
 

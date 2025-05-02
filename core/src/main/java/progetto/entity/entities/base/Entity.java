@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import progetto.entity.Engine;
 import progetto.entity.components.ComponentManager;
 import progetto.entity.components.base.Component;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.graphics.ColorComponent;
@@ -116,7 +116,6 @@ public abstract class Entity {
         this.components.add(components);
     }
 
-
     public boolean contains(Array<Class<? extends Component>> components) {
         if (components.size == 0) {
             return false;
@@ -126,6 +125,10 @@ public abstract class Entity {
 
     public boolean contains(Class<? extends Component> components) {
         return this.components.contains(components);
+    }
+
+    public void remove(Class<? extends Component> component) {
+        this.components.remove(component);
     }
 
     /**

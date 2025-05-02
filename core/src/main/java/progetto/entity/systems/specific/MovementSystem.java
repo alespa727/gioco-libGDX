@@ -3,19 +3,19 @@ package progetto.entity.systems.specific;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.components.specific.movement.MovementComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 import progetto.input.DebugWindow;
 import progetto.player.Player;
 import progetto.world.graph.node.Node;
 import progetto.world.map.Map;
 
-public class MovementSystem extends IterableSystem {
+public class MovementSystem extends IteratingSystem {
 
     public MovementSystem() {
         super(ComponentFilter.all(MovementComponent.class, PhysicsComponent.class));

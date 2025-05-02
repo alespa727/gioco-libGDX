@@ -6,7 +6,7 @@ import progetto.entity.entities.base.Entity;
 /**
  * Classe astratta che rappresenta un sistema nel paradigma ECS (Entity-Component-System).
  * Ogni sistema definisce una logica che viene applicata a una lista di entità.
- * <p>
+ *
  * I sistemi possono essere attivati o disattivati dinamicamente.
  */
 public abstract class System {

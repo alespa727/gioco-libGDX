@@ -2,6 +2,7 @@ package progetto.entity.entities.specific.notliving;
 
 import com.badlogic.gdx.graphics.Texture;
 import progetto.entity.Engine;
+import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.entities.base.EntityConfig;
 import progetto.entity.entities.base.EntityInstance;
 
@@ -29,4 +30,11 @@ public class Casa extends GameObject {
         this.texture = new Texture("entities/casa.png");
     }
 
+
+    @Override
+    public void create() {
+        super.create();
+        get(PhysicsComponent.class).getBody().getFixtureList().get(0).setSensor(true);
+
+    }
 }

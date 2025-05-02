@@ -8,15 +8,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import progetto.entity.Engine;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.combat.AttackRangeComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 import progetto.factories.BodyFactory;
 
-public class RangeSystem extends IterableSystem {
+public class RangeSystem extends IteratingSystem {
 
     public RangeSystem() {
         super(ComponentFilter.all(AttackRangeComponent.class));

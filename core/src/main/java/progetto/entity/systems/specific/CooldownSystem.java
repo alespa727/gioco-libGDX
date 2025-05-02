@@ -4,11 +4,11 @@ import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.combat.MultiCooldownComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 
 import java.util.Collection;
 
-public class CooldownSystem extends IterableSystem {
+public class CooldownSystem extends IteratingSystem {
 
     public CooldownSystem() {
         super(ComponentFilter.all(MultiCooldownComponent.class));

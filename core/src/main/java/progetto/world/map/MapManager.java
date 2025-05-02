@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.entity.Engine;
 import progetto.entity.entities.base.EntityInstance;
 import progetto.core.loading.LoadingScreen;
+import progetto.graphics.shaders.specific.ColorFilter;
 
 import java.util.HashMap;
 
@@ -118,23 +119,25 @@ public class MapManager {
     }
 
     public void saveMapEntities() {
-        FileHandle fileHandle = Gdx.files.local("/save/maps/" + currentMap.nome + ".json");
+        new Thread(() -> {
+            FileHandle fileHandle = Gdx.files.local("/save/maps/" + currentMap.nome + ".json");
 
-        Json json = new Json();
-        json.setOutputType(JsonWriter.OutputType.json); // output in formato JSON puro
+            Json json = new Json();
+            json.setOutputType(JsonWriter.OutputType.json); // output in formato JSON puro
 
-        // Pulisce l'elenco delle entità associate alla mappa corrente
-        if (mapEntityInstances.get(currentMap.nome) != null)
-            mapEntityInstances.get(currentMap.nome).clear();
+            // Pulisce l'elenco delle entità associate alla mappa corrente
+            if (mapEntityInstances.get(currentMap.nome) != null)
+                mapEntityInstances.get(currentMap.nome).clear();
 
-        Array<EntityInstance> instances = engine.clear();
-        mapEntityInstances.put(currentMap.nome, instances); // Salva nella mappa
+            Array<EntityInstance> instances = engine.clear();
+            mapEntityInstances.put(currentMap.nome, instances); // Salva nella mappa
 
-        String string = json.prettyPrint(instances); // Serializzazione ben formattata
-        System.out.println(json.prettyPrint(string)); // Stampa leggibile
+            String string = json.prettyPrint(instances); // Serializzazione ben formattata
+            System.out.println(json.prettyPrint(string)); // Stampa leggibile
 
-        fileHandle.writeString(string, false); // Salvataggio su file
-        currentMap.dispose(); // Rilascio risorse mappa precedente
+            fileHandle.writeString(string, false); // Salvataggio su file
+            currentMap.dispose(); // Rilascio risorse mappa precedente
+        }).start();
     }
 
     /**

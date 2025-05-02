@@ -1,14 +1,11 @@
 package progetto.entity.systems.specific;
 
-import com.badlogic.gdx.utils.Array;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.ai.StateComponent;
 import progetto.entity.components.specific.ai.StatemachineComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.AsynchronusIterableSystem;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.AsynchronousIteratingSystem;
 
-public class StatemachineSystem extends IterableSystem {
+public class StatemachineSystem extends AsynchronousIteratingSystem {
 
     public StatemachineSystem() {
         super(ComponentFilter.all(StatemachineComponent.class));

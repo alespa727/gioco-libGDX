@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.entity.Engine;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.graphics.ZLevelComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;

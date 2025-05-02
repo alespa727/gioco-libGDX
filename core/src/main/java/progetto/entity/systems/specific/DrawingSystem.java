@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.general.RadiusComponent;
@@ -16,11 +16,11 @@ import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.entity.entities.specific.notliving.GameObject;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 import progetto.graphics.shaders.specific.Flash;
 import progetto.input.DebugWindow;
 
-public class DrawingSystem extends IterableSystem {
+public class DrawingSystem extends IteratingSystem {
     private SpriteBatch batch;
     private float tempoTrascorso = 0;
 

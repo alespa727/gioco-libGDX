@@ -6,14 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.entity.components.specific.general.RadiusComponent;
 import progetto.entity.components.specific.item.ItemComponent;
-import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 import progetto.player.ManagerCamera;
 
-public class ItemHoldingSystem extends IterableSystem {
+public class ItemHoldingSystem extends IteratingSystem {
 
     public ItemHoldingSystem() {
         super(ComponentFilter.all(ItemComponent.class));

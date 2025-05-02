@@ -16,7 +16,7 @@ public class ColorFilter extends Shader {
 
     public final Color color;
 
-    private ColorFilter() {
+    public ColorFilter() {
         // Carica e crea il programma shader (per effetti grafici avanzati)
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         String vertexShader = Gdx.files.internal("shaders/darken/vertex.glsl").readString();

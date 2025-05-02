@@ -2,13 +2,13 @@ package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.utils.Array;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.general.skills.SkillSet;
 import progetto.entity.components.specific.general.skills.base.Skill;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 
-public class SkillSystem extends IterableSystem {
+public class SkillSystem extends IteratingSystem {
 
     public SkillSystem() {
         super(ComponentFilter.all(SkillSet.class));

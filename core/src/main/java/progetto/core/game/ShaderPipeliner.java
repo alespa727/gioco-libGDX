@@ -9,14 +9,12 @@ import progetto.player.ManagerCamera;
 import progetto.player.Player;
 
 public class ShaderPipeliner {
-    private final TextDrawer textDrawer;
     private final Array<Shader> shaders;
     private final GameScreen game;
 
     public ShaderPipeliner(GameScreen game) {
         shaders = new Array<>();
         this.game = game;
-        this.textDrawer = new TextDrawer();
     }
 
     public void addShader(Shader shader) {
@@ -48,13 +46,5 @@ public class ShaderPipeliner {
 
         Shader finalOutput = shaders.get(shaders.size - 1);
         finalOutput.draw(batch);
-
-        Player player = game.getEntityManager().player();
-        if (!player.contains(PhysicsComponent.class)) {
-            return;
-        }
-        Vector3 position = ManagerCamera.getInstance().project(new Vector3(player.get(PhysicsComponent.class).getPosition(), 0));
-
-        textDrawer.drawCenteredText(position.x, position.y+100);
     }
 }

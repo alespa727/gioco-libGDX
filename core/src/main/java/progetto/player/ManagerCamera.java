@@ -47,8 +47,8 @@ public class ManagerCamera {
 
     public static void smoothTransitionTo(Vector2 coords) {
         Vector3 position = new Vector3();
-        position.x = camera.position.x + (coords.x - camera.position.x) * 1 / 16f;
-        position.y = camera.position.y + (coords.y - camera.position.y) * 1 / 16f;
+        position.x = camera.position.x + (coords.x - camera.position.x) * 0.06f;
+        position.y = camera.position.y + (coords.y - camera.position.y) * 0.06f;
         position.z = 0;
         camera.position.set(position);
     }

@@ -2,12 +2,12 @@ package progetto.entity.systems.specific;
 
 import progetto.entity.components.ComponentManager;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.ai.StateComponent;
-import progetto.entity.components.specific.ai.StatusComponent;
+import progetto.entity.components.specific.base.StateComponent;
+import progetto.entity.components.specific.base.StatusComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 
-public class HitSystem extends IterableSystem {
+public class HitSystem extends IteratingSystem {
 
     public HitSystem() {
         super(ComponentFilter.all(StateComponent.class));

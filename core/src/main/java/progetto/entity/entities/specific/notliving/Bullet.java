@@ -108,10 +108,11 @@ public class Bullet extends GameObject {
             return;
         }
         components.get(ColorComponent.class).color.set(Color.BLACK.cpy());
-        components.get(PhysicsComponent.class).getBody().setLinearDamping(0f); // Impedisce rallentamenti
+        components.get(PhysicsComponent.class).getBody().setLinearDamping(0f);
         components.get(PhysicsComponent.class).getBody().setLinearVelocity(new Vector2(get(DirectionComponent.class).direction).scl(components.get(BulletComponent.class).velocity)); // Imposta la velocità
-        components.get(PhysicsComponent.class).getBody().getFixtureList().get(0).setSensor(true); // Imposta il corpo come sensore (non influisce sulla fisica)
-        components.get(PhysicsComponent.class).getBody().setUserData(this); // Associa il proiettile al corpo fisico
+        components.get(PhysicsComponent.class).getBody().getFixtureList().get(0).setSensor(true);
+        components.get(PhysicsComponent.class).getBody().setUserData(this);
+        remove(NodeComponent.class);
     }
 
     /**
