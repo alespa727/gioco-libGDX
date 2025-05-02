@@ -80,15 +80,14 @@ public class GameEngine {
         while (time.getAccumulator() >= STEP) {
             float scaledTime = STEP * time.getTimeScale();
             WorldManager.getInstance().step(scaledTime, 8, 8);
-            // Disegna il gioco
             step(scaledTime);
             WorldManager.update();
             time.setAccumulator(time.getAccumulator() - STEP);
             KeyHandler.input();
         }
 
-        game.getGameDrawer().draw(batch);
         if (DebugWindow.renderHitboxes()) game.getRenderer().draw();
+        else game.getGameDrawer().draw(batch);
 
 
     }

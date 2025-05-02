@@ -103,7 +103,7 @@ public class GameScreen implements Screen {
             engine.initializeEntityEngine();
             shaders.addShader(Vignette.getInstance());
             shaders.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
-            shaders.addShader(new EntityLight(engine.getEntityEngine().player(), 0.10f));
+            shaders.addShader(new EntityLight(engine.getEntityEngine().player(), 0.10f, Color.WHITE.cpy().mul(0.8f)));
         }
     }
 

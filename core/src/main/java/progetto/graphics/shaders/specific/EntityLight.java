@@ -17,12 +17,13 @@ import progetto.player.ManagerCamera;
 
 public class EntityLight extends Shader {
 
-    private static EntityLight instance;
+    private Vector2 worldPosition = null;
     private final Vector2 position;
-    private final Entity e;
+    private final Color color;
+    private Entity e=null;
     private float intensity;
 
-    public EntityLight(Entity e, float intensity) {
+    public EntityLight(Entity e, float intensity, Color color) {
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         String vertexShader = Gdx.files.internal("shaders/light/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/light/fragment.glsl").readString();
@@ -32,19 +33,43 @@ public class EntityLight extends Shader {
         this.intensity = intensity;
         position = new Vector2(0.5f, 0.5f);
         this.e = e;
+        this.color = color;
+    }
+
+    public EntityLight(Vector2 pos, float intensity, Color color) {
+        frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        String vertexShader = Gdx.files.internal("shaders/light/vertex.glsl").readString();
+        String fragmentShader = Gdx.files.internal("shaders/light/fragment.glsl").readString();
+        this.program = new ShaderProgram(vertexShader, fragmentShader);
+
+        ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
+        this.intensity = intensity;
+        position = new Vector2(0.5f, 0.5f);
+        worldPosition = pos;
+        this.color = color;
     }
 
     @Override
     public void begin() {
-        if (!e.contains(PhysicsComponent.class)) {
-            return;
+        if (e != null) {
+            if (!e.contains(PhysicsComponent.class)) {
+                return;
+            }
+            frameBuffer.begin();
+            Vector3 position = new Vector3(e.get(PhysicsComponent.class).getPosition(), 0);
+            Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
+            float normX = projectedPosition.x / Gdx.graphics.getWidth();
+            float normY = projectedPosition.y / Gdx.graphics.getHeight();
+            this.position.set(normX, normY);
+        }else if (worldPosition != null){
+            frameBuffer.begin();
+            Vector3 position = new Vector3(worldPosition, 0);
+            Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
+            float normX = projectedPosition.x / Gdx.graphics.getWidth();
+            float normY = projectedPosition.y / Gdx.graphics.getHeight();
+            this.position.set(normX, normY);
         }
-        frameBuffer.begin();
-        Vector3 position = new Vector3(e.get(PhysicsComponent.class).getPosition(), 0);
-        Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
-        float normX = projectedPosition.x / Gdx.graphics.getWidth();
-        float normY = projectedPosition.y / Gdx.graphics.getHeight();
-        this.position.set(normX, normY);
+
     }
 
     public void begin(Vector3 position, float intensity) {
@@ -81,7 +106,7 @@ public class EntityLight extends Shader {
         program.setUniformf("u_lightPos", position.x, position.y);
         program.setUniformf("u_lightRadius", 0.5f);
         program.setUniformf("u_lightIntensity", intensity);
-        program.setUniformf("u_lightColor", Color.WHITE.cpy().mul(0.8f));
+        program.setUniformf("u_lightColor", color);
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
             ManagerCamera.getFrustumCorners()[0].x,
