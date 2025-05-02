@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.graphics.shaders.base.Shader;
 import progetto.player.ManagerCamera;
 
@@ -22,7 +22,7 @@ public class EntityLight extends Shader {
     private final Entity e;
     private float intensity;
 
-    private EntityLight(Entity e, float intensity) {
+    public EntityLight(Entity e, float intensity) {
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         String vertexShader = Gdx.files.internal("shaders/light/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/light/fragment.glsl").readString();
@@ -32,13 +32,6 @@ public class EntityLight extends Shader {
         this.intensity = intensity;
         position = new Vector2(0.5f, 0.5f);
         this.e = e;
-    }
-
-    public static EntityLight getInstance(Entity e, float intensity) {
-        if (instance == null) {
-            instance = new EntityLight(e, intensity);
-        }
-        return instance;
     }
 
     @Override

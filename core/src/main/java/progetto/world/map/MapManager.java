@@ -7,9 +7,8 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.entity.Engine;
-import progetto.entity.entities.base.EntityInstance;
+import progetto.entity.entities.specific.EntityInstance;
 import progetto.core.loading.LoadingScreen;
-import progetto.graphics.shaders.specific.ColorFilter;
 
 import java.util.HashMap;
 
@@ -21,7 +20,7 @@ public class MapManager {
     private static int currentMapNum;
     public final HashMap<String, Array<EntityInstance>> mapEntityInstances;
     // Mappa default
-    private final int defaultMap = 0;
+    private final int defaultMap = 1;
     // Reference utili
     private final Engine engine;
     private final FitViewport viewport;
@@ -40,7 +39,7 @@ public class MapManager {
         currentMapNum = startingMap;
         this.ambienteAperto = true;
 
-        this.changeMap(defaultMap, 11, 11); // Cambio mappa
+        this.changeMap(defaultMap, 11, 8); // Cambio mappa
         mapEntityInstances = new HashMap<>();
     }
 
@@ -75,8 +74,8 @@ public class MapManager {
         viewport.apply();
     }
 
-    public void render() {
-        currentMap.render();
+    public void render(float delta) {
+        currentMap.render(delta);
     }
 
     public void chooseMap(int map) {
@@ -109,7 +108,6 @@ public class MapManager {
             Json json = new Json();
             @SuppressWarnings("unchecked")
             Array<EntityInstance> loadedInstances = json.fromJson(Array.class, EntityInstance.class, file);
-            System.out.println("TESTO DA FILE" + json.prettyPrint(loadedInstances));
             for (int i = 0; i < loadedInstances.size; i++) {
                 EntityInstance instance = loadedInstances.get(i);
                 instance.loadTexture();

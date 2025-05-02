@@ -4,8 +4,8 @@ import progetto.entity.Engine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.skills.specific.boss.LichFireball;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
-import progetto.entity.entities.base.EntityConfig;
-import progetto.entity.entities.base.EntityInstance;
+import progetto.entity.entities.specific.EntityConfig;
+import progetto.entity.entities.specific.EntityInstance;
 import progetto.world.WorldManager;
 
 public final class Finn extends Enemy {

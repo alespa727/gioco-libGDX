@@ -3,7 +3,7 @@ package progetto.entity.systems.base;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

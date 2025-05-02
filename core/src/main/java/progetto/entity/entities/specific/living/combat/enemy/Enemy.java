@@ -9,7 +9,7 @@ import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.combat.MortalComponent;
 import progetto.entity.components.specific.combat.MultiCooldownComponent;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
-import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.statemachines.StatesEnemy;
 

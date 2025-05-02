@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.Core;
+import progetto.core.game.GameScreen;
 import progetto.core.main.MainScreen;
 
 public class DefeatScreen implements Screen {
@@ -41,6 +42,7 @@ public class DefeatScreen implements Screen {
         button1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.gameScreen = new GameScreen(game);
                 game.setScreen(game.gameScreen);
                 return true;
             }

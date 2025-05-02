@@ -102,7 +102,6 @@ public class LoadingScreen implements Screen {
     private void initGameVariables(float minTime, float maxTime) {
         time = MathUtils.random(minTime, maxTime);
         larghezzaBlocco = (float) Gdx.graphics.getWidth() / LARGHEZZA;
-        System.out.println(Gdx.graphics.getWidth());
 
         animation = new DefaultAnimationSet(Core.assetManager.get("entities/Finn.png"));
         shadow = new DefaultAnimationSet(Core.assetManager.get("entities/Player_shadow.png"));

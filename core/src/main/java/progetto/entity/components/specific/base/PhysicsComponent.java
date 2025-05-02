@@ -7,8 +7,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import progetto.entity.components.base.Component;
 import progetto.entity.components.specific.general.ConfigComponent;
-import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.Entity;
+import progetto.entity.entities.specific.EntityConfig;
 import progetto.factories.BodyFactory;
 
 public class PhysicsComponent extends Component {

@@ -9,8 +9,7 @@ import progetto.core.Core;
 import progetto.core.settings.model.ModelImpostazioni;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.base.StateComponent;
-import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.systems.specific.*;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
@@ -113,7 +112,7 @@ public class GameEngine {
         engine.render(delta);
 
         // Aggiorna la mappa
-        map.render();
+        map.render(delta);
 
         // Aggiorna la telecamera
         ManagerCamera.update(engine, game.viewport, delta, false);
@@ -156,7 +155,8 @@ public class GameEngine {
             new RangeSystem(),
             new HitSystem(),
             new KnockbackSystem(),
-            new ItemHoldingSystem()
+            new ItemHoldingSystem(),
+            new FallingSystem()
         );
 
         engine.render(0);

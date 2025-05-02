@@ -8,15 +8,11 @@ import progetto.core.Gui;
 import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.DebugWindow;
 import progetto.player.ManagerCamera;
-import progetto.player.inventory.Inventory;
 import progetto.world.map.Map;
 
 public class GameRenderer {
 
     GameScreen game;
-
-    private DebugWindow debugWindow;
-    private Inventory inventory;
 
     private Gui gui;
 

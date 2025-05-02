@@ -12,7 +12,7 @@ import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.combat.AttackRangeComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.factories.BodyFactory;
 

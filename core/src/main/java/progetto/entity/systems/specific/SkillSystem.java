@@ -5,7 +5,7 @@ import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.general.skills.SkillSet;
 import progetto.entity.components.specific.general.skills.base.Skill;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 
 public class SkillSystem extends IteratingSystem {

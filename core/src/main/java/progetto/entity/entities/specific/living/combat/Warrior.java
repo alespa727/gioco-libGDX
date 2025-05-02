@@ -6,8 +6,8 @@ import progetto.entity.Engine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.combat.AttackRangeComponent;
 import progetto.entity.components.specific.combat.KnockbackComponent;
-import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.Entity;
+import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.entities.specific.living.HumanoidInstances;
 

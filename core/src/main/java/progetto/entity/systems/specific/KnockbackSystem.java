@@ -7,7 +7,7 @@ import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.combat.KnockbackComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 
 public class KnockbackSystem extends IteratingSystem {

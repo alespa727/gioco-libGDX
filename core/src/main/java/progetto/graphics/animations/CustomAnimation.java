@@ -2,7 +2,7 @@ package progetto.graphics.animations;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 
 import java.util.HashMap;
 

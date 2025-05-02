@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.systems.base.IteratingSystem;
 

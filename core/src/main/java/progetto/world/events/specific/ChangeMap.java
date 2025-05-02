@@ -2,7 +2,7 @@ package progetto.world.events.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.input.KeyHandler;
 import progetto.input.TerminalCommand;
 import progetto.player.Player;
@@ -42,7 +42,7 @@ public class ChangeMap extends MapEvent {
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
         if (isActive()) {
             if (KeyHandler.usa) {
                 TerminalCommand.printMessage("Map " + MapManager.getMapIndex() + " changing to " + map + "..");

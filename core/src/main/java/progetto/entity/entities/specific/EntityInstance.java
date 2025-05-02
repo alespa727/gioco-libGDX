@@ -1,4 +1,4 @@
-package progetto.entity.entities.base;
+package progetto.entity.entities.specific;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -6,6 +6,7 @@ import progetto.core.Core;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
+import progetto.entity.entities.Entity;
 
 /**
  * Rappresenta una "fotografia" di un'entità in un certo momento.

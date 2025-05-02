@@ -3,7 +3,7 @@ package progetto.entity.systems.specific;
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.combat.MultiCooldownComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 
 import java.util.Collection;

@@ -13,9 +13,9 @@ import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.graphics.ColorComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.components.specific.movement.NodeComponent;
-import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
-import progetto.entity.entities.base.EntityInstance;
+import progetto.entity.entities.Entity;
+import progetto.entity.entities.specific.EntityConfig;
+import progetto.entity.entities.specific.EntityInstance;
 import progetto.world.WorldManager;
 
 /**

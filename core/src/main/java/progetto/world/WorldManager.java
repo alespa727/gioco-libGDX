@@ -15,7 +15,6 @@ import java.util.concurrent.Semaphore;
 public class WorldManager {
     private static World instance;
     private static Queue<Body> bodyToDestroy;
-    public static Semaphore semaphore = new Semaphore(1);
 
     public static void init() {
         if (instance == null) {
@@ -26,7 +25,6 @@ public class WorldManager {
 
     public static World getInstance() {
         if (instance == null) {
-            System.err.println("AHGDASUYGDASDAGSDASID");
             instance = new World(new Vector2(0, 0), true);
             bodyToDestroy = new Queue<>();
         }

@@ -1,7 +1,7 @@
 package progetto.entity.entities.specific.living;
 
 import progetto.entity.components.specific.general.skills.SkillSet;
-import progetto.entity.entities.base.EntityInstance;
+import progetto.entity.entities.specific.EntityInstance;
 
 import java.util.List;
 

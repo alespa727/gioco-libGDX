@@ -1,7 +1,7 @@
 package progetto.entity.components.base;
 
 import com.badlogic.gdx.utils.Array;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 
 /**
  * Serve per filtrare le entità in base ai componenti che hanno o non hanno.

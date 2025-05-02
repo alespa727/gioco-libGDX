@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
 import progetto.entity.Engine;
-import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.Entity;
+import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.living.combat.enemy.Enemy;
 import progetto.entity.entities.specific.notliving.Casa;
 import progetto.world.events.base.MapEvent;
@@ -31,7 +31,7 @@ public class SpawnCasa extends MapEvent {
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
 
     }
 

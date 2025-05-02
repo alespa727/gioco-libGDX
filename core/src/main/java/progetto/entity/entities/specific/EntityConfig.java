@@ -1,4 +1,4 @@
-package progetto.entity.entities.base;
+package progetto.entity.entities.specific;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;

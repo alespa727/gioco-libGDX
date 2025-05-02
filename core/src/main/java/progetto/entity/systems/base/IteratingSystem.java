@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.StateComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 
 /**
  * Sistema automatico che gestisce solo le entità con un certo tipo di componenti.

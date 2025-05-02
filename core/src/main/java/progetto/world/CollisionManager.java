@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.general.BulletComponent;
 import progetto.entity.components.specific.sensors.InRangeListComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.entity.entities.specific.living.combat.boss.Boss;
 import progetto.entity.entities.specific.living.combat.enemy.Enemy;
@@ -42,6 +42,14 @@ public class CollisionManager implements ContactListener {
         } else if (dataB instanceof Player && dataA instanceof ChangeMap) {
             ((MapEvent) dataA).setActive(true);
             ((MapEvent) dataA).trigger((Entity) dataB);
+            return;
+        }
+
+        if (dataA instanceof MapEvent && dataB instanceof Entity) {
+            ((MapEvent) dataA).trigger((Entity) dataB);
+            return;
+        } else if (dataB instanceof MapEvent && dataA instanceof Entity) {
+            ((MapEvent) dataB).trigger((Entity) dataA);
             return;
         }
         // ---------------------------------------------
@@ -132,6 +140,14 @@ public class CollisionManager implements ContactListener {
             ((MapEvent) dataB).setActive(false);
         } else if (dataB instanceof Player && dataA instanceof ChangeMap) {
             ((MapEvent) dataA).setActive(false);
+        }
+
+        if (dataA instanceof MapEvent && dataB instanceof Entity) {
+            ((MapEvent) dataA).trigger((Entity) dataB);
+            return;
+        } else if (dataB instanceof MapEvent && dataA instanceof Entity) {
+            ((MapEvent) dataB).trigger((Entity) dataA);
+            return;
         }
 
     }

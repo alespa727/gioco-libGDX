@@ -11,9 +11,10 @@ import progetto.entity.components.specific.general.skills.specific.player.Player
 import progetto.entity.components.specific.general.skills.specific.player.PlayerRangedAttack;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerSwordAttack;
 import progetto.entity.components.specific.graphics.ShadowComponent;
+import progetto.entity.components.specific.movement.FallingComponent;
 import progetto.entity.components.specific.sensors.InRangeListComponent;
-import progetto.entity.entities.base.EntityConfig;
-import progetto.entity.entities.base.EntityInstance;
+import progetto.entity.entities.specific.EntityConfig;
+import progetto.entity.entities.specific.EntityInstance;
 import progetto.entity.entities.specific.living.combat.Warrior;
 
 public class Player extends Warrior {
@@ -26,7 +27,7 @@ public class Player extends Warrior {
             new MultiCooldownComponent(),
             new ShadowComponent(this),
             new InRangeListComponent(),
-            new PlayerComponent()
+            new PlayerComponent(),
         };
 
         this.components.add(components);
@@ -39,7 +40,7 @@ public class Player extends Warrior {
 
         ManagerCamera.getInstance().position.set(config.x, config.y, 0);
 
-        getSkillset().add(new PlayerDash(this, "", "", 12.5f));
+        getSkillset().add(new PlayerDash(this, "", "", 20f));
         getSkillset().add(new PlayerSwordAttack(this, "", "", 10));
         getSkillset().add(new PlayerRangedAttack(this, "", "", 5, 25f, 5f));
     }

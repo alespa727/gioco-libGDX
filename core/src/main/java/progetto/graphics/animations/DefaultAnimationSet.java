@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import progetto.entity.components.specific.movement.DirectionComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 
 public class DefaultAnimationSet extends AnimationSet {
 
