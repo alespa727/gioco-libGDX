@@ -1,4 +1,4 @@
-package progetto.entity.components.specific.ai;
+package progetto.entity.components.specific.base;
 
 import progetto.entity.components.base.Component;
 

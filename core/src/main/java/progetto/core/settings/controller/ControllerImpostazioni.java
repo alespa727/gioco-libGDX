@@ -27,7 +27,7 @@ import java.util.function.Function;
 import progetto.core.Core;
 import progetto.core.settings.view.ViewImpostazioni;
 import progetto.core.settings.model.ModelImpostazioni;
-import progetto.screens.MainScreen;
+import progetto.core.main.MainScreen;
 import progetto.ui.CustomChangeListener;
 import progetto.ui.CustomClickListener;
 import progetto.ui.CustomLinkedHashMap;
@@ -167,18 +167,18 @@ public class ControllerImpostazioni {
     public Table aggiungiParteGrafica(final ModelImpostazioni modelImpostazioni){
         Table tabellaEsterna = creaTabella(modelImpostazioni.getStyle().getSkin(), false, false);
 
-        {
-            List<Dimension> list = new ArrayList<>(ModelImpostazioni.getValoriSchermo().getHashMap().values());
-            this.creaSliderConBottoni(
-                tabellaEsterna,
-                "Risoluzione",
-                (" " + Gdx.graphics.getWidth() + " x " + Gdx.graphics.getHeight() + " "),
-                modelImpostazioni.getStyle(),
-                ModelImpostazioni.getValoriSchermo(),
-                dim -> Gdx.graphics.setWindowedMode(dim.width, dim.height),
-                dim -> dim.width + " x " + dim.height
-            );
-        }
+//        {
+//            List<Dimension> list = new ArrayList<>(ModelImpostazioni.getValoriSchermo().getHashMap().values());
+//            this.creaSliderConBottoni(
+//                tabellaEsterna,
+//                "Risoluzione",
+//                (" " + Gdx.graphics.getWidth() + " x " + Gdx.graphics.getHeight() + " "),
+//                modelImpostazioni.getStyle(),
+//                ModelImpostazioni.getValoriSchermo(),
+//                dim -> Gdx.graphics.setWindowedMode(dim.width, dim.height),
+//                dim -> dim.width + " x " + dim.height
+//            );
+//        }
 
         tabellaEsterna.row();
 

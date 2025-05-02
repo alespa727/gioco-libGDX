@@ -9,10 +9,10 @@ import progetto.entity.components.specific.general.skills.specific.player.Player
 import progetto.entity.components.specific.general.skills.specific.player.PlayerRangedAttack;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerSwordAttack;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 import progetto.player.Player;
 
-public class PlayerSystem extends IterableSystem {
+public class PlayerSystem extends IteratingSystem {
 
     public PlayerSystem() {
         super(ComponentFilter.all(PlayerComponent.class));

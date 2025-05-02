@@ -8,27 +8,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.Core;
-import progetto.core.Gui;
 import progetto.entity.Engine;
-import progetto.entity.components.specific.ai.StateComponent;
-import progetto.entity.components.specific.base.Cooldown;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.graphics.shaders.specific.ColorFilter;
-import progetto.graphics.shaders.specific.PlayerLight;
+import progetto.graphics.shaders.specific.EntityLight;
 import progetto.graphics.shaders.specific.Vignette;
 import progetto.input.DebugWindow;
-import progetto.input.TerminalCommand;
 import progetto.player.ManagerCamera;
 import progetto.player.Player;
 import progetto.player.inventory.Inventory;
 import progetto.world.CollisionManager;
 import progetto.world.WorldManager;
-import progetto.world.map.Map;
 import progetto.world.map.MapManager;
 
 public class GameScreen implements Screen {
@@ -109,7 +103,7 @@ public class GameScreen implements Screen {
             engine.initializeEntityEngine();
             shaders.addShader(Vignette.getInstance());
             shaders.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
-            shaders.addShader(PlayerLight.getInstance(engine.getEntityEngine().player(), 0.10f));
+            shaders.addShader(EntityLight.getInstance(engine.getEntityEngine().player(), 0.10f));
         }
     }
 

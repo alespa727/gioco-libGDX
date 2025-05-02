@@ -15,14 +15,14 @@ import progetto.entity.entities.base.Entity;
 import progetto.graphics.shaders.base.Shader;
 import progetto.player.ManagerCamera;
 
-public class PlayerLight extends Shader {
+public class EntityLight extends Shader {
 
-    private static PlayerLight instance;
+    private static EntityLight instance;
     private final Vector2 position;
     private final Entity e;
     private float intensity;
 
-    private PlayerLight(Entity e, float intensity) {
+    private EntityLight(Entity e, float intensity) {
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         String vertexShader = Gdx.files.internal("shaders/light/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/light/fragment.glsl").readString();
@@ -34,9 +34,9 @@ public class PlayerLight extends Shader {
         this.e = e;
     }
 
-    public static PlayerLight getInstance(Entity e, float intensity) {
+    public static EntityLight getInstance(Entity e, float intensity) {
         if (instance == null) {
-            instance = new PlayerLight(e, intensity);
+            instance = new EntityLight(e, intensity);
         }
         return instance;
     }
@@ -88,7 +88,7 @@ public class PlayerLight extends Shader {
         program.setUniformf("u_lightPos", position.x, position.y);
         program.setUniformf("u_lightRadius", 0.5f);
         program.setUniformf("u_lightIntensity", intensity);
-        program.setUniformf("u_lightColor", Color.WHITE.cpy());
+        program.setUniformf("u_lightColor", Color.WHITE.cpy().mul(0.8f));
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
             ManagerCamera.getFrustumCorners()[0].x,

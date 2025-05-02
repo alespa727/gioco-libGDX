@@ -3,7 +3,7 @@ package progetto.entity.systems;
 import com.badlogic.gdx.utils.Array;
 import progetto.entity.Engine;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 import progetto.entity.systems.base.System;
 import progetto.entity.systems.specific.DrawingSystem;
 import progetto.input.DebugWindow;
@@ -38,7 +38,7 @@ public class SystemManager {
 
     public void addEntities(Entity... entities) {
         for (System s : logicSystems.values()) {
-            if(s instanceof IterableSystem system){
+            if(s instanceof IteratingSystem system){
                 system.addEntity(entities);
             }
         }
@@ -46,13 +46,14 @@ public class SystemManager {
 
     public void removeEntities(Entity e) {
         for (System s : logicSystems.values()) {
-            if(s instanceof IterableSystem system){
+            if(s instanceof IteratingSystem system){
                 system.removeEntity(e);
             }
         }
     }
 
     public void draw(float delta, Array<Entity> entities) {
+
         drawingSystem.update(delta, entities);
     }
 

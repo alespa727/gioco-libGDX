@@ -1,6 +1,7 @@
-package progetto.screens;
+package progetto.core.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -30,6 +31,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() { //come un costruttore praticamente
+
         stage = new Stage(new ScreenViewport());
 
         Gdx.input.setInputProcessor(stage);

@@ -2,14 +2,14 @@ package progetto.entity.systems.specific;
 
 import progetto.entity.components.ComponentManager;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.movement.NodeComponent;
 import progetto.entity.entities.base.Entity;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 import progetto.world.map.Map;
 
-public class NodeTrackerSystem extends IterableSystem {
+public class NodeTrackerSystem extends IteratingSystem {
 
     public NodeTrackerSystem() {
         super(ComponentFilter.all(NodeComponent.class));

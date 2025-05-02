@@ -3,13 +3,19 @@ package progetto.entity.systems.base;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.entities.base.Entity;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
-
-public abstract class AsynchronusIterableSystem extends System {
+/**
+ * Sistema automatico che gestisce solo le entità con un certo tipo di componenti.
+ * <p>
+ * In pratica, questo sistema filtra le entità che servono e le salva in una lista,
+ * così non deve controllarle tutte ogni volta. Questo migliora le prestazioni.
+ * </p>
+ * Chi estende questa classe deve solo scrivere cosa succede nel metodo
+ * {@link #processEntity(Entity, float)}.
+ */
+public abstract class IteratingSystem extends System {
 
     /**
      * Tempo totale passato dall'inizio dell'esecuzione del sistema.
@@ -31,18 +37,13 @@ public abstract class AsynchronusIterableSystem extends System {
      */
     private final ComponentFilter filter;
 
-    private Semaphore semaphore;
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-
     /**
      * Costruttore senza componenti richiesti. Il sistema funzionerà su tutte le entità.
      */
-    public AsynchronusIterableSystem() {
-        semaphore = new Semaphore(1);
+    public IteratingSystem() {
         filteredEntities = new ObjectSet<>();
         entitiesToRemove = new ObjectSet<>();
         filter = null;
-        deactivate();
     }
 
     /**
@@ -50,12 +51,10 @@ public abstract class AsynchronusIterableSystem extends System {
      *
      * @param filter componenti che un'entità deve avere per essere gestita
      */
-    public AsynchronusIterableSystem(ComponentFilter filter) {
-        semaphore = new Semaphore(1);
+    public IteratingSystem(ComponentFilter filter) {
         filteredEntities = new ObjectSet<>();
         this.filter = filter;
         entitiesToRemove = new ObjectSet<>();
-        deactivate();
     }
 
     /**
@@ -69,39 +68,27 @@ public abstract class AsynchronusIterableSystem extends System {
      * @param entities tutte le entità attive nel gioco
      */
     public void update(float delta, Array<Entity> entities) {
-        if(isActive()) return;
+        for (Entity entity : entitiesToRemove) {
+            filteredEntities.remove(entity);
+        }
+        entitiesToRemove.clear();
 
-        //java.lang.System.out.println("StatemachineSystem: Updating entities");
-        activate();
-        executor.submit(() -> {
-            try {
-                semaphore.acquire();
-                for (Entity entity : entitiesToRemove) {
-                    filteredEntities.remove(entity);
-                }
-                entitiesToRemove.clear();
+        elapsedTime += delta;
 
-                elapsedTime += delta;
-
-                if (filteredEntities.isEmpty()) {
-                    for (int i = 0; i < entities.size; i++) {
-                        Entity e = entities.get(i);
-                        processEntity(e, delta);
-                    }
-                } else {
-                    for (Entity entity : filteredEntities) {
-                        processEntity(entity, delta);
-                    }
-                }
-            } catch (InterruptedException e) {
-                java.lang.System.err.println("StatemachineSystem: Updating entities interrupted");
-            } finally {
-                semaphore.release();
-                deactivate();
+        if (filter == null) {
+            for (int i = 0; i < entities.size; i++) {
+                Entity e = entities.get(i);
+                processEntity(e, delta);
             }
-        });
-    }
+            return;
+        }
 
+        for (Entity entity : filteredEntities) {
+            if (entity.get(StateComponent.class).shouldBeUpdated()){
+                processEntity(entity, delta);
+            }
+        }
+    }
 
     /**
      * Ritorna il tempo totale passato da quando il sistema è attivo.
@@ -151,3 +138,4 @@ public abstract class AsynchronusIterableSystem extends System {
      */
     public abstract void processEntity(Entity entity, float delta);
 }
+

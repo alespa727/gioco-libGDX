@@ -1,7 +1,6 @@
-package progetto.entity.components.specific.ai;
+package progetto.entity.components.specific.base;
 
 import progetto.entity.components.base.Component;
-import progetto.entity.components.specific.base.Cooldown;
 
 public class StatusComponent extends Component {
     public final Cooldown cooldown = new Cooldown(.273f);

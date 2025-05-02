@@ -1,4 +1,4 @@
-package progetto.screens;
+package progetto.core.defeat;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.Core;
+import progetto.core.main.MainScreen;
 
 public class DefeatScreen implements Screen {
     private final Core game;

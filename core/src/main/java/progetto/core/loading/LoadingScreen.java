@@ -73,8 +73,8 @@ public class LoadingScreen implements Screen {
     private TextDrawer textDrawer;
 
     // Stato di gioco
-    private Screen nextScreen;
-    private Core core;
+    private final Screen nextScreen;
+    private final Core core;
 
     TiledMap map;
     TiledMapRenderer renderer;
@@ -102,6 +102,7 @@ public class LoadingScreen implements Screen {
     private void initGameVariables(float minTime, float maxTime) {
         time = MathUtils.random(minTime, maxTime);
         larghezzaBlocco = (float) Gdx.graphics.getWidth() / LARGHEZZA;
+        System.out.println(Gdx.graphics.getWidth());
 
         animation = new DefaultAnimationSet(Core.assetManager.get("entities/Finn.png"));
         shadow = new DefaultAnimationSet(Core.assetManager.get("entities/Player_shadow.png"));
@@ -227,7 +228,7 @@ public class LoadingScreen implements Screen {
         batch.draw(animation.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
         batch.draw(shadow.play(direction, accumulator), position.x - size.x / 2, position.y - size.y / 2, size.x, size.y);
         batch.end();
-        drawGridDebug();
+        //drawGridDebug();
     }
 
     public void drawMap(){

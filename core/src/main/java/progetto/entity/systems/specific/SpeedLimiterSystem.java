@@ -2,13 +2,13 @@ package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.ai.StateComponent;
+import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
-import progetto.entity.systems.base.IterableSystem;
+import progetto.entity.systems.base.IteratingSystem;
 
-public class SpeedLimiterSystem extends IterableSystem {
+public class SpeedLimiterSystem extends IteratingSystem {
 
     public SpeedLimiterSystem() {
         super(ComponentFilter.all(PhysicsComponent.class));

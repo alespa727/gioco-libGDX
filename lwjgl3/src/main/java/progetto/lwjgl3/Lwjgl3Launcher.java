@@ -1,15 +1,19 @@
 package progetto.lwjgl3;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.badlogic.gdx.graphics.glutils.HdpiMode;
+import org.lwjgl.system.windows.DISPLAY_DEVICE;
 import progetto.core.Core;
-import progetto.core.settings.model.ModelImpostazioni;
 
 /** Launcher dell'applicazione */
 public class Lwjgl3Launcher {
     public static void main(String[] args) {
-        if (StartupHelper.startNewJvmIfRequired()) return; // This handles macOS support and helps on Windows.
+        if (StartupHelper.startNewJvmIfRequired()) return; // Classe di LibGDX
         createApplication();
     }
 
@@ -20,23 +24,17 @@ public class Lwjgl3Launcher {
         new Lwjgl3Application(new Core(), getDefaultConfiguration());
     }
 
-    /** Configurazione di default */
+    /**
+     * Configurazione di default di LWJGL3
+     */
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
-        // File di configurazione
-        Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
-        // Titolo del frame
-        configuration.setTitle("Game");
-        configuration.setDecorated(false);
-        // V-sync
-        //configuration.useVsync(true);
-        // RefreshRate adattato agli hz del monitor
-        configuration.setForegroundFPS(ModelImpostazioni.getValoriFrameRate().getValoreCorrente());
-        // Modalità finestra
-        //configuration.setWindowedMode(1920, 1080);
-        //configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
-        configuration.setWindowedMode(ModelImpostazioni.getValoriSchermo().getValoreCorrente().width, ModelImpostazioni.getValoriSchermo().getValoreCorrente().height);
-        // Misura della finestra fissa
-        configuration.setResizable(false);
-        return configuration;
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setTitle("Game");
+        config.setDecorated(false);
+        int width = 1280; //1920;
+        int height = 720; //1080;
+        config.setWindowedMode(width, height);
+        config.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate-1);
+        return config;
     }
 }
