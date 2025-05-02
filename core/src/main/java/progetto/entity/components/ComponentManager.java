@@ -21,6 +21,11 @@ public class ComponentManager {
     private final ArrayMap<Class<? extends Component>, Component> components;
 
     /**
+     * Variabile per controllare se bisogna aggiornare i sistemi
+     */
+    private boolean shouldBeAddedToSystems = false;
+
+    /**
      * Costruttore che inizializza il manager con una mappa già esistente.
      *
      * @param components mappa dei componenti da usare
@@ -46,6 +51,15 @@ public class ComponentManager {
     }
 
     /**
+     * @return se devono essere aggiornati i sistemi
+     */
+    public boolean shouldBeAddedToSystems() {
+        boolean shouldBeAdded = shouldBeAddedToSystems;
+        shouldBeAddedToSystems = false;
+        return shouldBeAdded;
+    }
+
+    /**
      * Aggiunge un componente al manager.
      * Se un componente della stessa classe era già presente, viene sovrascritto.
      *
@@ -54,6 +68,7 @@ public class ComponentManager {
     public void add(Component component) {
         Class<? extends Component> componentClass = component.getClass();
         components.put(componentClass, component);
+        shouldBeAddedToSystems = true;
     }
 
     /**

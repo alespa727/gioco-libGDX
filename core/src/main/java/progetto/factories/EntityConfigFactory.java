@@ -3,7 +3,7 @@ package progetto.factories;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
-import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.specific.EntityConfig;
 
 public class EntityConfigFactory {
     public static EntityConfig createEntityConfig(String type, float x, float y) {

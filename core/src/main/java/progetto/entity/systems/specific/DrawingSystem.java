@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.components.specific.general.AttributeComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
 import progetto.entity.components.specific.general.RadiusComponent;
 import progetto.entity.components.specific.graphics.*;
 import progetto.entity.components.specific.item.ItemComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.entity.entities.specific.notliving.Bullet;
@@ -65,7 +66,7 @@ public class DrawingSystem extends IteratingSystem {
         }
 
         if (entity instanceof Humanoid h) {
-            if (entity.components.contains(DespawnAnimationComponent.class)) {
+            if (entity.contains(DespawnAnimationComponent.class)) {
                 drawDespawnAnimation(h, batch, delta);
                 if (batch.isDrawing()) {
                     batch.end();
@@ -73,7 +74,7 @@ public class DrawingSystem extends IteratingSystem {
                 return;
             }
 
-            if (entity.components.contains(DrawableComponent.class)) {
+            if (entity.contains(DrawableComponent.class)) {
                 drawDefault(h, batch, tempoTrascorso);
                 if (entity instanceof Warrior w) {
                     drawWarrior(w);
@@ -125,6 +126,9 @@ public class DrawingSystem extends IteratingSystem {
 
         // Despawn quando finisce
         if (entity.components.get(DespawnAnimationComponent.class).accumulator >= entity.components.get(DespawnAnimationComponent.class).dissolve_duration) {
+            if (entity.contains(AttributeComponent.class)){
+                entity.get(AttributeComponent.class).health=0;
+            }
             entity.unregister();
         }
     }

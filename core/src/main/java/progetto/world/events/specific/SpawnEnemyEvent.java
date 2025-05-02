@@ -2,7 +2,7 @@ package progetto.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import progetto.entity.Engine;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.combat.enemy.Enemy;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
@@ -35,7 +35,7 @@ public class SpawnEnemyEvent extends MapEvent {
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
 
     }
 

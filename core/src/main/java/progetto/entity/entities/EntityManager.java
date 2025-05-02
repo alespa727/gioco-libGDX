@@ -8,7 +8,6 @@ import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.graphics.ZLevelComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
-import progetto.entity.entities.base.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.input.DebugWindow;
 import progetto.player.ManagerCamera;
@@ -23,10 +22,6 @@ public class EntityManager {
     final Queue<Entity> queue;
 
     private float elapsedTime;
-
-    private final Semaphore semaphore;
-    private boolean active = false;
-
     /**
      * Costruttore
      *
@@ -49,8 +44,6 @@ public class EntityManager {
         };
         queue = engine.getQueue();
         entities = engine.getEntities();
-
-        semaphore = new Semaphore(1);
     }
 
     /**

@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.item.ItemComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.player.ManagerCamera;
 

@@ -12,15 +12,16 @@ import progetto.entity.components.specific.graphics.CustomAnimationComponent;
 import progetto.entity.components.specific.graphics.DrawableComponent;
 import progetto.entity.components.specific.movement.MovementComponent;
 import progetto.entity.components.specific.movement.PathFinderComponent;
-import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
+import progetto.entity.entities.Entity;
+import progetto.entity.entities.specific.EntityConfig;
+import progetto.entity.entities.specific.BaseEntity;
 
 /**
  * Classe astratta che rappresenta un'entità umanoide nel gioco.
  * Estende {@link Entity} e implementa la logica per la gestione del movimento, combattimento,
  * salute e interazione con altre entità.
  */
-public abstract class Humanoid extends Entity {
+public abstract class Humanoid extends BaseEntity {
 
     /**
      * Costruttore per creare un entità umanoide utilizzando un'istanza preconfigurata.

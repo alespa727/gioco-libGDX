@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
     private DebugWindow debugWindow;
     private Inventory inventory;
     private boolean loaded = false;
-    ShaderPipeliner shaders;
+    private final ShaderPipeliner shaders;
 
     public GameScreen(final Core core) {
         GameLoader.loadWorld();
@@ -103,7 +103,7 @@ public class GameScreen implements Screen {
             engine.initializeEntityEngine();
             shaders.addShader(Vignette.getInstance());
             shaders.addShader(ColorFilter.getInstance(0.5f, 0.5f, 0.55f));
-            shaders.addShader(EntityLight.getInstance(engine.getEntityEngine().player(), 0.10f));
+            shaders.addShader(new EntityLight(engine.getEntityEngine().player(), 0.10f));
         }
     }
 

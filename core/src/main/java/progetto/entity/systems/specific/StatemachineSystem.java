@@ -2,7 +2,7 @@ package progetto.entity.systems.specific;
 
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.ai.StatemachineComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.AsynchronousIteratingSystem;
 
 public class StatemachineSystem extends AsynchronousIteratingSystem {

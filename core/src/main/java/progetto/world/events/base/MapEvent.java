@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.factories.BodyFactory;
 import progetto.world.WorldManager;
 
@@ -21,8 +21,8 @@ import progetto.world.WorldManager;
  */
 public abstract class MapEvent {
 
-    protected final Vector2 position; // Posizione fisica dell'evento
-    protected final float radius; // Raggio di attivazione evento
+    protected Vector2 position; // Posizione fisica dell'evento
+    protected float radius; // Raggio di attivazione evento
     protected boolean isActive; // Switch di attivazione dell'evento
     protected boolean shouldRemove=false;
     private Body body;
@@ -40,6 +40,16 @@ public abstract class MapEvent {
         this.position = position;
         this.radius = radius;
         this.createZone();
+    }
+
+    public MapEvent(){}
+
+    public float getX(){
+        return position.x;
+    }
+
+    public float getY(){
+        return position.y;
     }
 
     /**
@@ -86,7 +96,7 @@ public abstract class MapEvent {
     /**
      * Aggiorna l'evento
      */
-    public abstract void update();
+    public abstract void update(float delta);
 
     /**
      * Attiva l'evento

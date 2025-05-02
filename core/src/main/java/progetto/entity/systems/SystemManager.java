@@ -2,7 +2,7 @@ package progetto.entity.systems;
 
 import com.badlogic.gdx.utils.Array;
 import progetto.entity.Engine;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.entity.systems.base.System;
 import progetto.entity.systems.specific.DrawingSystem;

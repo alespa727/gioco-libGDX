@@ -1,7 +1,7 @@
 package progetto.entity.systems.base;
 
 import com.badlogic.gdx.utils.Array;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 
 /**
  * Classe astratta che rappresenta un sistema nel paradigma ECS (Entity-Component-System).

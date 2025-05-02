@@ -2,7 +2,7 @@ package progetto.entity.components.specific.item;
 
 import progetto.entity.components.base.Component;
 import progetto.entity.components.specific.movement.DirectionComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 
 public class ItemComponent extends Component {
     private Entity entity=null;

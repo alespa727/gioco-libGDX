@@ -1,10 +1,20 @@
 package progetto.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
-import progetto.entity.entities.base.Entity;
-import progetto.world.events.base.MapEvent;
+import com.badlogic.gdx.utils.ObjectSet;
+import progetto.entity.components.base.ComponentFilter;
+import progetto.entity.components.specific.base.Cooldown;
+import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.components.specific.general.AttributeComponent;
+import progetto.entity.entities.Entity;
+import progetto.entity.entities.specific.living.Humanoid;
+import progetto.world.events.base.RectangleMapEvent;
 
-public class DamageEvent extends MapEvent {
+public class DamageEvent extends RectangleMapEvent {
+
+    private ObjectSet<Humanoid> entities;
+    private Cooldown cooldown;
+    private ComponentFilter filter;
 
     /**
      * Crea un evento nella mappa che può essere attivato quando il player entra nel suo raggio.
@@ -13,10 +23,12 @@ public class DamageEvent extends MapEvent {
      * </p>
      *
      * @param position posizione centrale dell’evento
-     * @param radius   raggio entro cui l’evento può attivarsi
      */
-    public DamageEvent(Vector2 position, float radius) {
-        super(position, radius);
+    public DamageEvent(Vector2 position, float width, float height) {
+        super(position, width, height);
+        cooldown = new Cooldown(0.5f);
+        entities = new ObjectSet<>();
+        filter = ComponentFilter.all(PhysicsComponent.class, AttributeComponent.class);
         setActive(true);
     }
 
@@ -24,12 +36,26 @@ public class DamageEvent extends MapEvent {
      * Aggiorna l'evento
      */
     @Override
-    public void update() {
-
+    public void update(float delta) {
+        cooldown.update(delta);
+        if (cooldown.isReady){
+            for (Humanoid e : entities) {
+                if(e.get(PhysicsComponent.class).getBody().getLinearVelocity().len() < 5f){
+                    e.inflictDamage(20);
+                }
+            }
+            cooldown.reset();
+        }
     }
 
     @Override
     public void trigger(Entity entity) {
-
+        if (entity instanceof Humanoid human && filter.matches(entity)) {
+            if (entities.contains(human)) {
+                entities.remove(human);
+            }else{
+                entities.add(human);
+            }
+        }
     }
 }

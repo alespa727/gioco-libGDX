@@ -8,7 +8,7 @@ import progetto.entity.components.specific.general.PlayerComponent;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerDash;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerRangedAttack;
 import progetto.entity.components.specific.general.skills.specific.player.PlayerSwordAttack;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.player.Player;
 

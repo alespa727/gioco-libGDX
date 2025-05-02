@@ -5,8 +5,8 @@ import progetto.core.Core;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.item.ItemComponent;
-import progetto.entity.entities.base.EntityConfig;
-import progetto.entity.entities.base.EntityInstance;
+import progetto.entity.entities.specific.EntityConfig;
+import progetto.entity.entities.specific.EntityInstance;
 import progetto.world.WorldManager;
 
 public class Sword extends GameObject {

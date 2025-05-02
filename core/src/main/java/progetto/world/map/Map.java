@@ -109,8 +109,8 @@ public class Map implements Disposable {
     /**
      * Update eventi della mappa
      */
-    public void render() {
-        eventManager.update();
+    public void render(float delta) {
+        eventManager.update(delta);
     }
 
     @Override

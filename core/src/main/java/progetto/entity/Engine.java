@@ -1,22 +1,16 @@
 package progetto.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.core.Core;
 import progetto.core.game.GameScreen;
 import progetto.entity.entities.EntityManager;
-import progetto.entity.entities.base.Entity;
-import progetto.entity.entities.base.EntityConfig;
-import progetto.entity.entities.base.EntityInstance;
+import progetto.entity.entities.Entity;
+import progetto.entity.entities.specific.EntityInstance;
 import progetto.entity.entities.specific.living.combat.boss.BossInstance;
 import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
-import progetto.entity.entities.specific.notliving.Casa;
 import progetto.entity.systems.SystemManager;
 import progetto.entity.systems.base.System;
-import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.input.DebugWindow;
 import progetto.input.TerminalCommand;
@@ -118,6 +112,11 @@ public final class Engine {
     public void render(float delta) {
         this.delta = delta;
         this.elapsedTime += delta;
+        for (Entity e : entities) {
+            if (e.shouldAddToSystems()){
+                addEntityToSystems(e);
+            }
+        }
         systemManager.update(delta, entities);
         renderer.updateEntities();
     }

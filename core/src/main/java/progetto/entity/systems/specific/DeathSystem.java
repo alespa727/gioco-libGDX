@@ -5,7 +5,7 @@ import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.combat.MortalComponent;
 import progetto.entity.components.specific.general.BulletComponent;
 import progetto.entity.components.specific.graphics.DespawnAnimationComponent;
-import progetto.entity.entities.base.Entity;
+import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.player.Player;
