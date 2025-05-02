@@ -25,16 +25,16 @@ public class Lich extends Boss {
     // === Costruttori ===
     public Lich(HumanoidInstances instance, Engine engine) {
         super(instance, engine);
-        init(engine);
+        init();
     }
 
     public Lich(EntityConfig config, Engine engine) {
         super(config, engine);
-        init(engine);
+        init();
     }
 
     // === Inizializzazione comune ===
-    private void init(Engine engine) {
+    private void init() {
         this.types = new String[]{"fireball", "firedomain", "changestates"};
         Cooldown[] cooldowns = {new Cooldown(2f), new Cooldown(0), new Cooldown(0.5f, true)};
         cooldowns[2].autoUpdate();
@@ -50,6 +50,7 @@ public class Lich extends Boss {
     @Override
     public void create() {
         super.create();
+
     }
 
     @Override

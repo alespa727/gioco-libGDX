@@ -2,7 +2,7 @@ package progetto.entity.components.specific.general.skills.specific.boss;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import progetto.audio.AudioManager;
+import progetto.audio.AudioEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.skills.specific.CombatSkill;
 import progetto.entity.entities.specific.living.Humanoid;
@@ -12,7 +12,7 @@ import progetto.player.Player;
 public class LichFireball extends CombatSkill {
     private final float speed;
     private final Player player;
-    private AudioManager mng;
+    private AudioEngine mng;
 
     public LichFireball(Humanoid entity, String name, String description, float damage, float speed) {
         super(entity, name, description, damage);

@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import progetto.core.Core;
+import progetto.core.ResourceManager;
 import progetto.core.game.GameScreen;
 import progetto.core.game.TextDrawer;
 import progetto.entity.components.specific.base.Cooldown;
@@ -86,25 +87,18 @@ public class LoadingScreen implements Screen {
         cooldown = new Cooldown(0.4f);
         cooldown.reset();
 
-        initAssetLoading();
         initGameVariables(minTime, maxTime);
         initGraphics();
         initUI();
     }
 
-    // --- SETUP ---
-
-    private void initAssetLoading() {
-        Core.assetManager.load("entities/Player_shadow.png", Texture.class);
-        Core.assetManager.finishLoading();
-    }
 
     private void initGameVariables(float minTime, float maxTime) {
         time = MathUtils.random(minTime, maxTime);
         larghezzaBlocco = (float) Gdx.graphics.getWidth() / LARGHEZZA;
 
-        animation = new DefaultAnimationSet(Core.assetManager.get("entities/Finn.png"));
-        shadow = new DefaultAnimationSet(Core.assetManager.get("entities/Player_shadow.png"));
+        animation = new DefaultAnimationSet(ResourceManager.get().get("entities/Finn.png"));
+        shadow = new DefaultAnimationSet(ResourceManager.get().get("entities/Player_shadow.png"));
 
         position = new Vector2(5 * larghezzaBlocco, 4.5f * larghezzaBlocco);
         objective = new Vector2(11 * larghezzaBlocco, 4.5f * larghezzaBlocco);

@@ -8,6 +8,7 @@ import progetto.entity.components.specific.ai.StatemachineComponent;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.combat.MortalComponent;
 import progetto.entity.components.specific.combat.MultiCooldownComponent;
+import progetto.entity.components.specific.general.Saveable;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
 import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.living.combat.Warrior;
@@ -40,7 +41,8 @@ public abstract class Enemy extends Warrior {
         add(
             new StatemachineComponent<>(this, StatesEnemy.PATROLLING),
             new MortalComponent(),
-            new MultiCooldownComponent()
+            new MultiCooldownComponent(),
+            new Saveable()
         );
 
         get(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f, true));

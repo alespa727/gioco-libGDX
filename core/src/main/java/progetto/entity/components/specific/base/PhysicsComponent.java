@@ -39,6 +39,7 @@ public class PhysicsComponent extends Component {
     // === Corpo e fisica ===
 
     public void createBody() {
+        assert position != null;
         bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.DynamicBody, position.x, position.y);
         shape = BodyFactory.createCircle(owner.get(ConfigComponent.class).getConfig().radius);
         fixtureDef = BodyFactory.createFixtureDef(shape, 25f, .8f, .1f);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import progetto.AutoSave;
 import progetto.core.Core;
 import progetto.core.settings.model.ModelImpostazioni;
 import progetto.entity.Engine;
@@ -53,18 +54,6 @@ public class GameEngine {
 
     public GameTime getTime() {
         return time;
-    }
-
-    private void loadAssets() {
-        // Carica gli asset necessari
-        Core.assetManager.load("entities/Finn.png", Texture.class);
-        Core.assetManager.load("particle/particle.png", Texture.class);
-        Core.assetManager.load("sounds/gunshot.mp3", Sound.class);
-        Core.assetManager.load("sounds/fireball.mp3", Sound.class);
-        Core.assetManager.load("entities/Lich.png", Texture.class);
-        Core.assetManager.load("entities/nemico.png", Texture.class);
-        Core.assetManager.load("entities/Finn/attack/sword.png", Texture.class);
-        Core.assetManager.finishLoading();
     }
 
     public void update(float delta) {
@@ -122,7 +111,6 @@ public class GameEngine {
     }
 
     public void initializeEntityEngine() {
-        this.loadAssets();
         this.engine = new Engine(game);
         EntityConfig p = EntityConfigFactory.createPlayerConfig();
         this.player = new Player(p, engine);
@@ -161,6 +149,7 @@ public class GameEngine {
         engine.render(0);
 
         this.map = new MapManager(game.viewport, engine, 1);
+
     }
 
 }

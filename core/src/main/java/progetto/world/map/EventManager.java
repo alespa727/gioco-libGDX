@@ -1,22 +1,22 @@
 package progetto.world.map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import progetto.entity.Engine;
 import progetto.world.events.base.MapEvent;
-import progetto.world.events.specific.ChangeMap;
-import progetto.world.events.specific.DamageEvent;
-import progetto.world.events.specific.FallEvent;
-import progetto.world.events.specific.SpawnCasa;
+import progetto.world.events.specific.*;
 
 public class EventManager {
 
     private final MapManager mapManager;
     private final Engine engine;
     private final Array<MapEvent> events = new Array<>();
-    private Map map;
+    private final Map map;
+    private Array<String> mapNames = new Array<>();
 
     public EventManager(Map map, MapManager mapManager, Engine engine) {
         this.map = map;
@@ -72,6 +72,15 @@ public class EventManager {
                     events.add(new FallEvent(position, width, height));
                 }
                 break;
+
+            case "SpawnEntity":
+                {
+                    FileHandle file = Gdx.files.local("/save/maps/" + map.nome + ".json");
+                    if (!file.exists()) {
+                        String entityType = getProperty(object, "entityType", String.class, "");
+                        events.add(new SpawnEntity(engine, entityType, position, 0));
+                    }
+                }
             default:
 
                 break;

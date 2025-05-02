@@ -3,6 +3,7 @@ package progetto.factories;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.core.ResourceManager;
 import progetto.entity.entities.specific.EntityConfig;
 
 public class EntityConfigFactory {
@@ -21,7 +22,7 @@ public class EntityConfigFactory {
         config.descrizione = "Spada tagliente";
         config.x = x;
         config.y = y;
-        config.img = Core.assetManager.get("entities/Finn/attack/sword.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Finn/attack/sword.png", Texture.class);
         config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;
@@ -42,7 +43,7 @@ public class EntityConfigFactory {
         config.descrizione = "Nemico pericoloso";
         config.x = x;
         config.y = y;
-        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
         config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;
@@ -62,7 +63,7 @@ public class EntityConfigFactory {
         lich.descrizione = "Nemico pericoloso";
         lich.x = x;
         lich.y = y;
-        lich.img = Core.assetManager.get("entities/nemico.png", Texture.class);
+        lich.img = ResourceManager.get().get("entities/nemico.png", Texture.class);
         lich.radius = 25 / 32f;
         lich.direzione = new Vector2(0, -0.5f);
         lich.isAlive = true;
@@ -80,7 +81,7 @@ public class EntityConfigFactory {
         EntityConfig player = new EntityConfig();
         player.id = 0;
         player.nome = "player";
-        player.img = Core.assetManager.get("entities/Finn.png", Texture.class);
+        player.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
         player.radius = 10 / 32f;
         player.direzione = new Vector2(0, -0.5f);
         player.isAlive = true;

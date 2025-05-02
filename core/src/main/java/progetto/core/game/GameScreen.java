@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import progetto.AutoSave;
+import progetto.audio.AudioEngine;
 import progetto.core.Core;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.base.StateComponent;
@@ -31,6 +33,7 @@ public class GameScreen implements Screen {
     public SpriteBatch batch;
     public FitViewport viewport;
 
+    private AutoSave autoSave;
     private final GameEngine engine;
     private final GameRenderer renderer;
     private final DebugHandler debugHandler;
@@ -129,6 +132,9 @@ public class GameScreen implements Screen {
             engine.getPlayer().respawn();
         }
         ManagerCamera.getInstance().update();
+        autoSave = new AutoSave(engine.getEntityEngine(), engine.getMap());
+        autoSave.start();
+        autoSave.setRunning(true);
     }
 
     @Override
@@ -154,6 +160,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
+        autoSave.setRunning(false);
         debugHandler.stopTerminal();
     }
 

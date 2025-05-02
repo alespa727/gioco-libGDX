@@ -3,6 +3,7 @@ package progetto.world.events.specific;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.core.ResourceManager;
 import progetto.entity.Engine;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.EntityConfig;
@@ -42,7 +43,7 @@ public class SpawnCasa extends MapEvent {
         config.descrizione = "Spada tagliente";
         config.x = position.x;
         config.y = position.y;
-        config.img = Core.assetManager.get("entities/Finn/attack/sword.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Finn/attack/sword.png", Texture.class);
         config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;

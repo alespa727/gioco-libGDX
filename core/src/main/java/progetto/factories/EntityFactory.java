@@ -3,6 +3,7 @@ package progetto.factories;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.core.ResourceManager;
 import progetto.entity.Engine;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.EntityConfig;
@@ -15,24 +16,22 @@ import progetto.entity.entities.specific.living.combat.enemy.Finn;
 import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.entity.entities.specific.notliving.Sword;
 
+import java.util.Objects;
+
 public class EntityFactory {
-    public static Enemy createEnemy(String type, EntityConfig config, Engine manager) {
-        return switch (type) {
+
+    public static Entity createEntity(String type, EntityConfig config, Engine manager) {
+        Objects.requireNonNull(type);
+        return switch (type){
             case "Finn" -> new Finn(config, manager);
-            case null -> null;
+            case "Lich" -> new Lich(config, manager);
+
             default -> throw new IllegalArgumentException("Tipo di nemico sconosciuto: " + type);
         };
     }
 
-    public static Boss createBoss(String type, EntityConfig config, Engine manager) {
-        return switch (type) {
-            case null -> null;
-            case "Lich" -> new Lich(config, manager);
-            default -> throw new IllegalArgumentException("Tipo di boss sconosciuto: " + type);
-        };
-    }
-
     public static Boss createBoss(String type, HumanoidInstances instance, Engine manager) {
+        Objects.requireNonNull(type);
         return switch (type) {
             case null -> null;
             case "Lich" -> new Lich(instance, manager);
@@ -40,10 +39,10 @@ public class EntityFactory {
         };
     }
 
-    public static Enemy createEnemy(String type, EnemyInstance instance, Engine manager, float attackCooldown) {
+    public static Enemy createEnemy(String type, EnemyInstance instance, Engine manager) {
+        Objects.requireNonNull(type);
         return switch (type) {
             case "Finn" -> new Finn(instance, manager);
-            case null -> null;
             default -> throw new IllegalArgumentException("Tipo di nemico sconosciuto: " + type);
         };
     }
@@ -57,7 +56,7 @@ public class EntityFactory {
         config.descrizione = "fa male";
         config.direzione = direction;
         config.isAlive = true;
-        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
         return new Bullet(config, target.engine, radius, speed, damage, target);
     }
 
@@ -70,7 +69,7 @@ public class EntityFactory {
         config.descrizione = "fa male";
         config.direzione = direction;
         config.isAlive = true;
-        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
         return new Bullet(config, engine, radius, speed, damage, target);
     }
 
@@ -79,7 +78,7 @@ public class EntityFactory {
         config.nome = "Sword";
         config.x = x;
         config.y = y;
-        config.img = Core.assetManager.get("entities/Finn.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
         config.radius = hitboxRadius;
         config.descrizione = "fa male";
         config.direzione = direction;

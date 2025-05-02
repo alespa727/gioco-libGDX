@@ -89,7 +89,7 @@ public class MapManager {
 
             case 2 -> {
                 nome = "fuori1";
-                ambienteAperto = false;
+                ambienteAperto = true;
                 viewport.setWorldSize(22f, 22f * 9 / 16f);
             }
 
@@ -103,7 +103,7 @@ public class MapManager {
     }
 
     public void loadMapEntities() {
-        FileHandle file = Gdx.files.local("/save/maps/" + currentMap.nome + ".json");
+        FileHandle file = Gdx.files.local("/save/maps/" + nome + ".json");
         if (file.exists()) {
             Json json = new Json();
             @SuppressWarnings("unchecked")
@@ -118,23 +118,21 @@ public class MapManager {
 
     public void saveMapEntities() {
         new Thread(() -> {
-            FileHandle fileHandle = Gdx.files.local("/save/maps/" + currentMap.nome + ".json");
+            FileHandle fileHandle = Gdx.files.local("save/maps/" + currentMap.nome + ".json");
 
             Json json = new Json();
-            json.setOutputType(JsonWriter.OutputType.json); // output in formato JSON puro
+            json.setOutputType(JsonWriter.OutputType.json);
 
-            // Pulisce l'elenco delle entità associate alla mappa corrente
             if (mapEntityInstances.get(currentMap.nome) != null)
                 mapEntityInstances.get(currentMap.nome).clear();
 
             Array<EntityInstance> instances = engine.clear();
-            mapEntityInstances.put(currentMap.nome, instances); // Salva nella mappa
+            mapEntityInstances.put(currentMap.nome, instances);
 
-            String string = json.prettyPrint(instances); // Serializzazione ben formattata
-            System.out.println(json.prettyPrint(string)); // Stampa leggibile
+            String string = json.prettyPrint(instances);
+            System.out.println(json.prettyPrint(string));
 
-            fileHandle.writeString(string, false); // Salvataggio su file
-            currentMap.dispose(); // Rilascio risorse mappa precedente
+            currentMap.dispose();
         }).start();
     }
 

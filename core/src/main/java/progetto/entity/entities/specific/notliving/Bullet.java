@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.Core;
+import progetto.core.ResourceManager;
 import progetto.entity.Engine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.BulletComponent;
@@ -49,15 +50,11 @@ public class Bullet extends GameObject {
     public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager, 0.1f);
         this.target = target.getClass();
-        this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
+        this.texture = ResourceManager.get().get("particle/particle.png", Texture.class);
         this.get(DirectionComponent.class).direction.set(config.direzione); // Imposta la direzione
 
         components.add(new BulletComponent(damage, velocity, radius));
         components.get(NodeComponent.class).setAwake(false);
-
-        effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
-        effect.scaleEffect(get(ConfigComponent.class).getConfig().radius / 2);
-        effect.start();
     }
 
     /**
@@ -74,15 +71,12 @@ public class Bullet extends GameObject {
     public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
         super(config, manager, 0.1f);
         this.target = target;
-        this.texture = Core.assetManager.get("particle/particle.png", Texture.class);
+        this.texture = ResourceManager.get().get("particle/particle.png", Texture.class);
         this.get(DirectionComponent.class).direction.set(config.direzione); // Imposta la direzione
 
         components.add(new BulletComponent(damage, velocity, radius));
         components.get(NodeComponent.class).setAwake(false);
 
-        effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
-        effect.scaleEffect(get(ConfigComponent.class).getConfig().radius / 2);
-        effect.start();
     }
 
 
@@ -113,6 +107,10 @@ public class Bullet extends GameObject {
         components.get(PhysicsComponent.class).getBody().getFixtureList().get(0).setSensor(true);
         components.get(PhysicsComponent.class).getBody().setUserData(this);
         remove(NodeComponent.class);
+
+        effect.load(Gdx.files.internal("particle/a.p"), Gdx.files.internal("particle"));
+        effect.scaleEffect(get(ConfigComponent.class).getConfig().radius / 2);
+        effect.start();
     }
 
     /**

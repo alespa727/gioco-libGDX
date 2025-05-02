@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import progetto.core.game.GameScreen;
+import progetto.entity.components.specific.general.Saveable;
 import progetto.entity.entities.EntityManager;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.EntityInstance;
+import progetto.entity.entities.specific.living.combat.boss.Boss;
 import progetto.entity.entities.specific.living.combat.boss.BossInstance;
+import progetto.entity.entities.specific.living.combat.enemy.Enemy;
 import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
 import progetto.entity.systems.SystemManager;
 import progetto.entity.systems.base.System;
@@ -87,6 +90,26 @@ public final class Engine {
         return instances;
     }
 
+    public Array<EntityInstance> save(){
+        Array<EntityInstance> instances = new Array<>();
+        Array<Entity> entitiesCopy = new Array<>(entities);
+
+        for (Entity e : entitiesCopy) {
+            if (e.contains(Saveable.class)){
+                if (e instanceof Enemy enemy){
+                    EnemyInstance in = new EnemyInstance(enemy);
+                    instances.add(in);
+                }
+                if (e instanceof Boss boss){
+                    BossInstance in = new BossInstance(boss);
+                    instances.add(in);
+                }
+            }
+        }
+
+        return instances;
+    }
+
     public Entity summon(Entity e) {
         queue.addFirst(e);
         return queue.first();
@@ -94,12 +117,16 @@ public final class Engine {
 
     public void summon(Array<EntityInstance> instances) {
         for (EntityInstance instance : instances) {
-            if (instance == null) continue;
+            switch (instance) {
+                case null -> {
+                    continue;
+                }
+                case EnemyInstance enemyInstance -> summon(EntityFactory.createEnemy(instance.type, enemyInstance, this));
+                case BossInstance bossInstance -> summon(EntityFactory.createBoss(instance.type, bossInstance, this));
+                default -> {
+                }
+            }
 
-            if (instance instanceof EnemyInstance)
-                summon(EntityFactory.createEnemy(instance.type, (EnemyInstance) instance, this, 1.5f));
-            else if (instance instanceof BossInstance)
-                summon(EntityFactory.createBoss(instance.type, (BossInstance) instance, this));
         }
     }
 
