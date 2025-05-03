@@ -24,7 +24,7 @@ public class Gui {
     public Gui(GameScreen gamescreen) {
         this.gamescreen = gamescreen;
         batch = new SpriteBatch();
-        progressBar = new ProgressBar(new Texture("Background.png"), new Texture("ProgressBar.png"));
+        progressBar = new ProgressBar(new Texture("Background.png"), new Texture("ProgressBar-2.png"));
 
         float larghezzaBlocco = (float) Gdx.graphics.getWidth() / WIDTH;
 
@@ -48,7 +48,7 @@ public class Gui {
 
     public void barravita() {
         batch.begin();
-        progressBar.draw(batch, Color.RED, 1);
+        progressBar.draw(batch, new Color(1, 0, 0, 1), 1);
         batch.end();
     }
 

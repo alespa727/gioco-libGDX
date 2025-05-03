@@ -18,7 +18,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import progetto.core.App;
+import progetto.core.CustomScreen;
 import progetto.core.ResourceManager;
+import progetto.core.ScreenRenderer;
 import progetto.core.game.GameScreen;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.graphics.animations.DefaultAnimationSet;
@@ -27,7 +29,7 @@ import progetto.graphics.shaders.specific.Vignette;
 import progetto.ui.components.ProgressBar;
 import progetto.world.WorldManager;
 
-public class Loading implements Screen {
+public class Loading extends CustomScreen {
 
     private static final int LARGHEZZA = 16;
 
@@ -55,7 +57,7 @@ public class Loading implements Screen {
     private float time;
     private float accumulator = 0;
     private Cooldown cooldown;
-    private LoadingRenderer drawer;
+    private ScreenRenderer drawer;
 
     public Loading(App app, Screen nextScreen, float minTime, float maxTime) {
         this.app = app;
@@ -87,7 +89,7 @@ public class Loading implements Screen {
     private void initGraphics() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        drawer = new LoadingRenderer(this);
+        drawer = new ScreenRenderer(this);
         drawer.addShader(Vignette.getInstance());
         drawer.addShader(ColorFilter.getInstance(0.8f, 0.8f, 0.86f));
     }
@@ -103,7 +105,7 @@ public class Loading implements Screen {
         BitmapFont font = generator.generateFont(parameter);
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
-        buttonStyle.fontColor = Color.BLACK;
+        buttonStyle.fontColor = Color.BLACK.cpy().mul(0.75f);
         textButton = new TextButton("Loading...", buttonStyle);
 
         textButton.getLabel().setAlignment(Align.left);
@@ -173,7 +175,11 @@ public class Loading implements Screen {
     public void render(float delta) {
         WorldManager.update();
         GameScreen screen1 = (GameScreen) nextScreen;
-        screen1.getEntityManager().processQueue();
+
+        if (screen1.getEntityManager()!=null) {
+            screen1.getEntityManager().processQueue();
+        }
+
         move(speed.cpy());
         drawer.draw(batch, delta);
         updateLoading(delta);

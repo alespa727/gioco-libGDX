@@ -1,15 +1,15 @@
-package progetto.core.loading;
+package progetto.core;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import progetto.graphics.shaders.base.Shader;
 
 
-public class LoadingRenderer {
+public class ScreenRenderer {
     private final Array<Shader> shaders;
-    private final Loading screen;
+    private final CustomScreen screen;
 
-    public LoadingRenderer(Loading screen) {
+    public ScreenRenderer(CustomScreen screen) {
         shaders = new Array<>();
         this.screen = screen;
     }

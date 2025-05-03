@@ -23,7 +23,8 @@ public class App extends com.badlogic.gdx.Game {
         batch = new SpriteBatch();        // Per disegnare sprite
         renderer = new ShapeRenderer();   // Per forme geometriche
         gameScreen = new GameScreen(this); // Istanzia il gioco
-        setScreen(new MainMenu(this));  // Mostra il menu principale
+        MainMenu mainMenu = new MainMenu(this);
+        setScreen(mainMenu);  // Mostra il menu principale
         loadAssets();
     }
 
