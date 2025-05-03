@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.entities.Entity;
 import progetto.graphics.shaders.base.Shader;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 
 public class EntityLight extends Shader {
 
@@ -57,14 +57,14 @@ public class EntityLight extends Shader {
             }
             frameBuffer.begin();
             Vector3 position = new Vector3(e.get(PhysicsComponent.class).getPosition(), 0);
-            Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
+            Vector3 projectedPosition = CameraManager.getInstance().project(position);
             float normX = projectedPosition.x / Gdx.graphics.getWidth();
             float normY = projectedPosition.y / Gdx.graphics.getHeight();
             this.position.set(normX, normY);
         }else if (worldPosition != null){
             frameBuffer.begin();
             Vector3 position = new Vector3(worldPosition, 0);
-            Vector3 projectedPosition = ManagerCamera.getInstance().project(position);
+            Vector3 projectedPosition = CameraManager.getInstance().project(position);
             float normX = projectedPosition.x / Gdx.graphics.getWidth();
             float normY = projectedPosition.y / Gdx.graphics.getHeight();
             this.position.set(normX, normY);
@@ -109,10 +109,10 @@ public class EntityLight extends Shader {
         program.setUniformf("u_lightColor", color);
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
-            ManagerCamera.getFrustumCorners()[0].x,
-            ManagerCamera.getFrustumCorners()[0].y,
-            ManagerCamera.getViewportWidth(),
-            ManagerCamera.getViewportHeight());
+            CameraManager.getFrustumCorners()[0].x,
+            CameraManager.getFrustumCorners()[0].y,
+            CameraManager.getViewportWidth(),
+            CameraManager.getViewportHeight());
         batch.end();                                         // (4) finisci il batch
         batch.setShader(null);
     }

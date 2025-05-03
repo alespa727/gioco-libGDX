@@ -1,7 +1,7 @@
 package progetto.entity.entities;
 
 import com.badlogic.gdx.utils.Array;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.ComponentManager;
 import progetto.entity.components.base.Component;
 import progetto.entity.components.specific.base.StateComponent;
@@ -27,9 +27,9 @@ public abstract class Entity {
     public final int id;
 
     /**
-     * Gestore generale delle entità (dove è registrata questa entità). {@link Engine}
+     * Gestore generale delle entità (dove è registrata questa entità). {@link EntityEngine}
      */
-    public final Engine engine;
+    public final EntityEngine entityEngine;
 
     /**
      * Gestore componenti.
@@ -39,10 +39,10 @@ public abstract class Entity {
     /**
      * Crea un'entità a partire da un'istanza salvata (es. Caricata da un file).
      *
-     * @param engine il gestore delle entità {@link Engine}
+     * @param entityEngine il gestore delle entità {@link EntityEngine}
      */
-    public Entity(Engine engine) {
-        this.engine = engine;
+    public Entity(EntityEngine entityEngine) {
+        this.entityEngine = entityEngine;
         this.id = nextId++;
         this.components = new ComponentManager();
     }

@@ -3,42 +3,36 @@ package progetto.entity.entities.specific.living.combat.enemy;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
 import com.badlogic.gdx.utils.Array;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.ai.StatemachineComponent;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.combat.MortalComponent;
 import progetto.entity.components.specific.combat.MultiCooldownComponent;
 import progetto.entity.components.specific.general.Saveable;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
+import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.living.combat.Warrior;
-import progetto.statemachines.StatesEnemy;
+import progetto.entity.statemachines.StatesEnemy;
 
 public abstract class Enemy extends Warrior {
-
-    // === ATTRIBUTI ===
-    public final float viewDistance;
-    public final float pursueMaxDistance;
 
     private Array<Warrior> inRange;
 
     // === COSTRUTTORI ===
-    public Enemy(EnemyInstance instance, Engine manager) {
+    public Enemy(EnemyInstance instance, EntityEngine manager) {
         super(instance, manager);
-        viewDistance = instance.viewDistance;
-        pursueMaxDistance = instance.pursueMaxDistance;
     }
 
-    public Enemy(EntityConfig config, Engine manager) {
+    public Enemy(EntityConfig config, EntityEngine manager) {
         super(config, manager);
-        viewDistance = 11f;
-        pursueMaxDistance = 12f;
     }
 
     @Override
     public void create() {
         super.create();
         add(
+            new InRangeListComponent(),
             new StatemachineComponent<>(this, StatesEnemy.PATROLLING),
             new MortalComponent(),
             new MultiCooldownComponent(),
@@ -47,7 +41,6 @@ public abstract class Enemy extends Warrior {
 
         get(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f, true));
         getAttackCooldown().reset();
-
 
         this.inRange = new Array<>();
         getSkillset().add(new EnemySwordAttack(this, "", "", 10));

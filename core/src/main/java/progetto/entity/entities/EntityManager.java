@@ -3,20 +3,19 @@ package progetto.entity.entities;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.graphics.ZLevelComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.input.DebugWindow;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 
 import java.util.Comparator;
-import java.util.concurrent.Semaphore;
 
 public class EntityManager {
-    final Engine engine;
+    final EntityEngine entityEngine;
     final Comparator<Entity> comparator;
     final Array<Entity> entities;
     final Queue<Entity> queue;
@@ -25,10 +24,10 @@ public class EntityManager {
     /**
      * Costruttore
      *
-     * @param engine manager delle entità
+     * @param entityEngine manager delle entità
      */
-    public EntityManager(Engine engine) {
-        this.engine = engine;
+    public EntityManager(EntityEngine entityEngine) {
+        this.entityEngine = entityEngine;
 
         comparator = (o1, o2) -> {
             if (o1.contains(ZLevelComponent.class) && o2.contains(ZLevelComponent.class)) {
@@ -42,15 +41,15 @@ public class EntityManager {
             }
             return Float.compare(o2.get(PhysicsComponent.class).getPosition().y, o1.get(PhysicsComponent.class).getPosition().y);
         };
-        queue = engine.getQueue();
-        entities = engine.getEntities();
+        queue = entityEngine.getQueue();
+        entities = entityEngine.getEntities();
     }
 
     /**
      * Processa la coda e aggiorna le entità
      */
     public void updateEntities() {
-        this.elapsedTime = engine.elapsedTime;
+        this.elapsedTime = entityEngine.elapsedTime;
         processQueue();
 
     }
@@ -64,9 +63,9 @@ public class EntityManager {
         }
         entities.sort(comparator);
 
-        engine.game.core.batch.begin();
+        entityEngine.game.app.batch.begin();
         drawSkills();
-        engine.game.core.batch.end();
+        entityEngine.game.app.batch.end();
     }
 
     public void sort() {
@@ -78,8 +77,8 @@ public class EntityManager {
      */
     private void drawSkills() {
         for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y) && e instanceof Humanoid) {
-                ((Humanoid) e).getSkillset().draw(engine.game.core.batch, elapsedTime);
+            if (CameraManager.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y) && e instanceof Humanoid) {
+                ((Humanoid) e).getSkillset().draw(entityEngine.game.app.batch, elapsedTime);
             }
         }
     }
@@ -88,19 +87,19 @@ public class EntityManager {
      * Disegna le entità
      */
     public void drawPaths() {
-        engine.game.core.renderer.begin(ShapeRenderer.ShapeType.Filled);
+        entityEngine.game.app.renderer.begin(ShapeRenderer.ShapeType.Filled);
         for (Entity e : entities) {
-            if (ManagerCamera.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y)) {
+            if (CameraManager.isWithinFrustumBounds(e.get(PhysicsComponent.class).getPosition().x, e.get(PhysicsComponent.class).getPosition().y)) {
                 try {
                     if (e instanceof Humanoid human) {
-                        human.drawPath(engine.game.core.renderer);
+                        human.drawPath(entityEngine.game.app.renderer);
                     }
                 } catch (Exception ex) {
                     System.out.println("ERRORE" + e.get(DirectionComponent.class).direction);
                 }
             }
         }
-        engine.game.core.renderer.end();
+        entityEngine.game.app.renderer.end();
     }
 
     /**
@@ -123,7 +122,7 @@ public class EntityManager {
             entity.get(PhysicsComponent.class).initBody();
         }
         entity.create();
-        engine.addEntityToSystems(entity);
+        entityEngine.addEntityToSystems(entity);
         entity.get(StateComponent.class).setLoaded(true);
     }
 

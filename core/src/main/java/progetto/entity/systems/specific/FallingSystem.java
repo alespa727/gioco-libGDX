@@ -2,14 +2,12 @@ package progetto.entity.systems.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import progetto.entity.Engine;
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.graphics.DespawnAnimationComponent;
 import progetto.entity.components.specific.movement.FallingComponent;
 import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.systems.base.IteratingSystem;
 
 public class FallingSystem extends IteratingSystem {

@@ -1,6 +1,6 @@
 package progetto.entity.entities.specific.living.combat.enemy;
 
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.skills.specific.boss.LichFireball;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
@@ -13,12 +13,12 @@ public final class Finn extends Enemy {
     // === COSTRUTTORI ===
 
     // Costruttore con EnemyInstance
-    public Finn(EnemyInstance instance, Engine manager) {
+    public Finn(EnemyInstance instance, EntityEngine manager) {
         super(instance, manager);
     }
 
     // Costruttore con EntityConfig
-    public Finn(EntityConfig config, Engine manager) {
+    public Finn(EntityConfig config, EntityEngine manager) {
         super(config, manager);
     }
 
@@ -44,7 +44,7 @@ public final class Finn extends Enemy {
     @Override
     public EntityInstance unregister() {
         // Rimuove l'entità dal manager
-        engine.remove(this);
+        entityEngine.remove(this);
 
         // Distrugge il corpo dell'entità e la sua area di range nel mondo
         WorldManager.destroyBody(components.get(PhysicsComponent.class).getBody());

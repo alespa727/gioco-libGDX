@@ -2,22 +2,16 @@ package progetto.world.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Disposable;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.factories.BodyFactory;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 import progetto.world.WorldManager;
+import progetto.world.collision.CollisionGenerator;
+import progetto.world.events.EventManager;
 import progetto.world.graph.GameGraph;
 
 public class Map implements Disposable {
@@ -36,13 +30,13 @@ public class Map implements Disposable {
 
 
     /* Creazione nuova mappa */
-    public Map(String nome, Engine engine, MapManager mapManager, float x, float y) {
+    public Map(String nome, EntityEngine entityEngine, MapManager mapManager, float x, float y) {
 
         this.nome = nome;
         this.map = new TmxMapLoader().load("maps/".concat(nome).concat(".tmx"));
-        this.renderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, engine.game.batch);
+        this.renderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, entityEngine.game.batch);
         loadTextureFilter();
-        this.eventManager = new EventManager(this, mapManager, engine);
+        this.eventManager = new EventManager(this, mapManager, entityEngine);
         this.eventManager.create(map.getLayers().get("eventi"));
 
         // Salvataggio grandezza mappa
@@ -53,10 +47,10 @@ public class Map implements Disposable {
         this.generator = new CollisionGenerator((TiledMapTileLayer) map.getLayers().get("collisioni"), this);
         graph = new GameGraph(width, height, generator.getCollision());
 
-        if (engine.player().contains(PhysicsComponent.class)) {
-            Gdx.app.postRunnable(() -> engine.player().get(PhysicsComponent.class).teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
-            ManagerCamera.getInstance().position.set(engine.player().get(PhysicsComponent.class).getPosition(), 0);
-            ManagerCamera.getInstance().update();
+        if (entityEngine.player().contains(PhysicsComponent.class)) {
+            Gdx.app.postRunnable(() -> entityEngine.player().get(PhysicsComponent.class).teleport(new Vector2(x, y))); // Teletrasporto player al punto di spawn definito
+            CameraManager.getInstance().position.set(entityEngine.player().get(PhysicsComponent.class).getPosition(), 0);
+            CameraManager.getInstance().update();
         }
 
         // Variabili di controllo

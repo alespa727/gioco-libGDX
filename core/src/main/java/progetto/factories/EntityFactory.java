@@ -2,9 +2,8 @@ package progetto.factories;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import progetto.core.Core;
 import progetto.core.ResourceManager;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.living.HumanoidInstances;
@@ -20,17 +19,17 @@ import java.util.Objects;
 
 public class EntityFactory {
 
-    public static Entity createEntity(String type, EntityConfig config, Engine manager) {
+    public static Entity createEntity(String type, EntityConfig config, EntityEngine manager) {
         Objects.requireNonNull(type);
         return switch (type){
-            case "Finn" -> new Finn(config, manager);
+            case "Enemy" -> new Finn(config, manager);
             case "Lich" -> new Lich(config, manager);
 
             default -> throw new IllegalArgumentException("Tipo di nemico sconosciuto: " + type);
         };
     }
 
-    public static Boss createBoss(String type, HumanoidInstances instance, Engine manager) {
+    public static Boss createBoss(String type, HumanoidInstances instance, EntityEngine manager) {
         Objects.requireNonNull(type);
         return switch (type) {
             case null -> null;
@@ -39,7 +38,7 @@ public class EntityFactory {
         };
     }
 
-    public static Enemy createEnemy(String type, EnemyInstance instance, Engine manager) {
+    public static Enemy createEnemy(String type, EnemyInstance instance, EntityEngine manager) {
         Objects.requireNonNull(type);
         return switch (type) {
             case "Finn" -> new Finn(instance, manager);
@@ -57,10 +56,10 @@ public class EntityFactory {
         config.direzione = direction;
         config.isAlive = true;
         config.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
-        return new Bullet(config, target.engine, radius, speed, damage, target);
+        return new Bullet(config, target.entityEngine, radius, speed, damage, target);
     }
 
-    public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, Engine engine, Class<? extends Entity> target) {
+    public static Bullet createBullet(float x, float y, Vector2 direction, float radius, float speed, float damage, EntityEngine entityEngine, Class<? extends Entity> target) {
         EntityConfig config = new EntityConfig();
         config.nome = "Bullet";
         config.x = x;
@@ -70,10 +69,10 @@ public class EntityFactory {
         config.direzione = direction;
         config.isAlive = true;
         config.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
-        return new Bullet(config, engine, radius, speed, damage, target);
+        return new Bullet(config, entityEngine, radius, speed, damage, target);
     }
 
-    public static Sword createSword(float x, float y, float hitboxRadius, float drawingRadius, Vector2 direction, float damage, Engine engine, Entity target) {
+    public static Sword createSword(float x, float y, float hitboxRadius, float drawingRadius, Vector2 direction, float damage, EntityEngine entityEngine, Entity target) {
         EntityConfig config = new EntityConfig();
         config.nome = "Sword";
         config.x = x;
@@ -83,6 +82,6 @@ public class EntityFactory {
         config.descrizione = "fa male";
         config.direzione = direction;
         config.isAlive = true;
-        return new Sword(config, engine, drawingRadius);
+        return new Sword(config, entityEngine, drawingRadius);
     }
 }

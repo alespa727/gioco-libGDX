@@ -1,7 +1,7 @@
 package progetto.entity.systems;
 
 import com.badlogic.gdx.utils.Array;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.entity.systems.base.System;
@@ -14,9 +14,9 @@ public class SystemManager {
     private final LinkedHashMap<Class<?>, System> logicSystems;
     private final DrawingSystem drawingSystem;
 
-    public SystemManager(Engine engine) {
+    public SystemManager(EntityEngine entityEngine) {
         logicSystems = new LinkedHashMap<>();
-        drawingSystem = new DrawingSystem(engine.game.core.batch);
+        drawingSystem = new DrawingSystem(entityEngine.game.app.batch);
     }
 
     public void add(System... systems) {

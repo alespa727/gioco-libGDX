@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
-import progetto.core.Core;
 import progetto.core.ResourceManager;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.BulletComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
@@ -41,13 +40,13 @@ public class Bullet extends GameObject {
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config   configurazione dell'entità ({@link EntityConfig})
-     * @param manager  gestore delle entità nel gioco ({@link Engine})
+     * @param manager  gestore delle entità nel gioco ({@link EntityEngine})
      * @param radius   raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage   danno inflitto dal proiettile
      * @param target   entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Entity target) {
+    public Bullet(EntityConfig config, EntityEngine manager, float radius, float velocity, float damage, Entity target) {
         super(config, manager, 0.1f);
         this.target = target.getClass();
         this.texture = ResourceManager.get().get("particle/particle.png", Texture.class);
@@ -62,13 +61,13 @@ public class Bullet extends GameObject {
      * Inizializza i parametri specifici del proiettile come velocità, danno, raggio, e target.
      *
      * @param config   configurazione dell'entità ({@link EntityConfig})
-     * @param manager  gestore delle entità nel gioco ({@link Engine})
+     * @param manager  gestore delle entità nel gioco ({@link EntityEngine})
      * @param radius   raggio del proiettile
      * @param velocity velocità del proiettile
      * @param damage   danno inflitto dal proiettile
      * @param target   classe dell'entità a cui è sparato il proiettile ({@link Entity})
      */
-    public Bullet(EntityConfig config, Engine manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
+    public Bullet(EntityConfig config, EntityEngine manager, float radius, float velocity, float damage, Class<? extends Entity> target) {
         super(config, manager, 0.1f);
         this.target = target;
         this.texture = ResourceManager.get().get("particle/particle.png", Texture.class);
@@ -120,7 +119,7 @@ public class Bullet extends GameObject {
      */
     @Override
     public EntityInstance unregister() {
-        engine.remove(this); // Rimuove il proiettile dal gestore
+        entityEngine.remove(this); // Rimuove il proiettile dal gestore
         WorldManager.destroyBody(components.get(PhysicsComponent.class).getBody());
         return null;
     }

@@ -6,9 +6,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.entities.specific.EntityInstance;
-import progetto.core.loading.LoadingScreen;
+import progetto.core.loading.Loading;
 
 import java.util.HashMap;
 
@@ -22,7 +22,7 @@ public class MapManager {
     // Mappa default
     private final int defaultMap = 1;
     // Reference utili
-    private final Engine engine;
+    private final EntityEngine entityEngine;
     private final FitViewport viewport;
     // Mappa attuale
     private Map currentMap;
@@ -32,9 +32,9 @@ public class MapManager {
     /**
      * Creazione manager delle mappe
      */
-    public MapManager(FitViewport viewport, Engine manager, int startingMap) {
+    public MapManager(FitViewport viewport, EntityEngine manager, int startingMap) {
         // Inizializzazione
-        this.engine = manager;
+        this.entityEngine = manager;
         this.viewport = viewport;
         currentMapNum = startingMap;
         this.ambienteAperto = true;
@@ -56,7 +56,7 @@ public class MapManager {
     public void changeMap(int map, float x, float y) {
         if (currentMap != null) { // Se almeno una mappa è stata caricata
             saveMapEntities();
-            new LoadingScreen(engine.game.core, engine.game, 5, 6);
+            new Loading(entityEngine.game.app, entityEngine.game, 5, 6);
         }
 
         chooseMap(map);
@@ -65,7 +65,7 @@ public class MapManager {
         currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, engine, this, x, y);
+        currentMap = new Map(nome, entityEngine, this, x, y);
         currentMap.generateCollisions();
 
         loadMapEntities();
@@ -103,7 +103,7 @@ public class MapManager {
     }
 
     public void loadMapEntities() {
-        FileHandle file = Gdx.files.local("/save/maps/" + nome + ".json");
+        FileHandle file = Gdx.files.local("save/maps/" + nome + ".json");
         if (file.exists()) {
             Json json = new Json();
             @SuppressWarnings("unchecked")
@@ -112,7 +112,7 @@ public class MapManager {
                 EntityInstance instance = loadedInstances.get(i);
                 instance.loadTexture();
             }
-            engine.summon(loadedInstances);
+            entityEngine.summon(loadedInstances);
         }
     }
 
@@ -126,12 +126,13 @@ public class MapManager {
             if (mapEntityInstances.get(currentMap.nome) != null)
                 mapEntityInstances.get(currentMap.nome).clear();
 
-            Array<EntityInstance> instances = engine.clear();
+            Array<EntityInstance> instances = entityEngine.clear();
             mapEntityInstances.put(currentMap.nome, instances);
 
             String string = json.prettyPrint(instances);
             System.out.println(json.prettyPrint(string));
 
+            fileHandle.writeString(string, false);
             currentMap.dispose();
         }).start();
     }

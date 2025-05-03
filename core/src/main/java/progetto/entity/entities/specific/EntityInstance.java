@@ -2,7 +2,6 @@ package progetto.entity.entities.specific;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import progetto.core.Core;
 import progetto.core.ResourceManager;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.ConfigComponent;

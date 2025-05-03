@@ -1,6 +1,6 @@
 package progetto.entity.entities.specific;
 
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.general.ConfigComponent;
@@ -16,10 +16,10 @@ public abstract class BaseEntity extends Entity {
      * Crea un'entità a partire da un'istanza salvata (es. Caricata da un file).
      *
      * @param instance l'entità salvata {@link EntityInstance}
-     * @param engine   il gestore delle entità {@link Engine}
+     * @param entityEngine   il gestore delle entità {@link EntityEngine}
      */
-    public BaseEntity(EntityInstance instance, Engine engine) {
-        super(engine);
+    public BaseEntity(EntityInstance instance, EntityEngine entityEngine) {
+        super(entityEngine);
 
         add(
                 new ConfigComponent(instance.config, id),
@@ -40,10 +40,10 @@ public abstract class BaseEntity extends Entity {
      * Crea un'entità a partire da una configurazione personalizzata.
      *
      * @param config configurazione dell'entità {@link EntityConfig}
-     * @param engine il gestore delle entità {@link Engine}
+     * @param entityEngine il gestore delle entità {@link EntityEngine}
      */
-    public BaseEntity(EntityConfig config, Engine engine) {
-        super(engine);
+    public BaseEntity(EntityConfig config, EntityEngine entityEngine) {
+        super(entityEngine);
 
         add(
                 new ConfigComponent(config, id),

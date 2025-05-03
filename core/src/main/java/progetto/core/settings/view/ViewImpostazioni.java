@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import progetto.audio.AudioEngine;
 
 /**
  * La classe {@code ViewImpostazioni} implementa l'interfaccia {@code Screen} di LibGDX
@@ -67,7 +68,7 @@ public class ViewImpostazioni implements Screen {
      */
     @Override
     public void show() {
-        // Può essere implementato per inizializzare gli attori sulla scena.
+
     }
 
     /**

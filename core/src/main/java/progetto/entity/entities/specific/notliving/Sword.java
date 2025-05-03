@@ -1,9 +1,8 @@
 package progetto.entity.entities.specific.notliving;
 
 import com.badlogic.gdx.graphics.Texture;
-import progetto.core.Core;
 import progetto.core.ResourceManager;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.item.ItemComponent;
 import progetto.entity.entities.specific.EntityConfig;
@@ -15,9 +14,9 @@ public class Sword extends GameObject {
      * Crea un'entità a partire da una configurazione personalizzata.
      *
      * @param config  configurazione dell'entità {@link EntityConfig}
-     * @param manager il gestore delle entità {@link Engine}
+     * @param manager il gestore delle entità {@link EntityEngine}
      */
-    public Sword(EntityConfig config, Engine manager, float radius) {
+    public Sword(EntityConfig config, EntityEngine manager, float radius) {
         super(config, manager, radius);
         this.texture = ResourceManager.get().get("entities/Finn/attack/sword.png", Texture.class);
     }
@@ -26,9 +25,9 @@ public class Sword extends GameObject {
      * Crea un'entità a partire da un'istanza salvata (es. caricata da un file).
      *
      * @param instance l'entità salvata {@link EntityInstance}
-     * @param manager  il gestore delle entità {@link Engine}
+     * @param manager  il gestore delle entità {@link EntityEngine}
      */
-    public Sword(EntityInstance instance, Engine manager, float radius) {
+    public Sword(EntityInstance instance, EntityEngine manager, float radius) {
         super(instance, manager, radius);
         this.texture = ResourceManager.get().get("entities/Finn/attack/sword.png", Texture.class);
 
@@ -52,7 +51,7 @@ public class Sword extends GameObject {
      */
     @Override
     public EntityInstance unregister() {
-        engine.remove(this);
+        entityEngine.remove(this);
         WorldManager.destroyBody(get(PhysicsComponent.class).getBody());
         return null;
     }

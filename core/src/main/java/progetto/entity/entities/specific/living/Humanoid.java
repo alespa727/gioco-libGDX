@@ -2,7 +2,7 @@ package progetto.entity.entities.specific.living;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.StatusComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
@@ -28,10 +28,10 @@ public abstract class Humanoid extends BaseEntity {
      * Aggiunge i componenti necessari per la gestione del movimento, salute, abilità e velocità.
      *
      * @param instance L'istanza dell'umanoide da usare per la configurazione.
-     * @param engine   Il gestore delle entità del gioco.
+     * @param entityEngine   Il gestore delle entità del gioco.
      */
-    public Humanoid(HumanoidInstances instance, Engine engine) {
-        super(instance, engine);
+    public Humanoid(HumanoidInstances instance, EntityEngine entityEngine) {
+        super(instance, entityEngine);
 
         String[] string = new String[1];
         string[0] = "default";
@@ -58,7 +58,7 @@ public abstract class Humanoid extends BaseEntity {
      * @param config  La configurazione dell'umanoide (velocità, salute, ecc.).
      * @param manager Il gestore delle entità del gioco.
      */
-    public Humanoid(EntityConfig config, Engine manager) {
+    public Humanoid(EntityConfig config, EntityEngine manager) {
         super(config, manager);
 
         String[] string = new String[1];
@@ -123,11 +123,11 @@ public abstract class Humanoid extends BaseEntity {
      * @param target L'entità target verso cui l'umanoide deve dirigersi.
      */
     public void searchPath(Entity target) {
-        getPathFinder().renderPath(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, engine.delta);
+        getPathFinder().renderPath(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, entityEngine.delta);
     }
 
     public boolean searchPathIdle(Entity target) {
-        return getPathFinder().renderPath(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, engine.delta);
+        return getPathFinder().renderPath(target.get(PhysicsComponent.class).getPosition().x, target.get(PhysicsComponent.class).getPosition().y, entityEngine.delta);
     }
 
     /**

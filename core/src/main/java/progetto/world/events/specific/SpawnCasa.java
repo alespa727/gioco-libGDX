@@ -2,9 +2,8 @@ package progetto.world.events.specific;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import progetto.core.Core;
 import progetto.core.ResourceManager;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.living.combat.enemy.Enemy;
@@ -12,7 +11,7 @@ import progetto.entity.entities.specific.notliving.Casa;
 import progetto.world.events.base.MapEvent;
 
 public class SpawnCasa extends MapEvent {
-    private final Engine engine;
+    private final EntityEngine entityEngine;
 
     /**
      * Crea un evento di spawn di un {@link Enemy}
@@ -22,11 +21,11 @@ public class SpawnCasa extends MapEvent {
      *
      * @param position  posizione centrale dell’evento
      * @param radius    raggio entro cui l’evento può attivarsi
-     * @param engine    gestore entità
+     * @param entityEngine    gestore entità
      */
-    public SpawnCasa(Vector2 position, float radius, Engine engine) {
+    public SpawnCasa(Vector2 position, float radius, EntityEngine entityEngine) {
         super(position, radius);
-        this.engine = engine;
+        this.entityEngine = entityEngine;
         this.trigger(null);
         this.destroy();
     }
@@ -55,6 +54,6 @@ public class SpawnCasa extends MapEvent {
         config.imageHeight = 2f;
         config.imageWidth = 2f;
 
-        engine.summon(new Casa(config, engine, 6));
+        entityEngine.summon(new Casa(config, entityEngine, 6));
     }
 }

@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import progetto.graphics.shaders.base.Shader;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 
 public class ColorFilter extends Shader {
     private static ColorFilter instance;
@@ -73,10 +73,10 @@ public class ColorFilter extends Shader {
         program.setUniformf("u_tint", color.r, color.g, color.b);
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
-            ManagerCamera.getFrustumCorners()[0].x,
-            ManagerCamera.getFrustumCorners()[0].y,
-            ManagerCamera.getViewportWidth(),
-            ManagerCamera.getViewportHeight());
+            CameraManager.getFrustumCorners()[0].x,
+            CameraManager.getFrustumCorners()[0].y,
+            CameraManager.getViewportWidth(),
+            CameraManager.getViewportHeight());
         batch.end();                                         // (4) finisci il batch
         batch.setShader(null);                               // (5) resetta lo shader (opzionale)
     }

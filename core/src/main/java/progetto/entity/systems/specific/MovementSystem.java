@@ -11,9 +11,8 @@ import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.input.DebugWindow;
-import progetto.player.Player;
+import progetto.core.game.player.Player;
 import progetto.world.graph.node.Node;
-import progetto.world.map.Map;
 
 public class MovementSystem extends IteratingSystem {
 
@@ -38,12 +37,8 @@ public class MovementSystem extends IteratingSystem {
 
         if (movement.isAwake()) {
             movement.setReady(false);
-
-            if (movement.stepIndex > movement.getPath().size - 1 || movement.cooldown.isReady) {
-                movement.stepIndex = 0;
-                movement.setReady(true);
-                movement.cooldown.reset();
-            }
+            movement.stepIndex = 1;
+            movement.setReady(true);
             if (movement.getPath().size == 0) {
                 return;
             }
@@ -68,15 +63,10 @@ public class MovementSystem extends IteratingSystem {
             return;
         }
 
-        if (e.get(PhysicsComponent.class).getPosition().dst(target.getPosition()) < 8 / 16f) {
+        if (body.getPosition().dst(target.getPosition()) < 1/2f) {
             body.setLinearDamping(50f);
             movement.stepIndex++;
-            for (Node node : movement.getPath()) {
-                if (Map.getGraph().getClosestNode(node.x, node.y) != null && Map.getGraph().getClosestNode(node.x, node.y).isWalkable()) {
-                    movement.setReady(true);
-                    break;
-                }
-            }
+            movement.setReady(true);
         } else {
             body.setLinearDamping(3f);
         }

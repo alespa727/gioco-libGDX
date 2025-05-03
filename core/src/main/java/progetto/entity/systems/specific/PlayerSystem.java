@@ -10,7 +10,7 @@ import progetto.entity.components.specific.general.skills.specific.player.Player
 import progetto.entity.components.specific.general.skills.specific.player.PlayerSwordAttack;
 import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
-import progetto.player.Player;
+import progetto.core.game.player.Player;
 
 public class PlayerSystem extends IteratingSystem {
 

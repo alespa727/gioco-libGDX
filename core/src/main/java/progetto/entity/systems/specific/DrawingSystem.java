@@ -92,7 +92,7 @@ public class DrawingSystem extends IteratingSystem {
     public void drawObject(GameObject object) {
         if (object instanceof Bullet b) {
             b.effect.setPosition(object.get(PhysicsComponent.class).getPosition().x, object.get(PhysicsComponent.class).getPosition().y); // o qualsiasi posizione iniziale
-            b.effect.update(object.engine.delta);
+            b.effect.update(object.entityEngine.delta);
             b.effect.draw(batch);
         }
         float radius = object.components.get(RadiusComponent.class).getRadius();

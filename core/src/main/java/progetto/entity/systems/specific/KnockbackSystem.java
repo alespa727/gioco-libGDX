@@ -23,7 +23,7 @@ public class KnockbackSystem extends IteratingSystem {
         if (componentManager.contains(KnockbackComponent.class)) {
             KnockbackComponent knockbackComponent = componentManager.get(KnockbackComponent.class);
             Cooldown cooldown = knockbackComponent.cooldown;
-            cooldown.update(entity.engine.delta);
+            cooldown.update(entity.entityEngine.delta);
             Body body = entity.components.get(PhysicsComponent.class).getBody();
             if (!cooldown.isReady) {
                 body.applyLinearImpulse(knockbackComponent.hit, body.getWorldCenter(), true);

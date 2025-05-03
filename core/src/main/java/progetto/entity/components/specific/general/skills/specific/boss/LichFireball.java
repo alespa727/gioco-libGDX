@@ -7,7 +7,7 @@ import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.skills.specific.CombatSkill;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.factories.EntityFactory;
-import progetto.player.Player;
+import progetto.core.game.player.Player;
 
 public class LichFireball extends CombatSkill {
     private final float speed;
@@ -17,7 +17,7 @@ public class LichFireball extends CombatSkill {
     public LichFireball(Humanoid entity, String name, String description, float damage, float speed) {
         super(entity, name, description, damage);
         this.speed = speed;
-        this.player = entity.engine.player();
+        this.player = entity.entityEngine.player();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LichFireball extends CombatSkill {
         Vector2 direction = new Vector2(player.get(PhysicsComponent.class).getPosition().x - owner.get(PhysicsComponent.class).getPosition().x, player.get(PhysicsComponent.class).getPosition().y - owner.get(PhysicsComponent.class).getPosition().y);
         direction.nor();
         Vector2 position = new Vector2(owner.get(PhysicsComponent.class).getPosition()).add(direction);
-        owner.engine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.2f, this.speed, this.damage, player));
+        owner.entityEngine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.2f, this.speed, this.damage, player));
     }
 
 

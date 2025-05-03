@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.base.ComponentFilter;
 import progetto.entity.components.specific.base.StateComponent;
 import progetto.entity.components.specific.base.PhysicsComponent;
@@ -64,6 +64,6 @@ public class RangeSystem extends IteratingSystem {
         rangeC.fixtureDef = new FixtureDef();
         rangeC.fixtureDef.shape = rangeC.shape;
         rangeC.fixtureDef.isSensor = true;
-        rangeC.fixtureDef.filter.categoryBits = Engine.RANGE;
+        rangeC.fixtureDef.filter.categoryBits = EntityEngine.RANGE;
     }
 }

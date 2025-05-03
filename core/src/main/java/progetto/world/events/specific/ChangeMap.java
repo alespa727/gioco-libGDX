@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import progetto.entity.entities.Entity;
 import progetto.input.KeyHandler;
-import progetto.input.TerminalCommand;
-import progetto.player.Player;
+import progetto.core.game.Terminal;
+import progetto.core.game.player.Player;
 import progetto.world.events.base.MapEvent;
 import progetto.world.map.MapManager;
 
@@ -45,7 +45,7 @@ public class ChangeMap extends MapEvent {
     public void update(float delta) {
         if (isActive()) {
             if (KeyHandler.usa) {
-                TerminalCommand.printMessage("Map " + MapManager.getMapIndex() + " changing to " + map + "..");
+                Terminal.printMessage("Map " + MapManager.getMapIndex() + " changing to " + map + "..");
                 Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f));
                 isActive = false;
             }

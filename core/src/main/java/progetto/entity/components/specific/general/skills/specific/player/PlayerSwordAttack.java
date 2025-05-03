@@ -8,8 +8,8 @@ import progetto.entity.components.specific.general.skills.specific.CombatSkill;
 import progetto.entity.components.specific.movement.DirectionComponent;
 import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.specific.living.combat.Warrior;
-import progetto.player.ManagerCamera;
-import progetto.player.Player;
+import progetto.core.CameraManager;
+import progetto.core.game.player.Player;
 
 public class PlayerSwordAttack extends CombatSkill {
 
@@ -49,8 +49,8 @@ public class PlayerSwordAttack extends CombatSkill {
 
     @Override
     public void execute() {
-        ManagerCamera.shakeTheCamera(0.1f, 0.01f);
-        owner.engine.game.setTimeScale(1f, 1f);
+        CameraManager.shakeTheCamera(0.1f, 0.01f);
+        owner.entityEngine.game.setTimeScale(1f, 1f);
         cooldown.reset();
         Array<Warrior> inRange = owner.components.get(InRangeListComponent.class).inRange;
         for (Warrior warrior : inRange) {

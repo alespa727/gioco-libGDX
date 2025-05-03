@@ -1,7 +1,7 @@
 package progetto.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.EntityConfig;
 import progetto.factories.EntityConfigFactory;
@@ -10,14 +10,14 @@ import progetto.world.events.base.MapEvent;
 
 public class SpawnEntity extends MapEvent {
 
-    private final Engine engine;
+    private final EntityEngine entityEngine;
 
-    public SpawnEntity(Engine engine, String entityType, Vector2 position, float radius) {
+    public SpawnEntity(EntityEngine entityEngine, String entityType, Vector2 position, float radius) {
         super(position, radius);
-        this.engine = engine;
+        this.entityEngine = entityEngine;
 
         EntityConfig config = EntityConfigFactory.createEntityConfig(entityType, position.x, position.y);
-        Entity entity = EntityFactory.createEntity(entityType, config, engine);
+        Entity entity = EntityFactory.createEntity(entityType, config, entityEngine);
 
         trigger(entity);
     }
@@ -37,7 +37,7 @@ public class SpawnEntity extends MapEvent {
      */
     @Override
     public void trigger(Entity entity) {
-        engine.summon(entity);
+        entityEngine.summon(entity);
         destroy();
     }
 }

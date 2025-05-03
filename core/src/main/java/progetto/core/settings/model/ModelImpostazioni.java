@@ -4,10 +4,10 @@ import com.badlogic.gdx.Input;
 
 import java.awt.Dimension;
 
-import progetto.ui.CustomLinkedHashMap;
-import progetto.ui.CustomMapComandiModificabili;
-import progetto.ui.DatiSlider;
-import progetto.ui.Style;
+import progetto.utils.CustomLinkedHashMap;
+import progetto.utils.CustomMapComandiModificabili;
+import progetto.ui.components.DatiSlider;
+import progetto.ui.style.Style;
 
 /**
  * La classe {@code ModelImpostazioni} gestisce le impostazioni di configurazione per il gioco,

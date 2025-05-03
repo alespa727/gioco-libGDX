@@ -8,7 +8,7 @@ import progetto.entity.components.specific.graphics.DespawnAnimationComponent;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.Humanoid;
 import progetto.entity.systems.base.IteratingSystem;
-import progetto.player.Player;
+import progetto.core.game.player.Player;
 
 public class DeathSystem extends IteratingSystem {
 

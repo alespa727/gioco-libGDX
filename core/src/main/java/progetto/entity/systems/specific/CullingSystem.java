@@ -8,7 +8,7 @@ import progetto.entity.components.specific.general.PlayerComponent;
 import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
 import progetto.input.DebugWindow;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 
 public class CullingSystem extends IteratingSystem {
 
@@ -46,6 +46,6 @@ public class CullingSystem extends IteratingSystem {
     }
 
     public boolean isInFrustumBounds(float x, float y) {
-        return ManagerCamera.isWithinFrustumBounds(x, y);
+        return CameraManager.isWithinFrustumBounds(x, y);
     }
 }

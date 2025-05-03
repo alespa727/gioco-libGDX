@@ -9,7 +9,7 @@ import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.item.ItemComponent;
 import progetto.entity.entities.Entity;
 import progetto.entity.systems.base.IteratingSystem;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 
 public class ItemHoldingSystem extends IteratingSystem {
 
@@ -29,7 +29,7 @@ public class ItemHoldingSystem extends IteratingSystem {
         Vector2 pos = item.getEntity().get(PhysicsComponent.class).getPosition();
 
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        Vector3 proj = ManagerCamera.getInstance().unproject(mousePos);
+        Vector3 proj = CameraManager.getInstance().unproject(mousePos);
         Vector3 diff = proj.sub(new Vector3(item.getEntity().get(PhysicsComponent.class).getPosition(), 0));
         Vector2 angolo = new Vector2(diff.x, diff.y);
 

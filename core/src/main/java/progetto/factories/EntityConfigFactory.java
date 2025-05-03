@@ -2,15 +2,14 @@ package progetto.factories;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import progetto.core.Core;
 import progetto.core.ResourceManager;
 import progetto.entity.entities.specific.EntityConfig;
 
 public class EntityConfigFactory {
     public static EntityConfig createEntityConfig(String type, float x, float y) {
         return switch (type) {
-            case "Finn" -> finnConfig(x, y);
-            case "Lich" -> lichConfig(x, y);
+            case "Enemy" -> enemy(x, y);
+            case "Lich" -> lich(x, y);
             default -> null;
         };
     }
@@ -36,7 +35,7 @@ public class EntityConfigFactory {
         return config;
     }
 
-    private static EntityConfig finnConfig(float x, float y) {
+    private static EntityConfig enemy(float x, float y) {
         EntityConfig config = new EntityConfig();
         config = new EntityConfig();
         config.nome = "Finn";
@@ -57,7 +56,7 @@ public class EntityConfigFactory {
         return config;
     }
 
-    public static EntityConfig lichConfig(float x, float y) {
+    public static EntityConfig lich(float x, float y) {
         EntityConfig lich = new EntityConfig();
         lich.nome = "Finn";
         lich.descrizione = "Nemico pericoloso";

@@ -1,7 +1,7 @@
 package progetto.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.combat.enemy.Enemy;
 import progetto.factories.EntityConfigFactory;
@@ -12,7 +12,7 @@ import progetto.world.events.base.MapEvent;
  * Evento di spawn di un {@link Enemy}
  */
 public class SpawnEnemyEvent extends MapEvent {
-    private final Engine engine;
+    private final EntityEngine entityEngine;
     private final String type;
 
     /**
@@ -23,12 +23,12 @@ public class SpawnEnemyEvent extends MapEvent {
      *
      * @param position  posizione centrale dell’evento
      * @param radius    raggio entro cui l’evento può attivarsi
-     * @param engine    gestore entità
+     * @param entityEngine    gestore entità
      * @param enemyType tipo di nemico
      */
-    public SpawnEnemyEvent(Vector2 position, float radius, Engine engine, String enemyType) {
+    public SpawnEnemyEvent(Vector2 position, float radius, EntityEngine entityEngine, String enemyType) {
         super(position, radius);
-        this.engine = engine;
+        this.entityEngine = entityEngine;
         this.type = enemyType;
         this.trigger(null);
         this.destroy();
@@ -41,10 +41,10 @@ public class SpawnEnemyEvent extends MapEvent {
 
     @Override
     public void trigger(Entity entity) {
-        engine.summon(EntityFactory.createEntity(
+        entityEngine.summon(EntityFactory.createEntity(
             type,
             EntityConfigFactory.createEntityConfig(type, position.x, position.y),
-            engine
+                entityEngine
         ));
     }
 }

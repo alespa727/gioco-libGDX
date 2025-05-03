@@ -7,7 +7,7 @@ import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.general.skills.base.Skill;
 import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.specific.living.Humanoid;
-import progetto.player.Player;
+import progetto.core.game.player.Player;
 
 public class PlayerDash extends Skill {
     private final float dodgeSpeed;
@@ -24,7 +24,7 @@ public class PlayerDash extends Skill {
             elapsedTime += delta;
             cooldown.update(delta);
             if (owner.components.get(InRangeListComponent.class).inRange.size > 0) {
-                owner.engine.game.setTimeScale(0.1f, 1f);
+                owner.entityEngine.game.setTimeScale(0.1f, 1f);
                 isBeingUsed = false;
             }
             if (cooldown.isReady) {

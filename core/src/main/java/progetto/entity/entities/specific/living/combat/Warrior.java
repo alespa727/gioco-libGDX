@@ -2,7 +2,7 @@ package progetto.entity.entities.specific.living.combat;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.combat.AttackRangeComponent;
 import progetto.entity.components.specific.combat.KnockbackComponent;
@@ -13,8 +13,8 @@ import progetto.entity.entities.specific.living.HumanoidInstances;
 
 public abstract class Warrior extends Humanoid {
 
-    public Warrior(HumanoidInstances instance, Engine engine) {
-        super(instance, engine);
+    public Warrior(HumanoidInstances instance, EntityEngine entityEngine) {
+        super(instance, entityEngine);
 
         add(
             new AttackRangeComponent(),
@@ -23,7 +23,7 @@ public abstract class Warrior extends Humanoid {
 
     }
 
-    public Warrior(EntityConfig config, Engine manager) {
+    public Warrior(EntityConfig config, EntityEngine manager) {
         super(config, manager);
 
         add(
@@ -42,7 +42,6 @@ public abstract class Warrior extends Humanoid {
         return get(AttackRangeComponent.class).getRangeRadius();
     }
 
-    // === COMBATTIMENTO ===
     public void hit(Entity entity, float damage, float hitForce) {
         Body bodyThatHits = entity.components.get(PhysicsComponent.class).getBody();
         Body bodyToHit = components.get(PhysicsComponent.class).getBody();

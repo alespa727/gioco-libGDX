@@ -16,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,16 +23,17 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import progetto.core.Core;
+import progetto.audio.AudioEngine;
+import progetto.core.App;
 import progetto.core.settings.view.ViewImpostazioni;
 import progetto.core.settings.model.ModelImpostazioni;
-import progetto.core.main.MainScreen;
-import progetto.ui.CustomChangeListener;
-import progetto.ui.CustomClickListener;
-import progetto.ui.CustomLinkedHashMap;
-import progetto.ui.CustomTappedPane;
-import progetto.ui.DatiSlider;
-import progetto.ui.Style;
+import progetto.core.main.MainMenu;
+import progetto.ui.listeners.CustomChangeListener;
+import progetto.ui.listeners.CustomClickListener;
+import progetto.utils.CustomLinkedHashMap;
+import progetto.ui.components.CustomTappedPane;
+import progetto.ui.components.DatiSlider;
+import progetto.ui.style.Style;
 
 /**
  * La classe ControllerImpostazioni implementa il pattern MVC per la gestione delle impostazioni.
@@ -46,11 +46,11 @@ public class ControllerImpostazioni {
     // ATTRIBUTI------------------------------------------------------------------------------------------------------
 
     /**
-     * Riferimento al Core del game.
+     * Riferimento al App del game.
      *
-     * @see Core
+     * @see App
      */
-    private final Core game;
+    private final App game;
 
     /**
      * Riferimento al modello delle impostazioni.
@@ -66,16 +66,18 @@ public class ControllerImpostazioni {
      */
     private ViewImpostazioni viewImpostazioni;
 
+    private AudioEngine audio;
+
     // COSTRUTTORI------------------------------------------------------------------------------------------------------
 
     /**
      * Costruttore predefinito.
-     * Inizializza solo il riferimento al {@link Core} senza creare né il model né la view delle impostazioni.
+     * Inizializza solo il riferimento al {@link App} senza creare né il model né la view delle impostazioni.
      *
      * @param game istanza principale del gioco.
-     * @see Core
+     * @see App
      */
-    public ControllerImpostazioni(final Core game){
+    public ControllerImpostazioni(final App game){
         this.game = game;
     }
 
@@ -88,11 +90,12 @@ public class ControllerImpostazioni {
      *
      * @param game istanza principale del gioco.
      * @param style oggetto che rappresenta gli stili grafici da applicare; parametro immutabile.
-     * @see Core
+     * @see App
      * @see Style
      */
-    public ControllerImpostazioni(final Core game, final Style style){
+    public ControllerImpostazioni(final App game, final Style style){
         this.game = game;
+        this.audio = new AudioEngine();
         this.modelImpostazioni = new ModelImpostazioni(style);
         this.viewImpostazioni = new ViewImpostazioni();
     }
@@ -106,11 +109,11 @@ public class ControllerImpostazioni {
      * @param game istanza principale del gioco.
      * @param modelImpostazioni oggetto contenente i dati e la logica delle impostazioni; parametro immutabile.
      * @param viewImpostazioni oggetto che gestisce la visualizzazione grafica delle impostazioni; parametro immutabile.
-     * @see Core
+     * @see App
      * @see ModelImpostazioni
      * @see ViewImpostazioni
      */
-    public ControllerImpostazioni(final Core game, final ModelImpostazioni modelImpostazioni, final ViewImpostazioni viewImpostazioni){
+    public ControllerImpostazioni(final App game, final ModelImpostazioni modelImpostazioni, final ViewImpostazioni viewImpostazioni){
         this.game = game;
         this.modelImpostazioni = modelImpostazioni;
         this.viewImpostazioni = viewImpostazioni;
@@ -298,7 +301,7 @@ public class ControllerImpostazioni {
                 textButton,
                 new CustomClickListener<>(
                     () -> {
-                        System.out.println("Cliccato prova musica");
+                        audio.addSound("sounds/test.wav");
                         return null;
                     }
                 )
@@ -675,7 +678,7 @@ public class ControllerImpostazioni {
         back.addListener(new ClickListener() { // Aggiungo un listener al bottone per il click
             @Override
             public void clicked(InputEvent event, float x, float y) { // Quando c'è il click del bottone
-                game.setScreen(new MainScreen(game));
+                game.setScreen(new MainMenu(game));
             }
         });
 
@@ -728,7 +731,7 @@ public class ControllerImpostazioni {
      * @see Actor
      */
     public void setDebugAttore(Actor actor){
-        actor.setDebug(true);
+        actor.setDebug(false);
     }
 
     // GETTER E SETTER------------------------------------------------------------------------------------------------------

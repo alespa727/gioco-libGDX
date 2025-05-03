@@ -25,8 +25,9 @@ public class SpeedLimiterSystem extends IteratingSystem {
             // Da trasferire in sistema a parte
             if (body.getLinearVelocity().len() > h.getMaxSpeed()) {
                 body.applyLinearImpulse(body.getLinearVelocity().scl(-1), body.getWorldCenter(), true);
-                h.getHumanStates().setInvulnerable(true);
-            } else h.getHumanStates().setInvulnerable(false);
+            }
+
+            h.getHumanStates().setInvulnerable(body.getLinearVelocity().len() > 10);
         }
     }
 

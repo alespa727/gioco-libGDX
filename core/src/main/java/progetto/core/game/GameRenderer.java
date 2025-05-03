@@ -4,10 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import progetto.core.Gui;
 import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.DebugWindow;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 import progetto.world.map.Map;
 
 public class GameRenderer {
@@ -44,8 +43,8 @@ public class GameRenderer {
 
     private void drawMap() {
         OrthogonalTiledMapRenderer mapRenderer = game.getMap().getMap().getRenderer();
-        ManagerCamera.getInstance().update();
-        mapRenderer.setView(ManagerCamera.getInstance());
+        CameraManager.getInstance().update();
+        mapRenderer.setView(CameraManager.getInstance());
 
         mapRenderer.render();
 

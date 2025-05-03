@@ -2,7 +2,7 @@ package progetto.entity.entities.specific.living.combat.boss;
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.ai.fsm.State;
-import progetto.entity.Engine;
+import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.ai.StatemachineComponent;
 import progetto.entity.components.specific.base.Cooldown;
 import progetto.entity.components.specific.base.PhysicsComponent;
@@ -14,7 +14,7 @@ import progetto.entity.components.specific.movement.MovementComponent;
 import progetto.entity.entities.specific.EntityConfig;
 import progetto.entity.entities.specific.EntityInstance;
 import progetto.entity.entities.specific.living.HumanoidInstances;
-import progetto.statemachines.StatesLich;
+import progetto.entity.statemachines.StatesLich;
 import progetto.world.WorldManager;
 
 public class Lich extends Boss {
@@ -23,13 +23,13 @@ public class Lich extends Boss {
     public String[] types;
 
     // === Costruttori ===
-    public Lich(HumanoidInstances instance, Engine engine) {
-        super(instance, engine);
+    public Lich(HumanoidInstances instance, EntityEngine entityEngine) {
+        super(instance, entityEngine);
         init();
     }
 
-    public Lich(EntityConfig config, Engine engine) {
-        super(config, engine);
+    public Lich(EntityConfig config, EntityEngine entityEngine) {
+        super(config, entityEngine);
         init();
     }
 
@@ -55,7 +55,7 @@ public class Lich extends Boss {
 
     @Override
     public EntityInstance unregister() {
-        engine.remove(this);
+        entityEngine.remove(this);
         WorldManager.destroyBody(components.get(PhysicsComponent.class).getBody());
         return new BossInstance(this);
     }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import progetto.graphics.shaders.base.Shader;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 
 public class Vignette extends Shader {
     private static Vignette instance;
@@ -49,7 +49,7 @@ public class Vignette extends Shader {
         region.flip(false, true);
         batch.begin();
         batch.setShader(program);
-        batch.draw(region, ManagerCamera.getFrustumCorners()[0].x, ManagerCamera.getFrustumCorners()[0].y, ManagerCamera.getViewportWidth(), ManagerCamera.getViewportHeight());
+        batch.draw(region, CameraManager.getFrustumCorners()[0].x, CameraManager.getFrustumCorners()[0].y, CameraManager.getViewportWidth(), CameraManager.getViewportHeight());
         batch.setShader(null);
         batch.end();
     }

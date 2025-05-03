@@ -10,7 +10,7 @@ import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.factories.EntityFactory;
 import progetto.input.KeyHandler;
-import progetto.player.ManagerCamera;
+import progetto.core.CameraManager;
 
 public class PlayerRangedAttack extends CombatSkill {
     final float speed;
@@ -42,12 +42,12 @@ public class PlayerRangedAttack extends CombatSkill {
     public void execute() {
         if (bullets > 0) {
             bullets--;
-            Vector3 mouse = ManagerCamera.getInstance().unproject(KeyHandler.mouse);
+            Vector3 mouse = CameraManager.getInstance().unproject(KeyHandler.mouse);
             Vector2 direction = new Vector2(mouse.x - owner.get(PhysicsComponent.class).getPosition().x, mouse.y - owner.get(PhysicsComponent.class).getPosition().y);
             direction.nor();
             Vector2 position = new Vector2(owner.get(PhysicsComponent.class).getPosition()).add(direction);
 
-            Bullet bullet = (Bullet) owner.engine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.engine, Warrior.class));
+            Bullet bullet = (Bullet) owner.entityEngine.summon(EntityFactory.createBullet(position.x, position.y, direction, 0.1f, this.speed, this.damage, owner.entityEngine, Warrior.class));
         } else {
             System.out.println("FINITI I PROIETTILI");
         }
