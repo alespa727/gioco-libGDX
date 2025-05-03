@@ -122,7 +122,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        debug.reset();
         debug.startTerminal();
+        autoSave = new AutoSave(engine.getEntityEngine(), engine.getMap());
+        autoSave.start();
         initializeWindow();
         loadGameEngine();
         StateComponent state = engine.getPlayer().get(StateComponent.class);
@@ -130,8 +133,7 @@ public class GameScreen implements Screen {
             engine.getPlayer().respawn();
         }
         CameraManager.getInstance().update();
-        autoSave = new AutoSave(engine.getEntityEngine(), engine.getMap());
-        autoSave.start();
+
     }
 
     @Override

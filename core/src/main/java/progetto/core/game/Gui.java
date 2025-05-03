@@ -24,7 +24,7 @@ public class Gui {
     public Gui(GameScreen gamescreen) {
         this.gamescreen = gamescreen;
         batch = new SpriteBatch();
-        progressBar = new ProgressBar(new Texture("WindowUi.png"), new Texture("ProgressBar2.png"));
+        progressBar = new ProgressBar(new Texture("Background.png"), new Texture("ProgressBar.png"));
 
         float larghezzaBlocco = (float) Gdx.graphics.getWidth() / WIDTH;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="90" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="57">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="90" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="63">
  <tileset firstgid="1" name="grass" tilewidth="16" tileheight="16" tilecount="9" columns="3">
   <image source="grass.png" width="48" height="48"/>
  </tileset>
@@ -370,10 +370,12 @@
   </layer>
  </group>
  <objectgroup id="11" name="collisionobjects">
-  <object id="29" x="148" y="224" width="172" height="17"/>
+  <object id="29" x="149" y="220" width="172" height="17"/>
   <object id="30" x="195" y="276" width="74" height="28"/>
-  <object id="33" x="303" y="336" width="450" height="17"/>
-  <object id="56" x="304" y="209" width="17" height="112"/>
+  <object id="33" x="306" y="332" width="444" height="17"/>
+  <object id="56" x="306" y="219" width="17" height="130"/>
+  <object id="57" x="733" y="260" width="17" height="89"/>
+  <object id="58" x="733" y="253" width="295" height="17"/>
  </objectgroup>
  <objectgroup id="2" name="eventi" tintcolor="#ff0000">
   <object id="2" x="231" y="302" width="2" height="2">
@@ -418,12 +420,12 @@
     <property name="eventType" value="Fall"/>
    </properties>
   </object>
-  <object id="47" x="454" y="406" width="169" height="88">
+  <object id="47" x="454" y="407" width="169" height="88">
    <properties>
     <property name="eventType" value="Fall"/>
    </properties>
   </object>
-  <object id="49" x="657" y="404" width="90" height="90">
+  <object id="49" x="657" y="406" width="90" height="90">
    <properties>
     <property name="eventType" value="Fall"/>
    </properties>
@@ -452,6 +454,16 @@
     <property name="eventRadius" type="float" value="1.5"/>
     <property name="eventType" value="Damage"/>
     <property name="eventWidth" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="61" x="657" y="486" width="372" height="90">
+   <properties>
+    <property name="eventType" value="Fall"/>
+   </properties>
+  </object>
+  <object id="62" x="1012" y="256" width="90" height="315">
+   <properties>
+    <property name="eventType" value="Fall"/>
    </properties>
   </object>
  </objectgroup>

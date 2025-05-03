@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import progetto.entity.components.specific.general.skills.specific.CombatSkill;
 import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.specific.living.combat.Warrior;
-import progetto.entity.entities.specific.living.combat.enemy.Enemy;
+import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
 
 public class EnemySwordAttack extends CombatSkill {
 
@@ -26,7 +26,7 @@ public class EnemySwordAttack extends CombatSkill {
 
     @Override
     public void execute() {
-        if (((Enemy) owner).get(InRangeListComponent.class).inRange.size > 0) {
+        if (((BaseEnemy) owner).get(InRangeListComponent.class).inRange.size > 0) {
             owner.entityEngine.player().hit((Warrior) owner, damage, 5);
         }
     }

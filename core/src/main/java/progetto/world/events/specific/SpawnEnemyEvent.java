@@ -3,20 +3,20 @@ package progetto.world.events.specific;
 import com.badlogic.gdx.math.Vector2;
 import progetto.entity.EntityEngine;
 import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.living.combat.enemy.Enemy;
+import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.world.events.base.MapEvent;
 
 /**
- * Evento di spawn di un {@link Enemy}
+ * Evento di spawn di un {@link BaseEnemy}
  */
 public class SpawnEnemyEvent extends MapEvent {
     private final EntityEngine entityEngine;
     private final String type;
 
     /**
-     * Crea un evento di spawn di un {@link Enemy}
+     * Crea un evento di spawn di un {@link BaseEnemy}
      * <p>
      * L'evento ha una posizione e un raggio. Viene subito creata la zona in cui può essere attivato.
      * </p>

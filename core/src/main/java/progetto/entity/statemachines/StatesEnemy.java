@@ -6,22 +6,22 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.entity.components.specific.movement.DirectionComponent;
-import progetto.entity.entities.specific.living.combat.enemy.Enemy;
+import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
 import progetto.core.game.player.Player;
 import progetto.world.map.Map;
 
-public enum StatesEnemy implements State<Enemy> {
+public enum StatesEnemy implements State<BaseEnemy> {
 
     ATTACKING {
         Player player;
 
         @Override
-        public void enter(Enemy entity) {
+        public void enter(BaseEnemy entity) {
             entity.components.get(PhysicsComponent.class).getBody().setLinearDamping(20f);
         }
 
         @Override
-        public void update(Enemy entity) {
+        public void update(BaseEnemy entity) {
             if (player == null)
                 player = entity.entityEngine.player();
 
@@ -39,12 +39,12 @@ public enum StatesEnemy implements State<Enemy> {
         }
 
         @Override
-        public void exit(Enemy entity) {
+        public void exit(BaseEnemy entity) {
 
         }
 
         @Override
-        public boolean onMessage(Enemy entity, Telegram telegram) {
+        public boolean onMessage(BaseEnemy entity, Telegram telegram) {
             return false;
         }
 
@@ -68,12 +68,12 @@ public enum StatesEnemy implements State<Enemy> {
         Player player;
 
         @Override
-        public void enter(Enemy entity) {
+        public void enter(BaseEnemy entity) {
             entity.getMovementManager().setAwake(true);
         }
 
         @Override
-        public void update(Enemy entity) {
+        public void update(BaseEnemy entity) {
             if (player == null)
                 player = entity.entityEngine.player();
 
@@ -83,12 +83,12 @@ public enum StatesEnemy implements State<Enemy> {
         }
 
         @Override
-        public void exit(Enemy entity) {
+        public void exit(BaseEnemy entity) {
             entity.getMovementManager().setAwake(false);
         }
 
         @Override
-        public boolean onMessage(Enemy entity, Telegram telegram) {
+        public boolean onMessage(BaseEnemy entity, Telegram telegram) {
             return false;
         }
     },
@@ -96,11 +96,11 @@ public enum StatesEnemy implements State<Enemy> {
     PATROLLING {
         Player player;
         @Override
-        public void enter(Enemy entity) {
+        public void enter(BaseEnemy entity) {
         }
 
         @Override
-        public void update(Enemy entity) {
+        public void update(BaseEnemy entity) {
             if (player == null)
                 player = entity.entityEngine.player();
 
@@ -117,11 +117,11 @@ public enum StatesEnemy implements State<Enemy> {
         }
 
         @Override
-        public void exit(Enemy entity) {
+        public void exit(BaseEnemy entity) {
         }
 
         @Override
-        public boolean onMessage(Enemy entity, Telegram telegram) {
+        public boolean onMessage(BaseEnemy entity, Telegram telegram) {
             return false;
         }
 
@@ -129,12 +129,12 @@ public enum StatesEnemy implements State<Enemy> {
 
     CHOOSE_STATE {
         @Override
-        public void enter(Enemy entity) {
+        public void enter(BaseEnemy entity) {
 
         }
 
         @Override
-        public void update(Enemy entity) {
+        public void update(BaseEnemy entity) {
             Player p = entity.entityEngine.player();
             if (Map.isGraphLoaded) entity.searchPathIdle(p);
 
@@ -150,12 +150,12 @@ public enum StatesEnemy implements State<Enemy> {
         }
 
         @Override
-        public void exit(Enemy entity) {
+        public void exit(BaseEnemy entity) {
 
         }
 
         @Override
-        public boolean onMessage(Enemy entity, Telegram telegram) {
+        public boolean onMessage(BaseEnemy entity, Telegram telegram) {
             return false;
         }
     }

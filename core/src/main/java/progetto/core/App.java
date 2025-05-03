@@ -29,14 +29,14 @@ public class App extends com.badlogic.gdx.Game {
 
     public void loadAssets() {
         ResourceManager.get().load("entities/Sword.png", Texture.class);
-        ResourceManager.get().load("entities/Finn.png", Texture.class);
+        ResourceManager.get().load("entities/Player.png", Texture.class);
         ResourceManager.get().load("particle/particle.png", Texture.class);
         ResourceManager.get().load("sounds/gunshot.mp3", Sound.class);
         ResourceManager.get().load("sounds/fireball.mp3", Sound.class);
         ResourceManager.get().load("entities/Lich.png", Texture.class);
-        ResourceManager.get().load("entities/nemico.png", Texture.class);
-        ResourceManager.get().load("entities/Finn/attack/sword.png", Texture.class);
+        ResourceManager.get().load("entities/Enemy.png", Texture.class);
         ResourceManager.get().load("entities/Player_shadow.png", Texture.class);
+        ResourceManager.get().load("entities/Casa.png", Texture.class);
         ResourceManager.get().finishLoading();
     }
 

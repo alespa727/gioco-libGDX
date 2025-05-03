@@ -10,7 +10,7 @@ import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.EntityInstance;
 import progetto.entity.entities.specific.living.combat.boss.Boss;
 import progetto.entity.entities.specific.living.combat.boss.BossInstance;
-import progetto.entity.entities.specific.living.combat.enemy.Enemy;
+import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
 import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
 import progetto.entity.systems.SystemManager;
 import progetto.entity.systems.base.System;
@@ -96,8 +96,8 @@ public final class EntityEngine {
 
         for (Entity e : entitiesCopy) {
             if (e.contains(Saveable.class)){
-                if (e instanceof Enemy enemy){
-                    EnemyInstance in = new EnemyInstance(enemy);
+                if (e instanceof BaseEnemy baseEnemy){
+                    EnemyInstance in = new EnemyInstance(baseEnemy);
                     instances.add(in);
                 }
                 if (e instanceof Boss boss){

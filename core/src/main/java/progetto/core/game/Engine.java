@@ -119,8 +119,8 @@ public class Engine {
 //
 //            }
 //        }
-//        EntityConfig config = EntityConfigFactory.createEntityConfig("Finn", 10, 10);
-//        Entity e = EntityFactory.createEnemy("Finn", config, entityEngine);
+//        EntityConfig config = EntityConfigFactory.createEntityConfig("Enemy", 10, 10);
+//        Entity e = EntityFactory.createEnemy("Enemy", config, entityEngine);
 //        entityEngine.summon(e);
 
         entityEngine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, entityEngine, null));

@@ -75,7 +75,7 @@ public class Loading implements Screen {
     private void initGameVariables(float minTime, float maxTime) {
         time = MathUtils.random(minTime, maxTime);
         UNIT = camera.viewportWidth / LARGHEZZA;
-        animation = new DefaultAnimationSet(ResourceManager.get().get("entities/Finn.png"));
+        animation = new DefaultAnimationSet(ResourceManager.get().get("entities/Player.png"));
         shadow = new DefaultAnimationSet(ResourceManager.get().get("entities/Player_shadow.png"));
         position = new Vector2(5 * UNIT, 4.5f * UNIT);
         objective = new Vector2(11 * UNIT, 4.5f * UNIT);
@@ -93,7 +93,7 @@ public class Loading implements Screen {
     }
 
     private void initUI() {
-        progressBar = new ProgressBar(new Texture("WindowUi.png"), new Texture("ProgressBar2.png"));
+        progressBar = new ProgressBar(new Texture("ProgressBar-2.png"), new Texture("Background.png"));
         progressBar.setPosition(viewport.getWorldWidth() * 0.045f, 0.5f * UNIT);
         progressBar.setSize(new Vector2(5 * UNIT, 0.75f * UNIT));
         group = new Group();

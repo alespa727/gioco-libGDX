@@ -51,13 +51,11 @@ public class Terminal extends Thread {
                 System.err.println("Errore di lettura input");
             }
         }
-        scanner.close();
     }
 
 
     public void stopRunning() {
         running = false;
-        scanner.close();
         this.interrupt();
     }
 

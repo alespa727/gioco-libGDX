@@ -7,7 +7,7 @@ import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.Entity;
 import progetto.entity.entities.specific.living.combat.Warrior;
 import progetto.entity.entities.specific.living.combat.boss.Boss;
-import progetto.entity.entities.specific.living.combat.enemy.Enemy;
+import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
 import progetto.entity.entities.specific.notliving.Bullet;
 import progetto.core.game.player.Player;
 import progetto.world.events.base.MapEvent;
@@ -55,25 +55,25 @@ public class CollisionManager implements ContactListener {
         // ---------------------------------------------
         // Gestione del range del player
         // ---------------------------------------------
-        if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
+        if (dataA instanceof Player && (dataB instanceof BaseEnemy || dataB instanceof Boss)) {
             ((Player) dataA).components.get(InRangeListComponent.class).inRange.add((Warrior) dataB);
         }
-        if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
+        if (dataB instanceof Player && (dataA instanceof BaseEnemy || dataA instanceof Boss)) {
             ((Player) dataB).components.get(InRangeListComponent.class).inRange.add((Warrior) dataA);
         }
 
         // ---------------------------------------------
-        // Gestione del contatto tra Enemy e Player nel range
+        // Gestione del contatto tra BaseEnemy e Player nel range
         // ---------------------------------------------
-        // Se "dataA" è un Enemy e il filtro del fixtureA indica RANGE,
+        // Se "dataA" è un BaseEnemy e il filtro del fixtureA indica RANGE,
         // mentre "dataB" è un Player e il filtro del fixtureB non indica RANGE,
         // l'enemy aggiunge il player alla sua lista di entità.
         boolean isRangeA = (fixtureA.getFilterData().categoryBits == EntityEngine.RANGE);
         boolean isRangeB = (fixtureB.getFilterData().categoryBits == EntityEngine.RANGE);
 
-        if (dataA instanceof Enemy && isRangeA && dataB instanceof Player && !isRangeB) {
-            if (((Enemy) dataA).contains(InRangeListComponent.class)) {
-                ((Enemy) dataA).get(InRangeListComponent.class).inRange.add((Warrior) dataB);
+        if (dataA instanceof BaseEnemy && isRangeA && dataB instanceof Player && !isRangeB) {
+            if (((BaseEnemy) dataA).contains(InRangeListComponent.class)) {
+                ((BaseEnemy) dataA).get(InRangeListComponent.class).inRange.add((Warrior) dataB);
             }
         }
 
@@ -114,22 +114,22 @@ public class CollisionManager implements ContactListener {
         // Gestione del range del player (Rimozione entità)
         // Se dataA è un Player e dataB è un CombatEntity (ma non un Player)
         // e se il filtro del fixtureB non indica RANGE, rimuovo la CombatEntity dal Player.
-        if (dataA instanceof Player && (dataB instanceof Enemy || dataB instanceof Boss)) {
+        if (dataA instanceof Player && (dataB instanceof BaseEnemy || dataB instanceof Boss)) {
             ((Player) dataA).components.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataB, false);
         }
-        if (dataB instanceof Player && (dataA instanceof Enemy || dataA instanceof Boss)) {
+        if (dataB instanceof Player && (dataA instanceof BaseEnemy || dataA instanceof Boss)) {
             ((Player) dataB).components.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataA, false);
         }
 
         // ----------------------------------------------------
-        // Gestione del contatto tra Enemy e Player nel range (Rimozione Player)
-        // Se dataA è un Enemy associato a un fixture con filtro RANGE
-        // e dataB è un Player (con filtro NON RANGE), rimuovo il Player dall'Enemy
+        // Gestione del contatto tra BaseEnemy e Player nel range (Rimozione Player)
+        // Se dataA è un BaseEnemy associato a un fixture con filtro RANGE
+        // e dataB è un Player (con filtro NON RANGE), rimuovo il Player dall'BaseEnemy
         boolean isRangeA = fixtureA.getFilterData().categoryBits == EntityEngine.RANGE;
         boolean isRangeB = fixtureB.getFilterData().categoryBits == EntityEngine.RANGE;
 
-        if (dataA instanceof Enemy enemy1 && isRangeA && dataB instanceof Player player && !isRangeB) {
-            enemy1.removeEntity(player);
+        if (dataA instanceof BaseEnemy baseEnemy1 && isRangeA && dataB instanceof Player player && !isRangeB) {
+            baseEnemy1.removeEntity(player);
         }
 
         // ----------------------------------------------------

@@ -6,14 +6,20 @@ import progetto.core.CameraManager;
 import progetto.world.WorldManager;
 
 public class Debug {
+    private GameScreen screen;
     private Terminal terminal;
     private Box2DDebugRenderer hitboxViewer;
 
     public Debug(GameScreen screen) {
+        this.screen = screen;
         terminal = new Terminal(screen);
         hitboxViewer = new Box2DDebugRenderer();
 
         hitboxViewer.setDrawVelocities(true);
+    }
+
+    public void reset() {
+        terminal = new Terminal(screen);
     }
 
     public void drawHitboxes() {

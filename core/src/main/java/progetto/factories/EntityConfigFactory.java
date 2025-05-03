@@ -21,7 +21,7 @@ public class EntityConfigFactory {
         config.descrizione = "Spada tagliente";
         config.x = x;
         config.y = y;
-        config.img = ResourceManager.get().get("entities/Finn/attack/sword.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Enemy/attack/sword.png", Texture.class);
         config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;
@@ -38,11 +38,11 @@ public class EntityConfigFactory {
     private static EntityConfig enemy(float x, float y) {
         EntityConfig config = new EntityConfig();
         config = new EntityConfig();
-        config.nome = "Finn";
+        config.nome = "Enemy";
         config.descrizione = "Nemico pericoloso";
         config.x = x;
         config.y = y;
-        config.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
+        config.img = ResourceManager.get().get("entities/Enemy.png", Texture.class);
         config.radius = 10 / 32f;
         config.direzione = new Vector2(0, -0.5f);
         config.isAlive = true;
@@ -58,7 +58,7 @@ public class EntityConfigFactory {
 
     public static EntityConfig lich(float x, float y) {
         EntityConfig lich = new EntityConfig();
-        lich.nome = "Finn";
+        lich.nome = "Enemy";
         lich.descrizione = "Nemico pericoloso";
         lich.x = x;
         lich.y = y;
@@ -80,7 +80,7 @@ public class EntityConfigFactory {
         EntityConfig player = new EntityConfig();
         player.id = 0;
         player.nome = "player";
-        player.img = ResourceManager.get().get("entities/Finn.png", Texture.class);
+        player.img = ResourceManager.get().get("entities/Player.png", Texture.class);
         player.radius = 10 / 32f;
         player.direzione = new Vector2(0, -0.5f);
         player.isAlive = true;

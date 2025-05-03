@@ -1,74 +1,54 @@
 package progetto.entity.entities.specific.living.combat.enemy;
 
-import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
-import com.badlogic.gdx.ai.fsm.State;
-import com.badlogic.gdx.utils.Array;
 import progetto.entity.EntityEngine;
-import progetto.entity.components.specific.ai.StatemachineComponent;
-import progetto.entity.components.specific.base.Cooldown;
-import progetto.entity.components.specific.combat.MortalComponent;
-import progetto.entity.components.specific.combat.MultiCooldownComponent;
-import progetto.entity.components.specific.general.Saveable;
+import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.entity.components.specific.general.skills.specific.boss.LichFireball;
 import progetto.entity.components.specific.general.skills.specific.enemy.EnemySwordAttack;
-import progetto.entity.components.specific.sensors.InRangeListComponent;
 import progetto.entity.entities.specific.EntityConfig;
-import progetto.entity.entities.specific.living.combat.Warrior;
-import progetto.entity.statemachines.StatesEnemy;
+import progetto.entity.entities.specific.EntityInstance;
+import progetto.world.WorldManager;
 
-public abstract class Enemy extends Warrior {
-
-    private Array<Warrior> inRange;
+public final class Enemy extends BaseEnemy {
 
     // === COSTRUTTORI ===
+
+    // Costruttore con EnemyInstance
     public Enemy(EnemyInstance instance, EntityEngine manager) {
         super(instance, manager);
     }
 
+    // Costruttore con EntityConfig
     public Enemy(EntityConfig config, EntityEngine manager) {
         super(config, manager);
     }
 
+    // === METODI ===
+
     @Override
     public void create() {
         super.create();
-        add(
-            new InRangeListComponent(),
-            new StatemachineComponent<>(this, StatesEnemy.PATROLLING),
-            new MortalComponent(),
-            new MultiCooldownComponent(),
-            new Saveable()
-        );
 
-        get(MultiCooldownComponent.class).add("attack", new Cooldown(1.5f, true));
-        getAttackCooldown().reset();
-
-        this.inRange = new Array<>();
-        getSkillset().add(new EnemySwordAttack(this, "", "", 10));
+        // Aggiungi le skill
+        getSkillset().add(new EnemySwordAttack(this, "pugno", "un pugno molto forte!", 20));
+        getSkillset().add(new LichFireball(this, "", "", 10, 6));
     }
 
-    public Cooldown getAttackCooldown() {
-        return get(MultiCooldownComponent.class).getCooldown("attack");
+    @Override
+    public void attack() {
+        if (getAttackCooldown().isReady) {
+            getSkillset().execute(EnemySwordAttack.class);
+            getAttackCooldown().reset();
+        }
     }
 
-    // === METODI DI ACCESSO ===
-    public Array<Warrior> getInRange() {
-        return inRange;
-    }
+    @Override
+    public EntityInstance unregister() {
+        // Rimuove l'entità dal manager
+        entityEngine.remove(this);
 
-    // === GESTIONE ENTITÀ IN RANGE ===
-    public void addEntity(Warrior entity) {
-        inRange.add(entity);
-    }
+        // Distrugge il corpo dell'entità e la sua area di range nel mondo
+        WorldManager.destroyBody(components.get(PhysicsComponent.class).getBody());
 
-    public void removeEntity(Warrior entity) {
-        inRange.removeValue(entity, false);
+        return new EnemyInstance(this);
     }
-
-    @SuppressWarnings("unchecked")
-    public <E extends Enemy, S extends State<E>> DefaultStateMachine<E, S> getStateMachine() {
-        return get(StatemachineComponent.class).getStateMachine();
-    }
-
-    // === ATTACCO ===
-    public abstract void attack();
 }

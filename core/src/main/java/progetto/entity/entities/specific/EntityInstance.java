@@ -15,7 +15,7 @@ import progetto.entity.entities.Entity;
 public class EntityInstance {
 
     /**
-     * Nome della classe dell'entità (es. "Player", "Enemy", ecc.)
+     * Nome della classe dell'entità (es. "Player", "BaseEnemy", ecc.)
      */
     public final String type;
     /**
