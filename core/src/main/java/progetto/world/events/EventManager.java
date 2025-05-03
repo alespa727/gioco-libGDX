@@ -2,10 +2,12 @@ package progetto.world.events;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import progetto.core.game.GameScreen;
 import progetto.entity.EntityEngine;
 import progetto.world.events.base.MapEvent;
 import progetto.world.events.specific.*;
@@ -14,13 +16,15 @@ import progetto.world.map.MapManager;
 
 public class EventManager {
 
+    private GameScreen game;
     private final MapManager mapManager;
     private final EntityEngine entityEngine;
     private final Array<MapEvent> events = new Array<>();
     private final Map map;
     private Array<String> mapNames = new Array<>();
 
-    public EventManager(Map map, MapManager mapManager, EntityEngine entityEngine) {
+    public EventManager(GameScreen game, Map map, MapManager mapManager, EntityEngine entityEngine) {
+        this.game = game;
         this.map = map;
         this.mapManager = mapManager;
         this.entityEngine = entityEngine;
@@ -42,51 +46,54 @@ public class EventManager {
         }
     }
 
+    public void destroy() {
+        for (MapEvent event : events) {
+            event.destroy();
+        }
+    }
+
     private void spawnEvent(MapObject object) {
         String eventType = getProperty(object, "eventType", String.class, "");
         Vector2 position = getPosition(object);
-
         switch (eventType) {
-            case "Damage":
-                {
-                    float width = getProperty(object, "width", Float.class, 0f) * MapManager.TILE_SIZE;
-                    float height = getProperty(object, "height", Float.class, 0f) * MapManager.TILE_SIZE;
-                    events.add(new DamageEvent(position, width, height));
-                }
-                break;
-
-            case "ChangeMap":
+            case "Damage" -> {
+                float width = getProperty(object, "width", Float.class, 0f) * MapManager.TILE_SIZE;
+                float height = getProperty(object, "height", Float.class, 0f) * MapManager.TILE_SIZE;
+                events.add(new DamageEvent(position, width, height));
+            }
+            case "ChangeMap" -> {
                 float radius = getProperty(object, "eventRadius", Float.class, 0f);
                 int mapId = getProperty(object, "map", Integer.class, 0);
                 float spawnX = getProperty(object, "spawnx", Float.class, 0f);
                 float spawnY = getProperty(object, "spawny", Float.class, 0f);
                 events.add(new ChangeMap(position, radius, mapManager, mapId, spawnX, spawnY));
-                break;
-
-            case "SpawnCasa":
+            }
+            case "SpawnCasa" -> {
                 events.add(new SpawnCasa(position, 0, entityEngine));
-                break;
-
-            case "Fall":
-                {
-                    float width = getProperty(object, "width", Float.class, 0f) * MapManager.TILE_SIZE;
-                    float height = getProperty(object, "height", Float.class, 0f) * MapManager.TILE_SIZE;
-                    events.add(new FallEvent(position, width, height));
+            }
+            case "Fall" -> {
+                float width = getProperty(object, "width", Float.class, 0f) * MapManager.TILE_SIZE;
+                float height = getProperty(object, "height", Float.class, 0f) * MapManager.TILE_SIZE;
+                events.add(new FallEvent(position, width, height));
+            }
+            case "SpawnEntity" -> {
+                FileHandle file = Gdx.files.local("/save/maps/" + map.nome + ".json");
+                if (!file.exists()) {
+                    String entityType = getProperty(object, "entityType", String.class, "");
+                    events.add(new SpawnEntity(entityEngine, entityType, position, 0));
                 }
-                break;
-
-            case "SpawnEntity":
-                {
-                    FileHandle file = Gdx.files.local("/save/maps/" + map.nome + ".json");
-                    if (!file.exists()) {
-                        String entityType = getProperty(object, "entityType", String.class, "");
-                        events.add(new SpawnEntity(entityEngine, entityType, position, 0));
-                    }
-                }
-            default:
-
-                break;
+            }
+            case "Light" -> {
+                Color color = getProperty(object, "color", Color.class, Color.WHITE);
+                float intensity = getProperty(object, "intensity", Float.class, 0f);
+                System.out.println("color: " + color);
+                events.add(new SpawnLight(game, position, 0.3f, intensity, color));
+            }
+            default -> {
+                System.err.println("Unknown event type: " + eventType);
+            }
         }
+
     }
 
     private Vector2 getPosition(MapObject object) {

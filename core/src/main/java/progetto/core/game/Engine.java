@@ -145,7 +145,7 @@ public class Engine {
 
         entityEngine.render(0);
 
-        this.map = new MapManager(game.viewport, entityEngine, 1);
+        this.map = new MapManager(game, game.viewport, entityEngine, 1);
 
     }
 

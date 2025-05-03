@@ -12,7 +12,7 @@ import progetto.world.WorldManager;
 /**
  * Evento nella mappa
  * <p>
- * Gestire l'evento tramite {@link #trigger(Entity)} e {@link #update()}
+ * Gestire l'evento tramite {@link #trigger(Entity)} e {@link #update(float delta)}
  * </p>
  * <p>
  * Se vuoi che l'evento si attivi subito dopo la creazione, chiama {@link #trigger(Entity)} e poi {@link #destroy()}

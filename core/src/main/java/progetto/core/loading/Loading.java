@@ -174,12 +174,6 @@ public class Loading extends CustomScreen {
     @Override
     public void render(float delta) {
         WorldManager.update();
-        GameScreen screen1 = (GameScreen) nextScreen;
-
-        if (screen1.getEntityManager()!=null) {
-            screen1.getEntityManager().processQueue();
-        }
-
         move(speed.cpy());
         drawer.draw(batch, delta);
         updateLoading(delta);

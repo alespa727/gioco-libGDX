@@ -227,6 +227,7 @@ public class MainMenu extends CustomScreen {
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import progetto.core.game.GameScreen;
 import progetto.entity.EntityEngine;
 import progetto.entity.components.specific.base.PhysicsComponent;
 import progetto.core.CameraManager;
@@ -30,13 +31,13 @@ public class Map implements Disposable {
 
 
     /* Creazione nuova mappa */
-    public Map(String nome, EntityEngine entityEngine, MapManager mapManager, float x, float y) {
+    public Map(String nome, GameScreen game, EntityEngine entityEngine, MapManager mapManager, float x, float y) {
 
         this.nome = nome;
         this.map = new TmxMapLoader().load("maps/".concat(nome).concat(".tmx"));
         this.renderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, entityEngine.game.batch);
         loadTextureFilter();
-        this.eventManager = new EventManager(this, mapManager, entityEngine);
+        this.eventManager = new EventManager(game, this, mapManager, entityEngine);
         this.eventManager.create(map.getLayers().get("eventi"));
 
         // Salvataggio grandezza mappa
@@ -109,6 +110,7 @@ public class Map implements Disposable {
 
     @Override
     public void dispose() {
+        eventManager.destroy();
         WorldManager.clearMap();
     }
 }

@@ -35,7 +35,7 @@ public class WorldManager {
         Array<Body> bodies = new Array<>();
         instance.getBodies(bodies);
         for (Body body : bodies) {
-            if (body.getUserData() instanceof Map || body.getUserData() instanceof MapEvent) {
+            if (body.getUserData() instanceof Map) {
                 instance.destroyBody(body);
             }
 

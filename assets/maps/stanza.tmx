@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="15">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="16">
  <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
   <image source="CustomTileset.png" width="160" height="160"/>
   <tile id="0">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
   </tile>
   <tile id="1">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
   </tile>
   <tile id="2">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
   </tile>
   <tile id="3">
    <properties>
@@ -50,17 +41,11 @@
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" template="../../../../../Downloads/untitled.tx" x="0" y="0"/>
-   </objectgroup>
   </tile>
   <tile id="10">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
   </tile>
   <tile id="11">
    <properties>
@@ -86,25 +71,16 @@
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
   </tile>
   <tile id="17">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
   </tile>
   <tile id="18">
    <properties>
     <property name="solido" type="bool" value="true"/>
    </properties>
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
   </tile>
   <tile id="19">
    <properties>
@@ -257,7 +233,7 @@
 0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,11,0,0,0,0,
 0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,11,0,0,0,0,
 0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,11,0,0,0,0,
-0,0,0,0,0,17,18,18,18,35,18,18,18,18,18,19,0,0,0,0,
+0,0,0,0,0,17,18,18,18,36,18,18,18,18,18,19,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -285,6 +261,13 @@
     <property name="map" type="int" value="1"/>
     <property name="spawnx" type="float" value="11"/>
     <property name="spawny" type="float" value="11"/>
+   </properties>
+  </object>
+  <object id="15" x="150" y="183" width="19" height="19">
+   <properties>
+    <property name="color" type="color" value="#64ff9a42"/>
+    <property name="eventType" value="Light"/>
+    <property name="intensity" type="float" value="0.3"/>
    </properties>
   </object>
  </objectgroup>

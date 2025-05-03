@@ -20,6 +20,7 @@ public class EntityLight extends Shader {
     private Vector2 worldPosition = null;
     private final Vector2 position;
     private final Color color;
+    private float radius;
     private Entity e=null;
     private float intensity;
 
@@ -31,12 +32,13 @@ public class EntityLight extends Shader {
 
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
         this.intensity = intensity;
+        this.radius = 0.5f;
         position = new Vector2(0.5f, 0.5f);
         this.e = e;
         this.color = color;
     }
 
-    public EntityLight(Vector2 pos, float intensity, Color color) {
+    public EntityLight(Vector2 pos, float intensity, Color color, float radius) {
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         String vertexShader = Gdx.files.internal("shaders/light/vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders/light/fragment.glsl").readString();
@@ -44,8 +46,9 @@ public class EntityLight extends Shader {
 
         ShaderProgram.pedantic = false; // se vuoi evitare errori per uniform "extra"
         this.intensity = intensity;
-        position = new Vector2(0.5f, 0.5f);
-        worldPosition = pos;
+        this.radius = radius;
+        this.position = new Vector2(0.5f, 0.5f);
+        this.worldPosition = pos;
         this.color = color;
     }
 
@@ -61,7 +64,7 @@ public class EntityLight extends Shader {
             float normX = projectedPosition.x / Gdx.graphics.getWidth();
             float normY = projectedPosition.y / Gdx.graphics.getHeight();
             this.position.set(normX, normY);
-        }else if (worldPosition != null){
+        }else{
             frameBuffer.begin();
             Vector3 position = new Vector3(worldPosition, 0);
             Vector3 projectedPosition = CameraManager.getInstance().project(position);
@@ -85,17 +88,23 @@ public class EntityLight extends Shader {
 
     @Override
     public void end() {
-        if (!e.contains(PhysicsComponent.class)) {
-            return;
+        if (e!=null) {
+            if (!e.contains(PhysicsComponent.class)) {
+                return;
+            }
         }
+
         frameBuffer.end();
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        if (!e.contains(PhysicsComponent.class)) {
-            return;
+        if (e!=null) {
+            if (!e.contains(PhysicsComponent.class)) {
+                return;
+            }
         }
+
         Texture texture = frameBuffer.getColorBufferTexture();
         TextureRegion region = new TextureRegion(texture);
         region.flip(false, true);
@@ -104,7 +113,7 @@ public class EntityLight extends Shader {
         batch.setShader(program);
         program.setUniformf("u_resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());// (1) assegna lo shader
         program.setUniformf("u_lightPos", position.x, position.y);
-        program.setUniformf("u_lightRadius", 0.5f);
+        program.setUniformf("u_lightRadius", radius);
         program.setUniformf("u_lightIntensity", intensity);
         program.setUniformf("u_lightColor", color);
         batch.begin();                                       // (3) inizia il batch

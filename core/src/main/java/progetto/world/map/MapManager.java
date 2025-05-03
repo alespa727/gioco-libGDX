@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import progetto.core.game.GameScreen;
 import progetto.entity.EntityEngine;
 import progetto.entity.entities.specific.EntityInstance;
 import progetto.core.loading.Loading;
@@ -22,6 +23,7 @@ public class MapManager {
     // Mappa default
     private final int defaultMap = 1;
     // Reference utili
+    private final GameScreen game;
     private final EntityEngine entityEngine;
     private final FitViewport viewport;
     // Mappa attuale
@@ -32,8 +34,9 @@ public class MapManager {
     /**
      * Creazione manager delle mappe
      */
-    public MapManager(FitViewport viewport, EntityEngine manager, int startingMap) {
+    public MapManager(GameScreen game, FitViewport viewport, EntityEngine manager, int startingMap) {
         // Inizializzazione
+        this.game = game;
         this.entityEngine = manager;
         this.viewport = viewport;
         currentMapNum = startingMap;
@@ -65,7 +68,7 @@ public class MapManager {
         currentMapNum = map;
 
         // Creazione mappa e crea corpi/eventi rilevanti
-        currentMap = new Map(nome, entityEngine, this, x, y);
+        currentMap = new Map(nome, game, entityEngine, this, x, y);
         currentMap.generateCollisions();
 
         loadMapEntities();
