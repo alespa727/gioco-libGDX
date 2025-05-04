@@ -5,17 +5,21 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import progetto.entity.components.specific.combat.AttackRangeComponent;
-import progetto.entity.entities.specific.living.combat.Warrior;
-import progetto.world.events.base.MapEvent;
+import progetto.ECS.components.specific.combat.AttackRangeComponent;
+import progetto.ECS.entities.specific.living.combat.Warrior;
 import progetto.world.map.Map;
 
-import java.util.concurrent.Semaphore;
-
+/**
+ * Gestisce il mondo fisico (Box2D) del gioco.
+ * Si occupa di creare, distruggere e pulire i corpi fisici.
+ */
 public class WorldManager {
-    private static World instance;
-    private static Queue<Body> bodyToDestroy;
+    private static World instance; // Istanza del mondo fisico
+    private static Queue<Body> bodyToDestroy; // Corpi in coda per la distruzione
 
+    /**
+     * Inizializza il mondo fisico e la coda di distruzione se non sono già stati creati.
+     */
     public static void init() {
         if (instance == null) {
             instance = new World(new Vector2(0, 0), true);
@@ -23,6 +27,11 @@ public class WorldManager {
         }
     }
 
+    /**
+     * Restituisce l'istanza del mondo fisico, creandola se necessario.
+     *
+     * @return l'istanza di World
+     */
     public static World getInstance() {
         if (instance == null) {
             instance = new World(new Vector2(0, 0), true);
@@ -31,6 +40,9 @@ public class WorldManager {
         return instance;
     }
 
+    /**
+     * Pulisce la mappa.
+     */
     public static void clearMap() {
         Array<Body> bodies = new Array<>();
         instance.getBodies(bodies);
@@ -49,12 +61,29 @@ public class WorldManager {
         }
     }
 
+    public static void clear(){
+        Array<Body> bodies = new Array<>();
+        instance.getBodies(bodies);
+        for (Body body : bodies) {
+            instance.destroyBody(body);
+        }
+    }
+
+    /**
+     *Aggiunge un corpo fisico alla coda di distruzione.
+     *
+     * @param body il corpo fisico da distruggere
+     */
     public static void destroyBody(Body body) {
         if (body != null) {
             bodyToDestroy.addFirst(body);
         }
     }
 
+    /**
+     * Distrugge tutti i corpi fisici che sono stati messi in coda per la distruzione.
+     * Deve essere chiamato nel thread principale durante l'update, OBBLIGATORIAMENTE solamente dopo aver aggiornato il mondo e fuori da il loop.
+     */
     public static void update() {
         while (bodyToDestroy.notEmpty()) {
             instance.destroyBody(bodyToDestroy.removeFirst());

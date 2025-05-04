@@ -21,15 +21,15 @@ public class Pipeliner {
         shaders.removeValue(shader, false);
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, float delta) {
 
         if (shaders.size == 0) {
-            game.getRenderer().draw();
+            game.getRenderer().draw(delta);
             return;
         }
 
         shaders.get(0).begin();
-        game.getRenderer().draw();
+        game.getRenderer().draw(delta);
         shaders.get(0).end();
 
         for (int i = 1; i < shaders.size; i++) {

@@ -5,21 +5,39 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import progetto.entity.components.specific.movement.DirectionComponent;
-import progetto.entity.entities.Entity;
+import progetto.ECS.components.specific.movement.DirectionComponent;
+import progetto.ECS.entities.Entity;
 
+/**
+ * Gestisce un set di animazioni predefinite per un'entità, comprese animazioni di movimento
+ * e idle in diverse direzioni (su, giù, sinistra, destra) e diagonali.
+ */
 public class DefaultAnimationSet extends AnimationSet {
 
+    /** Animazioni di movimento nelle direzioni principali */
     private final TextureRegion[] movingUp = new TextureRegion[4];
+    /** Animazioni di movimento nelle direzioni principali */
     private final TextureRegion[] movingDown = new TextureRegion[4];
+    /** Animazioni di movimento nelle direzioni principali */
     private final TextureRegion[] movingLeft = new TextureRegion[4];
+    /** Animazioni di movimento nelle direzioni principali */
     private final TextureRegion[] movingRight = new TextureRegion[4];
 
+    /** Animazioni di idle nelle direzioni principali */
     private final TextureRegion[] idleUp = new TextureRegion[2];
+    /** Animazioni di movimento nelle direzioni principali */
     private final TextureRegion[] idleDown = new TextureRegion[2];
+    /** Animazioni di movimento nelle direzioni principali */
     private final TextureRegion[] idleLeft = new TextureRegion[2];
+    /** Animazioni di movimento nelle direzioni principali */
     private final TextureRegion[] idleRight = new TextureRegion[2];
 
+    /**
+     * Costruisce il set di animazioni per un'immagine texture.
+     * Imposta le animazioni di movimento e idle per tutte le direzioni.
+     *
+     * @param img La texture da utilizzare per le animazioni.
+     */
     public DefaultAnimationSet(Texture img) {
         super(img);
 
@@ -55,6 +73,10 @@ public class DefaultAnimationSet extends AnimationSet {
         putAnim(idleSpeed, new Vector2(0.5f, 0.5f), idleRight);
     }
 
+    /**
+     * Carica le animazioni da una texture, suddivisa in frame.
+     * Assegna i frame corretti a ciascuna direzione di movimento e idle.
+     */
     public void salvaAnimazioni() {
         TextureRegion[][] tmpFrames = TextureRegion.split(texture, 32, 32);
 
@@ -77,6 +99,13 @@ public class DefaultAnimationSet extends AnimationSet {
         }
     }
 
+    /**
+     * Aggiunge un'animazione alla mappa di animazioni, associandola a una direzione.
+     *
+     * @param speed La velocità dell'animazione.
+     * @param direction La direzione dell'animazione.
+     * @param frames I frame dell'animazione.
+     */
     private void putAnim(float speed, Vector2 direction, TextureRegion[] frames) {
         animations.put(direction, new Animation<>(speed, frames));
     }
@@ -89,6 +118,9 @@ public class DefaultAnimationSet extends AnimationSet {
         return animations.get(e.get(DirectionComponent.class).direction).getKeyFrame(elapsedTime, true);
     }
 
+    /**
+     * Restituisce l'animazione corretta in base alla direzione
+     */
     @Override
     public TextureRegion play(Vector2 key, float elapsedTime) {
         return animations.get(key).getKeyFrame(elapsedTime, true);

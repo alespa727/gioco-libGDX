@@ -45,6 +45,10 @@ public class ColorFilter extends Shader {
         instance.color.set(r, g, b, 1);
     }
 
+    public static void setColor(Color color) {
+        instance.color.set(color);
+    }
+
     @Override
     public void begin() {
         frameBuffer.begin();

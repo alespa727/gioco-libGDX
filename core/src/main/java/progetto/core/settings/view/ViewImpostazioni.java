@@ -82,7 +82,7 @@ public class ViewImpostazioni implements Screen {
     @Override
     public void render(float delta) {
         // Pulisce lo schermo con un colore di sfondo chiaro
-        ScreenUtils.clear(Color.WHITE);
+        ScreenUtils.clear(Color.BLACK);
         if (stage != null) {
             stage.act();
             stage.draw();

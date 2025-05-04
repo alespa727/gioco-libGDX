@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.entity.entities.Entity;
+import progetto.ECS.components.specific.base.PhysicsComponent;
+import progetto.ECS.entities.Entity;
 import progetto.graphics.shaders.base.Shader;
 import progetto.core.CameraManager;
 

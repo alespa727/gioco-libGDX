@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.game.GameScreen;
 import progetto.core.game.Terminal;
 import progetto.core.settings.model.ModelImpostazioni;
-import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.ECS.components.specific.base.PhysicsComponent;
 import progetto.world.map.Map;
 
 public class DebugWindow extends Window {

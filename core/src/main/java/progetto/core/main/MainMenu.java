@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,6 +29,7 @@ import progetto.core.App;
 import progetto.core.CustomScreen;
 import progetto.core.ResourceManager;
 import progetto.core.ScreenRenderer;
+import progetto.core.game.GameScreen;
 import progetto.core.loading.Loading;
 import progetto.core.settings.controller.ControllerImpostazioni;
 import progetto.graphics.animations.DefaultAnimationSet;
@@ -38,11 +40,13 @@ import progetto.world.WorldManager;
 
 public class MainMenu extends CustomScreen {
 
+    private Color color=null;
+    private final String title;
     private static final int LARGHEZZA = 16;
     private float UNIT;
-    private final App app;
+    protected final App app;
     private OrthographicCamera camera;
-    private Viewport viewport;
+    protected Viewport viewport;
     private SpriteBatch batch;
     private DefaultAnimationSet animation;
     private DefaultAnimationSet shadow;
@@ -50,12 +54,25 @@ public class MainMenu extends CustomScreen {
     private Vector2 position;
     private Vector2 size;
     private Stage stage;
-    private Group group;
+    protected Group group;
     private ScreenRenderer renderer;
     private float accumulator = 0;
 
-    public MainMenu(App app) {
+    public MainMenu(App app, String title) {
         this.app = app;
+        this.title = title;
+        this.renderer = new ScreenRenderer(this);
+        loadResources();
+        setupCamera();
+        initGraphics();
+        initGameVariables();
+        initUI();
+    }
+
+    public MainMenu(App app, String title, Color color) {
+        this.app = app;
+        this.title = title;
+        this.color = color;
         this.renderer = new ScreenRenderer(this);
         loadResources();
         setupCamera();
@@ -79,7 +96,12 @@ public class MainMenu extends CustomScreen {
     private void initGraphics() {
         batch = new SpriteBatch();
         renderer.addShader(Vignette.getInstance());
-        renderer.addShader(ColorFilter.getInstance(0.8f, 0.8f, 0.86f));
+        renderer.addShader(ColorFilter.getInstance());
+
+        ColorFilter.setColor(0.8f, 0.8f, 0.86f);
+        if (!title.equals("The loss")) {
+            ColorFilter.setColor(color);
+        }
     }
 
     private void initGameVariables() {
@@ -124,7 +146,7 @@ public class MainMenu extends CustomScreen {
         TextButton.TextButtonStyle titleStyle = new TextButton.TextButtonStyle();
         titleStyle.font = font;
         titleStyle.fontColor = Color.BLACK.cpy().mul(0.60f);
-        TextButton title = new TextButton("ERRORE 404", titleStyle);
+        TextButton title = new TextButton(this.title, titleStyle);
         title.getLabel().setAlignment(Align.left);
         title.setSize(viewport.getWorldWidth() / 4, viewport.getWorldHeight() / 4);
         title.setPosition(viewport.getWorldWidth() / 2 - title.getWidth() / 2,
@@ -132,7 +154,7 @@ public class MainMenu extends CustomScreen {
         group.addActor(title);
     }
 
-    private void createPlayButton(BitmapFont font, NinePatchDrawable background) {
+    protected void createPlayButton(BitmapFont font, NinePatchDrawable background) {
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
         buttonStyle.fontColor = Color.BLACK.cpy().mul(0.40f);
@@ -148,7 +170,10 @@ public class MainMenu extends CustomScreen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
-                app.setScreen(new Loading(app, app.gameScreen, 5, 6));
+
+                app.gameScreen = new GameScreen(app);
+                WorldManager.clear();
+                app.setScreen(new Loading(app, app.gameScreen, 3, 4.5f));
             }
         });
 
@@ -192,8 +217,8 @@ public class MainMenu extends CustomScreen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
-                final Style style = new Style("skins/metal-ui.json", "fonts/myfont2.ttf", 30, Color.BLACK,
-                        "fonts/myfont2.ttf", 30, Color.BLACK, null, null, null);
+                final Style style = new Style("skins/metal-ui.json", "fonts/myfont2.ttf", 30, Color.WHITE,
+                        "fonts/myfont2.ttf", 30, Color.WHITE, null, null, null);
                 ControllerImpostazioni controller = new ControllerImpostazioni(app, style);
                 controller.setViewImpostazioni(controller.creaImpostazioni(controller.getModelImpostazioni()));
                 controller.getViewImpostazioni().setActorStage(controller.getViewImpostazioni().getRoot());

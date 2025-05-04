@@ -3,7 +3,7 @@ package progetto.world.events.specific;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.game.GameScreen;
-import progetto.entity.entities.Entity;
+import progetto.ECS.entities.Entity;
 import progetto.graphics.shaders.specific.EntityLight;
 import progetto.world.events.base.MapEvent;
 

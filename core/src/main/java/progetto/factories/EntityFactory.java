@@ -3,17 +3,17 @@ package progetto.factories;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.ResourceManager;
-import progetto.entity.EntityEngine;
-import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.EntityConfig;
-import progetto.entity.entities.specific.living.HumanoidInstances;
-import progetto.entity.entities.specific.living.combat.boss.Boss;
-import progetto.entity.entities.specific.living.combat.boss.Lich;
-import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
-import progetto.entity.entities.specific.living.combat.enemy.Enemy;
-import progetto.entity.entities.specific.living.combat.enemy.EnemyInstance;
-import progetto.entity.entities.specific.notliving.Bullet;
-import progetto.entity.entities.specific.notliving.Sword;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.entities.Entity;
+import progetto.ECS.entities.specific.EntityConfig;
+import progetto.ECS.entities.specific.living.HumanoidInstances;
+import progetto.ECS.entities.specific.living.combat.boss.Boss;
+import progetto.ECS.entities.specific.living.combat.boss.Lich;
+import progetto.ECS.entities.specific.living.combat.enemy.BaseEnemy;
+import progetto.ECS.entities.specific.living.combat.enemy.Enemy;
+import progetto.ECS.entities.specific.living.combat.enemy.EnemyInstance;
+import progetto.ECS.entities.specific.notliving.Bullet;
+import progetto.ECS.entities.specific.notliving.Sword;
 
 import java.util.Objects;
 

@@ -1,21 +1,22 @@
 package progetto.core.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.App;
+import progetto.core.main.MainMenu;
 import progetto.core.settings.model.ModelImpostazioni;
-import progetto.entity.EntityEngine;
-import progetto.entity.components.specific.base.StateComponent;
-import progetto.entity.entities.specific.EntityConfig;
-import progetto.entity.systems.specific.*;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.components.specific.base.StateComponent;
+import progetto.ECS.entities.specific.EntityConfig;
+import progetto.ECS.systems.specific.*;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
-import progetto.input.DebugWindow;
+import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.KeyHandler;
 import progetto.core.CameraManager;
 import progetto.core.game.player.Player;
-import progetto.core.defeat.Defeat;
 import progetto.core.pause.Pause;
 import progetto.world.WorldManager;
 import progetto.world.map.MapManager;
@@ -72,8 +73,8 @@ public class Engine {
             KeyHandler.input();
         }
 
-        if (DebugWindow.renderHitboxes()) game.getRenderer().draw();
-        else game.getGameDrawer().draw(batch);
+
+        game.getGameDrawer().draw(batch, delta);
 
 
     }
@@ -90,7 +91,8 @@ public class Engine {
         StateComponent state = player.components.get(StateComponent.class);
 
         if (!state.isAlive()) {
-            game.app.setScreen(new Defeat(app));
+            MainMenu main = new MainMenu(app, "Sei morto", new Color(0.85f, 0.2f, 0.2f, 1));
+            game.app.setScreen(main);
         }
 
         // Aggiorna la logica delle entità
@@ -113,17 +115,6 @@ public class Engine {
         this.player = new Player(p, entityEngine);
 
         entityEngine.summon(player);
-
-//        for (int i = 0; i < 5; i++) {
-//            for (int j = 0; j < 5; j++) {
-//
-//            }
-//        }
-//        EntityConfig config = EntityConfigFactory.createEntityConfig("Enemy", 10, 10);
-//        Entity e = EntityFactory.createEnemy("Enemy", config, entityEngine);
-//        entityEngine.summon(e);
-
-        entityEngine.summon(EntityFactory.createSword(10, 10, 0.2f, 1f, new Vector2(0, -0.5f), 50, entityEngine, null));
 
         entityEngine.addSystem(
             new CullingSystem(),

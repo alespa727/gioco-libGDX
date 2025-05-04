@@ -8,8 +8,8 @@ import progetto.factories.BodyFactory;
 
 public abstract class RectangleMapEvent extends MapEvent {
 
-    float width;
-    float height;
+    protected float width;
+    protected float height;
 
     public RectangleMapEvent(Vector2 position, float width, float height) {
         this.position = position;

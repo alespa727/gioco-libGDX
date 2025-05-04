@@ -3,11 +3,11 @@ package progetto.world.events.specific;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import progetto.core.ResourceManager;
-import progetto.entity.EntityEngine;
-import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.EntityConfig;
-import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
-import progetto.entity.entities.specific.notliving.Casa;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.entities.Entity;
+import progetto.ECS.entities.specific.EntityConfig;
+import progetto.ECS.entities.specific.living.combat.enemy.BaseEnemy;
+import progetto.ECS.entities.specific.notliving.Casa;
 import progetto.world.events.base.MapEvent;
 
 public class SpawnCasa extends MapEvent {

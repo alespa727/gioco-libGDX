@@ -5,8 +5,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
-import progetto.entity.EntityEngine;
-import progetto.entity.entities.specific.EntityInstance;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.entities.specific.EntityInstance;
 import progetto.world.map.MapManager;
 
 public class AutoSave extends Thread {

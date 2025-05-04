@@ -678,7 +678,7 @@ public class ControllerImpostazioni {
         back.addListener(new ClickListener() { // Aggiungo un listener al bottone per il click
             @Override
             public void clicked(InputEvent event, float x, float y) { // Quando c'è il click del bottone
-                game.setScreen(new MainMenu(game));
+                game.setScreen(new MainMenu(game, "The loss"));
             }
         });
 

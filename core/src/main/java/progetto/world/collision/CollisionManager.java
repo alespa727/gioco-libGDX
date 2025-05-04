@@ -1,21 +1,30 @@
 package progetto.world.collision;
 
 import com.badlogic.gdx.physics.box2d.*;
-import progetto.entity.EntityEngine;
-import progetto.entity.components.specific.general.BulletComponent;
-import progetto.entity.components.specific.sensors.InRangeListComponent;
-import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.living.combat.Warrior;
-import progetto.entity.entities.specific.living.combat.boss.Boss;
-import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
-import progetto.entity.entities.specific.notliving.Bullet;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.components.specific.general.BulletComponent;
+import progetto.ECS.components.specific.sensors.InRangeListComponent;
+import progetto.ECS.entities.Entity;
+import progetto.ECS.entities.specific.living.combat.Warrior;
+import progetto.ECS.entities.specific.living.combat.boss.Boss;
+import progetto.ECS.entities.specific.living.combat.enemy.BaseEnemy;
+import progetto.ECS.entities.specific.notliving.Bullet;
 import progetto.core.game.player.Player;
 import progetto.world.events.base.MapEvent;
 import progetto.world.events.specific.ChangeMap;
 import progetto.world.map.Map;
 
+
 public class CollisionManager implements ContactListener {
 
+    /**
+     * Eseguito quando due oggetti iniziano a toccarsi.
+     *
+     * Funzioni:
+     * - Distrugge proiettili che colpiscono la mappa.
+     * - Attiva eventi (es. cambio mappa) quando il player li tocca.
+     * - Applica danno a nemici colpiti da proiettili.
+     */
     @Override
     public void beginContact(Contact contact) {
         // Definizioni caratteristiche fisiche
@@ -52,9 +61,7 @@ public class CollisionManager implements ContactListener {
             ((MapEvent) dataB).trigger((Entity) dataA);
             return;
         }
-        // ---------------------------------------------
-        // Gestione del range del player
-        // ---------------------------------------------
+
         if (dataA instanceof Player && (dataB instanceof BaseEnemy || dataB instanceof Boss)) {
             ((Player) dataA).components.get(InRangeListComponent.class).inRange.add((Warrior) dataB);
         }
@@ -62,12 +69,6 @@ public class CollisionManager implements ContactListener {
             ((Player) dataB).components.get(InRangeListComponent.class).inRange.add((Warrior) dataA);
         }
 
-        // ---------------------------------------------
-        // Gestione del contatto tra BaseEnemy e Player nel range
-        // ---------------------------------------------
-        // Se "dataA" è un BaseEnemy e il filtro del fixtureA indica RANGE,
-        // mentre "dataB" è un Player e il filtro del fixtureB non indica RANGE,
-        // l'enemy aggiunge il player alla sua lista di entità.
         boolean isRangeA = (fixtureA.getFilterData().categoryBits == EntityEngine.RANGE);
         boolean isRangeB = (fixtureB.getFilterData().categoryBits == EntityEngine.RANGE);
 
@@ -76,6 +77,13 @@ public class CollisionManager implements ContactListener {
                 ((BaseEnemy) dataA).get(InRangeListComponent.class).inRange.add((Warrior) dataB);
             }
         }
+
+        if (dataB instanceof BaseEnemy && isRangeB && dataA instanceof Player && !isRangeA) {
+            if (((BaseEnemy) dataB).contains(InRangeListComponent.class)) {
+                ((BaseEnemy) dataB).get(InRangeListComponent.class).inRange.add((Warrior) dataA);
+            }
+        }
+
 
         if (dataA instanceof Warrior && !isRangeA && dataB instanceof Bullet) {
             if (((Warrior) dataA).getHumanStates().isInvulnerable()) return;
@@ -100,6 +108,13 @@ public class CollisionManager implements ContactListener {
 
     }
 
+    /**
+     * Eseguito quando due oggetti smettono di toccarsi.
+     *
+     * Funzioni:
+     * - Rimuove nemici dalla lista "in range" del player.
+     * - Disattiva eventi (es. cambio mappa) quando il player si allontana.
+     */
     @Override
     public void endContact(Contact contact) {
         // Recupera i fixture coinvolti nel contatto
@@ -110,10 +125,7 @@ public class CollisionManager implements ContactListener {
         Object dataA = fixtureA.getBody().getUserData();
         Object dataB = fixtureB.getBody().getUserData();
 
-        // ----------------------------------------------------
-        // Gestione del range del player (Rimozione entità)
-        // Se dataA è un Player e dataB è un CombatEntity (ma non un Player)
-        // e se il filtro del fixtureB non indica RANGE, rimuovo la CombatEntity dal Player.
+
         if (dataA instanceof Player && (dataB instanceof BaseEnemy || dataB instanceof Boss)) {
             ((Player) dataA).components.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataB, false);
         }
@@ -121,27 +133,19 @@ public class CollisionManager implements ContactListener {
             ((Player) dataB).components.get(InRangeListComponent.class).inRange.removeValue((Warrior) dataA, false);
         }
 
-        // ----------------------------------------------------
-        // Gestione del contatto tra BaseEnemy e Player nel range (Rimozione Player)
-        // Se dataA è un BaseEnemy associato a un fixture con filtro RANGE
-        // e dataB è un Player (con filtro NON RANGE), rimuovo il Player dall'BaseEnemy
         boolean isRangeA = fixtureA.getFilterData().categoryBits == EntityEngine.RANGE;
         boolean isRangeB = fixtureB.getFilterData().categoryBits == EntityEngine.RANGE;
 
         if (dataA instanceof BaseEnemy baseEnemy1 && isRangeA && dataB instanceof Player player && !isRangeB) {
             baseEnemy1.removeEntity(player);
         }
-
-        // ----------------------------------------------------
-        // Gestione degli eventi della mappa
-        // Se dataA è un Entity e dataB è un MapEvent, triggero l'evento
-        // e disattivo il MapEvent
-
-        // Gestione eventi della mappa, controllando entrambe le configurazioni:
+        // Gestione eventi della mappa
         if (dataA instanceof Player && dataB instanceof ChangeMap) {
             ((MapEvent) dataB).setActive(false);
+            return;
         } else if (dataB instanceof Player && dataA instanceof ChangeMap) {
             ((MapEvent) dataA).setActive(false);
+            return;
         }
 
         if (dataA instanceof MapEvent && dataB instanceof Entity) {

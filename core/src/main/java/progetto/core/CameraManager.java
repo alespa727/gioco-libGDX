@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import progetto.entity.EntityEngine;
-import progetto.entity.components.specific.base.Cooldown;
-import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.components.specific.base.Cooldown;
+import progetto.ECS.components.specific.base.PhysicsComponent;
 import progetto.world.map.Map;
 
 public class CameraManager {

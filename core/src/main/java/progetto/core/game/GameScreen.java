@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import progetto.core.AutoSave;
 import progetto.core.App;
-import progetto.entity.EntityEngine;
-import progetto.entity.components.specific.base.StateComponent;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.components.specific.base.StateComponent;
 import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.graphics.shaders.specific.EntityLight;
 import progetto.graphics.shaders.specific.Vignette;
@@ -128,12 +128,9 @@ public class GameScreen implements Screen {
         autoSave.start();
         initializeWindow();
         loadGameEngine();
-        StateComponent state = engine.getPlayer().get(StateComponent.class);
-        if (!state.isAlive()) {
-            engine.getPlayer().respawn();
-        }
         CameraManager.getInstance().update();
-
+        ColorFilter.getInstance();
+        ColorFilter.setColor(0.5f, 0.5f, 0.55f);
     }
 
     @Override

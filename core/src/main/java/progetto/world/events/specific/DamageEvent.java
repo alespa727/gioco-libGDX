@@ -2,19 +2,19 @@ package progetto.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectSet;
-import progetto.entity.components.base.ComponentFilter;
-import progetto.entity.components.specific.base.Cooldown;
-import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.entity.components.specific.general.AttributeComponent;
-import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.living.Humanoid;
+import progetto.ECS.components.base.ComponentFilter;
+import progetto.ECS.components.specific.base.Cooldown;
+import progetto.ECS.components.specific.base.PhysicsComponent;
+import progetto.ECS.components.specific.general.AttributeComponent;
+import progetto.ECS.entities.Entity;
+import progetto.ECS.entities.specific.living.Humanoid;
 import progetto.world.events.base.RectangleMapEvent;
 
 public class DamageEvent extends RectangleMapEvent {
 
-    private ObjectSet<Humanoid> entities;
-    private Cooldown cooldown;
-    private ComponentFilter filter;
+    private final ObjectSet<Humanoid> entities;
+    private final Cooldown cooldown;
+    private final ComponentFilter filter;
 
     /**
      * Crea un evento nella mappa che può essere attivato quando il player entra nel suo raggio.

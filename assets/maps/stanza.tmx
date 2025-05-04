@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="16">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="19">
  <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
   <image source="CustomTileset.png" width="160" height="160"/>
   <tile id="0">
@@ -181,7 +181,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
-0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
+0,0,0,0,0,8,41,8,8,8,8,8,8,8,8,8,0,0,0,0,
 0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
 0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
 0,0,0,0,0,8,8,8,8,8,8,8,8,8,8,8,0,0,0,0,
@@ -243,11 +243,36 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <layer id="11" name="pavimento2" width="20" height="20" offsetx="0" offsety="-4">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
  <objectgroup id="9" name="collisionobjects">
   <object id="11" x="80" y="112" width="175" height="16"/>
   <object id="12" x="80" y="112" width="16" height="96"/>
   <object id="13" x="80" y="192" width="175" height="16"/>
   <object id="14" x="240" y="112" width="16" height="96"/>
+  <object id="16" x="97" y="125" width="14" height="14"/>
  </objectgroup>
  <objectgroup id="4" name="eventi">
   <properties>
@@ -268,6 +293,22 @@
     <property name="color" type="color" value="#64ff9a42"/>
     <property name="eventType" value="Light"/>
     <property name="intensity" type="float" value="0.3"/>
+   </properties>
+  </object>
+  <object id="17" x="96" y="124" width="36" height="33">
+   <properties>
+    <property name="delay" type="float" value="0.5"/>
+    <property name="duration" type="float" value="3"/>
+    <property name="eventType" value="Dialog"/>
+    <property name="text" value="..."/>
+   </properties>
+  </object>
+  <object id="18" x="130" y="159" width="36" height="33">
+   <properties>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="3"/>
+    <property name="eventType" value="Message"/>
+    <property name="text" value="WASD per muoversi, E per interagire"/>
    </properties>
   </object>
  </objectgroup>

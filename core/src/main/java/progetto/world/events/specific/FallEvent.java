@@ -2,10 +2,9 @@ package progetto.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectSet;
-import progetto.entity.components.specific.base.PhysicsComponent;
-import progetto.entity.components.specific.movement.FallingComponent;
-import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.living.Humanoid;
+import progetto.ECS.components.specific.base.PhysicsComponent;
+import progetto.ECS.components.specific.movement.FallingComponent;
+import progetto.ECS.entities.Entity;
 import progetto.world.events.base.RectangleMapEvent;
 
 public class FallEvent extends RectangleMapEvent {

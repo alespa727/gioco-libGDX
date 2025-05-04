@@ -1,7 +1,7 @@
 package progetto.core.game.player;
 
-import progetto.entity.EntityEngine;
-import progetto.entity.entities.specific.EntityConfig;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.entities.specific.EntityConfig;
 import progetto.factories.EntityConfigFactory;
 
 public class PlayerManager {

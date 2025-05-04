@@ -3,7 +3,8 @@ package progetto.core.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import org.fusesource.jansi.Ansi;
-import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.ECS.components.specific.base.PhysicsComponent;
+import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.DebugWindow;
 
 import java.io.IOException;

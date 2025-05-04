@@ -1,20 +1,20 @@
 package progetto.core.game.player;
 
 import org.fusesource.jansi.Ansi;
-import progetto.entity.EntityEngine;
-import progetto.entity.components.base.Component;
-import progetto.entity.components.specific.base.Cooldown;
-import progetto.entity.components.specific.combat.MultiCooldownComponent;
-import progetto.entity.components.specific.control.UserControllable;
-import progetto.entity.components.specific.general.PlayerComponent;
-import progetto.entity.components.specific.general.skills.specific.player.PlayerDash;
-import progetto.entity.components.specific.general.skills.specific.player.PlayerRangedAttack;
-import progetto.entity.components.specific.general.skills.specific.player.PlayerSwordAttack;
-import progetto.entity.components.specific.graphics.ShadowComponent;
-import progetto.entity.components.specific.sensors.InRangeListComponent;
-import progetto.entity.entities.specific.EntityConfig;
-import progetto.entity.entities.specific.EntityInstance;
-import progetto.entity.entities.specific.living.combat.Warrior;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.components.base.Component;
+import progetto.ECS.components.specific.base.Cooldown;
+import progetto.ECS.components.specific.combat.MultiCooldownComponent;
+import progetto.ECS.components.specific.control.UserControllable;
+import progetto.ECS.components.specific.general.PlayerComponent;
+import progetto.ECS.components.specific.general.skills.specific.player.PlayerDash;
+import progetto.ECS.components.specific.general.skills.specific.player.PlayerRangedAttack;
+import progetto.ECS.components.specific.general.skills.specific.player.PlayerSwordAttack;
+import progetto.ECS.components.specific.graphics.ShadowComponent;
+import progetto.ECS.components.specific.sensors.InRangeListComponent;
+import progetto.ECS.entities.specific.EntityConfig;
+import progetto.ECS.entities.specific.EntityInstance;
+import progetto.ECS.entities.specific.living.combat.Warrior;
 import progetto.core.CameraManager;
 
 public class Player extends Warrior {
@@ -40,7 +40,7 @@ public class Player extends Warrior {
 
         CameraManager.getInstance().position.set(config.x, config.y, 0);
 
-        getSkillset().add(new PlayerDash(this, "", "", 20f));
+        getSkillset().add(new PlayerDash(this, "", "", 50f));
         getSkillset().add(new PlayerSwordAttack(this, "", "", 10));
         getSkillset().add(new PlayerRangedAttack(this, "", "", 5, 25f, 5f));
     }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import progetto.core.game.GameScreen;
-import progetto.entity.EntityEngine;
+import progetto.ECS.EntityEngine;
 import progetto.world.events.base.MapEvent;
 import progetto.world.events.specific.*;
 import progetto.world.map.Map;
@@ -16,12 +16,11 @@ import progetto.world.map.MapManager;
 
 public class EventManager {
 
-    private GameScreen game;
+    private final GameScreen game;
     private final MapManager mapManager;
     private final EntityEngine entityEngine;
     private final Array<MapEvent> events = new Array<>();
     private final Map map;
-    private Array<String> mapNames = new Array<>();
 
     public EventManager(GameScreen game, Map map, MapManager mapManager, EntityEngine entityEngine) {
         this.game = game;
@@ -88,6 +87,29 @@ public class EventManager {
                 float intensity = getProperty(object, "intensity", Float.class, 0f);
                 System.out.println("color: " + color);
                 events.add(new SpawnLight(game, position, 0.3f, intensity, color));
+            }
+            case "Dialogs" -> {
+                String text = getProperty(object, "text", String.class, "");
+                float width = getProperty(object, "width", Float.class, 0f) * MapManager.TILE_SIZE;
+                float height = getProperty(object, "height", Float.class, 0f) * MapManager.TILE_SIZE;
+                float delay = getProperty(object, "delay", Float.class, 0f);
+                float duration = getProperty(object, "duration", Float.class, 0f);
+                events.add(new Dialog(position, width, height, text, delay, duration, game));
+            }
+            case "Message" -> {
+                String text = getProperty(object, "text", String.class, "");
+                float width = getProperty(object, "width", Float.class, 0f) * MapManager.TILE_SIZE;
+                float height = getProperty(object, "height", Float.class, 0f) * MapManager.TILE_SIZE;
+                float delay = getProperty(object, "delay", Float.class, 0f);
+                float duration = getProperty(object, "duration", Float.class, 0f);
+                events.add(new Message(position, width, height, text, delay, duration, game));
+            }
+            case "DeathChangeMap" -> {
+                float radius = getProperty(object, "eventRadius", Float.class, 0f);
+                int mapId = getProperty(object, "map", Integer.class, 0);
+                float spawnX = getProperty(object, "spawnx", Float.class, 0f);
+                float spawnY = getProperty(object, "spawny", Float.class, 0f);
+                events.add(new DeathChangeMap(position, radius, mapManager, mapId, spawnX, spawnY, game));
             }
             default -> {
                 System.err.println("Unknown event type: " + eventType);

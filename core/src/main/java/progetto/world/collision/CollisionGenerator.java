@@ -8,16 +8,15 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
-import progetto.entity.EntityEngine;
+import progetto.ECS.EntityEngine;
 import progetto.factories.BodyFactory;
 import progetto.world.map.Map;
 import progetto.world.map.MapManager;
 
 public class CollisionGenerator {
 
-    Map map;
-
-    boolean[][] collision;
+    private final Map map;
+    private final boolean[][] collision;
 
     public CollisionGenerator(TiledMapTileLayer collisionLayer, Map map) {
         collision = new boolean[Map.width()][Map.height()];
@@ -45,7 +44,7 @@ public class CollisionGenerator {
 
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = EntityEngine.WALL;
-
+                System.out.println("Creating collision");
                 BodyFactory.createBody(map, bodyDef, fixtureDef);
             }
         }

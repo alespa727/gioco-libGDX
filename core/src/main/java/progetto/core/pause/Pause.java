@@ -20,8 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.App;
 import progetto.core.game.GameScreen;
 import progetto.core.settings.model.ModelImpostazioni;
-import progetto.entity.components.specific.base.Cooldown;
-import progetto.entity.components.specific.base.PhysicsComponent;
+import progetto.ECS.components.specific.base.Cooldown;
+import progetto.ECS.components.specific.base.PhysicsComponent;
 import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.DebugWindow;
 import progetto.core.CameraManager;
@@ -116,7 +116,7 @@ public class Pause implements Screen {
         resume.update(delta);
         gameScreen.render(delta);
 
-        gameScreen.getGameDrawer().draw(game.batch);
+        gameScreen.getGameDrawer().draw(game.batch, delta);
 
         if (resume.isReady) {
             DebugWindow.setEntityAI(true);
@@ -135,7 +135,7 @@ public class Pause implements Screen {
 
 
         ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
-        gameScreen.getGameDrawer().draw(game.batch);
+        gameScreen.getGameDrawer().draw(game.batch, delta);
 
         stage.act();
         stage.draw();
@@ -152,7 +152,7 @@ public class Pause implements Screen {
         alpha = Interpolation.smoother.apply(0f, 1f, progress);
 
         pause.update(delta);
-        gameScreen.getGameDrawer().draw(game.batch);
+        gameScreen.getGameDrawer().draw(game.batch, delta);
 
         if (pause.isReady) {
             pauseRequest = false;
@@ -197,7 +197,7 @@ public class Pause implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 DebugWindow.setEntityAI(true);
-                game.setScreen(new MainMenu(game));
+                game.setScreen(new MainMenu(game, "The loss"));
             }
 
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {

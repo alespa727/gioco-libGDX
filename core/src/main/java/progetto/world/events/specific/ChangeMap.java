@@ -2,7 +2,7 @@ package progetto.world.events.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import progetto.entity.entities.Entity;
+import progetto.ECS.entities.Entity;
 import progetto.input.KeyHandler;
 import progetto.core.game.Terminal;
 import progetto.core.game.player.Player;
@@ -13,12 +13,12 @@ import progetto.world.map.MapManager;
  * Evento di cambio mappa tramite {@link MapManager}
  */
 public class ChangeMap extends MapEvent {
-    private final MapManager mapManager;
+    protected final MapManager mapManager;
     // Coordinate della prossima mappa
-    private final float x;
-    private final float y;
+    protected final float x;
+    protected final float y;
     // Prossima mappa
-    private final int map;
+    protected final int map;
 
     /**
      * Crea un evento di cambio mappa
@@ -43,17 +43,18 @@ public class ChangeMap extends MapEvent {
 
     @Override
     public void update(float delta) {
-        if (isActive()) {
-            if (KeyHandler.usa) {
-                Terminal.printMessage("Map " + MapManager.getMapIndex() + " changing to " + map + "..");
-                Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f));
-                isActive = false;
-            }
+        if (isActive()) check();
+    }
+
+    public void check(){
+        if (KeyHandler.usa) {
+            Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f, true));
+            isActive = false;
         }
     }
 
     @Override
     public void trigger(Entity entity) {
-        if (entity instanceof Player) setActive(true);
+        // Non necessario
     }
 }

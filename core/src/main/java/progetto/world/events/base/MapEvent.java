@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
-import progetto.entity.entities.Entity;
+import progetto.ECS.entities.Entity;
 import progetto.factories.BodyFactory;
 import progetto.world.WorldManager;
 

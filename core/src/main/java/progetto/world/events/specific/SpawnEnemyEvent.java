@@ -1,9 +1,9 @@
 package progetto.world.events.specific;
 
 import com.badlogic.gdx.math.Vector2;
-import progetto.entity.EntityEngine;
-import progetto.entity.entities.Entity;
-import progetto.entity.entities.specific.living.combat.enemy.BaseEnemy;
+import progetto.ECS.EntityEngine;
+import progetto.ECS.entities.Entity;
+import progetto.ECS.entities.specific.living.combat.enemy.BaseEnemy;
 import progetto.factories.EntityConfigFactory;
 import progetto.factories.EntityFactory;
 import progetto.world.events.base.MapEvent;

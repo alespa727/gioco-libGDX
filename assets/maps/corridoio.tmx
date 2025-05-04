@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="19">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="23">
  <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
   <image source="CustomTileset.png" width="160" height="160"/>
   <tile id="0">
@@ -249,7 +249,7 @@
 0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,35,18,18,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,36,18,18,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -277,9 +277,9 @@
    <properties>
     <property name="eventRadius" type="float" value="1.5"/>
     <property name="eventType" value="ChangeMap"/>
-    <property name="map" type="int" value="2"/>
-    <property name="spawnx" type="float" value="14"/>
-    <property name="spawny" type="float" value="40"/>
+    <property name="map" type="int" value="3"/>
+    <property name="spawnx" type="float" value="9"/>
+    <property name="spawny" type="float" value="12.5"/>
    </properties>
   </object>
   <object id="17" x="439" y="184" width="19" height="19">
@@ -294,6 +294,38 @@
     <property name="color" type="color" value="#64ff9a42"/>
     <property name="eventType" value="Light"/>
     <property name="intensity" type="float" value="0.3"/>
+   </properties>
+  </object>
+  <object id="19" x="213" y="129" width="24" height="63">
+   <properties>
+    <property name="delay" type="float" value="0.5"/>
+    <property name="duration" type="float" value="2"/>
+    <property name="eventType" value="Dialog"/>
+    <property name="text" value="?"/>
+   </properties>
+  </object>
+  <object id="20" x="308" y="128" width="32" height="63">
+   <properties>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="5"/>
+    <property name="eventType" value="Dialog"/>
+    <property name="text" value="Cosa è successo?               "/>
+   </properties>
+  </object>
+  <object id="21" x="367" y="129" width="25" height="63">
+   <properties>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="5"/>
+    <property name="eventType" value="Dialog"/>
+    <property name="text" value="Dove sono le altre stanze?              "/>
+   </properties>
+  </object>
+  <object id="22" x="414" y="178" width="50" height="14">
+   <properties>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="4"/>
+    <property name="eventType" value="Dialog"/>
+    <property name="text" value="Angelica?"/>
    </properties>
   </object>
  </objectgroup>
