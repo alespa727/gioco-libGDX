@@ -10,6 +10,7 @@ import progetto.ECS.components.specific.combat.MortalComponent;
 import progetto.ECS.components.specific.combat.MultiCooldownComponent;
 import progetto.ECS.components.specific.general.skills.specific.boss.LichFireDomain;
 import progetto.ECS.components.specific.general.skills.specific.boss.LichFireball;
+import progetto.ECS.components.specific.general.skills.specific.enemy.EnemySwordAttack;
 import progetto.ECS.components.specific.movement.MovementComponent;
 import progetto.ECS.entities.specific.EntityConfig;
 import progetto.ECS.entities.specific.EntityInstance;
@@ -44,6 +45,7 @@ public class Lich extends Boss {
         components.add(new StatemachineComponent<>(this, StatesLich.IDLE));
         getSkillset().add(new LichFireball(this, "Fireball", "Fireball", 50, 5f));
         getSkillset().add(new LichFireDomain(this, "", "", 20));
+        getSkillset().add(new EnemySwordAttack(this, "", "", 20));
     }
 
     // === Override: Metodi di lifecycle ===

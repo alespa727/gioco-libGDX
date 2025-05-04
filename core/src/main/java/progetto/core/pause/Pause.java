@@ -14,11 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.core.App;
 import progetto.core.game.GameScreen;
+import progetto.core.loading.Loading;
 import progetto.core.settings.model.ModelImpostazioni;
 import progetto.ECS.components.specific.base.Cooldown;
 import progetto.ECS.components.specific.base.PhysicsComponent;
@@ -26,209 +29,40 @@ import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.DebugWindow;
 import progetto.core.CameraManager;
 import progetto.core.main.MainMenu;
+import progetto.world.WorldManager;
 
-public class Pause implements Screen {
-    final App game;
-    final GameScreen gameScreen;
-    final FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-    final FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-    private ColorFilter darken;
-    private final float duration = 1f; // quanto deve durare l'interpolazione in secondi
-    boolean resumeRequest;
-    boolean pauseRequest;
-    Cooldown pause;
-    Cooldown resume;
-    FitViewport viewport;
-    TextButton MainMenu;
-    BitmapFont font;
-    float alpha;
-    Vector3[] corners;
-    private Stage stage;
-    private Table root;
-    private Table table;
-    private float transitionTime = 0; // quanto tempo è passato
+public class Pause extends MainMenu {
 
-    public Pause(App game, GameScreen gameScreen) {
-        this.game = game;
-        this.gameScreen = gameScreen;
-        this.darken = ColorFilter.getInstance();
+    public Pause(App app, String title, Color color) {
+        super(app, title, color);
+    }
+
+    public Pause(App app, String title) {
+        super(app, title);
     }
 
     @Override
-    public void show() {
-        DebugWindow.setEntityAI(false);
-        initViewportAndStage();
-        initUI();
-        setupMainMenuButton();
-        finalizePauseScreen();
-    }
-
-
-    @Override
-    public void resize(int width, int height) {
-        if (stage != null) {
-            stage.getViewport().update(width, height, true);
-        }
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
-
-    @Override
-    public void render(float delta) {
-        corners = CameraManager.getFrustumCorners();
-        draw(delta);
-    }
-
-    public void draw(float delta) {
-        if (pauseRequest) {
-            transitionIn(delta);
-            return;
-        }
-
-        if (resumeRequest) {
-            transitionOut(delta);
-            return;
-        }
-
-        drawPauseMenu(delta);
-
-    }
-
-    public void transitionOut(float delta) {
-        resume.update(delta);
-        gameScreen.render(delta);
-
-        gameScreen.getGameDrawer().draw(game.batch, delta);
-
-        if (resume.isReady) {
-            DebugWindow.setEntityAI(true);
-            game.setScreen(gameScreen);
-            CameraManager.getInstance().position.set(gameScreen.getEntityManager().player().get(PhysicsComponent.class).getPosition(), 0);
-            CameraManager.getInstance().update();
-            resumeRequest = false;
-            Gdx.graphics.setForegroundFPS(Gdx.graphics.getDisplayMode().refreshRate);
-        }
-    }
-
-    public void drawPauseMenu(float delta) {
-        if (Gdx.input.isKeyJustPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("RIPRENDI GIOCO"))) {
-            resumeRequest = true;
-        }
-
-
-        ScreenUtils.clear(0, 0, 0, 1); // Pulisce lo schermo con nero
-        gameScreen.getGameDrawer().draw(game.batch, delta);
-
-        stage.act();
-        stage.draw();
-    }
-
-    public void transitionIn(float delta) {
-        // Incrementa il tempo passato
-        transitionTime += delta;
-
-        // Calcola il progresso (da 0 a 1, clampato)
-        float progress = Math.min(transitionTime / duration, 1f);
-
-        // Applica l'interpolazione tra 0 e 1
-        alpha = Interpolation.smoother.apply(0f, 1f, progress);
-
-        pause.update(delta);
-        gameScreen.getGameDrawer().draw(game.batch, delta);
-
-        if (pause.isReady) {
-            pauseRequest = false;
-            System.out.println("Pause request is ready");
-        }
-    }
-
-
-    private void initViewportAndStage() {
-        viewport = gameScreen.viewport;
-        darken = new ColorFilter();
-        darken.color.set(Color.BLACK.cpy().mul(0.5f));
-
-        stage = new Stage(new ScreenViewport());
-        viewport.setCamera(CameraManager.getInstance());
-        viewport.apply(false);
-        Gdx.input.setInputProcessor(stage);
-
-        root = new Table();
-        root.setFillParent(true);
-        table = new Table();
-        table.setSize(stage.getWidth(), stage.getHeight());
-        stage.addActor(root);
-        root.add(table).pad(20).bottom().fill().expand();
-    }
-
-    private void initUI() {
-        parameter.size = 50;
-        font = generator.generateFont(parameter); // font size 12 pixels
-
+    protected void createPlayButton(BitmapFont font, NinePatchDrawable background) {
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
-        buttonStyle.fontColor = Color.LIGHT_GRAY;
+        buttonStyle.fontColor = Color.BLACK.cpy().mul(0.40f);
+        buttonStyle.up = background;
 
-        MainMenu = new TextButton("Menu principale", buttonStyle);
-        MainMenu.getColor().a = 0;
-        MainMenu.addAction(Actions.fadeIn(0.3f, Interpolation.linear));
-    }
+        TextButton play = new TextButton("Riprendi", buttonStyle);
+        play.getLabel().setAlignment(Align.center);
+        play.setSize(500, 100);
+        play.setPosition(viewport.getWorldWidth() / 2 - play.getWidth() / 2,
+                viewport.getWorldHeight() / 2 - play.getHeight() / 2 + 90);
 
-    private void setupMainMenuButton() {
-        MainMenu.addListener(new ClickListener() {
+        play.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                DebugWindow.setEntityAI(true);
-                game.setScreen(new MainMenu(game, "The loss"));
-            }
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
 
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                MainMenu.getColor().a = 0.7f;
-            }
-
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                MainMenu.getColor().a = 1f;
+                app.setScreen(app.gameScreen);
             }
         });
 
-        Table table1 = new Table();
-        for (int i = 0; i < 4; i++) {
-            table1.add().fill().expand().row();
-        }
-        table1.add(MainMenu).expand().row();
-
-        table.add(table1).pad(20).fill().expand();
+        group.addActor(play);
     }
-
-    private void finalizePauseScreen() {
-        System.out.println("Pause loaded");
-        resumeRequest = false;
-        pauseRequest = true;
-        resume = new Cooldown(0.3f);
-        pause = new Cooldown(0.7f);
-        pause.reset();
-        resume.reset();
-        gameScreen.getEntityManager().player().getHumanStates().hasBeenHit = false;
-
-        stage.setDebugAll(true);
-    }
-
 }

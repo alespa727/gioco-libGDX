@@ -197,7 +197,7 @@ public enum StatesLich implements State<Lich> {
                 if (entity.get(PhysicsComponent.class).getPosition().dst(entity.entityEngine.player().get(PhysicsComponent.class).getPosition()) > 2f) {
                     entity.getStateMachine().changeState(StatesLich.LONG_RANGE_ATTACKS);
                 } else {
-                    entity.getStateMachine().changeState(StatesLich.CLOSE_RANGE_ATTACKS);
+                    entity.getStateMachine().changeState(StatesLich.LONG_RANGE_ATTACKS); // Non si è sviluppato gli attacchi da vicino
                 }
             } else {
                 entity.getStateMachine().revertToPreviousState();

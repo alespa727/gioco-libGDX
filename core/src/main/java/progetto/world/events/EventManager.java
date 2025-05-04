@@ -85,10 +85,9 @@ public class EventManager {
             case "Light" -> {
                 Color color = getProperty(object, "color", Color.class, Color.WHITE);
                 float intensity = getProperty(object, "intensity", Float.class, 0f);
-                System.out.println("color: " + color);
                 events.add(new SpawnLight(game, position, 0.3f, intensity, color));
             }
-            case "Dialogs" -> {
+            case "Dialog" -> {
                 String text = getProperty(object, "text", String.class, "");
                 float width = getProperty(object, "width", Float.class, 0f) * MapManager.TILE_SIZE;
                 float height = getProperty(object, "height", Float.class, 0f) * MapManager.TILE_SIZE;

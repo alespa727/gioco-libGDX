@@ -60,7 +60,7 @@ public class Engine {
         SpriteBatch batch = app.batch;
 
         if (Gdx.input.isKeyJustPressed(ModelImpostazioni.getComandiModificabili().getHashMap().get("FERMA GIOCO"))) {
-            app.setScreen(new Pause(app, game));
+            app.setScreen(new Pause(app, "   Pausa", new Color(0.3f, 0.3f, 0.4f, 1)));
         }
 
         // Aggiorna il gioco finché necessario

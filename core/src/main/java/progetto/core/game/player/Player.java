@@ -42,7 +42,7 @@ public class Player extends Warrior {
 
         getSkillset().add(new PlayerDash(this, "", "", 50f));
         getSkillset().add(new PlayerSwordAttack(this, "", "", 10));
-        getSkillset().add(new PlayerRangedAttack(this, "", "", 5, 25f, 5f));
+        getSkillset().add(new PlayerRangedAttack(this, "", "", 50, 25f, 5f));
     }
 
     public Cooldown getAttackCooldown() {
@@ -63,7 +63,7 @@ public class Player extends Warrior {
 
     @Override
     public final void create() {
-        System.out.println(Ansi.ansi().fg(Ansi.Color.GREEN).a("Player creato").reset());
+
     }
 
     @Override

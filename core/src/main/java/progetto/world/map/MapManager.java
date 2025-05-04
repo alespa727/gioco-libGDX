@@ -59,7 +59,7 @@ public class MapManager {
         this.ambienteAperto = true;
 
         int defaultMap = 0;
-        this.changeMap(defaultMap, 11, 8, true);
+        this.changeMap(defaultMap, 7, 12, true);
         mapEntityInstances = new HashMap<>();
     }
 
@@ -128,6 +128,11 @@ public class MapManager {
                 ambienteAperto = true;
                 viewport.setWorldSize(22f, 22f * 9 / 16f);
             }
+            case 4 -> {
+                nome = "bossroom";
+                ambienteAperto = true;
+                viewport.setWorldSize(28f, 28f * 9 / 16f);
+            }
             default -> {
                 nome = "stanza";
                 ambienteAperto = true;
@@ -173,7 +178,6 @@ public class MapManager {
 
             // Salva in JSON
             String string = json.prettyPrint(instances);
-            System.out.println(json.prettyPrint(string));  // Debug console
 
             fileHandle.writeString(string, false);  // Scrive su file
         }).start();

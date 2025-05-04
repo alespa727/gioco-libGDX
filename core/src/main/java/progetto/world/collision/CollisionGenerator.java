@@ -44,7 +44,6 @@ public class CollisionGenerator {
 
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = EntityEngine.WALL;
-                System.out.println("Creating collision");
                 BodyFactory.createBody(map, bodyDef, fixtureDef);
             }
         }

@@ -54,7 +54,6 @@ public class PathFinderComponent extends Component implements Disposable {
 
 
     public void search(float x, float y) {
-        //System.out.println("Calcolo del percorso!");
         path.clear();
         //setta il nodo di inizio e fine
         startNode = entity.components.get(NodeComponent.class).node;

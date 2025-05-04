@@ -45,7 +45,6 @@ public class SpawnLight extends MapEvent {
     @Override
     public void destroy() {
         super.destroy();
-        System.out.println("Light destroyed");
         game.getGameDrawer().removeShaders(light);
     }
 }

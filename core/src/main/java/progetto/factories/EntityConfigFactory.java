@@ -62,7 +62,7 @@ public class EntityConfigFactory {
         lich.descrizione = "Nemico pericoloso";
         lich.x = x;
         lich.y = y;
-        lich.img = ResourceManager.get().get("entities/nemico.png", Texture.class);
+        lich.img = ResourceManager.get().get("entities/Lich.png", Texture.class);
         lich.radius = 25 / 32f;
         lich.direzione = new Vector2(0, -0.5f);
         lich.isAlive = true;

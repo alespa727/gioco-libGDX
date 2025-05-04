@@ -78,7 +78,6 @@ public class Bullet extends GameObject {
 
     }
 
-
     /**
      * Ottiene la classe con cui avrà collisioni
      *
@@ -87,8 +86,6 @@ public class Bullet extends GameObject {
     public Class<? extends Entity> getTargetClass() {
         return target;
     }
-
-    // === Override metodi principali ===
 
     /**
      * Crea il corpo fisico del proiettile.

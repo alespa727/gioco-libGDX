@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.ObjectSet;
 import progetto.ECS.components.specific.base.PhysicsComponent;
 import progetto.ECS.components.specific.movement.FallingComponent;
 import progetto.ECS.entities.Entity;
+import progetto.ECS.entities.specific.notliving.Bullet;
 import progetto.world.events.base.RectangleMapEvent;
 
 public class FallEvent extends RectangleMapEvent {
@@ -43,6 +44,7 @@ public class FallEvent extends RectangleMapEvent {
      */
     @Override
     public void trigger(Entity entity) {
+        if (entity instanceof Bullet) return;
         if (entities.contains(entity)) {
             entities.remove(entity);
         }else{

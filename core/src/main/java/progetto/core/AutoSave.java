@@ -29,7 +29,6 @@ public class AutoSave extends Thread {
     public void run() {
         running = true;
         while (running) {
-            System.out.println("AutoSave");
             try {
                 sleep(5000);
             } catch (InterruptedException e) {

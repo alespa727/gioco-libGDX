@@ -59,6 +59,5 @@ public abstract class BaseEntity extends Entity {
             get(PhysicsComponent.class).createBody();
         }
 
-        System.out.println(config.id);
     }
 }

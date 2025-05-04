@@ -36,7 +36,6 @@ public class Message extends RectangleMapEvent {
         if (isActive() && !wasActive) {
             cooldown.update(delta);
             if (cooldown.isReady && !flag){
-                System.out.println(text);
                 renderer.setMessage(text);
                 flag=true;
                 cooldown = new Cooldown(length);
