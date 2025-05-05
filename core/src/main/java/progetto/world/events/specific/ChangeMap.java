@@ -2,6 +2,7 @@ package progetto.world.events.specific;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import progetto.ECS.components.specific.control.UserControllable;
 import progetto.ECS.entities.Entity;
 import progetto.input.KeyHandler;
 import progetto.core.game.Terminal;
@@ -43,7 +44,10 @@ public class ChangeMap extends MapEvent {
 
     @Override
     public void update(float delta) {
-        if (isActive()) check();
+        if (isActive()){
+            System.out.println("map: " + map);
+            check();
+        }
     }
 
     public void check(){
@@ -55,6 +59,9 @@ public class ChangeMap extends MapEvent {
 
     @Override
     public void trigger(Entity entity) {
-        // Non necessario
+        if (entity.contains(UserControllable.class)) {
+            setActive(!isActive);
+        }
+        System.out.println("CHANGEMAP");
     }
 }

@@ -3,6 +3,7 @@ package progetto.core.settings.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,6 +26,7 @@ import java.util.function.Function;
 
 import progetto.audio.AudioEngine;
 import progetto.core.App;
+import progetto.core.CustomScreen;
 import progetto.core.settings.view.ViewImpostazioni;
 import progetto.core.settings.model.ModelImpostazioni;
 import progetto.core.main.MainMenu;
@@ -44,6 +46,8 @@ import progetto.ui.style.Style;
 public class ControllerImpostazioni {
 
     // ATTRIBUTI------------------------------------------------------------------------------------------------------
+
+    public Screen screen;
 
     /**
      * Riferimento al App del game.
@@ -93,9 +97,10 @@ public class ControllerImpostazioni {
      * @see App
      * @see Style
      */
-    public ControllerImpostazioni(final App game, final Style style){
+    public ControllerImpostazioni(final App game, final CustomScreen screen, final Style style){
         this.game = game;
         this.audio = new AudioEngine();
+        this.screen = screen;
         this.modelImpostazioni = new ModelImpostazioni(style);
         this.viewImpostazioni = new ViewImpostazioni();
     }
@@ -678,7 +683,7 @@ public class ControllerImpostazioni {
         back.addListener(new ClickListener() { // Aggiungo un listener al bottone per il click
             @Override
             public void clicked(InputEvent event, float x, float y) { // Quando c'è il click del bottone
-                game.setScreen(new MainMenu(game, "The loss"));
+                game.setScreen(screen);
             }
         });
 

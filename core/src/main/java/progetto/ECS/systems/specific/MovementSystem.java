@@ -42,8 +42,12 @@ public class MovementSystem extends IteratingSystem {
             if (movement.getPath().size == 0) {
                 return;
             }
-            direzione(movement, entity);
-            towards(movement, entity, movement.getPath().get(movement.stepIndex));
+            try {
+                direzione(movement, entity);
+                towards(movement, entity, movement.getPath().get(movement.stepIndex));
+            }catch (Exception e) {
+                System.err.println("Movimento non trovato");
+            }
         }
     }
 

@@ -55,8 +55,6 @@ public class Map implements Disposable {
         loadTextureFilter();
 
 
-        System.out.println(x + "" + y);
-
         // Inizializza il gestore degli eventi
         this.eventManager = new EventManager(game, this, mapManager, entityEngine);
         this.eventManager.create(map.getLayers().get("eventi"));
@@ -71,7 +69,10 @@ public class Map implements Disposable {
 
         // Teletrasporta il player e posiziona la camera
         if (entityEngine.player().contains(PhysicsComponent.class)) {
-            Gdx.app.postRunnable(() -> entityEngine.player().get(PhysicsComponent.class).teleport(new Vector2(x, y)));
+            Gdx.app.postRunnable(() -> {
+                entityEngine.player().get(PhysicsComponent.class).teleport(new Vector2(x, y));
+            });
+
             CameraManager.getInstance().position.set(entityEngine.player().get(PhysicsComponent.class).getPosition(), 0);
             CameraManager.getInstance().update();
         }

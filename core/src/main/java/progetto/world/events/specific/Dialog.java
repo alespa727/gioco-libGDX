@@ -44,7 +44,6 @@ public class Dialog extends RectangleMapEvent {
             if (cooldown.isReady && flag){
                 renderer.setText("");
                 wasActive=true;
-                destroy();
             }
         }
     }

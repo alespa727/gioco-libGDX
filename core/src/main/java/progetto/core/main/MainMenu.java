@@ -1,6 +1,7 @@
 package progetto.core.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -221,7 +222,7 @@ public class MainMenu extends CustomScreen {
                 super.touchUp(event, x, y, pointer, button);
                 final Style style = new Style("skins/metal-ui.json", "fonts/myfont2.ttf", 30, Color.WHITE,
                         "fonts/myfont2.ttf", 30, Color.WHITE, null, null, null);
-                ControllerImpostazioni controller = new ControllerImpostazioni(app, style);
+                ControllerImpostazioni controller = new ControllerImpostazioni(app, getScreen(), style);
                 controller.setViewImpostazioni(controller.creaImpostazioni(controller.getModelImpostazioni()));
                 controller.getViewImpostazioni().setActorStage(controller.getViewImpostazioni().getRoot());
                 app.setScreen(controller.getViewImpostazioni());
@@ -229,6 +230,10 @@ public class MainMenu extends CustomScreen {
         });
 
         group.addActor(settings);
+    }
+
+    public CustomScreen getScreen() {
+        return this;
     }
 
     private void move(Vector2 speed) {
@@ -261,7 +266,6 @@ public class MainMenu extends CustomScreen {
     public void render(float delta) {
         updateMovement(delta);
         accumulator += delta;
-        WorldManager.update();
         move(direction.cpy());
         renderer.draw(batch, delta);
         drawUI(delta);

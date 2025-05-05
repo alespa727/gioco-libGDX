@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="90" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="112">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="90" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="113">
  <tileset firstgid="1" name="pietra" tilewidth="16" tileheight="16" tilecount="64" columns="8">
   <image source="pietra.png" width="128" height="128"/>
  </tileset>
@@ -437,7 +437,7 @@
     <property name="eventWidth" type="float" value="2"/>
    </properties>
   </object>
-  <object id="61" x="657" y="491" width="409" height="33">
+  <object id="61" x="657" y="484" width="409" height="40">
    <properties>
     <property name="eventType" value="Fall"/>
    </properties>
@@ -650,13 +650,13 @@
     <property name="intensity" type="float" value="0.35"/>
    </properties>
   </object>
-  <object id="111" x="456" y="680">
+  <object id="112" x="454" y="675" width="6" height="9">
    <properties>
-    <property name="eventRadius" type="float" value="2"/>
+    <property name="eventRadius" type="float" value="1.5"/>
     <property name="eventType" value="ChangeMap"/>
     <property name="map" type="int" value="4"/>
     <property name="spawnx" type="float" value="12"/>
-    <property name="spawny" type="float" value="15"/>
+    <property name="spawny" type="float" value="14"/>
    </properties>
   </object>
  </objectgroup>

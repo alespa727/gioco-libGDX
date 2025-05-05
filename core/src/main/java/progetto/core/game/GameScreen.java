@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import progetto.audio.AudioEngine;
 import progetto.core.AutoSave;
 import progetto.core.App;
 import progetto.ECS.EntityEngine;
@@ -31,6 +32,7 @@ public class GameScreen implements Screen {
     public SpriteBatch batch;
     public FitViewport viewport;
 
+    private AudioEngine audio;
     private AutoSave autoSave;
     private final Engine engine;
     private final GameRenderer renderer;
@@ -53,6 +55,7 @@ public class GameScreen implements Screen {
         renderer = new GameRenderer(this, app.renderer);
         debug = new Debug(this);
         engine = new Engine(app, this);
+        audio = new AudioEngine();
     }
 
     public Engine getEngine() {
@@ -132,6 +135,8 @@ public class GameScreen implements Screen {
         ColorFilter.getInstance();
         ColorFilter.setColor(0.5f, 0.5f, 0.55f);
         GameRenderer.setTalking(false);
+        audio.addMusic("sounds/ambience.mp3");
+        audio.playMusic(true);
     }
 
     @Override
@@ -156,6 +161,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
+        audio.stopMusic();
         autoSave.stopSaving();
         debug.stopTerminal();
     }

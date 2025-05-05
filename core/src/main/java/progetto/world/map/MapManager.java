@@ -90,9 +90,10 @@ public class MapManager {
         currentMapNum = map;
 
         currentMap = new Map(nome, game, entityEngine, this, x, y);
-        currentMap.generateCollisions();  // Genera le collisioni
+
 
         loadMapEntities();  // Carica entità
+        currentMap.generateCollisions();
 
         viewport.apply();  // Aggiorna la telecamera
     }

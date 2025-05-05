@@ -25,12 +25,13 @@ public class AudioEngine {
             FileHandle file = Gdx.files.internal(path);
             System.out.println(file.exists());
             sounds.put(path, Gdx.audio.newSound(file));
+            sounds.get(path).setLooping(0, true);
         }
         playSound(path);
     }
 
     public void addMusic(String path) {
-        if (loaded.contains(path, false)) {
+        if (!loaded.contains(path, false)) {
             loaded.add(path);
             int size = playlist.size;
             playlist.add(Gdx.audio.newMusic(Gdx.files.internal(path)));
@@ -38,17 +39,22 @@ public class AudioEngine {
         }
     }
 
-    public void playMusic(int index) {
-        playlist.get(index).setVolume(ModelImpostazioni.getMUSICA().getPosizione());
-        playlist.get(index).play();
+    public void playMusic(boolean loop) {
+        playlist.get(playlist.size-1).setVolume(ModelImpostazioni.getMUSICA().getPosizione());
+        playlist.get(playlist.size-1).setLooping(loop);
+        playlist.get(playlist.size-1).play();
     }
 
     public void playSound(String path) {
         sounds.get(path).play(ModelImpostazioni.getSUONI().getPosizione());
     }
 
-    public void stopMusic(int index) {
-        playlist.get(index).stop();
+    public void stopMusic() {
+        for (Music music: playlist) {
+            if (music.isPlaying()) {
+                music.stop();
+            }
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="41" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="174">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="41" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="175">
  <tileset firstgid="1" name="pietra" tilewidth="16" tileheight="16" tilecount="64" columns="8">
   <image source="pietra.png" width="128" height="128"/>
  </tileset>
@@ -255,6 +255,7 @@
     <property name="intensity" type="float" value="0.3"/>
    </properties>
   </object>
+  <object id="174" x="154" y="137" width="344" height="24"/>
  </objectgroup>
  <objectgroup id="2" name="eventi" tintcolor="#ff0000">
   <object id="111" x="82" y="338" width="28" height="28">
@@ -403,7 +404,6 @@
     <property name="eventType" value="Fall"/>
    </properties>
   </object>
-  <object id="137" x="157" y="141" width="345" height="17"/>
   <object id="139" x="80" y="255">
    <properties>
     <property name="color" type="color" value="#ffff8000"/>

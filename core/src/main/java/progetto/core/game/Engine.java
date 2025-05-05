@@ -3,7 +3,6 @@ package progetto.core.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import progetto.core.App;
 import progetto.core.main.MainMenu;
 import progetto.core.settings.model.ModelImpostazioni;
@@ -12,8 +11,6 @@ import progetto.ECS.components.specific.base.StateComponent;
 import progetto.ECS.entities.specific.EntityConfig;
 import progetto.ECS.systems.specific.*;
 import progetto.factories.EntityConfigFactory;
-import progetto.factories.EntityFactory;
-import progetto.graphics.shaders.specific.ColorFilter;
 import progetto.input.KeyHandler;
 import progetto.core.CameraManager;
 import progetto.core.game.player.Player;
@@ -66,7 +63,7 @@ public class Engine {
         // Aggiorna il gioco finché necessario
         while (time.getAccumulator() >= STEP) {
             float scaledTime = STEP * time.getTimeScale();
-            WorldManager.getInstance().step(scaledTime, 8, 8);
+            WorldManager.getInstance().step(scaledTime, 6, 2);
             step(scaledTime);
             WorldManager.update();
             time.setAccumulator(time.getAccumulator() - STEP);
@@ -75,7 +72,6 @@ public class Engine {
 
 
         game.getGameDrawer().draw(batch, delta);
-
 
     }
 

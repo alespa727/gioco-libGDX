@@ -27,7 +27,7 @@ public class Casa extends GameObject {
      */
     public Casa(EntityConfig config, EntityEngine manager, float radius) {
         super(config, manager, radius);
-        this.texture = new Texture("entities/casa.png");
+        this.texture = new Texture("entities/Casa.png");
     }
 
 

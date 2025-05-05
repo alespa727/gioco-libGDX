@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="23">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="24">
  <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
   <image source="CustomTileset.png" width="160" height="160"/>
   <tile id="0">
@@ -278,15 +278,15 @@
     <property name="eventRadius" type="float" value="1.5"/>
     <property name="eventType" value="ChangeMap"/>
     <property name="map" type="int" value="3"/>
-    <property name="spawnx" type="float" value="9"/>
-    <property name="spawny" type="float" value="12.5"/>
+    <property name="spawnx" type="float" value="10"/>
+    <property name="spawny" type="float" value="13"/>
    </properties>
   </object>
   <object id="17" x="439" y="184" width="19" height="19">
    <properties>
-    <property name="color" type="color" value="#648a5224"/>
+    <property name="color" type="color" value="#641f8c9a"/>
     <property name="eventType" value="Light"/>
-    <property name="intensity" type="float" value="0.3"/>
+    <property name="intensity" type="float" value="0.15"/>
    </properties>
   </object>
   <object id="18" x="182" y="103" width="19" height="19">
@@ -318,14 +318,6 @@
     <property name="duration" type="float" value="5"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="Dove sono le altre stanze?              "/>
-   </properties>
-  </object>
-  <object id="22" x="414" y="178" width="50" height="14">
-   <properties>
-    <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="4"/>
-    <property name="eventType" value="Dialog"/>
-    <property name="text" value="Angelica?"/>
    </properties>
   </object>
  </objectgroup>

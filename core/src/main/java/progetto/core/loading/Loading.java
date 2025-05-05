@@ -172,7 +172,6 @@ public class Loading extends CustomScreen {
 
     @Override
     public void render(float delta) {
-        WorldManager.update();
         move(speed.cpy());
         drawer.draw(batch, delta);
         updateLoading(delta);

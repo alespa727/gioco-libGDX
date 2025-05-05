@@ -42,18 +42,6 @@ public class CollisionManager implements ContactListener {
             ((Bullet) dataB).unregister();
         }
 
-
-        // Gestione eventi della mappa, controllando entrambe le configurazioni:
-        if (dataA instanceof Player && dataB instanceof ChangeMap) {
-            ((MapEvent) dataB).setActive(true);
-            ((MapEvent) dataB).trigger((Entity) dataA);
-            return;
-        } else if (dataB instanceof Player && dataA instanceof ChangeMap) {
-            ((MapEvent) dataA).setActive(true);
-            ((MapEvent) dataA).trigger((Entity) dataB);
-            return;
-        }
-
         if (dataA instanceof MapEvent && dataB instanceof Entity) {
             ((MapEvent) dataA).trigger((Entity) dataB);
             return;
@@ -138,14 +126,6 @@ public class CollisionManager implements ContactListener {
 
         if (dataA instanceof BaseEnemy baseEnemy1 && isRangeA && dataB instanceof Player player && !isRangeB) {
             baseEnemy1.removeEntity(player);
-        }
-        // Gestione eventi della mappa
-        if (dataA instanceof Player && dataB instanceof ChangeMap) {
-            ((MapEvent) dataB).setActive(false);
-            return;
-        } else if (dataB instanceof Player && dataA instanceof ChangeMap) {
-            ((MapEvent) dataA).setActive(false);
-            return;
         }
 
         if (dataA instanceof MapEvent && dataB instanceof Entity) {
