@@ -47,6 +47,9 @@ public class ControllerImpostazioni {
 
     // ATTRIBUTI------------------------------------------------------------------------------------------------------
 
+    /**
+     * Riferimento alla schermo precedente
+     */
     public Screen screen;
 
     /**
