@@ -58,7 +58,7 @@ public class MapManager {
         currentMapNum = startingMap;
         this.ambienteAperto = true;
 
-        int defaultMap = 3;
+        int defaultMap = 0;
         this.changeMap(defaultMap, 7, 12, true);
         mapEntityInstances = new HashMap<>();
     }
