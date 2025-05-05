@@ -39,6 +39,9 @@ public class GameRenderer {
     public static boolean isTalking() {
         return isTalking;
     }
+    public static void setTalking(boolean isTalking) {
+        GameRenderer.isTalking = isTalking;
+    }
 
     public void setText(String text) {
         int size = strings.size;

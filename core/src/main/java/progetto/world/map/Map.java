@@ -54,6 +54,9 @@ public class Map implements Disposable {
         this.renderer = new OrthogonalTiledMapRenderer(map, MapManager.TILE_SIZE, entityEngine.game.batch);
         loadTextureFilter();
 
+
+        System.out.println(x + "" + y);
+
         // Inizializza il gestore degli eventi
         this.eventManager = new EventManager(game, this, mapManager, entityEngine);
         this.eventManager.create(map.getLayers().get("eventi"));

@@ -34,7 +34,8 @@ public class EventManager {
     }
 
     public void update(float delta) {
-        for (MapEvent event : events) {
+        for (int i = 0; i < events.size-1; i++) {
+            MapEvent event = events.get(i);
             event.update(delta);
         }
     }

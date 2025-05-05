@@ -36,9 +36,13 @@ public class DeathChangeMap extends ChangeMap {
     public void check() {
         if (KeyHandler.usa) {
             Gdx.app.postRunnable(() ->{
-                mapManager.changeMap(map, x + 0.5f, y + 0.5f, true);
-                new FakeMainMenu(app, "Sei morto", new Color(0.8f, 0.8f, 0.86f, 1));
+                new FakeMainMenu(app, "Sei morto", new Color(0.8f, 0.8f, 0.86f, 1), ()->{
+                    mapManager.changeMap(map, x + 0.5f, y + 0.5f, true);
+                });
+
             });
+
+
 
             isActive = false;
         }

@@ -48,7 +48,7 @@ public class ChangeMap extends MapEvent {
 
     public void check(){
         if (KeyHandler.usa) {
-            Gdx.app.postRunnable(() -> mapManager.changeMap(map, x + 0.5f, y + 0.5f, true));
+            mapManager.changeMap(map, x + 0.5f, y + 0.5f, true);
             isActive = false;
         }
     }

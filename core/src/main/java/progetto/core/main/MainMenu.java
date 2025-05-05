@@ -29,6 +29,7 @@ import progetto.core.App;
 import progetto.core.CustomScreen;
 import progetto.core.ResourceManager;
 import progetto.core.ScreenRenderer;
+import progetto.core.game.GameRenderer;
 import progetto.core.game.GameScreen;
 import progetto.core.loading.Loading;
 import progetto.core.settings.controller.ControllerImpostazioni;
@@ -62,6 +63,7 @@ public class MainMenu extends CustomScreen {
         this.app = app;
         this.title = title;
         this.renderer = new ScreenRenderer(this);
+        GameRenderer.setTalking(false);
         loadResources();
         setupCamera();
         initGraphics();

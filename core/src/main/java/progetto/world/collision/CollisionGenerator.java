@@ -34,13 +34,15 @@ public class CollisionGenerator {
     public void generateCollisions(MapLayer collisionLayer) {
         MapObjects objects = collisionLayer.getObjects();
         for (MapObject object : objects) {
-            if (object instanceof RectangleMapObject) {  // Check if it's a rectangle, adjust if necessary
+            if (object instanceof RectangleMapObject) {
                 float x = ((RectangleMapObject) object).getRectangle().x * MapManager.TILE_SIZE;
                 float y = ((RectangleMapObject) object).getRectangle().y * MapManager.TILE_SIZE;
                 float width = ((RectangleMapObject) object).getRectangle().width * MapManager.TILE_SIZE;
                 float height = ((RectangleMapObject) object).getRectangle().height * MapManager.TILE_SIZE;
                 BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x + width / 2, y + height / 2);
                 Shape boxShape = BodyFactory.createPolygonShape(width / 2, height / 2);
+
+                System.out.println("boxShape: " + boxShape + " at (" + (x + width / 2) + ", " + (y + height / 2) + "), size: " + width + "x" + height);
 
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = EntityEngine.WALL;

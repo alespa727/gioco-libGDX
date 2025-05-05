@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="24">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="33">
  <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
   <image source="CustomTileset.png" width="160" height="160"/>
   <tile id="0">
@@ -268,11 +268,11 @@
 </data>
  </layer>
  <objectgroup id="9" name="collisionobjects">
-  <object id="11" x="80" y="81" width="159" height="16"/>
-  <object id="18" x="81" y="192" width="159" height="16"/>
-  <object id="19" x="224" y="98" width="16" height="94"/>
-  <object id="20" x="80" y="97" width="16" height="94"/>
   <object id="22" x="209" y="93" width="14" height="14"/>
+  <object id="29" x="81" y="80" width="15" height="127"/>
+  <object id="30" x="225" y="79" width="15" height="127"/>
+  <object id="31" x="80" y="81" width="162" height="15"/>
+  <object id="32" x="77" y="192" width="162" height="15"/>
  </objectgroup>
  <objectgroup id="4" name="eventi">
   <properties>

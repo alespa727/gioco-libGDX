@@ -131,6 +131,7 @@ public class GameScreen implements Screen {
         CameraManager.getInstance().update();
         ColorFilter.getInstance();
         ColorFilter.setColor(0.5f, 0.5f, 0.55f);
+        GameRenderer.setTalking(false);
     }
 
     @Override

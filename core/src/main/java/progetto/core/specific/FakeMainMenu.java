@@ -12,8 +12,9 @@ import progetto.core.loading.Loading;
 import progetto.core.main.MainMenu;
 
 public class FakeMainMenu extends MainMenu {
-    public FakeMainMenu(App app, String title, Color color) {
+    public FakeMainMenu(App app, String title, Color color, Runnable runnable) {
         super(app, title, color);
+        runnable.run();
         app.setScreen(this);
     }
 

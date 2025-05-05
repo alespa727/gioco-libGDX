@@ -295,14 +295,6 @@
     <property name="intensity" type="float" value="0.3"/>
    </properties>
   </object>
-  <object id="17" x="133" y="159" width="36" height="33">
-   <properties>
-    <property name="delay" type="float" value="0.5"/>
-    <property name="duration" type="float" value="3"/>
-    <property name="eventType" value="Dialog"/>
-    <property name="text" value="..."/>
-   </properties>
-  </object>
   <object id="18" x="97" y="125" width="31" height="24">
    <properties>
     <property name="delay" type="float" value="0"/>
