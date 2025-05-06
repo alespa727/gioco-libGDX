@@ -23,7 +23,6 @@ public class AudioEngine {
         if (!loaded.contains(path, false)){
             loaded.add(path);
             FileHandle file = Gdx.files.internal(path);
-            System.out.println(file.exists());
             sounds.put(path, Gdx.audio.newSound(file));
             sounds.get(path).setLooping(0, true);
         }

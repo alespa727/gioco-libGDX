@@ -130,7 +130,7 @@ public final class EntityEngine {
 
         entities.add(p);
 
-        Terminal.printError("Entità rimosse: " + count + instances);
+        //Terminal.printError("Entità rimosse: " + count + instances);
         return instances;
     }
 

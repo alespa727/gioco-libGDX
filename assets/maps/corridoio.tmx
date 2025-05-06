@@ -323,7 +323,7 @@
   <object id="24" x="384" y="129" width="25" height="63">
    <properties>
     <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="3"/>
+    <property name="duration" type="float" value="2"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="Angelica!!"/>
    </properties>

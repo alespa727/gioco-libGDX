@@ -62,7 +62,7 @@ public class EventManager {
                 events.add(new DamageEvent(position, width, height));
             }
             case "ChangeMap" -> {
-                System.out.println("ChangeMap");
+                //System.out.println("ChangeMap");
                 float radius = getProperty(object, "eventRadius", Float.class, 0f);
                 int mapId = getProperty(object, "map", Integer.class, 0);
                 float spawnX = getProperty(object, "spawnx", Float.class, 0f);

@@ -31,7 +31,7 @@ public class PlayerSwordAttack extends CombatSkill {
             if (cooldown.isReady) {
                 isBeingUsed = false;
                 elapsedTime = 0;
-                System.out.println("FINITA");
+                //System.out.println("FINITA");
             }
         }
     }

@@ -42,7 +42,7 @@ public class CollisionGenerator {
                 BodyDef bodyDef = BodyFactory.createBodyDef(BodyDef.BodyType.StaticBody, x + width / 2, y + height / 2);
                 Shape boxShape = BodyFactory.createPolygonShape(width / 2, height / 2);
 
-                System.out.println("boxShape: " + boxShape + " at (" + (x + width / 2) + ", " + (y + height / 2) + "), size: " + width + "x" + height);
+                //System.out.println("boxShape: " + boxShape + " at (" + (x + width / 2) + ", " + (y + height / 2) + "), size: " + width + "x" + height);
 
                 FixtureDef fixtureDef = BodyFactory.createFixtureDef(boxShape, 1f, 0.1f, 0.1f);
                 fixtureDef.filter.groupIndex = EntityEngine.WALL;

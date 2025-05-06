@@ -45,7 +45,7 @@ public class ChangeMap extends MapEvent {
     @Override
     public void update(float delta) {
         if (isActive()){
-            System.out.println("map: " + map);
+            //System.out.println("map: " + map);
             check();
         }
     }
@@ -62,6 +62,6 @@ public class ChangeMap extends MapEvent {
         if (entity.contains(UserControllable.class)) {
             setActive(!isActive);
         }
-        System.out.println("CHANGEMAP");
+        //System.out.println("CHANGEMAP");
     }
 }

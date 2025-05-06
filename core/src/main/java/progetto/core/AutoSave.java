@@ -32,7 +32,7 @@ public class AutoSave extends Thread {
             try {
                 sleep(5000);
             } catch (InterruptedException e) {
-                System.out.println("Fermato durante lo sleep");
+
             }
 
             if (entityEngine !=null){
