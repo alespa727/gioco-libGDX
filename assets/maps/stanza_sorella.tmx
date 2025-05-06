@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="44">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="45">
  <properties>
   <property name="spawnx" type="float" value="11"/>
   <property name="spawny" type="float" value="11"/>
@@ -299,20 +299,27 @@
     <property name="intensity" type="float" value="0.15"/>
    </properties>
   </object>
-  <object id="42" x="191" y="96" width="33" height="36">
+  <object id="42" x="96" y="96" width="128" height="96">
    <properties>
     <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="5"/>
+    <property name="duration" type="float" value="3.5"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="Dove è finita?"/>
    </properties>
   </object>
-  <object id="43" x="97" y="113" width="127" height="36">
+  <object id="43" x="96" y="112" width="128" height="80">
    <properties>
-    <property name="delay" type="float" value="1"/>
-    <property name="duration" type="float" value="3"/>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="3.5"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="Devo trovarla"/>
+   </properties>
+  </object>
+  <object id="44" x="216" y="101">
+   <properties>
+    <property name="color" type="color" value="#ff9100d9"/>
+    <property name="eventType" value="Light"/>
+    <property name="intensity" type="float" value="0.08"/>
    </properties>
   </object>
  </objectgroup>

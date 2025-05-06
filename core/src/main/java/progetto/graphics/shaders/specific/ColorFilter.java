@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import progetto.core.settings.model.ModelImpostazioni;
 import progetto.graphics.shaders.base.Shader;
 import progetto.core.CameraManager;
 
@@ -49,6 +50,9 @@ public class ColorFilter extends Shader {
         instance.color.set(color);
     }
 
+    public static Color getColor() {
+        return instance.color;
+    }
     @Override
     public void begin() {
         frameBuffer.begin();
@@ -72,9 +76,10 @@ public class ColorFilter extends Shader {
         TextureRegion region = new TextureRegion(texture);
         region.flip(false, true);
 
+        float multiplier = ModelImpostazioni.getLUMINOSITA().getStepSize();
         program.bind();
         batch.setShader(program);                            // (1) assegna lo shader
-        program.setUniformf("u_tint", color.r, color.g, color.b);
+        program.setUniformf("u_tint", color.r*multiplier, color.g*multiplier, color.b*multiplier);
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region,
             CameraManager.getFrustumCorners()[0].x,
@@ -92,9 +97,11 @@ public class ColorFilter extends Shader {
         TextureRegion region = new TextureRegion(texture);
         region.flip(false, true);
 
+        float multiplier = Math.max(0.2f, ModelImpostazioni.getLUMINOSITA().getPosizione());
+
         program.bind();
         batch.setShader(program);                            // (1) assegna lo shader
-        program.setUniformf("u_tint", color.r, color.g, color.b);
+        program.setUniformf("u_tint", color.r*multiplier, color.g*multiplier, color.b*multiplier);
         batch.begin();                                       // (3) inizia il batch
         batch.draw(region, x, y, width, height);
         batch.end();                                         // (4) finisci il batch

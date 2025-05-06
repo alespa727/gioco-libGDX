@@ -4,12 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.audio.AudioEngine;
+import progetto.core.CustomScreen;
+import progetto.core.ScreenRenderer;
+import progetto.graphics.shaders.specific.ColorFilter;
+import progetto.graphics.shaders.specific.Vignette;
 
 /**
  * La classe {@code ViewImpostazioni} implementa l'interfaccia {@code Screen} di LibGDX
@@ -24,9 +29,17 @@ import progetto.audio.AudioEngine;
  *
  * @author Ferrarese Tommaso
  */
-public class ViewImpostazioni implements Screen {
+public class ViewImpostazioni extends CustomScreen {
 
-    // ATTRIBUTI-------------------------------------------------------------------------------
+    /**
+     * Oggetto per disegnare lo schermo
+     */
+    private ScreenRenderer renderer;
+
+    /**
+     * Oggetto per disegnare a schermo
+     */
+    private SpriteBatch batch;
 
     /**
      * La scena che contiene gli attori (UI components).
@@ -50,6 +63,13 @@ public class ViewImpostazioni implements Screen {
      */
     public ViewImpostazioni(){
         stage = new Stage(new ScreenViewport());
+
+        renderer = new ScreenRenderer(this);
+
+        batch = new SpriteBatch();
+
+        renderer.addShader(ColorFilter.getInstance());
+        renderer.addShader(Vignette.getInstance());
         Gdx.input.setInputProcessor(this.stage);
     }
 
@@ -81,12 +101,7 @@ public class ViewImpostazioni implements Screen {
      */
     @Override
     public void render(float delta) {
-        // Pulisce lo schermo con un colore di sfondo chiaro
-        ScreenUtils.clear(Color.BLACK);
-        if (stage != null) {
-            stage.act();
-            stage.draw();
-        }
+        renderer.draw(batch, delta, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     /**
@@ -164,5 +179,15 @@ public class ViewImpostazioni implements Screen {
      */
     public void setRoot(Table root) {
         this.root = root;
+    }
+
+    @Override
+    public void draw(float delta) {
+        // Pulisce lo schermo con un colore di sfondo chiaro
+        ScreenUtils.clear(Color.WHITE);
+        if (stage != null) {
+            stage.act();
+            stage.draw();
+        }
     }
 }

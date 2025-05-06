@@ -220,8 +220,8 @@ public class MainMenu extends CustomScreen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
-                final Style style = new Style("skins/metal-ui.json", "fonts/myfont2.ttf", 30, Color.WHITE,
-                        "fonts/myfont2.ttf", 30, Color.WHITE, null, null, null);
+                final Style style = new Style("skins/metal-ui.json", "fonts/myfont2.ttf", 30, Color.BLACK,
+                        "fonts/myfont2.ttf", 30, Color.BLACK, null, null, null);
                 ControllerImpostazioni controller = new ControllerImpostazioni(app, getScreen(), style);
                 controller.setViewImpostazioni(controller.creaImpostazioni(controller.getModelImpostazioni()));
                 controller.getViewImpostazioni().setActorStage(controller.getViewImpostazioni().getRoot());

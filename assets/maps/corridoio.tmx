@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="26">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="51" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="28">
  <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
   <image source="CustomTileset.png" width="160" height="160"/>
   <tile id="0">
@@ -299,33 +299,49 @@
   <object id="19" x="213" y="129" width="24" height="63">
    <properties>
     <property name="delay" type="float" value="0.5"/>
-    <property name="duration" type="float" value="2"/>
+    <property name="duration" type="float" value="1"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="?"/>
    </properties>
   </object>
-  <object id="20" x="284" y="128" width="32" height="63">
+  <object id="20" x="259" y="129" width="32" height="63">
    <properties>
     <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="5"/>
+    <property name="duration" type="float" value="2.5"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="Cosa è successo?               "/>
    </properties>
   </object>
-  <object id="21" x="342" y="128" width="25" height="63">
+  <object id="21" x="309" y="128" width="25" height="63">
    <properties>
     <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="5"/>
+    <property name="duration" type="float" value="2.5"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="Dove sono le altre stanze?              "/>
    </properties>
   </object>
-  <object id="24" x="384" y="129" width="25" height="63">
+  <object id="24" x="350" y="128" width="25" height="63">
    <properties>
     <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="2"/>
+    <property name="duration" type="float" value="1"/>
     <property name="eventType" value="Dialog"/>
     <property name="text" value="Angelica!!"/>
+   </properties>
+  </object>
+  <object id="26" x="376" y="129" width="29" height="61">
+   <properties>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="3"/>
+    <property name="eventType" value="Message"/>
+    <property name="text" value="(Vai da tua sorella)"/>
+   </properties>
+  </object>
+  <object id="27" x="417" y="180" width="46" height="43">
+   <properties>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="0"/>
+    <property name="eventType" value="Message"/>
+    <property name="text" value=""/>
    </properties>
   </object>
  </objectgroup>

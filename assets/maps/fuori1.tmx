@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="90" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="116">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="90" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="119">
  <properties>
   <property name="spawnx" type="float" value="20"/>
   <property name="spawny" type="float" value="40"/>
@@ -410,7 +410,7 @@
     <property name="eventType" value="Fall"/>
    </properties>
   </object>
-  <object id="49" x="657" y="406" width="90" height="90">
+  <object id="49" x="657" y="403" width="93" height="93">
    <properties>
     <property name="eventType" value="Fall"/>
    </properties>
@@ -594,10 +594,10 @@
   </object>
   <object id="100" x="195" y="308" width="74" height="29">
    <properties>
-    <property name="delay" type="float" value="5"/>
+    <property name="delay" type="float" value="3"/>
     <property name="duration" type="float" value="5"/>
     <property name="eventType" value="Dialog"/>
-    <property name="text" value="Dove sono finito???"/>
+    <property name="text" value="Dove sono finito??? pensavo di essere morto"/>
    </properties>
   </object>
   <object id="102" x="443" y="355" width="71" height="42">
@@ -616,15 +616,15 @@
     <property name="text" value=" "/>
    </properties>
   </object>
-  <object id="104" x="678" y="355" width="64" height="42">
+  <object id="104" x="678" y="355" width="73" height="42">
    <properties>
     <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="0"/>
+    <property name="duration" type="float" value="1000"/>
     <property name="eventType" value="Message"/>
     <property name="text" value="Utilizza R per combattere"/>
    </properties>
   </object>
-  <object id="105" x="742" y="355" width="45" height="42">
+  <object id="105" x="751" y="355" width="36" height="42">
    <properties>
     <property name="delay" type="float" value="0"/>
     <property name="duration" type="float" value="0"/>
@@ -663,28 +663,20 @@
     <property name="spawny" type="float" value="14"/>
    </properties>
   </object>
-  <object id="113" x="312" y="354" width="26" height="75">
-   <properties>
-    <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="3"/>
-    <property name="eventType" value="Dialog"/>
-    <property name="text" value="Devo trovarla"/>
-   </properties>
-  </object>
-  <object id="114" x="338" y="354" width="26" height="75">
-   <properties>
-    <property name="delay" type="float" value="0"/>
-    <property name="duration" type="float" value="3"/>
-    <property name="eventType" value="Dialog"/>
-    <property name="text" value="..."/>
-   </properties>
-  </object>
-  <object id="115" x="365" y="354" width="26" height="75">
+  <object id="115" x="334" y="354" width="47" height="75">
    <properties>
     <property name="delay" type="float" value="0"/>
     <property name="duration" type="float" value="6"/>
     <property name="eventType" value="Dialog"/>
-    <property name="text" value="E trovare un modo per tornare nella realtà"/>
+    <property name="text" value="Devo trovare un modo per tornare nella realtà"/>
+   </properties>
+  </object>
+  <object id="116" x="195" y="336" width="75" height="42">
+   <properties>
+    <property name="delay" type="float" value="0.5"/>
+    <property name="duration" type="float" value="4"/>
+    <property name="eventType" value="Message"/>
+    <property name="text" value="(Cerca tua sorella)"/>
    </properties>
   </object>
  </objectgroup>

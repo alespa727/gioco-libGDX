@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="41" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="175">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="41" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="176">
  <tileset firstgid="1" name="pietra" tilewidth="16" tileheight="16" tilecount="64" columns="8">
   <image source="pietra.png" width="128" height="128"/>
  </tileset>
@@ -314,7 +314,7 @@
     <property name="eventWidth" type="float" value="2"/>
    </properties>
   </object>
-  <object id="119" x="116" y="131" width="40" height="375">
+  <object id="119" x="114" y="131" width="42" height="375">
    <properties>
     <property name="eventType" value="Fall"/>
    </properties>
@@ -541,6 +541,14 @@
    <properties>
     <property name="entityType" value="Lich"/>
     <property name="eventType" value="SpawnEntity"/>
+   </properties>
+  </object>
+  <object id="175" x="162" y="240" width="46" height="48">
+   <properties>
+    <property name="delay" type="float" value="0"/>
+    <property name="duration" type="float" value="3.5"/>
+    <property name="eventType" value="Message"/>
+    <property name="text" value="(boss room, utilizzare q per sparare)"/>
    </properties>
   </object>
  </objectgroup>

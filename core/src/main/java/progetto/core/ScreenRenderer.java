@@ -44,4 +44,27 @@ public class ScreenRenderer {
         Shader finalOutput = shaders.get(shaders.size - 1);
         finalOutput.draw(batch, 0, 0, 1600, 900);
     }
+
+    public void draw(SpriteBatch batch, float delta, int x, int y, int width, int height) {
+
+        if (shaders.size <= 0) {
+            screen.draw(delta);
+            return;
+        }
+
+        shaders.get(0).begin();
+        screen.draw(delta);
+        shaders.get(0).end();
+
+        for (int i = 1; i < shaders.size; i++) {
+            Shader input = shaders.get(i - 1);
+            Shader output = shaders.get(i);
+            output.begin();
+            input.draw(batch, x, y, width, height);
+            output.end();
+        }
+
+        Shader finalOutput = shaders.get(shaders.size - 1);
+        finalOutput.draw(batch, x, y, width, height);
+    }
 }
