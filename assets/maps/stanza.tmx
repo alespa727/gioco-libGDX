@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="21">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="21">
  <tileset firstgid="1" name="CustomTileset" tilewidth="16" tileheight="16" spacing="2" margin="2" tilecount="64" columns="8">
   <image source="CustomTileset.png" width="160" height="160"/>
   <tile id="0">
@@ -300,8 +300,8 @@
  </objectgroup>
  <objectgroup id="4" name="eventi">
   <properties>
-   <property name="spawnX" type="float" value="10"/>
-   <property name="spawnY" type="float" value="10"/>
+   <property name="spawnX" type="float" value="9"/>
+   <property name="spawnY" type="float" value="8"/>
   </properties>
   <object id="10" x="152" y="200">
    <properties>

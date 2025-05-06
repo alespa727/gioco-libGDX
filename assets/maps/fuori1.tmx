@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="90" height="60" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="116">
+ <properties>
+  <property name="spawnx" type="float" value="20"/>
+  <property name="spawny" type="float" value="40"/>
+ </properties>
  <tileset firstgid="1" name="pietra" tilewidth="16" tileheight="16" tilecount="64" columns="8">
   <image source="pietra.png" width="128" height="128"/>
  </tileset>
