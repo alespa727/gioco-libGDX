@@ -158,9 +158,6 @@ public class Loading extends CustomScreen {
         batch.begin();
         group.draw(batch, 1);
         batch.end();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        group.drawDebug(shapeRenderer);
-        shapeRenderer.end();
     }
 
     @Override

@@ -27,7 +27,7 @@ public class ModelImpostazioni {
     private Style style;
 
     /** Una mappa che contiene le diverse risoluzioni dello schermo */
-    private static CustomLinkedHashMap<Dimension> valoriSchermo = new CustomLinkedHashMap<Dimension>(3);
+    private static CustomLinkedHashMap<Dimension> valoriSchermo = new CustomLinkedHashMap<Dimension>(4);
 
     static {
         // Valori schermo e' statico quindi mi serve inserire i valori in maniera statica
@@ -35,10 +35,11 @@ public class ModelImpostazioni {
         valoriSchermo.getHashMap().put("Schermo 360p (SD)", new Dimension(640, 360)); //1
         valoriSchermo.getHashMap().put("Schermo 480p (SD)", new Dimension(854, 480)); //2
         valoriSchermo.getHashMap().put("Schermo 720p (HD)", new Dimension(1280, 720)); //3
-        valoriSchermo.getHashMap().put("Schermo 1080p (HD)", new Dimension(1920, 1080)); //4
-        valoriSchermo.getHashMap().put("Schermo 1440p (2k)", new Dimension(2560, 1440)); //5
-        valoriSchermo.getHashMap().put("Schermo 2160p (4k)", new Dimension(3840, 2160)); //6
-        valoriSchermo.getHashMap().put("Schermo 4320p (8k)", new Dimension(7680, 4320)); //7
+        valoriSchermo.getHashMap().put("Schermo 900p (HD)", new Dimension(1600, 900)); //4
+        valoriSchermo.getHashMap().put("Schermo 1080p (HD)", new Dimension(1920, 1080)); //5
+        valoriSchermo.getHashMap().put("Schermo 1440p (2k)", new Dimension(2560, 1440)); //6
+        valoriSchermo.getHashMap().put("Schermo 2160p (4k)", new Dimension(3840, 2160)); //7
+        valoriSchermo.getHashMap().put("Schermo 4320p (8k)", new Dimension(7680, 4320)); //8
     }
 
     /** Una mappa che contiene i diversi valori del framerate */

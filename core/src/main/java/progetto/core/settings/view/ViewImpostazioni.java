@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import progetto.audio.AudioEngine;
 import progetto.core.CustomScreen;
@@ -62,7 +64,7 @@ public class ViewImpostazioni extends CustomScreen {
      * Inizializza la scena e imposta l'input processor su questa scena.
      */
     public ViewImpostazioni(){
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FitViewport(1600, 900, new OrthographicCamera()));
 
         renderer = new ScreenRenderer(this);
 
@@ -114,7 +116,9 @@ public class ViewImpostazioni extends CustomScreen {
     @Override
     public void resize(int width, int height) {
         if (stage != null) {
+            stage.getViewport().getCamera().update();
             stage.getViewport().update(width, height, true);
+            stage.getViewport().apply();
         }
     }
 

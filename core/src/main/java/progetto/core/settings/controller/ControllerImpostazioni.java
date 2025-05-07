@@ -1,9 +1,7 @@
 package progetto.core.settings.controller;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -178,18 +176,19 @@ public class ControllerImpostazioni {
     public Table aggiungiParteGrafica(final ModelImpostazioni modelImpostazioni){
         Table tabellaEsterna = creaTabella(modelImpostazioni.getStyle().getSkin(), false, false);
 
-//        {
-//            List<Dimension> list = new ArrayList<>(ModelImpostazioni.getValoriSchermo().getHashMap().values());
-//            this.creaSliderConBottoni(
-//                tabellaEsterna,
-//                "Risoluzione",
-//                (" " + Gdx.graphics.getWidth() + " x " + Gdx.graphics.getHeight() + " "),
-//                modelImpostazioni.getStyle(),
-//                ModelImpostazioni.getValoriSchermo(),
-//                dim -> Gdx.graphics.setWindowedMode(dim.width, dim.height),
-//                dim -> dim.width + " x " + dim.height
-//            );
-//        }
+        /*
+        {
+            this.creaSliderConBottoni(
+                tabellaEsterna,
+                "Risoluzione",
+                (" " + Gdx.graphics.getWidth() + " x " + Gdx.graphics.getHeight() + " "),
+                modelImpostazioni.getStyle(),
+                ModelImpostazioni.getValoriSchermo(),
+                    dim -> Gdx.graphics.setWindowedMode(ModelImpostazioni.getValoriSchermo().getValoreCorrente().width, ModelImpostazioni.getValoriSchermo().getValoreCorrente().height),
+                dim -> dim.width + " x " + dim.height
+            );
+        }
+        */
 
         tabellaEsterna.row();
 

@@ -28,7 +28,7 @@ public class DebugWindow extends Window {
 
     public DebugWindow(GameScreen gameScreen) {
         super("Debug Window", new Skin(Gdx.files.internal("skins/metal-ui.json")));
-        setDebug(true);
+        setDebug(false);
         setMovable(true);
         setKeepWithinStage(false);
         // Crea la viewport

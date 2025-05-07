@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 import progetto.core.App;
+import progetto.core.settings.model.ModelImpostazioni;
 
 /** Launcher dell'applicazione */
 public class Lwjgl3Launcher {
@@ -26,8 +27,8 @@ public class Lwjgl3Launcher {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("Game");
         config.setDecorated(false);
-        int width = 1280; //1920;
-        int height = 720; //1080;
+        int width = ModelImpostazioni.getValoriSchermo().getValoreCorrente().width; //1920;
+        int height = ModelImpostazioni.getValoriSchermo().getValoreCorrente().height; //1080;
         config.setWindowedMode(width, height);
         config.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate-1);
         return config;

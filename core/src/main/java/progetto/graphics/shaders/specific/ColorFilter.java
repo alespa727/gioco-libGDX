@@ -76,7 +76,7 @@ public class ColorFilter extends Shader {
         TextureRegion region = new TextureRegion(texture);
         region.flip(false, true);
 
-        float multiplier = ModelImpostazioni.getLUMINOSITA().getStepSize();
+        float multiplier = ModelImpostazioni.getLUMINOSITA().getPosizione();
         program.bind();
         batch.setShader(program);                            // (1) assegna lo shader
         program.setUniformf("u_tint", color.r*multiplier, color.g*multiplier, color.b*multiplier);
