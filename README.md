@@ -6,7 +6,7 @@
 
 ## 💻Tecnologie utilizzate:
 
-Le tecnologie utilizzate sono: ***Java, Gradle, LibGDX, , Gdx-AI, Box2D. GLSL (Graphics Library Shader Language), Tiled.***
+Le tecnologie utilizzate sono: ***Java, Gradle, LibGDX, Gdx-AI, Box2D. GLSL (Graphics Library Shader Language), Tiled.***
 
 ---
 
