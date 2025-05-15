@@ -67,9 +67,6 @@ Assicurati di avere installato i seguenti strumenti:
 - **Java Development Kit (JDK) 21 o superiore**  
   Scaricabile da [Adoptium](https://adoptium.net/) o [Oracle](https://www.oracle.com/java/technologies/javase-downloads.html).
 
-- **Gradle** (opzionale se incluso nel wrapper del progetto)  
-  Se il progetto contiene il file `gradlew`, non serve installarlo globalmente.
-
 - **Un IDE compatibile** (opzionale, ma consigliato):  
   - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
   - [Visual Studio Code](https://code.visualstudio.com/)
