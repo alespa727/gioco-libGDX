@@ -1,11 +1,14 @@
-# OpenTube
+# The Loss
 
-Lo scopo del progetto è stato creare un sito web di streaming on demand dedicato
-alla riproduzione di film e serie TV d’epoca.
+
+
+---
 
 ## 💻Tecnologie utilizzate:
 
-Le tecnologie utilizzate sono: ***Java, LidGDX, ***
+Le tecnologie utilizzate sono: ***Java, Gradle, LibGDX, , Gdx-AI, Box2D. GLSL (Graphics Library Shader Language), Tiled.***
+
+---
 
 ## 📃 Caratteristiche :
 
@@ -17,65 +20,79 @@ configurazione impostazioni, sistema di combattimento e interazione, sistema
 asincrono dell’intelligenza artificiale delle entità, path-finding tramite A star (A*)
 pesato dinamicamente.
 
+---
 
 ## 📸Schermate
+
 
 ### - 🏠Main menu
 ![alt](/screenshots/home.png)
 
+---
+
 ### -⚙️Settings
 ![alt](/screenshots/settings.png)
 
-#
+---
 
+## -🔃Loading menu
+![alt](/screenshots/loading.png)
+
+---
+
+## -☠️Death Screen
+![alt](/screenshots/death2.png)
+
+---
+
+## -🎮Game Screen
+![alt](/screenshots/gamescreen.png)
+
+---
 
 ##  Requisiti
 
-Per eseguire il progetto localmente hai bisogno di:
-
-- [PHP 7.4+](https://www.php.net/downloads.php)
-- Un ambiente di sviluppo locale come:
-  - [XAMPP](https://www.apachefriends.org/index.html)
-  - oppure un server Apache configurato con PHP
+Un computer funzionante, con schermo e tastiera (possibilmente mouse), se si vuole avviare il jar si consiglia ***Java 21.***
 
 ## 🧰 Installazione e Avvio (locale)
 
-### 1. Clona il repository
+Questa guida spiega come eseguire il gioco localmente sulla propria macchina utilizzando Java e libGDX.
+
+---
+
+### ✅ Prerequisiti
+
+Assicurati di avere installato i seguenti strumenti:
+
+- **Java Development Kit (JDK) 21 o superiore**  
+  Scaricabile da [Adoptium](https://adoptium.net/) o [Oracle](https://www.oracle.com/java/technologies/javase-downloads.html).
+
+- **Gradle** (opzionale se incluso nel wrapper del progetto)  
+  Se il progetto contiene il file `gradlew`, non serve installarlo globalmente.
+
+- **Un IDE compatibile** (opzionale, ma consigliato):  
+  - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+  - [Visual Studio Code](https://code.visualstudio.com/)
+  - [Eclipse](https://www.eclipse.org/) (meno consigliato con libGDX)
+
+- **Git** (per clonare il repository, se necessario)  
+  Scaricabile da [git-scm.com](https://git-scm.com/)
+
+---
+
+### 📦 Clonazione del progetto
+
+Clonare la repository:
 
 ```bash
-git clone https://github.com/AshanOnCode/progettosistemi.git
+git clone https://github.com/NOME-UTENTE/NOME-REPO.git
 ```
-### 2. Inserirla in XAMPP
 
-1. Apri la cartella di installazione di XAMPP. Di solito si trova in:
+Importarlo su Eclipse, IntelliJ, VScode.
+Se non viene buildato da solo, eseguire il build di gradle utilizzare il comando:
 
-   - **Windows**: `C:\xampp`
+```bash
+.\gradlew clean build
+```
 
-2. Vai nella sottocartella `htdocs`. Questa è la root dei progetti web serviti da Apache:
-
-   - **Windows**: `C:\xampp\htdocs`
-
-3. Copia o sposta l'intera cartella del progetto PHP (es. `opentube`) dentro `htdocs`.
-
-4. A questo punto, il progetto sarà accessibile da browser all’indirizzo:
-**localhost**
-
-5. Utilizzare il sito
-
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-- [OpenTube](#opentube)
-  - [💻Tecnologie utilizzate:](#tecnologie-utilizzate)
-  - [📃 Caratteristiche :](#-caratteristiche-)
-  - [📸Schermate](#schermate)
-    - [- 🏠Main menu](#--main-menu)
-    - [-⚙️Settings](#-️settings)
-  - [Requisiti](#requisiti)
-  - [🧰 Installazione e Avvio (locale)](#-installazione-e-avvio-locale)
-    - [1. Clona il repository](#1-clona-il-repository)
-    - [2. Inserirla in XAMPP](#2-inserirla-in-xampp)
-
-<!-- /code_chunk_output -->
-
+Avviare il programma tramite dalla classe main.
