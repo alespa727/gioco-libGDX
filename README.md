@@ -88,6 +88,8 @@ Clonare la repository:
 git clone https://github.com/NOME-UTENTE/NOME-REPO.git
 ```
 
+### ▶️ Avvio
+
 Importarlo su Eclipse, IntelliJ, VScode.
 Se non viene buildato da solo, eseguire il build di gradle utilizzare il comando:
 
